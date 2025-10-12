@@ -308,7 +308,7 @@
         ⎕THIS.helpHtml  
     } 0= ⎕NC 'helpHtml' 
     _c← '∆F Help Information'
-    _o← ('HTML'  _h) (900 1000,⍨ ⊂'Size') (10 10,⍨ ⊂'Posn') ('Coord' 'ScaledPixel')
+    _o← ('HTML'  _h) (900 1200,⍨ ⊂'Size') (10 10,⍨ ⊂'Posn') ('Coord' 'ScaledPixel')
     _← 'htmlObj' ⎕THIS.⎕WC 'HTMLRenderer',⍥⊆ _o          ⍝ Run HTMLRenderer
     1 0⍴⍬
   } 
