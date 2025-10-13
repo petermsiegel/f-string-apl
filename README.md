@@ -1,12 +1,5 @@
 <div class="content-with-right-bar">
 
-<div id="pageNarrowModal" 
-   style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; background-color: grey; padding: 10px; border: 5px solid black;">
-  <p id="pageNarrowText" style="font-size: 20px;font-family: Tahoma, sans-serif;">  
-  Dummy Text.
-  </p>
-</div>
-
 <span class="marginnote">**∆F** *f-strings* generate and display APL array objects using simple specifications and familiar *dfns*.</span>
 
 |<span style="font-size: 110%;padding: 10px;">**∆F** is a function for Dyalog APL that interpret *f-strings*, a concise, yet powerful way to display multiline Unicode text and complex, often multidimensional expressions in an APL-friendly style.</span>|
@@ -1017,7 +1010,14 @@ If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. H
 
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251013T154207]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251013T154730]
 </span>
 <br> 
 </div> <!-- <div class="content-with-right-bar"> -->
+
+<div id="pageNarrowModal" 
+   style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; background-color: grey; padding: 10px; border: 5px solid black;">
+  <p id="pageNarrowText" style="font-size: 20px;font-family: Tahoma, sans-serif;">  
+  Dummy Text.
+  </p>
+</div>
