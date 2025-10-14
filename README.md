@@ -1,6 +1,6 @@
-<div class="content-with-right-bar">
+<div class="right-margin-bar">
 
-<span class="marginnote">**∆F** *f-strings* generate and display APL array objects using simple specifications and familiar *dfns*.</span>
+<span class="marginnote">**∆F** *f-strings* allow the user to generate and display APL array objects using simple specifications and familiar *dfn* coding techniques.</span>
 
 |<span style="font-size: 110%;padding: 10px;">**∆F** is a function for Dyalog APL that interpret *f-strings*, a concise, yet powerful way to display multiline Unicode text and complex, often multidimensional expressions in an APL-friendly style.</span>|
 | :----------: |
@@ -92,7 +92,9 @@ Now, **∆F** is available in the active namespace (or **_myns_**), along with *
 <details open><summary class="aside"><span style="margin: 12px;">Show/Hide <em>Overview</em></span></summary>
 
 <span class="marginnote">Short for "**formatted string literals**, *f-strings* were introduced in Python in 2016. **∆F** *f-strings* and Python's are **not** compatible.</span> 
-Inspired by [Python f-strings](#python-ref), **∆F** includes a variety of capabilities to make it easy to evaluate, format, annotate, and display related multidimensional information. **∆F** *f-strings* include:
+Inspired by [Python f-strings](#python-ref), **∆F** includes a variety of capabilities to make it easy to evaluate, format, annotate, and display related multidimensional information. 
+
+**∆F** *f-strings* include:
 
 - The abstraction of 2-dimensional character ***fields***, generated one-by-one from the user's specifications and data, then aligned and catenated into a single overall character matrix result;
   
@@ -176,7 +178,7 @@ First, let's set some context for the examples. (You can set these however you w
 
 ## Code Fields
 
-Here are **Code fields** with simple variables.
+Here are **Code fields** with simple variables. <span class="marginnote">So far, this is like everybody's *f-strings*.</span>
 
 ```
    name← 'Fred' ◇ age← 43
@@ -318,7 +320,7 @@ The temperature is 11°C or  52.3°F
 ```
 
 ## The Box Shortcut  
-We now introuce the **Box** shortcut `` `B ``. Here we place boxes around key **Code fields** in this same example.
+We now introduce the **Box** shortcut `` `B ``. Here we place boxes around key **Code fields** in this same example.
 
 ```
    C← 11.3 29.55 59.99
@@ -418,7 +420,7 @@ Our string                  `⍵0↓                  is 38 characters
 
 ## The Format Shortcut
 
-<span class="marginnote">`⎕FMT` can also be used monadically, but **∆F** will handle that for you in most cases.
+<span class="marginnote">`$` (*i.e.* `⎕FMT`) can also be used monadically, but **∆F** will handle that for you in most cases.
 </span>
 
 > Let's add commas to some very large numbers using the **⎕FMT** shortcut `$`.
@@ -592,30 +594,35 @@ Here, we display one boxed value above the other.
 └───┴───┴───┘
 ```
 
+<details><summary class="aside"><span style="margin: 12px;">Peek: Shortcuts are just Functions</span></summary>
+
 While not for the faint of heart, the expression above can be recast as this somewhat hard to read alternative: 
 
 ``` 
    ∆F '{%/ `B∘⍳¨ `⍵1 `⍵2}' (2 2)(3 3)
 ```
 
+</details
+
 > There are loads of other examples to discover.
 
 ## A Shortcut for Dates and Times (Part I)  
 
-<span class="marginnote">The syntax for the Date-Time specifications in the left argument to `` `T `` can be found in the Dyalog documentation under **1200⌶**. For the curious, here's the core *dfn* code actually used by the Date-Time shortcut: <br>&emsp;`⍺←'YYYY-MM-DD hh:mm:ss'`<br>&emsp;`∊⍣(1=≡⍵)⊢ ⍺(1200⌶)⊢ 1⎕DT ⊆⍵`.
+<span class="marginnote">The syntax for the Date-Time specifications in the left argument to `` `T `` can be found in the Dyalog documentation under **1200⌶**. For the curious, here's the core *dfn* code actually used by the Date-Time shortcut: <br>&emsp;`⍺←'YYYY-MM-DD hh:mm:ss'`<br>&emsp;`∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT ⊆⍵`
 </span>
 **∆F** supports a simple **Date-Time** shortcut `` `T `` built from **1200⌶** and **⎕DT**. It takes one or more Dyalog `⎕TS`-format timestamps as the right argument and a date-time specification as the (optional) left argument. Trailing elements of a timestamp may be omitted (they will each be treated as `0` in the specification string).
 
 Let's look at the use of the `` `T `` shortcut to show the current time (now).
+
+<span class="marginnote"><br>The time displayed in practice will be the *true* current time.</span>
 
 ```
    ∆F 'It is now {"t:mm pp" `T ⎕TS}.'
 It is now 8:08 am.
 ```
 
-Of course, the time displayed in practice will be the *actual* current time.
 
-Here's a fancier example (the power is in `1200⌶` and `⎕DT`).
+Here's a fancier example<span class="marginnote">The power is in the capabilities of `1200⌶` and `⎕DT`.</span>.
 (We've added the _truncated_ timestamp `2025 01 01` right into the *f-string*.)
 
 ```
@@ -633,7 +640,7 @@ you can use `` `D ``, which means exactly the same thing.
 2 JAN 2025 was a Thursday.
 ```
 
-Here, we'll pass the time stamp via a single omega
+Here, we'll pass the time stamp via a single **Omega**
 expression (hence it is in parentheses): `` `⍵1 ``.
 
 ```
@@ -641,7 +648,7 @@ expression (hence it is in parentheses): `` `⍵1 ``.
 21 Jan 2025 was a Tuesday.
 ```
 
-We could also pass the time stamp via a sequence of omega
+We could also pass the time stamp via a sequence of **Omega**
 expressions: `` `⍵ `⍵ `⍵ ``.
 This is equivalent to the _slightly_ verbose
 expression: `` `⍵1 `⍵2 `⍵3 ``.
@@ -654,7 +661,7 @@ expression: `` `⍵1 `⍵2 `⍵3 ``.
 
 > Placing quotes around string elements of an array.
 
-<span class="marginnote">If a multidimensional character array is found, its rows are quoted; if a character vector, it is quoted *in toto*; else, each character scalar is quoted in isolation.
+<span class="marginnote">If a multidimensional character array is found, its <em>rows</em> are quoted; if a character vector, it is quoted <em>in toto</em>; else, each character <em>scalar</em> is quoted in isolation.
 </span>
 The **Quote** shortcut `` `Q `` recursively scans its right argument, matching rows of character arrays, character vectors, and character scalars, doubling internal single quotes and placing single quotes around the items found.
 
@@ -672,21 +679,45 @@ arrays in its right argument, `⍵`. This is useful when you want to distinguish
                     '2'    'dogs'
 ```
 
-And here's an example with a simple, mixed vector (*i.e.* with character and numeric scalars only). First, we display an object without using the **Quote** shortcut.
-Are you **_sure_** which elements are numeric and which character scalars?
+And here's an example with a simple, mixed vector (*i.e.* a mix of character and numeric scalars only). We'll call the object `iv`, but we won't disclose its definition yet.
+
+Let's display `iv` without using the **Quote** shortcut.
 
 ```
-   ∆F '{1 2 "3" 4 "5"}'
+   iv← ...
+   ∆F '{iv}'
 1 2 3 4 5
 ```
 
-Now, we show it **_with_** the **Quote** shortcut.
-Voilà, quotes appear around the character digits, but not the actual numbers!
+Are you **_sure_** which elements of `iv` are numeric and which character scalars?
+
+<details><summary class="aside"><span style="margin: 12px;">Peek to see the example with `iv` defined.</span></summary>
 
 ```
-   ∆F '{`Q 1 2 "3" 4 "5"}'
+   iv← 1 2 '3' 4 '5'
+   ∆F '{iv}'
+1 2 3 4 5
+```
+
+</details>
+
+Now, we'll show the variable `iv` using the  **Quote** `` `Q `` shortcut.
+
+```
+   iv← 1 2 '3' 4 '5'
+   ∆F '{`Q iv}'
+```
+
+<details><summary class="aside"><span style="margin: 12px;">Take a peek at the <bold>∆F</bold> output.</span></summary>
+
+```
 1 2 '3' 4 '5'
 ```
+
+</details>
+
+Voilà, quotes appear around the character digits, but not the actual APL numbers!
+
 
 ## The Wrap Shortcut <span style="color: red;">(Experimental)</span>
 
@@ -700,7 +731,7 @@ Here we make a quick mention of the **_experimental_** shortcut **Wrap** `` `W `
 
 
 - The decorators are in `⍺`, the left argument to **Wrap**: the left decorator, `0⊃2⍴⍺`, and the right decorator, `1⊃2⍴⍺`, with `⍺` defaulting to a single quote.
-- If you need to omit one or the other decorator, simply make it a null string `""` or a _zilde_ `⍬`.
+- If you need to omit one or the other decorator, simply make it a null string `""` or a _zilde_&nbsp;`⍬`.
 
 **Here are two simple examples.**
 
@@ -901,6 +932,10 @@ below on displaying quote characters like `"` in a string.
 a small number of escape sequences, beginning with the backtick `` ` ``. 
 Some sequences are valid in **Text** fields *only*, but not in Quoted strings:
 
+<span class="marginnote"><br><br>
+**Both**: *i.e.* **Text** fields and *Quoted Strings* in **Code** fields.
+</span>
+
 | Escape Sequence | What It Inserts | Description | Where Special |
 | :-------------: | :-------------: | :---------: | :----:  | 
 |     **\`◇**     |    *newline*    |   ⎕UCS 13   | Both|
@@ -972,7 +1007,10 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 
 ## Appendix I: Undocumented Options
 
-1. If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
+
+1. If `options[0]` is `¯1`, <span class="marginnote">In simple terms, this option returns the character representation of the 
+*dfn* returned via the ***DFN*** option.
+</span>then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
 If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option returns the code string *verbatim*, the ***DBG*** option won't *display* the code string redundantly. 
 
 ## Appendix II: Python F-strings
@@ -1010,14 +1048,15 @@ If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. H
 
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251013T154958]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251013T232156]
 </span>
 <br> 
-</div> <!-- <div class="content-with-right-bar"> -->
+</div> <!-- <div class="right-margin-bar"> -->
 
-<div id="pageNarrowModal" 
-   style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; background-color: grey; padding: 10px; border: 5px solid black;">
-  <p id="pageNarrowText" style="font-size: 20px;font-family: Tahoma, sans-serif;">  
-   
-  </p>
+<div id="pageNarrowModal" class="pageNarrowModal">
+  <span id="pageNarrowPfx"  style="font-size: 50px;">
+  </span> 
+  <span id="pageNarrowText" 
+        style="font-weight: bold; font-size: 20px;font-family: Tahoma,  sans-serif;">
+  </span>
 </div>
