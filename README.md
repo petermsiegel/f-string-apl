@@ -1058,7 +1058,7 @@ case: ^[43]`∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T140422]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T140632]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
@@ -1106,8 +1106,7 @@ Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T140422]
 to a character matrix.
 
 
-[^15]: 
-Again, we use APL _mix_ `↑` to generate multiline objects (matrices).
+[^15]: Again, we use APL _mix_ `↑` to generate multiline objects (matrices).
 
 [^16]: We could have used `0⍕⍪` and `1⍕⍪` here, of course. But we wanted to remind you what Dyalog's `⎕FMT` can do. For more, see [below](#the-format-shortcut).
 
@@ -1153,8 +1152,7 @@ Again, we use APL _mix_ `↑` to generate multiline objects (matrices).
 [^33]: If a multi&shy;dimensional character array is found, its <em>rows</em> are quoted; if a character vector, it is quoted <em>in toto</em>; else, each character <em>scalar</em> is quoted in isolation.
 
 
-[^34]: 
-For more, see [Wrap Shortcut: Details](#wrap-shortcut-details-experimental) _below_.
+[^34]: For more, see [Wrap Shortcut: Details](#wrap-shortcut-details-experimental) _below_.
 
 
 [^35]: **∆F**'s default initial option (left argument) is `0`, so `0 ∆F…` and `∆F…` are equivalent. We discuss all [the options to ∆F](#f-options) below.
