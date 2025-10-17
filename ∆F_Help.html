@@ -25,23 +25,16 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <!-- ∆F Help function Header  -- PMS Style and Javascript -->
+  <!-- 
+   ∆F Help function Header  -- PMS Style and Javascript 
+  -->
+
   <style>
-    body {
-      font-family: Georgia, serif;
-      font-size:   15pt;
-      text-align: justify;
-      padding: 1% 4%;
-  /*  margin: 0  auto;   /* Centers the body content */
-      margin-left: 25px;
-      margin-right: 175px;
-      margin-bottom: 0.5in;
-      max-width: 1200px; /* Sets a maximum width */
-    }
-    .title {
-        text-align: center; margin: 5px 10px;
-     }
-    .pTitle {  
+  /* ======================================================== */
+  /* Special styles for PMS attributes */
+
+  /* A fancy text box class */
+    .pMarquee {  
       width: 100%; /* ..% of the viewport width */
       font-size: 105%;
       text-align: center; /* justify; */
@@ -54,12 +47,30 @@
       padding: 15px;
       box-sizing: border-box; /* Includes padding and border within the defined width/height */
     }
-    .aside {
+
+  /* <details><pSummary>  */  
+    details > summary {
+       list-style-type: '▶️';  
+    }
+    details summary::marker {
+      color: darkgreen;
+      opacity: 1;
+    }
+    details[open] > summary {
+      color: darkgreen;
+      opacity: 0.3;  
+      list-style-type: '🔽';  
+    }
+    .summary {
         margin: 0px;
-     }
-     .red {
-        color: red;
-     }
+    }
+
+  /* For red things! */
+    .red {
+      color: red;
+    }
+
+  /* for <pNote> margin notes  */
     .margin-note {
       font-family: Tahoma, sans-serif;
       float: right; /* Aligns the note to the right */
@@ -72,6 +83,7 @@
       text-align: justify;
       clear: right; /* Ensures the note doesn't overlap with other floated elements */
     }
+  /* For the line separating main text from the margin notes */
     .right-margin-bar {  
       border-right: 2px solid rgb(244, 230, 227); /* Adjust color and thickness as needed */
       padding-right: 55px; /* Space between the bar and content */
@@ -79,7 +91,7 @@
       height: auto; /* Or set a fixed height, *e.g.*, 200px */
       /* overflow: hidden; Do not use w/ margin notes. */
     }
-    /* Suppress margin notes if screen is small. */
+  /* Suppress margin notes if screen is narrow */
      @media screen and (max-width: 1000px) {  
         body {
           width: 100%;
@@ -93,7 +105,30 @@
           overflow: hidden;  
         }
       }
-    code { /* Inline code */
+
+  /* ======================================================== */
+  /* Regular markdown styles follow */
+
+  /* The main body style */
+   body {
+      background-color:#fffef4;
+      font-family: Georgia, serif;
+      font-size:   15pt;
+      text-align: justify;
+      padding: 1% 4%;
+      margin-left: 25px;
+      margin-right: 175px;
+      margin-bottom: 0.5in;
+      max-width: 1200px; /* Sets a maximum width */
+    }
+
+  /* For document title, passed via pandoc */
+    .title { 
+        text-align: center; margin: 5px 10px;
+     }
+
+  /* Inline code */
+    code { 
       font-size: 88%;
       background-color: #ddfafaff;
       padding: 2px 4px;
@@ -101,7 +136,9 @@
       font-family: "APL386 Unicode", APL386, "APL385 Unicode", APL385,
         "Courier New", Courier, Lucida Console", "Consolas", monospace;
     }
-    pre { /* Code blocks */
+
+  /* Code blocks */
+    pre { 
       background-color: #ddfafaff;
       color: #0a0a0aff;
       font-size: 13pt;
@@ -112,6 +149,8 @@
       font-family: "APL386 Unicode", APL386, "APL385 Unicode", APL385,
           "Courier New", Courier, "Lucida Console", "Consolas", monospace;
     }
+
+  /* Tables */
     table {
       background-color: #ffffffff;
       line-height: 1.1;
@@ -150,9 +189,13 @@
       font-size: 100%;
       line-height: 140%;
     }
-    h1 { /* # headers: Make h1 headers (#...) the same size as h2 (##...) */ 
+
+  /* # headers: Make h1 headers (#...) the same size as h2 (##...) */ 
+    h1 { 
     font-size: 1.5em;   
     }
+
+  /* links-- make them less obtrusive */
     a:link {         /* link not visited */
       color: black;   
       font-size: 1.1em;
@@ -167,15 +210,18 @@
     a:active {       /* selected link */
       color: red;
     }
-    .experimental-stuff { /* Left red bar for ∆F items being evaluated */
-      border-left: 2px solid #ea2f0eff; /* Adjust color and thickness as needed */
-      padding-left: 15px; /* Space between the bar and content */
-      margin-left: 0px; /* Optional: Space from the left edge of the page */
-      height: auto; /* Or set a fixed height, *e.g.*, 200px */
-      /* ↓↓↓ Suppressed. It impacts notes to right. */
-      /* overflow: hidden; /* Clear floats if internal content uses them */
+
+  /* For features that aren't ready for prime time */
+    .test-feature { /* Left red bar for ∆F items being evaluated */
+      border-left: 2px solid #ea2f0eff; /* Adjust color and thickness */
+      padding-left: 15px;    /* Space between the bar and content */
+      margin-left: 0px;      /* Optional: Space from the left edge of the page */
+      height: auto;          /* Or set a fixed height, *e.g.*, 200px */
+      /* Do not use overflow: hidden -- it clears floats like margin-notes */
     }
-    .doc-footer { /* For the fixed navigation footer */
+
+  /* For the fixed navigation footer we set up */
+    .doc-footer {  
       position: fixed;
       font-size: 90%;
       left: 0;
@@ -186,31 +232,27 @@
       text-align: center;
       padding: 6px 0;
     }
-    .happybutton { /* Fixed size white on green button in navig footer */
+
+  /* Fixed size white on green button in navig footer */
+    .happybutton { 
       width: 175px;
       font-size: 90%;
       color: white;
       background-color: rgb(43, 122, 61);
     }
-    .warnbutton { /* Fixed size white on red button in navig footer */
+
+  /* Fixed size white on red button in navig footer */
+    .warnbutton { 
       width: 175px;
       font-size: 90%;
       color: white; 
       background-color: red;
     }
-    details > summary {
-       list-style-type: '▶️';  
-    }
-    details summary::marker {
-      color: darkgreen;
-      opacity: 1;
-    }
-    details[open] > summary {
-      color: darkgreen;
-      opacity: 0.3;  
-      list-style-type: '🔽';  
-    }
-    .pAlertMsg { /* For updating user on page resizing, etc. */
+
+  /* For updating user on page resizing, etc. 
+     See JS code
+  */
+    .pAlertMsg { 
       display: none;
       position: fixed;
       top: 50%; left: 40%; transform: translate(-50%, -50%);
@@ -221,81 +263,86 @@
 
   <script>
   //  Handle Expand/Collapse button at bottom of Help page 
-  document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('toggleDetails');
-    
-    toggleButton.addEventListener('click', () => {
-      // Select all <details> elements that do NOT have the "pmsnote" class
-      const detailsToToggle = document.querySelectorAll('details:not(.pmsnote)');
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleButton = document.getElementById('toggleDetails');
       
-      // Check if the button should expand or collapse
-      // This example toggles based on the current text of the button
-      const isExpanding = toggleButton.textContent.includes('Expand');
-      
-      detailsToToggle.forEach(detail => {
+      toggleButton.addEventListener('click', () => {
+        // Select all <details> elements that do NOT have the "pmsnote" class
+        const detailsToToggle = document.querySelectorAll('details:not(.pmsnote)');
+        
+        // Check if the button should expand or collapse
+        // This example toggles based on the current text of the button
+        const isExpanding = toggleButton.textContent.includes('Expand');
+        
+        detailsToToggle.forEach(detail => {
+          if (isExpanding) {
+            // Expand the details element by adding the 'open' attribute
+            detail.setAttribute('open', '');
+          } else {
+            // Collapse the details element by removing the 'open' attribute
+            detail.removeAttribute('open');
+          }
+        });
+        // Update the button text
         if (isExpanding) {
-          // Expand the details element by adding the 'open' attribute
-          detail.setAttribute('open', '');
+          toggleButton.textContent = 'Collapse All Sections';
         } else {
-          // Collapse the details element by removing the 'open' attribute
-          detail.removeAttribute('open');
+          toggleButton.textContent = 'Expand   All Sections';
         }
       });
-      // Update the button text
-      if (isExpanding) {
-        toggleButton.textContent = 'Collapse All Sections';
-      } else {
-        toggleButton.textContent = 'Expand   All Sections';
-      }
     });
-  });
-  // Two options for closing the Help window...
-  function closeWindowNow() {
-     showAlert("Closing Window...", 1000, 1);
-     setTimeout(window.close, 1000);
 
-  }
-  function closeWindowWithConfirm() {
-    if (confirm("Are you sure?")) {
-      window.close();
+
+  // Close the Help window
+  // - for the Close Window button at bottom of Help page
+    function closeWindowNow() {
+      showAlert("Closing Window...", 1000, 1);
+      setTimeout(window.close, 1000);
     }
-  }
 
-  /* Informational Alert */
-  function showAlert(displayMe, howLong, urgent) {
-      var alertBox = document.getElementById("pAlertMsg");
-      var alertPfx = document.getElementById("pAlertPfx");
-      var alertTxt = document.getElementById("pAlertText");
-      alertBox.style.display = "block"; // Show the alert
-      if (urgent==1) {
-         alertPfx.textContent = "⚠️ ";
-      } else {
-         alertPfx.textContent = "ℹ️ ";
-      }
-      alertTxt.textContent = displayMe;
-      // Set a timeout to hide the alert after <howLong> milliseconds  
-      setTimeout(function() {
-          alertBox.style.display = "none"; // Hide the alert
-      }, howLong);
-  }
-  const mediaQuery = window.matchMedia('(max-width: 1000px)');
-  mediaQuery.addEventListener('change', (event) => {
-      if (event.matches) {
-          showAlert("Omitting Sidenotes...", 2000, 1);
-      } else {
-          showAlert("Showing Sidenotes...", 2000, 0);
-      }
-  });
+  // Informational Alert 
+  // showAlert( text, howLong in ms to show, urgent)
+  // urgent: 1= show ⚠️; 0= show ℹ️  
+    function showAlert(displayMe, howLong, urgent) {
+        var alertBox = document.getElementById("pAlertMsg");
+        var alertPfx = document.getElementById("pAlertPfx");
+        var alertTxt = document.getElementById("pAlertText");
+        alertBox.style.display = "block"; // Show the alert
+        if (urgent==1) {
+          alertPfx.textContent = "⚠️ ";
+        } else {
+          alertPfx.textContent = "ℹ️ ";
+        }
+        alertTxt.textContent = displayMe;
+        // Set a timeout to hide the alert after <howLong> milliseconds  
+        setTimeout(function() {
+            alertBox.style.display = "none"; // Hide the alert
+        }, howLong);
+    }
+
+  // Listener for narrow/wide text
+  // (triggered when text crosses width boundary specified) 
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    mediaQuery.addEventListener('change', (event) => {
+        if (event.matches) {
+            showAlert("Omitting Margin Notes...", 2000, 1);
+        } else {
+            showAlert("Showing Margin Notes...", 2000, 0);
+        }
+    });
+
+  // (C) 2025 Sam the Cat Foundation 
   </script>
+
 </head>
 <body>
 <header id="title-block-header">
 <h1 class="title">∆F Formatted String Literals</h1>
 </header>
-<div class="right-margin-bar">
+<div class="right-margin-bar"> 
 
 <br>
-<div class="pTitle">
+<div class="pMarquee">
 <em><strong>∆F</strong></em> is a function for Dyalog APL that 
 interprets <em>f‑strings</em>, a concise, yet powerful way to display multiline APL text, arbitrary APL expressions, and multi&shy;dimensional objects using extensions to 
 <em>dfns</em> and other familiar tools.
@@ -304,7 +351,7 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 <h1 data-number="1" id="table-of-contents"><span
 class="header-section-number">1</span> Table of Contents</h1>
 <details>     <!-- option: open -->
-<summary class="aside">&ensp;Show/Hide <em>Table of Contents</em></summary>
+<summary class="summary">&ensp;Show/Hide <em>Table of Contents</em></summary>
 <span style="font-size: 90%;">
 
 <ul>
@@ -388,7 +435,7 @@ f‑strings</a></li>
 class="header-section-number">2</span> Installing and Running
 <strong>∆F</strong> in Dyalog APL</h1>
 <details>            <!-- option: open -->
-<summary class="aside">&ensp;Show/Hide <em>Installing and Running <bold>∆F</bold></em>
+<summary class="summary">&ensp;Show/Hide <em>Installing and Running <bold>∆F</bold></em>
 </summary>
 
 <h2 data-number="2.1" id="installing-f"><span
@@ -441,7 +488,7 @@ current namespace.</li>
 
 <h1 data-number="3" id="overview"><span
 class="header-section-number">3</span> Overview</h1>
-<details open><summary class="aside">&ensp;Show/Hide <em>Overview</em></summary>
+<details open><summary class="summary">&ensp;Show/Hide <em>Overview</em></summary>
 
 <p><span class="margin-note">Short for "<strong>formatted string
 literals</strong>, <em>f‑strings</em> were introduced in Python in 2016.
@@ -552,7 +599,7 @@ relatively slow, using an APL recursive scan to analyze the
 debugging, fine-grained formatting and informal user interaction, built
 using Dyalog functions and operators.</p>
 <details>     <!-- option: open -->
-<summary class="aside">&ensp;Recap: <em>The Three Field Types</em></summary><br>  
+<summary class="summary">&ensp;Recap: <em>The Three Field Types</em></summary><br>  
 
 <table>
 <thead>
@@ -606,7 +653,7 @@ try: <code>'help' ∆F ⍬</code>.</span> <span style="font-size: 130%;">👉
 <h1 data-number="5" id="f-examples-a-primer"><span
 class="header-section-number">5</span> ∆F Examples: A Primer</h1>
 <details>            <!-- option: open -->
-<summary class="aside">&ensp;Show/Hide <em>Examples: A Primer</em></summary>
+<summary class="summary">&ensp;Show/Hide <em>Examples: A Primer</em></summary>
 
 <p>Before providing information on <strong>∆F</strong> syntax and other
 details, <em>let's start with some examples</em>…</p>
@@ -646,7 +693,7 @@ Customer Jack wins £80!
    ∆F f
 Customer Jack wins £230!</code></pre>
 <p>Isn't Jack lucky, winning twice in a row!</p>
-<details><summary class="aside">&ensp;View a fancier example...</summary>
+<details><summary class="summary">&ensp;View a fancier example...</summary>
 
 <pre><code> ⍝ Be sure everyone wins something.
    ∆F &#39;{ ↑names }{ ⍪3⍴⊂&quot;wins&quot; }{ &quot;£&quot;,⍕⍪?prize⍴⍨ ≢names }&#39;
@@ -723,7 +770,7 @@ an                 Code
 example            Fields</code></pre>
 <p>Here is some multiline data we'll add to our <strong>Code</strong>
 fields.</p>
-<p><span class="margin-note"><br><br><br><br><br> Again, we use APL
+<p><span class="margin-note"><br><br><br><br><br>Again, we use APL
 <em>mix</em> <code>↑</code> to generate multiline objects
 (matrices).</span></p>
 <pre><code>   fNm←  &#39;John&#39; &#39;Mary&#39; &#39;Ted&#39;
@@ -786,7 +833,7 @@ they've done their work of separating adjacent fields (typically
 <strong>Text</strong> fields), so they won't be placed in boxes.</p>
 <p>Try this expression on your own:</p>
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;</code></pre>
-<details><summary class="aside">&ensp;Peek</summary>
+<details><summary class="summary">&ensp;Peek</summary>
 
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;
 ┌───┬───┬───┬┬───┬─┬───┐ 
@@ -833,7 +880,7 @@ href="#self-documenting-code-fields-sdcfs">Self-documenting Code
 fields</a> below.</span> The expression <code>`⍵0</code> always refers
 to the <em>f‑string</em> itself. Try this yourself.</p>
 <pre><code>   ∆F &#39;Our string {`⍵0↓} is {≢`⍵0} characters&#39;</code></pre>
-<details><summary class="aside">&ensp;Peek</summary>
+<details><summary class="summary">&ensp;Peek</summary>
 
 <pre><code>   ∆F &#39;Our string {`⍵0↓} is {≢`⍵0} characters&#39;
 Our string                  `⍵0↓                  is 38 characters
@@ -1024,7 +1071,7 @@ the other.</p>
 ├───┼───┼───┤
 │2 0│2 1│2 2│
 └───┴───┴───┘</code></pre>
-<details><summary class="aside">&ensp;Peek: Shortcuts are just Functions</summary>
+<details><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
 
 <p>While not for the faint of heart, the expression above can be recast
 as this somewhat hard to read alternative:</p>
@@ -1112,7 +1159,7 @@ mix of character and numeric scalars only). We'll call the object
 1 2 3 4 5</code></pre>
 <p>Are you <strong><em>sure</em></strong> which elements of
 <code>iv</code> are numeric and which character scalars?</p>
-<details><summary class="aside">&ensp;Peek to see the example with `iv` defined.</summary>
+<details><summary class="summary">&ensp;Peek to see the example with `iv` defined.</summary>
 
 <pre><code>   iv← 1 2 &#39;3&#39; 4 &#39;5&#39;
    ∆F &#39;{iv}&#39;
@@ -1123,7 +1170,7 @@ mix of character and numeric scalars only). We'll call the object
 <strong>Quote</strong> <code>`Q</code> shortcut.</p>
 <pre><code>   iv← 1 2 &#39;3&#39; 4 &#39;5&#39;
    ∆F &#39;{`Q iv}&#39;</code></pre>
-<details><summary class="aside">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
+<details><summary class="summary">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
 
 <pre><code>1 2 &#39;3&#39; 4 &#39;5&#39;</code></pre>
 </details>
@@ -1133,7 +1180,7 @@ APL numbers!</p>
 <h2 data-number="5.18" id="the-wrap-shortcut-experimental"><span
 class="header-section-number">5.18</span> The Wrap Shortcut
 <span class="red">(Experimental)</span></h2>
-<div class="experimental-stuff">
+<div class="test-feature">
 
 <blockquote>
 <p>Wrapping results in left and right decorators...</p>
@@ -1146,7 +1193,7 @@ right of <strong><em>each</em></strong> row of simple objects in the
 right argument, <code>⍵</code>. It differs from the
 <strong>Quote</strong> shortcut <code>`Q</code>, which puts quotes
 <strong><em>only</em></strong> around the character arrays in
-<code>⍵</code>. <span class="margin-note"> For more, see <a
+<code>⍵</code>. <span class="margin-note">For more, see <a
 href="#wrap-shortcut-details-experimental">Wrap Shortcut: Details</a>
 <em>below</em>. </span></p>
 <ul>
@@ -1255,7 +1302,7 @@ examples.</p>
 class="header-section-number">6</span> ∆F Syntax and Other
 Information</h1>
 <details>        <!-- option: open -->       
-<summary class="aside">&ensp;Show/Hide <em>Syntax Info</em></summary>
+<summary class="summary">&ensp;Show/Hide <em>Syntax Info</em></summary>
 
 <h2 data-number="6.1" id="f-call-syntax-overview"><span
 class="header-section-number">6.1</span> ∆F Call Syntax Overview</h2>
@@ -1611,7 +1658,7 @@ below on displaying quote characters like <code>"</code> in a string.
 include a small number of escape sequences, beginning with the backtick
 <code>`</code>. Some sequences are valid in <strong>Text</strong> fields
 <em>only</em>, but not in Quoted strings:</p>
-<p><span class="margin-note"><br><br> <strong>Both</strong>:
+<p><span class="margin-note"><br><br><strong>Both</strong>:
 <em>i.e.</em> <strong>Text</strong> fields and <em>Quoted Strings</em>
 in <strong>Code</strong> fields. </span></p>
 <table>
@@ -1745,7 +1792,7 @@ default with <code>`⍵1</code> or <code>⍹1</code>.</li>
 accessed at runtime via any means, shortcut or traditional, that element
 <strong><em>must</em></strong> exist.</li>
 </ol>
-<div class="experimental-stuff">
+<div class="test-feature">
 
 <h2 data-number="6.10" id="wrap-shortcut-details-experimental"><span
 class="header-section-number">6.10</span> Wrap Shortcut: Details
@@ -1771,7 +1818,7 @@ the array ⍵, row by row, whether character, numeric or otherwise.</li>
 
 <h1 data-number="7" id="appendices"><span
 class="header-section-number">7</span> Appendices</h1>
-<details><summary class="aside">&ensp;Show/Hide <em>Appendices</em></summary>
+<details><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
 
 <h2 data-number="7.1" id="appendix-i-undocumented-options"><span
 class="header-section-number">7.1</span> Appendix I: Undocumented
@@ -1838,10 +1885,10 @@ href="#overview"><span>https://docs.python.org/3/tutorial/inputoutput.html#forma
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251016T202136]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T145037]
 </span>
 <br> 
-</div> <!-- <div class="right-margin-bar"> -->
+</div> <!-- End div for right-margin-bar --> 
 
 <!-- a hidden modal expression -->
 
@@ -1852,5 +1899,7 @@ Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251016T202136]
         style="font-weight: bold; font-size: 20px;font-family: Tahoma,  sans-serif;">
   </span>
 </div>
+
+<!-- (C) 2025 Sam the Cat Foundation -->
 </body>
 </html>
