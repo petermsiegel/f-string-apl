@@ -1064,13 +1064,6 @@ Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T141030]
 </div> <!-- End div for right-margin-bar --> 
 
 <!-- a hidden modal expression -->
-<div id="pAlertMsg" class="pAlertMsg">
-  <span id="pAlertPfx"  style="font-size: 50px;">
-  </span> 
-  <span id="pAlertText" 
-        style="font-weight: bold; font-size: 20px;font-family: Tahoma,  sans-serif;">
-  </span>
-</div>
 
 <!-- (C) 2025 Sam the Cat Foundation -->
 
