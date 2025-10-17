@@ -1077,9 +1077,7 @@ Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T141030]
 ## Footnotes
 
 [^1]: `]cd` will show you your current working directory.
-
 [^2]: Short for "**formatted string literals**, *f‑strings* were introduced in Python in 2016. **∆F** *f‑strings* and Python's are **not** compatible.
-
 [^3]: In this document, we use the symbol `◇` (`⎕UCS 9671`) to represent the APL *statement separator* (`⎕UCS 8900`), since the latter is displayed _in some browsers_ as a hard-to-read glyph.
 
 [^4]: An **∆F** *f‑string*— including any **Code** fields— is limited to a single, possibly very long, character vector.
