@@ -301,15 +301,17 @@
 ⍝ 2. If helpHtml is not defined or if DEBUG=1, helpHtmlFi will be read and copied into helpHtml. 
 ⍝ 3. Displays helpHtml.
   Help← { 
-    'help'≢ 4↑⎕C⍵: ⎕SIGNAL optÊ 
-    _h← {  
+    'help'≢  ⎕C 4↑⎕C⍵: ⎕SIGNAL optÊ 
+    h← {  
       22:: ⎕SIGNAL helpFiÊ 
       DEBUG∨ ⍵: ⊢⎕THIS.helpHtml← ⊃⎕NGET helpHtmlFi 
         ⎕THIS.helpHtml  
     } 0= ⎕NC 'helpHtml' 
-    _c← '∆F Help Information'
-    _o← ('HTML'  _h) (900 1250,⍨ ⊂'Size') (5 100,⍨ ⊂'Posn') ('Coord' 'ScaledPixel')
-    _← 'htmlObj' ⎕THIS.⎕WC 'HTMLRenderer',⍥⊆ _o          ⍝ Run HTMLRenderer
+  ⍝ Undocumented: [a] 'help' vs [b] ('help-n[arrow]' (vs 'help-w[ide]')
+  ⍝ [a]: screen width 1250, including notes; [b] screen width 1000 w no notes 
+    s← 900, 1250 1000⊃⍨ '-n'(1∘∊⍷)⍵
+    o← ('HTML'  h) (s,⍨ ⊂'Size') (5 100,⍨ ⊂'Posn') ('Coord' 'ScaledPixel')
+    _← 'htmlObj' ⎕THIS.⎕WC 'HTMLRenderer',⍥⊆ o          ⍝ Run HTMLRenderer
     1 0⍴⍬
   } 
 

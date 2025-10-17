@@ -210,7 +210,7 @@
       opacity: 0.3;  
       list-style-type: '🔽';  
     }
-    .pageNarrowMsg { /* For the timed info message that we have */
+    .pAlertMsg { /* For updating user on page resizing, etc. */
       display: none;
       position: fixed;
       top: 50%; left: 40%; transform: translate(-50%, -50%);
@@ -251,7 +251,9 @@
   });
   // Two options for closing the Help window...
   function closeWindowNow() {
-    window.close();
+     showAlert("Closing Window...", 1000, 1);
+     setTimeout(window.close, 1000);
+
   }
   function closeWindowWithConfirm() {
     if (confirm("Are you sure?")) {
@@ -260,18 +262,18 @@
   }
 
   /* Informational Alert */
-  function showAlert(displayMe, howLong, type) {
-      var alertBox = document.getElementById("pageNarrowMsg");
-      var alertPfx = document.getElementById("pageNarrowPfx");
-      var alertTxt = document.getElementById("pageNarrowText");
+  function showAlert(displayMe, howLong, urgent) {
+      var alertBox = document.getElementById("pAlertMsg");
+      var alertPfx = document.getElementById("pAlertPfx");
+      var alertTxt = document.getElementById("pAlertText");
       alertBox.style.display = "block"; // Show the alert
-      if (type==1) {
+      if (urgent==1) {
          alertPfx.textContent = "⚠️ ";
       } else {
          alertPfx.textContent = "ℹ️ ";
       }
       alertTxt.textContent = displayMe;
-      // Set a timeout to hide the alert after <howLong> milliseconds (5 seconds)
+      // Set a timeout to hide the alert after <howLong> milliseconds  
       setTimeout(function() {
           alertBox.style.display = "none"; // Hide the alert
       }, howLong);
@@ -295,7 +297,7 @@
 <br>
 <div class="pTitle">
 <em><strong>∆F</strong></em> is a function for Dyalog APL that 
-interprets <em>f-strings</em>, a concise, yet powerful way to display multiline APL text, arbitrary APL expressions, and multi&shy;dimensional objects using extensions to 
+interprets <em>f‑strings</em>, a concise, yet powerful way to display multiline APL text, arbitrary APL expressions, and multi&shy;dimensional objects using extensions to 
 <em>dfns</em> and other familiar tools.
 </div>
 
@@ -328,13 +330,13 @@ Fields</a></li>
 <li><a href="#box-mode">Box Mode</a></li>
 <li><a href="#omega-shortcuts-explicit">Omega Shortcuts
 (Explicit)</a></li>
-<li><a href="#referencing-the-f-string-itself">Referencing the F-string
+<li><a href="#referencing-the-fstring-itself">Referencing the f‑string
 Itself</a></li>
 <li><a href="#the-format-shortcut">The Format Shortcut</a></li>
 <li><a href="#the-shortcut-for-numeric-commas">The Shortcut for Numeric
 Commas</a></li>
 <li><a href="#self-documenting-code-fields-sdcfs">Self-documenting
-<strong>Code fields</strong> (SDCFs)</a></li>
+<strong>Code</strong> fields (SDCFs)</a></li>
 <li><a href="#the-above-shortcut">The Above Shortcut</a></li>
 <li><a href="#omega-shortcuts-implicit">Omega Shortcuts
 (Implicit)</a></li>
@@ -347,8 +349,8 @@ Dates and Times (Part II)</a></li>
 <li><a href="#the-quote-shortcut">The Quote Shortcut</a></li>
 <li><a href="#the-wrap-shortcut-experimental">The Wrap Shortcut
 (Experimental)</a></li>
-<li><a href="#precomputed-f-strings-with-the-dfn-option">Precomputed
-F-strings with the <em><strong>DFN</strong></em> Option</a></li>
+<li><a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
+f‑strings with the <em><strong>DFN</strong></em> Option</a></li>
 </ul></li>
 <li><a href="#f-syntax-and-other-information">∆F Syntax and Other
 Information</a>
@@ -357,7 +359,7 @@ Information</a>
 <li><a href="#f-call-syntax-details">∆F Call Syntax Details</a></li>
 <li><a href="#f-options">∆F Options</a></li>
 <li><a href="#f-return-value">∆F Return Value</a></li>
-<li><a href="#f-f-string-building-blocks">∆F F-string Building
+<li><a href="#f-fstring-building-blocks">∆F f‑string Building
 Blocks</a></li>
 <li><a href="#code-field-shortcuts">Code Field Shortcuts</a></li>
 <li><a
@@ -374,8 +376,8 @@ Expressions: Details</a></li>
 <ul>
 <li><a href="#appendix-i-undocumented-options">Appendix I: Undocumented
 Options</a></li>
-<li><a href="#appendix-ii-python-f-strings">Appendix II: Python
-F-strings</a></li>
+<li><a href="#appendix-ii-python-fstrings">Appendix II: Python
+f‑strings</a></li>
 </ul></li>
 </ul>
 <hr />
@@ -393,14 +395,15 @@ class="header-section-number">2</span> Installing and Running
 class="header-section-number">2.1</span> Installing
 <strong>∆F</strong></h2>
 <ol type="1">
-<li>On Github, search for <code>"f-string-apl"</code>.
+<li>On <mark>Github</mark>, search for <code>"f‑string-apl"</code>.
 <ul>
 <li>During the test phase, go to
-<span style="color: darkblue"><em><strong>github.com/petermsiegel/f-string-apl</strong></em></span>.</li>
+<span style="color: darkblue"><em><strong>github.com/petermsiegel/f‑string-apl</strong></em></span>.</li>
 </ul></li>
 <li>Copy the files <strong>∆Fapl.dyalog</strong> and
-<strong>∆F_Help.html</strong> into your current working directory (the
-one shown via <code>]cd</code>).</li>
+<strong>∆F_Help.html</strong> into your current working directory
+<span class="margin-note"><code>]cd</code> will show you your current
+working directory.</span>.</li>
 <li>Then, from your Dyalog session (typically <code>#</code> or
 <code>⎕SE</code>), enter:<br>
 <code>]load ∆Fapl [-target=</code><strong><em>myns</em></strong><code>]</code>
@@ -430,7 +433,8 @@ class="header-section-number">2.2</span> Running <strong>∆F</strong>
 <strong>∆F</strong> and <strong>⍙Fapl</strong> are accessible from the
 current namespace.</li>
 <li>Call <code>∆F</code> with the desired argument(s) and options.
-<strong>∆F</strong> is <em>⎕IO</em>- and <em>⎕ML</em>-independent.</li>
+<strong>∆F</strong> is <code>⎕IO</code>- and
+<code>⎕ML</code>-independent.</li>
 </ol>
 <hr />
 </details>
@@ -440,13 +444,13 @@ class="header-section-number">3</span> Overview</h1>
 <details open><summary class="aside">&ensp;Show/Hide <em>Overview</em></summary>
 
 <p><span class="margin-note">Short for "<strong>formatted string
-literals</strong>, <em>f-strings</em> were introduced in Python in 2016.
-<strong>∆F</strong> <em>f-strings</em> and Python's are
+literals</strong>, <em>f‑strings</em> were introduced in Python in 2016.
+<strong>∆F</strong> <em>f‑strings</em> and Python's are
 <strong>not</strong> compatible.</span> Inspired by <a
-href="#python-ref">Python f-strings</a>, <strong>∆F</strong> includes a
+href="#python-ref">Python f‑strings</a>, <strong>∆F</strong> includes a
 variety of capabilities to make it easy to evaluate, format, annotate,
 and display related multi­dimensional information.</p>
-<p><strong>∆F</strong> <em>f-strings</em> include:</p>
+<p><strong>∆F</strong> <em>f‑strings</em> include:</p>
 <ul>
 <li>The abstraction of 2-dimensional character
 <em><strong>fields</strong></em>, generated one-by-one from the user's
@@ -459,24 +463,24 @@ overall character matrix result;</li>
 is displayed <em>in some browsers</em> as a hard-to-read
 glyph.</span></p>
 <ul>
-<li><p><strong>Text fields</strong>, supporting multiline Unicode text
+<li><p><strong>Text</strong> fields, supporting multiline Unicode text
 within each field, with the sequence <code>`◇</code>
 (<strong>backtick</strong> + <strong>statement separator</strong>)
 generating a newline, <small><code>⎕UCS 13</code></small>;</p></li>
-<li><p><strong>Code fields</strong>, <span class="margin-note">An
-<strong>∆F</strong> <em>f-string</em>— including any
+<li><p><strong>Code</strong> fields, <span class="margin-note">An
+<strong>∆F</strong> <em>f‑string</em>— including any
 <strong>Code</strong> fields— is limited to a single, possibly very
 long, character vector. </span>allowing users to evaluate and display
 APL arrays of any dimensionality, depth and type in the user
 environment, arrays passed as <strong>∆F</strong> arguments, as well as
 arbitrary APL expressions based on full multi-statement dfn logic.Each
-<strong>Code field</strong> must return a value, simple or otherwise,
+<strong>Code</strong> field must return a value, simple or otherwise,
 which will be catenated with other fields and returned from
 <strong>∆F</strong>;</p>
-<p><strong>Code fields</strong> also provide a number of concise,
+<p><strong>Code</strong> fields also provide a number of concise,
 convenient extensions, such as:</p>
 <ul>
-<li><p><strong>Quoted strings</strong> in <strong>Code fields</strong>,
+<li><p><strong>Quoted strings</strong> in <strong>Code</strong> fields,
 with several quote styles:</p>
 <ul>
 <li><strong>double-quotes</strong><br> <code>∆F '{"like this"}'</code>
@@ -521,8 +525,8 @@ string:<br><code>∆F'{32+`⍵1×9÷5}' (10 110 40)</code>,<br> where
 <li><em>and more</em>;</li>
 </ul></li>
 </ul></li>
-<li><p><strong>Space fields</strong>, providing a simple mechanism both
-for separating adjacent <strong>Text fields</strong> and inserting
+<li><p><strong>Space</strong> fields, providing a simple mechanism both
+for separating adjacent <strong>Text</strong> fields and inserting
 (rectangular) blocks of any number of spaces between any two fields,
 where needed;</p>
 <ul>
@@ -536,14 +540,14 @@ from values and expressions in the calling environment or arguments to
 <ul>
 <li>After all fields are generated, they are concatenated (after
 appropriate vertical alignment) to form a single character matrix:
-<em><strong>the return value from</strong></em> <strong>∆F</strong>.
-(See the examples below).</li>
+<em><strong>the return value from</strong></em>
+<strong>∆F</strong>.</li>
 </ul></li>
 </ul>
 <p><span class="margin-note">As a prototype, <strong>∆F</strong> is
 relatively slow, using an APL recursive scan to analyze the
-<strong>f-string</strong>. For a way to speed up frequently used
-<em>f-strings</em>, see the <a href="#f-options">DFN option</a>.</span>
+<strong>f‑string</strong>. For a way to speed up frequently used
+<em>f‑strings</em>, see the <a href="#f-options">DFN option</a>.</span>
 <strong>∆F</strong> is designed for ease of use, <em>ad hoc</em>
 debugging, fine-grained formatting and informal user interaction, built
 using Dyalog functions and operators.</p>
@@ -584,9 +588,12 @@ dfns</td>
 </tr>
 </tbody>
 </table>
+<div>
+Table 3a. <strong>The Three Field Types</strong>
+</div> 
+
 <br>
 </details>
-
 </details> 
 
 <h1 data-number="4" id="displaying-f-help-in-apl"><span
@@ -610,13 +617,13 @@ however you want.)</p>
 <pre><code>   ⎕IO ⎕ML← 0 1        </code></pre>
 <h2 data-number="5.1" id="code-fields"><span
 class="header-section-number">5.1</span> Code Fields</h2>
-<p>Here are <strong>Code fields</strong> with simple variables.
-<span class="margin-note">So far, this is like everybody's
-<em>f-strings</em>.</span></p>
+<p>Here are <strong>Code</strong> fields with simple variables.</p>
+<p><span class="margin-note">So far, this is like everybody else's
+<em>f‑strings</em>.</span></p>
 <pre><code>   name← &#39;Fred&#39; ◇ age← 43
    ∆F &#39;The patient&#39;&#39;s name is {name}. {name} is {age} years old.&#39;
 The patient&#39;s name is Fred. Fred is 43 years old.</code></pre>
-<p><strong>Code fields</strong> can contain arbitrary expressions. With
+<p><strong>Code</strong> fields can contain arbitrary expressions. With
 default options, <strong>∆F</strong> always returns a single character
 matrix. Here <strong>∆F</strong> returns a matrix with 2 rows and 32
 columns.</p>
@@ -627,7 +634,7 @@ array-oriented style. </span></p>
 The temperature is 35°C or  95°F.
                    85°C    185°F
 2 32                </code></pre>
-<p>Here, we assign the <em>f-string</em> to an APL variable, then call
+<p>Here, we assign the <em>f‑string</em> to an APL variable, then call
 <strong>∆F</strong> twice!</p>
 <p><span class="margin-note">Setting <code>⎕RL</code> ensures our random
 numbers aren't random!</span></p>
@@ -651,17 +658,17 @@ Ted  wins £589</code></pre>
 <h2 data-number="5.2" id="text-fields-and-space-fields"><span
 class="header-section-number">5.2</span> Text Fields and Space
 Fields</h2>
-<p>Below, we have some multi-line <strong>Text fields</strong> separated
-by non-null <strong>Space fields</strong>.</p>
+<p>Below, we have some multi-line <strong>Text</strong> fields separated
+by non-null <strong>Space</strong> fields.</p>
 <ul>
 <li>The backtick is our "escape" character.</li>
 <li>The sequence `◇ generates a new line in the current text field.</li>
-<li>Each <strong>Space field</strong> <code>{ }</code> in the next
+<li>Each <strong>Space</strong> field <code>{ }</code> in the next
 example contains one space within its braces. It produces a matrix a
 <em>single</em> space wide with as many rows as required to catenate it
 with adjacent fields.</li>
 </ul>
-<p>A <strong>Space field</strong> is useful here because each multi-line
+<p>A <strong>Space</strong> field is useful here because each multi-line
 field is built in its own rectangular space.</p>
 <pre><code>   ∆F &#39;This`◇is`◇an`◇example{ }Of`◇multi-line{ }Text`◇Fields&#39;
 This    Of         Text
@@ -670,8 +677,8 @@ an
 example</code></pre>
 <h2 data-number="5.3" id="null-space-fields"><span
 class="header-section-number">5.3</span> Null Space Fields</h2>
-<p>Two adjacent <strong>Text fields</strong> can be separated by a null
-<strong>Space field</strong> <code>{}</code>, for example when at least
+<p>Two adjacent <strong>Text</strong> fields can be separated by a null
+<strong>Space</strong> field <code>{}</code>, for example when at least
 one field contains multiline input that you want formatted separately
 from others, keeping each field in is own rectangular space:</p>
 <pre><code>⍝  Extra space here ↓ 
@@ -684,8 +691,9 @@ animal name, <em>Elephant</em>, so it wouldn't run into the next word,
 <em>Dumbo</em>.</p>
 <p><strong>But wait! There's an easier way!</strong></p>
 <p>Here, you surely want the lefthand field to be guaranteed to have a
-space after <em>each</em> word without fiddling; a <strong>Space
-field</strong> with at least one space will solve the problem:</p>
+space after <em>each</em> word without fiddling; a
+<strong>Space</strong> field with at least one space will solve the
+problem:</p>
 <pre class="apl"><code>⍝                          ↓↓↓
    ∆F &#39;Cat`◇Elephant`◇Mouse{ }Felix`◇Dumbo`◇Mickey&#39;
 Cat      Felix
@@ -693,10 +701,10 @@ Elephant Dumbo
 Mouse    Mickey</code></pre>
 <h2 data-number="5.4" id="code-fields-continued"><span
 class="header-section-number">5.4</span> Code Fields (Continued)</h2>
-<p><span class="margin-note">We could have used a <strong>Space
-field</strong> <code>{ }</code> here as well.</span> And this is the
-same example with <em>identical</em> output, but built using two
-<strong>Code fields</strong> separated by a <strong>Text field</strong>
+<p><span class="margin-note">We could have used a <strong>Space</strong>
+field <code>{ }</code> here as well.</span> And this is the same example
+with <em>identical</em> output, but built using two
+<strong>Code</strong> fields separated by a <strong>Text</strong> field
 with a single space.</p>
 <p><span class="margin-note">APL mix <code>↑</code> is used to convert
 the names (a vector of character vectors) to a character matrix.
@@ -706,16 +714,18 @@ Cat      Felix
 Elephant Dumbo
 Mouse    Mickey</code></pre>
 <p>Here's a similar example with double quote-delimited strings in
-<strong>Code fields</strong> with the newline sequence,
+<strong>Code</strong> fields with the newline sequence,
 <code>`◇</code>:</p>
 <pre><code>   ∆F &#39;{&quot;This`◇is`◇an`◇example&quot;} {&quot;Of`◇Multi-line&quot;} {&quot;Strings`◇in`◇Code`◇Fields&quot;}&#39;
 This    Of         Strings
 is      Multi-line in
 an                 Code
 example            Fields</code></pre>
-<p><span class="margin-note">Again, we use APL <em>mix</em>
-<code>↑</code> to generate multiline objects (matrices).</span> Here is
-some multiline data we'll add to our <strong>Code fields</strong>.</p>
+<p>Here is some multiline data we'll add to our <strong>Code</strong>
+fields.</p>
+<p><span class="margin-note"><br><br><br><br><br> Again, we use APL
+<em>mix</em> <code>↑</code> to generate multiline objects
+(matrices).</span></p>
 <pre><code>   fNm←  &#39;John&#39; &#39;Mary&#39; &#39;Ted&#39;
    lNm←  &#39;Smith&#39; &#39;Jones&#39; &#39;Templeton&#39;
    addr← &#39;24 Mulberry Ln&#39; &#39;22 Smith St&#39; &#39;12 High St&#39;
@@ -740,7 +750,7 @@ The temperature is 11°C or  52.3°F
 <h2 data-number="5.5" id="the-box-shortcut"><span
 class="header-section-number">5.5</span> The Box Shortcut</h2>
 <p>We now introduce the <strong>Box</strong> shortcut <code>`B</code>.
-Here we place boxes around key <strong>Code fields</strong> in this same
+Here we place boxes around key <strong>Code</strong> fields in this same
 example.</p>
 <pre><code>   C← 11.3 29.55 59.99
    ∆F &#39;`◇The temperature is {`B &quot;I2&quot; $ C}`◇°C or {`B &quot;F5.1&quot; $ 32+9×C÷5}`◇°F&#39;
@@ -753,16 +763,16 @@ The temperature is │11│°C or │ 52.3│°F
 class="header-section-number">5.6</span> Box Mode</h2>
 <p>But what if you want to place a box around every
 <strong>Code</strong>, <strong>Text</strong>,
-<strong><em>and</em></strong> <strong>Space field</strong>? We just use
+<strong><em>and</em></strong> <strong>Space</strong> field? We just use
 the <strong>Box</strong> mode option!</p>
 <p>While we can't place boxes around text (or space) fields using
 <code>`B</code>, we can place a box around
 <em><strong>each</strong></em> field <em>regardless</em> of type. by
-setting <strong>Box</strong> mode (<strong>∆F</strong>'s third option)
-to <code>1</code>, <em>e.g.</em> setting <strong>∆F</strong>'s left
-argument to <code>0 0 1</code>:</p>
+setting <strong>∆F</strong>'s <em>third</em> option,
+<strong>Box</strong> mode, <span class="margin-note"><strong>third
+option</strong>: <code>⍺[2+⎕IO]</code>.</span>to <code>1</code>:</p>
 <pre><code>   C← 11.3 29.55 59.99
-⍝      ↓¯¯¯ Box mode
+       ↓¯¯¯ Box mode
    0 0 1 ∆F &#39;`◇The temperature is {&quot;I2&quot; $ C}`◇°C or {&quot;F5.1&quot; $ 32+9×C÷5}`◇°F&#39;
 ┌───────────────────┬──┬──────┬─────┬──┐
 │                   │11│      │ 52.3│  │
@@ -770,10 +780,10 @@ argument to <code>0 0 1</code>:</p>
 │                   │60│      │140.0│  │
 └───────────────────┴──┴──────┴─────┴──┘</code></pre>
 <p>We said you could place a box around every field, but there's an
-exception. Null <strong>Space fields</strong> <code>{}</code>,
-<em>i.e.</em> 0-width <strong>Space fields</strong>, are discarded once
+exception. Null <strong>Space</strong> fields <code>{}</code>,
+<em>i.e.</em> 0-width <strong>Space</strong> fields, are discarded once
 they've done their work of separating adjacent fields (typically
-<strong>Text fields</strong>), so they won't be placed in boxes.</p>
+<strong>Text</strong> fields), so they won't be placed in boxes.</p>
 <p>Try this expression on your own:</p>
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;</code></pre>
 <details><summary class="aside">&ensp;Peek</summary>
@@ -785,19 +795,19 @@ they've done their work of separating adjacent fields (typically
 </code></pre>
 </details>
 
-<p>In contrast, <strong>Code fields</strong> that return null values
+<p>In contrast, <strong>Code</strong> fields that return null values
 (like <code>{""}</code> above) <em>will</em> be displayed!</p>
 <h2 data-number="5.7" id="omega-shortcuts-explicit"><span
 class="header-section-number">5.7</span> Omega Shortcuts (Explicit)</h2>
 <blockquote>
 <p>Referencing <strong>∆F</strong> arguments after the
-<em>f-string</em>: <strong>Omega</strong> shortcut expressions like
+<em>f‑string</em>: <strong>Omega</strong> shortcut expressions like
 <code>`⍵1</code>.</p>
 </blockquote>
 <p>The expression <span class="margin-note">And <code>(⍵⊃⍨ 1+⎕IO)</code>
 is, of course, equivalent to <code>((1+⎕IO)⊃⍵)</code>.</span>
 <code>`⍵1</code> is equivalent to <code>(⍵⊃⍨ 1+⎕IO)</code>, selecting
-the first argument after the <em>f-string</em>. Similarly,
+the first argument after the <em>f‑string</em>. Similarly,
 <code>`⍵99</code> would select <code>(⍵⊃⍨99+⎕IO)</code>.</p>
 <p>We will use <code>`⍵1</code> here, both with shortcuts and an
 externally defined function <code>C2F</code>, that converts Centigrade
@@ -810,18 +820,18 @@ integer).</p>
 The temperature is 11°C or 51.8°F
                    15      59.0
                    20      68.0</code></pre>
-<h2 data-number="5.8" id="referencing-the-f-string-itself"><span
-class="header-section-number">5.8</span> Referencing the F-string
+<h2 data-number="5.8" id="referencing-the-fstring-itself"><span
+class="header-section-number">5.8</span> Referencing the f‑string
 Itself</h2>
 <p><span class="margin-note"> <code>`⍵0</code> refers to the
-<em>f-string</em> independent of the the number of elements in the right
+<em>f‑string</em> independent of the the number of elements in the right
 argument to <strong>∆F</strong> (<em>effectively</em>,
 <code>⊆⍵</code>).</span> <span class="margin-note"> We explain the
 <em>down arrow</em> <code>↓</code> before the <em>closing brace</em>
 <code>}</code> under <a
 href="#self-documenting-code-fields-sdcfs">Self-documenting Code
 fields</a> below.</span> The expression <code>`⍵0</code> always refers
-to the <em>f-string</em> itself. Try this yourself.</p>
+to the <em>f‑string</em> itself. Try this yourself.</p>
 <pre><code>   ∆F &#39;Our string {`⍵0↓} is {≢`⍵0} characters&#39;</code></pre>
 <details><summary class="aside">&ensp;Peek</summary>
 
@@ -851,20 +861,20 @@ Commas</h2>
 <p><span class="margin-note">Typically, each number or numeric string
 presented to <code>`C</code> will represent an integer, but if a real
 number is presented, only the integer part will have commas added.
-</span> The [<strong>Numeric</strong>] <strong>Commas</strong> shortcut
+</span> The shortcut for <em>Numeric</em> <strong>Commas</strong>
 <code>`C</code> adds commas every 3 digits (from the right) to one or
 more numbers or numeric strings.It has an advantage over the
 <code>$</code> (Dyalog's <code>⎕FMT</code>) specifier: it doesn't
 require you to guesstimate field widths.</p>
 <p>Let's use the <code>`C</code> shortcut to add the commas to the
 temperatures!</p>
-<p><span class="margin-note">Cool! OK, not literally.</span></p>
+<p><span class="margin-note"><br>Cool! OK, not literally.</span></p>
 <pre><code>   sun_core← 15E6               ⍝ 15000000 is a bit hard to parse!
    ∆F &#39;The sun&#39;&#39;s core is at {`C sun_core}°C or {`C C2F sun_core}°F.&#39;
 The sun&#39;s core is at 15,000,000°C or 27,000,032°F.</code></pre>
 <p>And for a bit of a twist, let's display either degrees Centigrade or
 Fahrenheit under user control (<code>1</code> =&gt; F, <code>0</code>
-=&gt; C). Here, we establish the <em>f-string</em> <code>sunFC</code>
+=&gt; C). Here, we establish the <em>f‑string</em> <code>sunFC</code>
 first, then pass it to <strong>∆F</strong> with an additional right
 argument.</p>
 <pre><code>   sunFC← &#39;The sun&#39;&#39;s core is at {`C C2F⍣`⍵1⊢ sun_core}°{ `⍵1⊃ &quot;CF&quot;}.&#39;
@@ -872,22 +882,22 @@ argument.</p>
 The sun&#39;s core is at 27,000,032°F.
    ∆F sunFC 0
 The sun&#39;s core is at 15,000,000°C.</code></pre>
-<p>Now, let's move on to Self-documenting <strong>Code
-fields</strong>.</p>
+<p>Now, let's move on to Self-documenting <strong>Code</strong>
+fields.</p>
 <h2 data-number="5.11" id="self-documenting-code-fields-sdcfs"><span
-class="header-section-number">5.11</span> Self-documenting <strong>Code
-fields</strong> (SDCFs)</h2>
+class="header-section-number">5.11</span> Self-documenting
+<strong>Code</strong> fields (SDCFs)</h2>
 <p><span class="margin-note">Our SDCFs are based on Python's single type
-of self-documenting expressions in <em>f-strings</em>, but work somewhat
+of self-documenting expressions in <em>f‑strings</em>, but work somewhat
 differently. SDCFs are used <em><strong>only</strong></em> in
-<strong>Code fields</strong> (<em>duh</em>). </span></p>
+<strong>Code</strong> fields (<em>duh</em>). </span></p>
 <blockquote>
 <p>Self-documenting Code fields (SDCFs) are a useful debugging tool.</p>
 </blockquote>
 <p>What's an SDCF? An SDCF allows whatever source code is in a
-<strong>Code Field</strong> to be automatically displayed literally
+<strong>Code</strong> field to be automatically displayed literally
 along with the result of evaluating that code.</p>
-<p>The source code for a <strong>Code field</strong> can automatically
+<p>The source code for a <strong>Code</strong> field can automatically
 be shown in <strong>∆F</strong>'s output—</p>
 <ul>
 <li>to the <em>left</em> of the result of evaluating that code; or,</li>
@@ -905,7 +915,7 @@ href="#the-above-shortcut">the next section</a>.</span> for a
 <strong>vertical</strong> SDCF,</li>
 </ul>
 <p>as the <strong><em>last non-space</em></strong> character in the
-<strong>Code field</strong>, before the <em>final</em> right brace.</p>
+<strong>Code</strong> field, before the <em>final</em> right brace.</p>
 <p>Here's an example of a horizontal SDCF, <em>i.e.</em> using
 <code>→</code>:</p>
 <pre><code>   name←&#39;John Smith&#39; ◇ age← 34
@@ -947,7 +957,7 @@ assumed. </span> Here's a useful feature. Let's use the shortcut
 called <strong>Above</strong> and can <em>also</em> be expressed as
 <code>`A</code>.</p>
 <p><span class="margin-note">Remember, <code>`⍵1</code> designates the
-<strong><em>first</em></strong> argument after the <em>f-string</em>
+<strong><em>first</em></strong> argument after the <em>f‑string</em>
 itself, and <code>`⍵2</code> the <strong><em>second</em></strong>.
 </span></p>
 <pre><code>   ∆F &#39;{&quot;Employee&quot; % ⍪`⍵1} {&quot;Age&quot; % ⍪`⍵2}&#39; (&#39;John Smith&#39; &#39;Mary Jones&#39;)(29 23)
@@ -959,16 +969,16 @@ class="header-section-number">5.13</span> Omega Shortcuts
 (Implicit)</h2>
 <blockquote>
 <p>The <em>next</em> best thing: the use of <code>`⍵</code> in
-<strong>Code field</strong> expressions…</p>
+<strong>Code</strong> field expressions…</p>
 </blockquote>
 <p>We said we'd present the use of <strong>Omega</strong> shortcuts with
-implicit indices <code>`⍵</code> in <strong>Code fields</strong>. The
+implicit indices <code>`⍵</code> in <strong>Code</strong> fields. The
 expression <code>`⍵</code> selects the <em>next</em> element of the
 right argument <code>⍵</code> to <strong>∆F</strong>, defaulting to
 <code>`⍵1</code> when first encountered, <em>i.e.</em> if there are
 <strong><em>no</em></strong> <code>`⍵</code> elements (<em>explicit</em>
 or <em>implicit</em>) to the <strong><em>left</em></strong> in the
-entire <em>f-string</em>. If there is any such expression (<em>e.g.</em>
+entire <em>f‑string</em>. If there is any such expression (<em>e.g.</em>
 <code>`⍵5</code>), then <code>`⍵</code> points to the element after that
 one (<em>e.g.</em> <code>`⍵6</code>). If the item to the left is
 <code>`⍵</code>, then we simply increment the index by <code>1</code>
@@ -997,7 +1007,7 @@ right, starting with <code>`⍵1</code>, the first, <em>i.e.</em>
 class="header-section-number">5.14</span> Shortcuts With Individual
 Expressions</h2>
 <p>Shortcuts often make sense with individual expressions, not just
-entire <strong>Code fields</strong>. They can be manipulated like
+entire <strong>Code</strong> fields. They can be manipulated like
 ordinary APL functions; since they are just that -- ordinary APL
 functions -- under the covers. Here, we display one boxed value above
 the other.</p>
@@ -1048,7 +1058,7 @@ It is now 8:08 am.</code></pre>
 <p>Here's a fancier example<span class="margin-note">The power is in the
 capabilities of <code>1200⌶</code> and <code>⎕DT</code>.</span>. (We've
 added the <em>truncated</em> timestamp <code>2025 01 01</code> right
-into the <em>f-string</em>.)</p>
+into the <em>f‑string</em>.)</p>
 <pre><code>   ∆F &#39;{ &quot;D MMM YYYY &#39;&#39;was a&#39;&#39; Dddd.&quot;`T 2025 01 01}&#39;
 1 JAN 2025 was a Wednesday.</code></pre>
 <h2 data-number="5.16" id="a-shortcut-for-dates-and-times-part-ii"><span
@@ -1169,8 +1179,8 @@ simple array in a complex array.</p>
 </div>
 
 <h2 data-number="5.19"
-id="precomputed-f-strings-with-the-dfn-option"><span
-class="header-section-number">5.19</span> Precomputed F-strings with the
+id="precomputed-fstrings-with-the-dfn-option"><span
+class="header-section-number">5.19</span> Precomputed f‑strings with the
 <span style="font-size: 80%;"><em><strong>DFN</strong></em></span>
 Option</h2>
 <p><span class="margin-note"><strong>∆F</strong>'s default initial
@@ -1188,8 +1198,8 @@ called with the same arguments in the same calling environment in the
 same state. </span> <strong>∆F</strong> returns a <strong>dfn</strong>
 that, <em>when called later</em>, will return precisely the same
 character expression as for <em>(a)</em>. This is most useful when you
-are making repeated use of an <em>f-string</em>, since the overhead for
-analyzing the <em>f-string</em> contents <em>once</em> will be amortized
+are making repeated use of an <em>f‑string</em>, since the overhead for
+analyzing the <em>f‑string</em> contents <em>once</em> will be amortized
 over all the calls.</p>
 <p>Let's explore an example where getting the best performance for a
 heavily used <strong>∆F</strong> string is important.</p>
@@ -1216,7 +1226,7 @@ performance…</p>
 <p>Before we get to syntax and other information…</p>
 </blockquote>
 <p>Finally, we want to show you that <span class="margin-note">The
-<em>dfn</em> returned includes the original <em>f-string</em> text used
+<em>dfn</em> returned includes the original <em>f‑string</em> text used
 to generate it, available as <code>`⍵0</code>.</span> the <em>dfn</em>
 returned from <code>1…∆F…</code> can retrieve argument(s) passed on the
 right side of <strong>∆F</strong>, using the very same omega shortcut
@@ -1260,22 +1270,22 @@ Syntax<div style="width:290px"></div></th>
 <tbody>
 <tr>
 <td
-style="text-align: left;"><strong>∆F</strong> <em><strong>f-string</strong></em></td>
-<td style="text-align: left;">Display an <em>f-string</em>; use the
+style="text-align: left;"><strong>∆F</strong> <em><strong>f‑string</strong></em></td>
+<td style="text-align: left;">Display an <em>f‑string</em>; use the
 <em>default</em> options. The string may reference objects in the
 environment or in the string itself. Returns a character matrix.</td>
 </tr>
 <tr>
 <td
-style="text-align: left;"><strong>∆F</strong> <em><strong>f-string</strong></em> <em><strong>args</strong></em></td>
-<td style="text-align: left;">Display an <em>f-string</em>; use the
+style="text-align: left;"><strong>∆F</strong> <em><strong>f‑string</strong></em> <em><strong>args</strong></em></td>
+<td style="text-align: left;">Display an <em>f‑string</em>; use the
 <em>default</em> options. Arguments presented <em>may</em> be referred
-to in the f-string. Returns a character matrix.</td>
+to in the f‑string. Returns a character matrix.</td>
 </tr>
 <tr>
 <td
-style="text-align: left;"><em><strong>options</strong></em> <strong>∆F</strong> <em><strong>f-string</strong></em> [<em><strong>args</strong></em>]</td>
-<td style="text-align: left;">Display an <em>f-string</em>; control the
+style="text-align: left;"><em><strong>options</strong></em> <strong>∆F</strong> <em><strong>f‑string</strong></em> [<em><strong>args</strong></em>]</td>
+<td style="text-align: left;">Display an <em>f‑string</em>; control the
 result with <em>options</em> specified (see below). <br>If <em>DFN</em>
 (see below) is <code>0</code> or omitted, returns a character
 matrix.<br>If <em>DFN</em> is <code>1</code>, returns a dfn that will
@@ -1284,7 +1294,7 @@ display such a matrix (given an identical system state).</td>
 <tr>
 <td style="text-align: left;">'help' <strong>∆F</strong> ' '</td>
 <td style="text-align: left;">Display help info and examples for
-<strong>∆F</strong>. The <em>f-string</em> is not examined.</td>
+<strong>∆F</strong>. The <em>f‑string</em> is not examined.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>∆F</strong>⍨'help'</td>
@@ -1293,6 +1303,8 @@ display such a matrix (given an identical system state).</td>
 </tr>
 </tbody>
 </table>
+<div>Table 6a. <strong>∆F Call Syntax Overview</strong></div>
+
 <br>
 
 <h2 data-number="6.2" id="f-call-syntax-details"><span
@@ -1307,14 +1319,14 @@ style="text-align: left;">Element<div style="width:290px"></div></th>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong><em>f-string</em></strong></td>
+<td style="text-align: left;"><strong><em>f‑string</em></strong></td>
 <td style="text-align: left;">a format string, a single character
 vector.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong><em>args</em></strong></td>
-<td style="text-align: left;">elements of ⍵ after the <em>f-string</em>,
-each of which can be accessed in the <em>f-string</em> via an
+<td style="text-align: left;">elements of ⍵ after the <em>f‑string</em>,
+each of which can be accessed in the <em>f‑string</em> via an
 <strong>Omega</strong> shortcut (<code>`⍵𝑑𝑑</code>, <em>etc.</em>) or an
 ordinary <em>dfn</em> <code>⍵</code> expression.</td>
 </tr>
@@ -1345,10 +1357,10 @@ style="text-align: left;"> <em><strong>options[1]</strong></em>:<br>  
 <em><strong>DBG</strong></em> <em>(debug) mode</em></td>
 <td style="text-align: left;">If <code>1</code>: Renders newline
 characters from <code>`◇</code> as the visible <code>␤</code> character.
-Displays the source code that the <em>f-string</em>
+Displays the source code that the <em>f‑string</em>
 <strong><em>actually</em></strong> generates; if
 <strong><em>DFN</em></strong> is also <code>1</code>, this will include
-the embedded <em>f-string</em> source (accessed as <code>`⍵0</code>).
+the embedded <em>f‑string</em> source (accessed as <code>`⍵0</code>).
 After the source code is displayed, it will be executed or converted to
 a <em>dfn</em> and returned (see the <em><strong>DFN</strong></em>
 option above).<br>If <code>0</code> (default): Newline characters from
@@ -1361,9 +1373,9 @@ not displayed.</td>
 style="text-align: left;"> <em><strong>options[2]</strong></em>:<br>  
 <em><strong>BOX</strong></em> <em>mode</em></td>
 <td style="text-align: left;">If <code>1</code>: Each field (except a
-null <strong>Text field</strong>) is boxed separately.<br>If
+null <strong>Text</strong> field) is boxed separately.<br>If
 <code>0</code> (default): Nothing is boxed automatically. Any
-<strong>Code field</strong> expression may be explicitly boxed using the
+<strong>Code</strong> field expression may be explicitly boxed using the
 <strong>Box</strong> shortcut,
 <code>`B</code>.<br><small><strong>Note</strong>:
 <em><strong>BOX</strong></em> mode can be used both with
@@ -1401,6 +1413,8 @@ returned.</small></td>
 </tr>
 </tbody>
 </table>
+<div>Table 6b. <strong>∆F Call Syntax Details</strong></div>
+
 <br>
 
 <h2 data-number="6.3" id="f-options"><span
@@ -1428,23 +1442,23 @@ returning <code>1 0⍴0</code>.</li>
 always returns a standard Dyalog dfn on success.</li>
 <li>On failure of any sort, an informative APL error is signaled.</li>
 </ul>
-<h2 data-number="6.5" id="f-f-string-building-blocks"><span
-class="header-section-number">6.5</span> ∆F F-string Building
+<h2 data-number="6.5" id="f-fstring-building-blocks"><span
+class="header-section-number">6.5</span> ∆F f‑string Building
 Blocks</h2>
 <p>The first element in the right arg to ∆F is a character vector, an
-<em>f-string</em>, which contains one or more <strong>Text
-fields</strong>, <strong>Code fields</strong>, and <strong>Space
-fields</strong> in any combination.</p>
+<em>f‑string</em>, which contains one or more <strong>Text</strong>
+fields, <strong>Code</strong> fields, and <strong>Space</strong> fields
+in any combination.</p>
 <ul>
 <li><strong>Text</strong> fields consist of simple text, which may
 include any Unicode characters desired, including newlines. Newlines
 (actually, carriage returns, <code>⎕UCS 13</code>) are normally entered
 via the sequence <code>`◇</code>. Additionally, literal curly braces can
 be added via <code>`{</code> and <code>`}</code>, so they are distinct
-from the simple curly braces used to begin and end <strong>Code
-fields</strong> and <strong>Space Fields</strong>. Finally, a single
-backtick escape can be entered into a <strong>Text field</strong> by
-entering two such characters together <code>``</code>.
+from the simple curly braces used to begin and end <strong>Code</strong>
+fields and <strong>Space</strong> fields. Finally, a single backtick
+escape can be entered into a <strong>Text</strong> field by entering two
+such characters together <code>``</code>.
 <ul>
 <li>If <strong>∆F</strong> is called with an empty string,
 <code>∆F ''</code>, it is interpreted as containing a single 0-length
@@ -1581,6 +1595,8 @@ href="#self-documenting-code-fields-sdcfs">SDCFs</a> in
 </tr>
 </tbody>
 </table>
+<div>Table 6c. <strong>Code Field Shortcuts</strong></div>
+
 <br>
 
 <h2 data-number="6.7"
@@ -1634,6 +1650,8 @@ in <strong>Code</strong> fields. </span></p>
 </tr>
 </tbody>
 </table>
+<div>Table 6d. <strong>Escape Sequences</strong></div>
+
 <p>Other instances of the backtick character in <strong>Text</strong>
 fields or <strong>Quoted strings</strong> in <strong>Code</strong>
 fields will be treated literally, <em>i.e.</em> sometimes a backtick is
@@ -1688,6 +1706,8 @@ style="text-align: left;"><code>∆F '{''or ''''this'''' one''}'</code></td>
 </tr>
 </tbody>
 </table>
+<div>Table 6e. <strong>Closing Quotes</strong></div>
+
 <p>Note that the opening quote <code>«</code> is treated as an ordinary
 character within the string. The clumsiness of the standard single quote
 <code>'</code> examples is due to the fact that the single quote is the
@@ -1706,7 +1726,7 @@ counter</em>" (<strong>OIC</strong>) which we'll represent as
 which is initially set to zero, <code>Ω←0</code>. (<strong>Ω</strong> is
 just used for explication; don't actually use this symbol)</li>
 <li>All <strong>Omega</strong> shortcut expressions in the
-<em>f-string</em> are evaluated left to right and are
+<em>f‑string</em> are evaluated left to right and are
 ⎕IO-independent.</li>
 <li><strong>`⍵𝑑𝑑</strong> or <strong>⍹𝑑𝑑</strong> sets the <em>OIC</em>
 to 𝑑𝑑, <code>Ω←𝑑𝑑</code>, and returns the expression
@@ -1716,7 +1736,7 @@ to 𝑑𝑑, <code>Ω←𝑑𝑑</code>, and returns the expression
 no digits appended) increments the <em>OIC</em>, <code>Ω+←1</code>,
 <em>before</em> using it as the index in the expression
 <code>(⍵⊃⍨Ω+⎕IO)</code>.</li>
-<li>The <em>f-string</em> itself (the 0-th element of
+<li>The <em>f‑string</em> itself (the 0-th element of
 <strong>⍵</strong>) is always accessed as <code>`⍵0</code> or
 <code>⍹0</code>. The omega with <em>implicit index</em> always
 increments its index <em>before</em> use, <em>i.e.</em> starting by
@@ -1757,7 +1777,7 @@ class="header-section-number">7</span> Appendices</h1>
 class="header-section-number">7.1</span> Appendix I: Undocumented
 Options</h2>
 <ol type="1">
-<li>If <code>options[0]</code> is <code>¯1</code>,
+<li><p>If <code>options[0]</code> is <code>¯1</code>,
 <span class="margin-note">In simple terms, this option returns the
 character representation of the <em>dfn</em> returned via the
 <em><strong>DFN</strong></em> option. </span>then <strong>∆F</strong>
@@ -1767,22 +1787,29 @@ returns a character vector that contains the source code for the
 <em><strong>DBG</strong></em> is also set, newlines from <code>`◇</code>
 are shown as visible <code>␤</code>. However, since this option returns
 the code string <em>verbatim</em>, the <em><strong>DBG</strong></em>
-option won't <em>display</em> the code string redundantly.</li>
+option won't <em>display</em> the code string redundantly.</p></li>
+<li><p><code>∆F 'help'</code> has a secret variant:
+<span class="margin-note"><em>Or</em>,
+<code>∆F 'help-n'</code>.</span><code>∆F 'help-narrow'</code>. With this
+variant, the help session will start up with a narrower screen
+<em>without</em> side notes. If the user widens the screen, the side
+notes will appear, as in the default case:
+<span class="margin-note"><em>Or</em>,
+<code>∆F 'help-wide'</code>.</span><code>∆F 'help'</code>.</p></li>
 </ol>
-<h2 data-number="7.2" id="appendix-ii-python-f-strings"><span
+<h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
-F-strings</h2>
-<!-- https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals" -->
+f‑strings</h2>
+<div id="python-ref" style="text-align: left;">
 
-<div id="python-ref">
-<div style="font-size:100%;text-align:center;">  
-cissandbox.bentley.edu/sandbox/wp-content/uploads/<br>
-2022-02-10-Documentation-on-f-strings-Updated.pdf
-</div><br>
+<ul>
+<li>See <span class="margin-note"><strong>Link</strong>: Return to
+Overview.<br />
+</span><a
+href="#overview"><span>https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.</li>
+</ul>
+</div>
 
-<iframe src="https://cissandbox.bentley.edu/sandbox/wp-content/uploads/2022-02-10-Documentation-on-f-strings-Updated.pdf"
- width="100%"  name="python-ref" height="750">
-</iframe>
 </div>
 
 <hr />
@@ -1811,17 +1838,17 @@ cissandbox.bentley.edu/sandbox/wp-content/uploads/<br>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251015T154305]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251016T202136]
 </span>
 <br> 
 </div> <!-- <div class="right-margin-bar"> -->
 
 <!-- a hidden modal expression -->
 
-<div id="pageNarrowMsg" class="pageNarrowMsg">
-  <span id="pageNarrowPfx"  style="font-size: 50px;">
+<div id="pAlertMsg" class="pAlertMsg">
+  <span id="pAlertPfx"  style="font-size: 50px;">
   </span> 
-  <span id="pageNarrowText" 
+  <span id="pAlertText" 
         style="font-weight: bold; font-size: 20px;font-family: Tahoma,  sans-serif;">
   </span>
 </div>
