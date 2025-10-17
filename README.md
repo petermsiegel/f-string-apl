@@ -1058,7 +1058,7 @@ case: ^[43]`∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T140632]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T141030]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
@@ -1168,8 +1168,7 @@ available as `` `⍵0 ``.
 below on displaying quote characters like `"` in a string.
 
 
-[^39]: 
-**Both**: *i.e.* **Text** fields and *Quoted Strings* in **Code** fields.
+[^39]: **Both**: *i.e.* **Text** fields and *Quoted Strings* in **Code** fields.
 
 
 [^40]: Compare these examples:<br>&emsp;**Invalid:**&ensp;<span class="red">∆F&ensp;'{"abc\`"def"}'</span><br>&emsp;**Valid:**&ensp;`` ∆F '{"abc""def"}' ``
