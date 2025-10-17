@@ -54,6 +54,7 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 - [Appendices](#appendices)
   - [Appendix I: Undocumented Options](#appendix-i-undocumented-options)
   - [Appendix II: Python f‑strings](#appendix-ii-python-fstrings)
+    - [Footnotes](#footnotes)
 
 ---
 
@@ -1073,7 +1074,8 @@ Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T135612]
 </div>
 
 <!-- (C) 2025 Sam the Cat Foundation -->
-
+### Footnotes 
+<div>
 [^1]: `]cd` will show you your current working directory.
 [^2]: Short for "**formatted string literals**, *f‑strings* were introduced in Python in 2016. **∆F** *f‑strings* and Python's are **not** compatible.
 [^3]: In this document, we use the symbol `◇` (`⎕UCS 9671`) to represent the APL *statement separator* (`⎕UCS 8900`), since the latter is displayed _in some browsers_ as a hard-to-read glyph.
@@ -1142,3 +1144,4 @@ below on displaying quote characters like `"` in a string.
 [^43]: *Or*, `∆F 'help-wide'`.
 [^44]: **Link**: Return to Overview.  
 
+</div>
