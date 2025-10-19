@@ -11,7 +11,7 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 # Table of Contents  
 
 <details>     <!-- option: open -->
-<summary class="summary">&ensp;Show/Hide <em>Table of Contents</em></summary>
+<pSummary>&ensp;Show/Hide <em>Table of Contents</em></pSummary>
 <span style="font-size: 90%;">
 
 - [Table of Contents](#table-of-contents)
@@ -63,8 +63,8 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 # Installing and Running **∆F** in Dyalog APL
 
 <details>            <!-- option: open -->
-<summary class="summary">&ensp;Show/Hide <em>Installing and Running <bold>∆F</bold></em>
-</summary>
+<pSummary>&ensp;Show/Hide <em>Installing and Running <bold>∆F</bold></em>
+</pSummary>
 
 ## Installing **∆F**
 
@@ -92,7 +92,7 @@ Now, **∆F** is available in the active namespace (or **_myns_**), along with *
 
 # Overview  
 
-<details open><summary class="summary">&ensp;Show/Hide <em>Overview</em></summary>
+<details open><pSummary>&ensp;Show/Hide <em>Overview</em></pSummary>
 
 [^2]  
 Inspired by [Python f‑strings](#python-ref), **∆F** includes a variety of capabilities to make it easy to evaluate, format, annotate, and display related multi&shy;dimensional information. 
@@ -145,7 +145,7 @@ Inspired by [Python f‑strings](#python-ref), **∆F** includes a variety of ca
 **∆F** is designed for ease of use, _ad hoc_ debugging, fine-grained formatting and informal user interaction, built using Dyalog functions and operators.
 
 <details>     <!-- option: open -->
-<summary class="summary">&ensp;Recap: <em>The Three Field Types</em></summary><br>  
+<pSummary>&ensp;Recap: <em>The Three Field Types</em></pSummary><br>  
 
 
    | Field Type | Syntax | Examples | Displaying |
@@ -169,7 +169,7 @@ Table 3a. <strong>The Three Field Types</strong>
 # ∆F Examples: A Primer
 
 <details>            <!-- option: open -->
-<summary class="summary">&ensp;Show/Hide <em>Examples: A Primer</em></summary>
+<pSummary>&ensp;Show/Hide <em>Examples: A Primer</em></pSummary>
 
 
 Before providing information on **∆F** syntax and other details, *let's start with some examples*…
@@ -222,7 +222,7 @@ Customer Jack wins £230!
 
 Isn't Jack lucky, winning twice in a row!
 
-<details><summary class="summary">&ensp;View a fancier example...</summary>
+<details><pSummary>&ensp;View a fancier example...</pSummary>
 
 ``` 
  ⍝ Be sure everyone wins something.
@@ -377,7 +377,7 @@ Try this expression on your own:
    0 0 1 ∆F 'abc{}def{}{}ghi{""}jkl{ }mno'
 ```
 
-<details><summary class="summary">&ensp;Peek</summary>
+<details><pSummary>&ensp;Peek</pSummary>
 
 
 ```
@@ -424,7 +424,7 @@ The expression `` `⍵0 `` always refers to the *f‑string* itself. Try this yo
    ∆F 'Our string {`⍵0↓} is {≢`⍵0} characters'
 ```
 
-<details><summary class="summary">&ensp;Peek</summary>
+<details><pSummary>&ensp;Peek</pSummary>
 
 ```
    ∆F 'Our string {`⍵0↓} is {≢`⍵0} characters'
@@ -606,7 +606,7 @@ Here, we display one boxed value above the other.
 └───┴───┴───┘
 ```
 
-<details><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
+<details><pSummary>&ensp;Peek: Shortcuts are just Functions</pSummary>
 
 While not for the faint of heart, the expression above can be recast as this somewhat hard to read alternative: 
 
@@ -701,7 +701,7 @@ Let's display `iv` without using the **Quote** shortcut.
 
 Are you **_sure_** which elements of `iv` are numeric and which character scalars?
 
-<details><summary class="summary">&ensp;Peek to see the example with `iv` defined.</summary>
+<details><pSummary>&ensp;Peek to see the example with `iv` defined.</pSummary>
 
 ```
    iv← 1 2 '3' 4 '5'
@@ -718,7 +718,7 @@ Now, we'll show the variable `iv` using the  **Quote** `` `Q `` shortcut.
    ∆F '{`Q iv}'
 ```
 
-<details><summary class="summary">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
+<details><pSummary>&ensp;Take a peek at the <bold>∆F</bold> output.</pSummary>
 
 ```
 1 2 '3' 4 '5'
@@ -729,13 +729,13 @@ Now, we'll show the variable `iv` using the  **Quote** `` `Q `` shortcut.
 Voilà, quotes appear around the character digits, but not the actual APL numbers!
 
 
-## The Wrap Shortcut <span class="red">(Experimental)</span>
+## The Wrap Shortcut <pRed>(Experimental)</pRed>
 
 <div class="test-feature">
 
 > Wrapping results in left and right decorators...
 
-The shortcut **Wrap** `` `W `` is <span class="red">**_experimental_**</span>. `` `W `` is used 
+The shortcut **Wrap** `` `W `` is <pRed>**_experimental_**</pRed>. `` `W `` is used 
 when you want to place a **_decorator_** string immediately to the left or right of **_each_** row of simple objects in the right argument, `⍵`. It differs from the **Quote** shortcut `` `Q ``, which puts quotes **_only_** around the character arrays in `⍵`. 
 [^34] 
 
@@ -849,7 +849,7 @@ Below, we summarize key information you've already gleaned from the examples.
 # ∆F Syntax and Other Information
 
 <details>        <!-- option: open -->       
-<summary class="summary">&ensp;Show/Hide <em>Syntax Info</em></summary>
+<pSummary>&ensp;Show/Hide <em>Syntax Info</em></pSummary>
 
 ## ∆F Call Syntax Overview
 
@@ -870,7 +870,7 @@ Below, we summarize key information you've already gleaned from the examples.
 | :----- | :---------- |
 | **_f‑string_** | a format string, a single character vector. |
 | **_args_** | elements of ⍵ after the *f‑string*, each of which can be accessed in the *f‑string* via an **Omega** shortcut (`` `⍵𝑑𝑑 ``, *etc.*) or an ordinary *dfn* `⍵` expression. |
-| ***options***:&nbsp;*mode* | `options←` <span class="red">[</span> <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">]</span>     <span class="red">]</span>     <span class="red">]</span>     <span class="red">]</span>     &nbsp;<span class="red">**\|**</span> `'help'` <span class="red">]</span> |
+| ***options***:&nbsp;*mode* | `options←` <pRed>[</pRed> <pRed>[</pRed> `0` <pRed>[</pRed> `0` <pRed>[</pRed> `0` <pRed>[</pRed> `0` <pRed>]</pRed>     <pRed>]</pRed>     <pRed>]</pRed>     <pRed>]</pRed>     &nbsp;<pRed>**\|**</pRed> `'help'` <pRed>]</pRed> |
 | &emsp;***options[0]***:<br>&emsp;&emsp;  ***DFN*** *output mode* | If `1`: **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If `0` (default): **∆F** returns a char. matrix. |
 | &emsp;***options[1]***:<br>&emsp;&emsp; ***DBG*** *(debug) mode* | If `1`: Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if **_DFN_** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***DFN*** option above).<br>If `0` (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***DFN*** source code is not displayed.      |
 | &emsp;***options[2]***:<br>&emsp;&emsp; ***BOX*** *mode*         | If `1`: Each field (except a null **Text** field) is boxed separately.<br>If `0` (default): Nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><small>**Note**: ***BOX*** mode can be used both with ***DFN*** and default output mode.</small> |
@@ -923,7 +923,7 @@ which contains one or more **Text** fields, **Code** fields, and **Space** field
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL documentation). |
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
-| **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. _See details below._ |
+| **\`W** | Wrap <pRed><small>**EXPERIMENTAL!**</small></pRed>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. _See details below._ |
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut (<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. _See details below._ |
 | **\`⍵**, **⍹** | Omega Shortcut (<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. _See details below._ |
 | **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small>| `→`/`↓` (synonym: `%`) signal that the source code for the **Code** field appears before/above its value. Surrounding blanks are significant. *See [SDCFs](#self-documenting-code-fields-sdcfs) in __Examples__ for details.* |
@@ -1008,7 +1008,7 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 
 # Appendices
  
-<details><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
+<details><pSummary>&ensp;Show/Hide <em>Appendices</em></pSummary>
 
 ## Appendix I: Undocumented Options
 
@@ -1058,7 +1058,7 @@ case: [^43] `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T195335]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [___TIMESTAMP___]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
@@ -1118,7 +1118,7 @@ available as `` `⍵0 ``.
 [^38]: See [Quoted Strings in Code Fields](#quoted-strings-in-code-fields)
 below on displaying quote characters like `"` in a string.
 [^39]: **Both**: *i.e.* **Text** fields and *Quoted Strings* in **Code** fields.
-[^40]: Compare these examples:<br>&emsp;**Invalid:**&ensp;<span class="red">∆F&ensp;'{"abc\`"def"}'</span><br>&emsp;**Valid:**&ensp;`` ∆F '{"abc""def"}' ``
+[^40]: Compare these examples:<br>&emsp;**Invalid:**&ensp;<pRed>∆F&ensp;'{"abc\`"def"}'</pRed><br>&emsp;**Valid:**&ensp;`` ∆F '{"abc""def"}' ``
 [^41]: In simple terms, this option returns the character representation of the
 *dfn* returned via the ***DFN*** option.
 [^42]: *Or*, `∆F 'help-n'`.
