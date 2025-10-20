@@ -107,11 +107,12 @@
       }
 
     /* For links you don't want followed in HELP-- a msg appears instead.
-       See <pSeeLink>...</pSeeLink> */
-      .seeLinkPre { /* Preamble */
+       See <pLinkNote>...</pLinkNote> 
+    */
+      .linkNotePre { /* Preamble */
           font-size: 22px;
       }
-      .seeLink { /* Actual link */
+      .linkNote { /* Actual link */
           font-size: 20px;
       }
 
@@ -120,7 +121,7 @@
 
   /* The main body style */
    body {
-      background-color:#fffef4;
+      background-color:#fffef4;  /* Off-white */
       font-family: Georgia, serif;
       font-size:   15pt;
       text-align: justify;
@@ -243,7 +244,7 @@
     }
 
   /* Fixed size white on green button in navig footer */
-    .happybutton { 
+    .happy-button { 
       width: 175px;
       font-size: 90%;
       color: white;
@@ -251,7 +252,7 @@
     }
 
   /* Fixed size white on red button in navig footer */
-    .warnbutton { 
+    .warn-button { 
       width: 175px;
       font-size: 90%;
       color: white; 
@@ -278,8 +279,8 @@
       const toggleButton = document.getElementById('toggleDetails');
       
       toggleButton.addEventListener('click', () => {
-        // Select all <details> elements that do NOT have the "pmsnote" class
-        const detailsToToggle = document.querySelectorAll('details:not(.pmsnote)');
+        // Select all <details> elements that do NOT have the pPeek id (id="pPeek").
+        const detailsToToggle = document.querySelectorAll('details:not(#pPeek)');
         
         // Check if the button should expand or collapse
         // This example toggles based on the current text of the button
@@ -728,7 +729,7 @@ Customer Jack wins £80!
    ∆F f
 Customer Jack wins £230!</code></pre>
 <p>Isn't Jack lucky, winning twice in a row!</p>
-<details><summary class="summary">&ensp;View a fancier example...</summary>
+<details id="pPeek"><summary class="summary">&ensp;View a fancier example...</summary>
 
 <pre><code> ⍝ Be sure everyone wins something.
    ∆F &#39;{ ↑names }{ ⍪3⍴⊂&quot;wins&quot; }{ &quot;£&quot;,⍕⍪?prize⍴⍨ ≢names }&#39;
@@ -869,7 +870,7 @@ they've done their work of separating adjacent fields (typically
 <strong>Text</strong> fields), so they won't be placed in boxes.</p>
 <p>Try this expression on your own:</p>
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;</code></pre>
-<details><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
 
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;
 ┌───┬───┬───┬┬───┬─┬───┐ 
@@ -916,7 +917,7 @@ href="#self-documenting-code-fields-sdcfs">Self-documenting Code
 fields</a> below.</span> The expression <code>`⍵0</code> always refers
 to the <em>f‑string</em> itself. Try this yourself.</p>
 <pre><code>   ∆F &#39;Our string {`⍵0↓} is {≢`⍵0} characters&#39;</code></pre>
-<details><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
 
 <pre><code>   ∆F &#39;Our string {`⍵0↓} is {≢`⍵0} characters&#39;
 Our string                  `⍵0↓                  is 38 characters
@@ -1108,7 +1109,7 @@ the other.</p>
 ├───┼───┼───┤
 │2 0│2 1│2 2│
 └───┴───┴───┘</code></pre>
-<details><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
 
 <p>While not for the faint of heart, the expression above can be recast
 as this somewhat hard to read alternative:</p>
@@ -1196,7 +1197,7 @@ mix of character and numeric scalars only). We'll call the object
 1 2 3 4 5</code></pre>
 <p>Are you <strong><em>sure</em></strong> which elements of
 <code>iv</code> are numeric and which character scalars?</p>
-<details><summary class="summary">&ensp;Peek to see the example with `iv` defined.</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek to see the example with `iv` defined.</summary>
 
 <pre><code>   iv← 1 2 &#39;3&#39; 4 &#39;5&#39;
    ∆F &#39;{iv}&#39;
@@ -1207,7 +1208,7 @@ mix of character and numeric scalars only). We'll call the object
 <strong>Quote</strong> <code>`Q</code> shortcut.</p>
 <pre><code>   iv← 1 2 &#39;3&#39; 4 &#39;5&#39;
    ∆F &#39;{`Q iv}&#39;</code></pre>
-<details><summary class="summary">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
+<details id="pPeek"><summary class="summary">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
 
 <pre><code>1 2 &#39;3&#39; 4 &#39;5&#39;</code></pre>
 </details>
@@ -1900,8 +1901,8 @@ string formatting approach in modern Python code. <em>[Claude (AI).
 Response to Python f-strings query [edited]. Claude.ai. Anthropic,
 October 19, 2025.]</em></p>
 <p><span class="margin-note"><a id="displayText" href="#overview">Return
-to Overview.</a></span> <span class="seeLinkPre">See
-<a id="displayText" href="javascript:showAlert(  &quot;Use regular browser to explore link.&quot;, 2000, 0);"><span class="seeLink">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.</p>
+to Overview.</a></span> <span class="linkNotePre">See
+<a id="displayText" href="javascript:showAlert(  &quot;Use regular browser to explore link.&quot;, 2000, 0);"><span class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.</p>
 </div>
 </div>
 
@@ -1911,7 +1912,7 @@ to Overview.</a></span> <span class="seeLinkPre">See
 -->
 
 <div class="doc-footer">
-<button id="toggleDetails" class="button happybutton">Expand All Sections</button>&emsp;
+<button id="toggleDetails" class="button happy-button">Expand All Sections</button>&emsp;
 <a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;
 <a href="#table-of-contents">Contents</a> 
@@ -1924,13 +1925,13 @@ to Overview.</a></span> <span class="seeLinkPre">See
 &nbsp;&nbsp;&nbsp; 
 <a href="#copyright">Copyright</a>
 &nbsp;&nbsp;&nbsp; 
-<button onclick="closeWindowNow()" class="button warnbutton">Close Window</span></button>
+<button onclick="closeWindowNow()" class="button warn-button">Close Window</span></button>
 </div>
 
 <hr />
 <br>
-<span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251019T223041]
+<span id="copyright" style="font-family:cursive;">
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251020T145659]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
