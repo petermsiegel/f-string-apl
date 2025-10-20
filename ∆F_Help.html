@@ -40,9 +40,9 @@
       text-align: center; /* justify; */
       line-height: 1.2;
       color: white;
-      background-color: #046714;
+      background-color: #062f7c;
       border: 1px solid white;
-      box-shadow: 0 0 0 2px #046714;
+      box-shadow: 0 0 0 2px #062f7c;
       border-width: 3px;
       padding: 15px;
       box-sizing: border-box; /* Includes padding and border within the defined width/height */
@@ -104,6 +104,15 @@
         .right-margin-bar{
           overflow: hidden;  
         }
+      }
+
+    /* For links you don't want followed in HELP-- a msg appears instead.
+       See <pSeeLink>...</pSeeLink> */
+      .seeLinkPre { /* Preamble */
+          font-size: 22px;
+      }
+      .seeLink { /* Actual link */
+          font-size: 20px;
       }
 
   /* ======================================================== */
@@ -249,12 +258,14 @@
       background-color: red;
     }
 
+
   /* For updating user on page resizing, etc. 
      See JS code
   */
     .pAlertMsg { 
       display: none;
       position: fixed;
+      text-align: center;
       top: 50%; left: 40%; transform: translate(-50%, -50%);
       color: black; background-color: #E9DCC9;
       padding: 5px; border: 10px double black;
@@ -299,6 +310,14 @@
       showAlert("Closing Window...", 1000, 1);
       setTimeout(window.close, 1000);
     }
+    function confirmAndCloseWindow() {
+      const userConfirmed = confirm("Are you sure you want to close this window?");
+      if (userConfirmed) {
+        closeWindowNow();
+      } else {
+        showAlert("Alrighty then!", 1000, 0);
+      }
+  }
 
   // Informational Alert 
   // showAlert( text, howLong in ms to show, urgent)
@@ -330,6 +349,20 @@
             showAlert("Showing Margin Notes...", 2000, 0);
         }
     });
+
+
+    // Listener for copy: Cmd-C, Meta-C; quit: Cmd-Q, Meta-Q
+    document.addEventListener('keydown', (event) => {
+    // Check for a specific key combination, e.g., Ctrl + C (event.ctrlKey || 
+      if (event.ctrlKey || event.metaKey) {
+        if (event.key === 'c'){ // We can't seem to copy onto clipboard directly
+          showAlert("To copy, right-click and select the copy option.", 1500, 1);
+        } else if (event.key === 'q') {
+          closeWindowNow();  
+        }
+      }
+    });
+
 
   // (C) 2025 Sam the Cat Foundation 
   </script>
@@ -442,15 +475,15 @@ class="header-section-number">2</span> Installing and Running
 class="header-section-number">2.1</span> Installing
 <strong>∆F</strong></h2>
 <ol type="1">
-<li>On <mark>Github</mark>, search for <code>"f‑string-apl"</code>.
+<li>On Github, search for <mark>"f‑string-apl"</mark>.
 <ul>
 <li>During the test phase, go to
-<span style="color: darkblue"><em><strong>github.com/petermsiegel/f‑string-apl</strong></em></span>.</li>
+<mark>github.com/petermsiegel/f‑string-apl</mark>.</li>
 </ul></li>
 <li>Copy the files <strong>∆Fapl.dyalog</strong> and
 <strong>∆F_Help.html</strong> into your current working directory
-<span class="margin-note"><code>]cd</code> will show you your current
-working directory.</span>.</li>
+<span class="margin-note"><code>User command ]cd</code> will show you
+your current working directory.</span>.</li>
 <li>Then, from your Dyalog session (typically <code>#</code> or
 <code>⎕SE</code>), enter:<br>
 <code>]load ∆Fapl [-target=</code><strong><em>myns</em></strong><code>]</code>
@@ -479,9 +512,9 @@ class="header-section-number">2.2</span> Running <strong>∆F</strong>
 <li><code>]load ∆Fapl</code> (see above), ensuring that
 <strong>∆F</strong> and <strong>⍙Fapl</strong> are accessible from the
 current namespace.</li>
-<li>Call <code>∆F</code> with the desired argument(s) and options.
-<strong>∆F</strong> is <code>⎕IO</code>- and
-<code>⎕ML</code>-independent.</li>
+<li>Call <code>∆F</code> with the desired argument(s) and <a
+href="#f-call-syntax-details">options</a>. <strong>∆F</strong> is
+<code>⎕IO</code>- and <code>⎕ML</code>-independent.</li>
 </ol>
 <hr />
 </details>
@@ -494,9 +527,10 @@ class="header-section-number">3</span> Overview</h1>
 literals</strong>, <em>f‑strings</em> were introduced in Python in 2016.
 <strong>∆F</strong> <em>f‑strings</em> and Python's are
 <strong>not</strong> compatible.</span> Inspired by <a
-href="#python-ref">Python f‑strings</a>, <strong>∆F</strong> includes a
-variety of capabilities to make it easy to evaluate, format, annotate,
-and display related multi­dimensional information.</p>
+href="#appendix-ii-python-fstrings">Python f‑strings</a>,
+<strong>∆F</strong> includes a variety of capabilities to make it easy
+to evaluate, format, annotate, and display related multi­dimensional
+information.</p>
 <p><strong>∆F</strong> <em>f‑strings</em> include:</p>
 <ul>
 <li>The abstraction of 2-dimensional character
@@ -594,7 +628,8 @@ appropriate vertical alignment) to form a single character matrix:
 <p><span class="margin-note">As a prototype, <strong>∆F</strong> is
 relatively slow, using an APL recursive scan to analyze the
 <strong>f‑string</strong>. For a way to speed up frequently used
-<em>f‑strings</em>, see the <a href="#f-options">DFN option</a>.</span>
+<em>f‑strings</em>, see the <a href="#f-call-syntax-details">DFN
+option</a>.</span><br />
 <strong>∆F</strong> is designed for ease of use, <em>ad hoc</em>
 debugging, fine-grained formatting and informal user interaction, built
 using Dyalog functions and operators.</p>
@@ -814,10 +849,11 @@ class="header-section-number">5.6</span> Box Mode</h2>
 the <strong>Box</strong> mode option!</p>
 <p>While we can't place boxes around text (or space) fields using
 <code>`B</code>, we can place a box around
-<em><strong>each</strong></em> field <em>regardless</em> of type. by
+<em><strong>each</strong></em> field (<em>regardless</em> of type) by
 setting <strong>∆F</strong>'s <em>third</em> option,
-<strong>Box</strong> mode, <span class="margin-note"><strong>third
-option</strong>: <code>⍺[2+⎕IO]</code>.</span>to <code>1</code>:</p>
+<strong>Box</strong> <a href="#f-call-syntax-details">mode</a>,
+<span class="margin-note"><strong>third option</strong>:
+<code>⍺[2+⎕IO]</code>.</span>to <code>1</code>:</p>
 <pre><code>   C← 11.3 29.55 59.99
        ↓¯¯¯ Box mode
    0 0 1 ∆F &#39;`◇The temperature is {&quot;I2&quot; $ C}`◇°C or {&quot;F5.1&quot; $ 32+9×C÷5}`◇°F&#39;
@@ -898,6 +934,7 @@ will handle that for you in most cases. </span></p>
 </blockquote>
 <p>We can use Dyalog's built-in formatting specifier "C" with shortcut
 <code>$</code> to add appropriate commas to the temperatures!</p>
+<p><span class="margin-note"><br><br><code>C2F← 32+9×÷∘5</code></span></p>
 <pre><code>⍝  The temperature of the sun at its core in degrees C.
    sun_core← 15E6                   ⍝ 15000000 is a bit hard to parse!
    ∆F &#39;The sun&#39;&#39;s core is at {&quot;CI10&quot; $ sun_core}°C or {&quot;CI10&quot; $ C2F sun_core}°F&#39;
@@ -984,8 +1021,8 @@ Current employee: name → John Smith, age→ 34.</code></pre>
 Current employee:  name↓     age↓.
                   John Smith  34</code></pre>
 <p>To make it easier to see, here's the same result, but with a box
-around each field (using the <strong>Box</strong> option
-<code>0 0 1</code>).</p>
+around each field (using the <strong>Box</strong> <a
+href="#f-call-syntax-details">option</a> <code>0 0 1</code>).</p>
 <pre><code>⍝  Box all fields
    0 0 1 ∆F &#39;Current employee: {name↓} {age↓}.&#39;
 ┌──────────────────┬──────────┬─┬────┬─┐
@@ -1232,13 +1269,15 @@ class="header-section-number">5.19</span> Precomputed f‑strings with the
 Option</h2>
 <p><span class="margin-note"><strong>∆F</strong>'s default initial
 option (left argument) is <code>0</code>, so <code>0 ∆F…</code> and
-<code>∆F…</code> are equivalent. We discuss all <a href="#f-options">the
-options to ∆F</a> below. </span> The default returned from
-<strong>∆F</strong> is always (on success) a character matrix. That can
-be expressed schematically via expression <em>(a),</em> shown here:</p>
+<code>∆F…</code> are equivalent. We discuss all <a
+href="#f-call-syntax-details">the options to ∆F</a> below. </span> The
+default returned from <strong>∆F</strong> is always (on success) a
+character matrix. That can be expressed schematically via expression
+<em>(a),</em> shown here:</p>
 <pre><code>(a) 0 ∆F… </code></pre>
-<p>However, if the initial option (<strong><em>DFN</em></strong>) is
-<code>1</code>, as in <em>(b),</em></p>
+<p>However, if the initial <a href="#f-call-syntax-details">∆F
+Options</a>(<strong><em>DFN</em></strong>) is <code>1</code>, as in
+<em>(b),</em></p>
 <pre><code>(b) 1 ∆F… </code></pre>
 <p>then <span class="margin-note">This assumes the resulting dfn is
 called with the same arguments in the same calling environment in the
@@ -1847,19 +1886,25 @@ notes will appear, as in the default case:
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
 f‑strings</h2>
-<div id="python-ref" style="text-align: left;">
-
-<ul>
-<li>See <span class="margin-note"><strong>Link</strong>: Return to
-Overview.<br />
-</span><a
-href="#overview"><span>https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.</li>
-</ul>
+<p>Python f-strings, introduced in Python 3.6, are a modern and elegant
+way to format strings by embedding expressions directly inside string
+literals. You create an f-string by prefixing a string with the letter
+'f' or 'F', and then you can include any Python expression inside curly
+braces within the string. When the string is evaluated, these
+expressions are executed and their results are automatically converted
+to strings and inserted at that position. For example,
+<code>f"The sum of {a} and {b} is {a + b}"</code> would evaluate the
+addition and embed the result directly in the string. This combination
+of simplicity, power, and performance has made f-strings the preferred
+string formatting approach in modern Python code. <em>[Claude (AI).
+Response to Python f-strings query [edited]. Claude.ai. Anthropic,
+October 19, 2025.]</em></p>
+<p><span class="margin-note"><a id="displayText" href="#overview">Return
+to Overview.</a></span> <span class="seeLinkPre">See
+<a id="displayText" href="javascript:showAlert(  &quot;Use regular browser to explore link.&quot;, 2000, 0);"><span class="seeLink">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.</p>
+</div>
 </div>
 
-</div>
-
-<hr />
 </details>
 
 <!-- Put a set of navigation tools at a fixed position at the bottom of the Help screen
@@ -1885,7 +1930,7 @@ href="#overview"><span>https://docs.python.org/3/tutorial/inputoutput.html#forma
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251017T145752]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251019T223041]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
