@@ -220,7 +220,7 @@ Customer Jack wins £230!
 
 Isn't Jack lucky, winning twice in a row!
 
-<details><summary class="summary">&ensp;View a fancier example...</summary>
+<details id="pPeek"><summary class="summary">&ensp;View a fancier example...</summary>
 
 ``` 
  ⍝ Be sure everyone wins something.
@@ -375,7 +375,7 @@ Try this expression on your own:
    0 0 1 ∆F 'abc{}def{}{}ghi{""}jkl{ }mno'
 ```
 
-<details><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
 
 
 ```
@@ -422,7 +422,7 @@ The expression `` `⍵0 `` always refers to the *f‑string* itself. Try this yo
    ∆F 'Our string {`⍵0↓} is {≢`⍵0} characters'
 ```
 
-<details><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
 
 ```
    ∆F 'Our string {`⍵0↓} is {≢`⍵0} characters'
@@ -605,7 +605,7 @@ Here, we display one boxed value above the other.
 └───┴───┴───┘
 ```
 
-<details><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
 
 While not for the faint of heart, the expression above can be recast as this somewhat hard to read alternative: 
 
@@ -700,7 +700,7 @@ Let's display `iv` without using the **Quote** shortcut.
 
 Are you **_sure_** which elements of `iv` are numeric and which character scalars?
 
-<details><summary class="summary">&ensp;Peek to see the example with `iv` defined.</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek to see the example with `iv` defined.</summary>
 
 ```
    iv← 1 2 '3' 4 '5'
@@ -717,7 +717,7 @@ Now, we'll show the variable `iv` using the  **Quote** `` `Q `` shortcut.
    ∆F '{`Q iv}'
 ```
 
-<details><summary class="summary">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
+<details id="pPeek"><summary class="summary">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
 
 ```
 1 2 '3' 4 '5'
@@ -1026,7 +1026,7 @@ Python f-strings, introduced in Python 3.6, are a modern and elegant way to form
 For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
 
 [^45] 
-<span class="seeLinkPre">See <a id="displayText" href="javascript:showAlert(  &quot;Use regular browser to explore link.&quot;, 2000, 0);"><span class="seeLink">https:\//docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.
+<span class="linkNotePre">See <a id="displayText" href="javascript:showAlert(  &quot;Use regular browser to explore link.&quot;, 2000, 0);"><span class="linkNote">https:\//docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.
 
 </div>
 </div>
@@ -1037,7 +1037,7 @@ For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition 
 <!-- Put a set of navigation tools at a fixed position at the bottom of the Help screen
 -->
 <div class="doc-footer">
-<button id="toggleDetails" class="button happybutton">Expand All Sections</button>&emsp;
+⍠⍠⍠&emsp;
 <a href="#top">Top</a>
 &nbsp;&nbsp;&nbsp;
 <a href="#table-of-contents">Contents</a> 
@@ -1050,14 +1050,14 @@ For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition 
 &nbsp;&nbsp;&nbsp; 
 <a href="#copyright">Copyright</a>
 &nbsp;&nbsp;&nbsp; 
-<button onclick="closeWindowNow()" class="button warnbutton">Close Window</span></button>
+⍠⍠⍠
 </div>
 
 ---
 
 <br>
-<span id="copyright" style="font-family:cursive;" >
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251019T223041]
+<span id="copyright" style="font-family:cursive;">
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251020T143051]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
