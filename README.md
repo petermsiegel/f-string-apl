@@ -899,10 +899,17 @@ Below, we summarize key information you've already gleaned from the examples.
 The first element in the right arg to ∆F is a character vector, an *f‑string*,
 which contains one or more **Text** fields, **Code** fields, and **Space** fields in any combination.
 
-- **Text** fields consist of simple text, which may include any Unicode characters desired, including newlines. Newlines (actually, carriage returns, `⎕UCS 13`) are normally entered via the sequence `` `◇ ``. Additionally, literal curly braces can be added via `` `{ `` and `` `} ``, so they are distinct from the simple curly braces used to begin and end **Code** fields and **Space** fields. Finally, a single backtick escape can be entered into a **Text** field by entering two such characters together ` `` `.
+- **Text** fields consist of simple text, which may include any Unicode characters desired, including newlines. 
+  - Newlines (actually, carriage returns, `⎕UCS 13`) are normally entered via the sequence `` `◇ ``. 
+  - Additionally, literal curly braces can be added via `` `{ `` and `` `} ``, so they are distinct from the simple curly braces used to begin and end **Code** fields and **Space** fields. 
+  - Finally, to enter a single backtick `` ` `` just before the special
+symbols `{`, `}`, `◇`, or `` ` ``, enter ***two*** backticks ` `` `; if preceding any ordinary 
+symbol, a ***single*** backtick will suffice.
   - If **∆F** is called with an empty string, `∆F ''`, it is interpreted as containing a single 0-length **Text** field, returning a matrix of shape `1 0`.
 - **Code** fields are run-time evaluated expressions enclosed within
-  simple, unescaped curly braces `{}`, *i.e.* those not preceded by a back-tick (see the previous paragraph). **Code** fields are, under the covers, Dyalog *dfns* with some extras. For escape sequences, see **Escape Sequences** below.
+  simple, unescaped curly braces `{}`, *i.e.* those not preceded by a back-tick (see the previous paragraph). 
+  - **Code** fields are, under the covers, Dyalog *dfns* with some extras. 
+  - For escape sequences, see **Escape Sequences** below.
 - **Space** fields appear to be a special, _degenerate_, form of **Code** fields, consisting of a single pair of simple (unescaped) curly braces `{}` with zero or more spaces in between. 
   - A **Space** field with zero spaces is a ***null*** **Space** field; while it may separate any other fields, its typical use is to separate two adjacent **Text** fields.
   - Between fields, **∆F** adds no automatic spaces; that spacing is under user control.
@@ -1012,9 +1019,9 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 ## Appendix I: Undocumented Options
 
 1. If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
-If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option returns the code string *verbatim*, the ***DBG*** option won't *display* the code string redundantly. 
+If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option *returns* the code string, the ***DBG*** option won't also *display* the code string. 
 
-2. `∆F 'help'` has a secret variant: `∆F 'help-narrow'`. 
+1. `∆F 'help'` has a secret variant: `∆F 'help-narrow'`. 
 With this variant, the help
 session will start up with a narrower screen *without* side notes. If the user widens the
 screen, the side notes will appear, as in the default 
@@ -1022,8 +1029,8 @@ case: `∆F 'help'`.
 
 ## Appendix II: Python f‑strings
 
-&emsp;Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.<br>&emsp;
-For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
+&emsp;Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.
+<br>&emsp;For example, the Python expression&ensp;<strong>`f"The sum of {a} and {b} is {a + b}"`</strong>&ensp;would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
 
 
 <span class="linkNotePre">See <a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https:\//docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.
@@ -1057,7 +1064,7 @@ For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition 
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T140606]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T155216]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
