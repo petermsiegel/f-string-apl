@@ -70,15 +70,15 @@
       color: red;
     }
 
-  /* for <pNote> margin notes  */
+  /* for <pNote> margin notes (side notes  */
     .margin-note {
       font-family: Tahoma, sans-serif;
       float: right; /* Aligns the note to the right */
       width: 220px; 
   /*  The negative margin-right value should be at least equal to the width of the note */
       margin-right: -300px; /* Shifts the note out of the main content flow */
-      font-size: 0.70em; /* Adjust font size for readability */
-      line-height: 1.2; /* Adjust line height for readability */
+      font-size: 0.70em;    /* Adjust font size for readability */
+      line-height: 1.2;     /* Adjust line height for readability */
       margin-bottom: 10px;
       text-align: justify;
       clear: right; /* Ensures the note doesn't overlap with other floated elements */
@@ -87,11 +87,11 @@
     .right-margin-bar {  
       border-right: 2px solid rgb(244, 230, 227); /* Adjust color and thickness as needed */
       padding-right: 55px; /* Space between the bar and content */
-      margin-right: 55px; /* Optional: Space from the left edge of the page */
+      margin-right: 55px;  /* Optional: Space from the right edge of the page */
       height: auto; /* Or set a fixed height, *e.g.*, 200px */
       /* overflow: hidden; Do not use w/ margin notes. */
     }
-  /* Suppress margin notes if screen is narrow */
+  /* Suppress margin notes if screen is narrow (1000 px or less) */
      @media screen and (max-width: 1000px) {  
         body {
           width: 100%;
@@ -106,8 +106,8 @@
         }
       }
 
-    /* For links you don't want followed in HELP-- a msg appears instead.
-       See <pLinkNote>...</pLinkNote> 
+    /* For links you don't want followed outside the Help html*-- a msg appears instead.
+       See <pLinkNote>...</pLinkNote>                         * bc you can't get back!
     */
       .linkNotePre { /* Preamble */
           font-size: 22px;
@@ -216,6 +216,7 @@
     }
     a:hover {
       color: blue;
+      transition: color 0.3s; /* font-size 2.0s ease; /* Smooth transition */
     }
     a:active {       /* selected link */
       color: red;
@@ -1533,15 +1534,19 @@ fields, <strong>Code</strong> fields, and <strong>Space</strong> fields
 in any combination.</p>
 <ul>
 <li><strong>Text</strong> fields consist of simple text, which may
-include any Unicode characters desired, including newlines. Newlines
-(actually, carriage returns, <code>⎕UCS 13</code>) are normally entered
-via the sequence <code>`◇</code>. Additionally, literal curly braces can
-be added via <code>`{</code> and <code>`}</code>, so they are distinct
-from the simple curly braces used to begin and end <strong>Code</strong>
-fields and <strong>Space</strong> fields. Finally, a single backtick
-escape can be entered into a <strong>Text</strong> field by entering two
-such characters together <code>``</code>.
+include any Unicode characters desired, including newlines.
 <ul>
+<li>Newlines (actually, carriage returns, <code>⎕UCS 13</code>) are
+normally entered via the sequence <code>`◇</code>.</li>
+<li>Additionally, literal curly braces can be added via <code>`{</code>
+and <code>`}</code>, so they are distinct from the simple curly braces
+used to begin and end <strong>Code</strong> fields and
+<strong>Space</strong> fields.</li>
+<li>Finally, to enter a single backtick <code>`</code> just before the
+special symbols <code>{</code>, <code>}</code>, <code>◇</code>, or
+<code>`</code>, enter <em><strong>two</strong></em> backticks
+<code>``</code>; if preceding any ordinary symbol, a
+<em><strong>single</strong></em> backtick will suffice.</li>
 <li>If <strong>∆F</strong> is called with an empty string,
 <code>∆F ''</code>, it is interpreted as containing a single 0-length
 <strong>Text</strong> field, returning a matrix of shape
@@ -1550,9 +1555,13 @@ such characters together <code>``</code>.
 <li><strong>Code</strong> fields are run-time evaluated expressions
 enclosed within simple, unescaped curly braces <code>{}</code>,
 <em>i.e.</em> those not preceded by a back-tick (see the previous
-paragraph). <strong>Code</strong> fields are, under the covers, Dyalog
-<em>dfns</em> with some extras. For escape sequences, see <strong>Escape
-Sequences</strong> below.</li>
+paragraph).
+<ul>
+<li><strong>Code</strong> fields are, under the covers, Dyalog
+<em>dfns</em> with some extras.</li>
+<li>For escape sequences, see <strong>Escape Sequences</strong>
+below.</li>
+</ul></li>
 <li><strong>Space</strong> fields appear to be a special,
 <em>degenerate</em>, form of <strong>Code</strong> fields, consisting of
 a single pair of simple (unescaped) curly braces <code>{}</code> with
@@ -1867,9 +1876,9 @@ returns a character vector that contains the source code for the
 <em>dfn</em> that would have been returned via the
 <em><strong>DFN</strong></em> option, <code>options[0]=1</code>. If
 <em><strong>DBG</strong></em> is also set, newlines from <code>`◇</code>
-are shown as visible <code>␤</code>. However, since this option returns
-the code string <em>verbatim</em>, the <em><strong>DBG</strong></em>
-option won't <em>display</em> the code string redundantly.</p></li>
+are shown as visible <code>␤</code>. However, since this option
+<em>returns</em> the code string, the <em><strong>DBG</strong></em>
+option won't also <em>display</em> the code string.</p></li>
 <li><p><code>∆F 'help'</code> has a secret variant:
 <span class="margin-note"><em>Or</em>,
 <code>∆F 'help-n'</code>.</span><code>∆F 'help-narrow'</code>. With this
@@ -1888,12 +1897,12 @@ literals. You create an f-string by prefixing a string with the letter
 'f' or 'F', and then you can include any Python expression inside curly
 braces within the string. When the string is evaluated, these
 expressions are executed and their results are automatically converted
-to strings and inserted at that position.<br>  For example,
-<code>f"The sum of {a} and {b} is {a + b}"</code> would evaluate the
-addition and embed the result directly in the string. This combination
-of simplicity, power, and performance has made f-strings the preferred
-string formatting approach in modern Python code. <em>[Claude (AI).
-Response to Python f-strings query [edited]. Claude.ai. Anthropic,
+to strings and inserted at that position. <br> For example, the Python
+expression <strong><code>f"The sum of {a} and {b} is {a + b}"</code></strong> would
+evaluate the addition and embed the result directly in the string. This
+combination of simplicity, power, and performance has made f-strings the
+preferred string formatting approach in modern Python code. <em>[Claude
+(AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic,
 October 19, 2025.]</em></p>
 <p><span class="margin-note"><a id="displayText" href="#overview">Return
 to Overview.</a></span> <span class="linkNotePre">See
@@ -1926,7 +1935,7 @@ to Overview.</a></span> <span class="linkNotePre">See
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T140606]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T155216]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
