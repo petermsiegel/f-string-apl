@@ -311,14 +311,6 @@
       showAlert("Closing Window...", 1000, 1);
       setTimeout(window.close, 1000);
     }
-    function confirmAndCloseWindow() {
-      const userConfirmed = confirm("Are you sure you want to close this window?");
-      if (userConfirmed) {
-        closeWindowNow();
-      } else {
-        showAlert("Alrighty then!", 1000, 0);
-      }
-  }
 
   // Informational Alert 
   // showAlert( text, howLong in ms to show, urgent)
@@ -338,6 +330,9 @@
         setTimeout(function() {
             alertBox.style.display = "none"; // Hide the alert
         }, howLong);
+    }
+    function linkAlert(){
+        showAlert("Use regular browser to explore link.", 2000, 1);
     }
 
   // Listener for narrow/wide text
@@ -1902,7 +1897,7 @@ Response to Python f-strings query [edited]. Claude.ai. Anthropic,
 October 19, 2025.]</em></p>
 <p><span class="margin-note"><a id="displayText" href="#overview">Return
 to Overview.</a></span> <span class="linkNotePre">See
-<a id="displayText" href="javascript:showAlert(  &quot;Use regular browser to explore link.&quot;, 2000, 0);"><span class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.</p>
+<a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.</p>
 </div>
 </div>
 
@@ -1931,7 +1926,7 @@ to Overview.</a></span> <span class="linkNotePre">See
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251020T145659]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T085606]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
