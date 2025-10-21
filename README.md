@@ -9,7 +9,7 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 
 # Table of Contents  
 
-<details>     <!-- option: open -->
+<details open>     <!-- option: open -->
 <summary class="summary">&ensp;Show/Hide <em>Table of Contents</em></summary>
 <span style="font-size: 90%;">
 
@@ -61,7 +61,7 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 
 # Installing and Running **∆F** in Dyalog APL
 
-<details>            <!-- option: open -->
+<details open>            <!-- option: open -->
 <summary class="summary">&ensp;Show/Hide <em>Installing and Running <bold>∆F</bold></em>
 </summary>
 
@@ -142,7 +142,7 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
   
 **∆F** is designed for ease of use, _ad hoc_ debugging, fine-grained formatting and informal user interaction, built using Dyalog functions and operators.
 
-<details>     <!-- option: open -->
+<details open>     <!-- option: open -->
 <summary class="summary">&ensp;Recap: <em>The Three Field Types</em></summary><br>  
 
 
@@ -166,7 +166,7 @@ Table 3a. <strong>The Three Field Types</strong>
 
 # ∆F Examples: A Primer
 
-<details>            <!-- option: open -->
+<details open>            <!-- option: open -->
 <summary class="summary">&ensp;Show/Hide <em>Examples: A Primer</em></summary>
 
 
@@ -847,7 +847,7 @@ Below, we summarize key information you've already gleaned from the examples.
 
 # ∆F Syntax and Other Information
 
-<details>        <!-- option: open -->       
+<details open>        <!-- option: open -->       
 <summary class="summary">&ensp;Show/Hide <em>Syntax Info</em></summary>
 
 ## ∆F Call Syntax Overview
@@ -1007,7 +1007,7 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 
 # Appendices
  
-<details><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
+<details open><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
 
 ## Appendix I: Undocumented Options
 
@@ -1057,7 +1057,7 @@ For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition 
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T085606]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T090058]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
