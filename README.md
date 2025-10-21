@@ -69,7 +69,7 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 
 1. On Github, search for <mark>"f‑string-apl"</mark>. 
    - During the test phase, go to <mark>github.com/petermsiegel/f‑string-apl</mark>. 
-2. Copy the files **∆Fapl.dyalog** and **∆F_Help.html** into your current working directory . 
+2. Copy the files **∆Fapl.dyalog** and **∆F_Help.html** into your current working directory [^1] . 
 3. Then, from your Dyalog session (typically `#` or `⎕SE`), enter:<br>
   `]load ∆Fapl [-target=`**_myns_**`]` 
    1. Each time it is called, the `]load` will create function **∆F** and namespace **⍙Fapl** in the active namespace (or **_myns_**).
@@ -92,18 +92,18 @@ Now, **∆F** is available in the active namespace (or **_myns_**), along with *
 
 <details open><summary class="summary">&ensp;Show/Hide <em>Overview</em></summary>
 
- 
+[^2]  
 Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** includes a variety of capabilities to make it easy to evaluate, format, annotate, and display related multi&shy;dimensional information. 
 
 **∆F** *f‑strings* include: 
 
 - The abstraction of 2-dimensional character ***fields***, generated one-by-one from the user's specifications and data, then aligned and catenated into a single overall character matrix result;
   
-
+[^3] 
 
 - **Text** fields, supporting multiline Unicode text within each field, with the sequence `` `◇ `` (**backtick** + **statement separator**) generating a newline, <small>`⎕UCS 13`</small>; 
 
-- **Code** fields, allowing users to evaluate and display APL arrays of any dimensionality, depth and type in the user environment, arrays passed as **∆F** arguments, as well as arbitrary APL expressions based on full multi-statement dfn logic.Each **Code** field must return a value, simple or otherwise, which will be catenated with other fields and returned from **∆F**;
+- **Code** fields, [^4] allowing users to evaluate and display APL arrays of any dimensionality, depth and type in the user environment, arrays passed as **∆F** arguments, as well as arbitrary APL expressions based on full multi-statement dfn logic.Each **Code** field must return a value, simple or otherwise, which will be catenated with other fields and returned from **∆F**;
 
   **Code** fields also provide a number of concise, convenient extensions, such as:
 
@@ -111,12 +111,12 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
 
     - **double-quotes**<br>
       `∆F '{"like this"}'` or `` ∆F '{"on`◇""three""`◇lines"} ``,
-    - **double angle quotation marks**,<br>
+    - **double angle quotation marks**,[^5] <br>
       `∆F '{«with internal quotes like "this" or ''this''»}'`, not to mention   
     -  APL's tried-and-true embedded **single-quotes**,<br>
       `∆F '{''shown ''''right'''' here''}'`.
 
-  - Simple shortcuts for
+  - Simple shortcuts[^6]  for
 
     - **format**ting numeric arrays, **\$** (short for **⎕FMT**): `∆F '{"F7.5" $ ?0 0}'`,
     - putting a **box** around a specific expression, **\`B**: `` ∆F'{`B ⍳2 2}' ``,
@@ -139,7 +139,7 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
 
   - After all fields are generated, they are concatenated (after appropriate vertical alignment) to form a single character matrix: ***the return value from*** **∆F**. 
 
-  
+[^7]   
 **∆F** is designed for ease of use, _ad hoc_ debugging, fine-grained formatting and informal user interaction, built using Dyalog functions and operators.
 
 <details open>     <!-- option: open -->
@@ -161,7 +161,7 @@ Table 3a. <strong>The Three Field Types</strong>
 
 # Displaying ∆F **Help** in APL 
 
-
+[^8] 
 <span style="font-size: 130%;">👉 </span>To display this **HELP** information, type: `∆F⍨ 'help'`.
 
 # ∆F Examples: A Primer
@@ -174,7 +174,7 @@ Before providing information on **∆F** syntax and other details, *let's start 
 
 First, let's set some context for the examples. (You can set these however you want.)  
 
-
+[^9] 
 ```
    ⎕IO ⎕ML← 0 1        
 ```
@@ -184,7 +184,7 @@ First, let's set some context for the examples. (You can set these however you w
 
 Here are **Code** fields with simple variables. 
 
-
+[^10] 
 ```
    name← 'Fred' ◇ age← 43
    ∆F 'The patient''s name is {name}. {name} is {age} years old.'
@@ -196,7 +196,7 @@ The patient's name is Fred. Fred is 43 years old.
 returns a single character matrix.
 Here **∆F** returns a matrix with 2 rows and 32 columns. 
 
-
+[^11] 
 ```
    tempC← ⍪35 85
    ⍴⎕← ∆F 'The temperature is {tempC}{2 2⍴"°C"} or {32+tempC×9÷5}{2 2⍴"°F"}'
@@ -207,7 +207,7 @@ The temperature is 35°C or  95°F.
 
 Here, we assign the *f‑string* to an APL variable, then call **∆F** twice!
 
-
+[^12] 
 ```
    ⎕RL← 2342342                 
    names← 'Mary' 'Jack' 'Tony' ◇ prize← 1000
@@ -284,11 +284,11 @@ Mouse    Mickey
 
 ## Code Fields (Continued)
 
-
+[^13] 
 And this is the same example with *identical* output, but built using two **Code** fields 
 separated by a **Text** field with a single space.
 
-
+[^14] 
 ```
    ∆F '{↑"Cat" "Elephant" "Mouse"} {↑"Felix" "Dumbo" "Mickey"}'
 Cat      Felix
@@ -309,7 +309,7 @@ example            Fields
 
 Here is some multiline data we'll add to our **Code** fields.
 
-
+[^15] 
 ```
    fNm←  'John' 'Mary' 'Ted'
    lNm←  'Smith' 'Jones' 'Templeton'
@@ -321,7 +321,7 @@ Mary Jones     22 Smith St
 Ted  Templeton 12 High St
 ```
 
-
+[^16] 
 
 Here's a slightly more interesting code expression, using `$` (a shortcut for `⎕FMT`)
 to round Centigrade numbers to the nearest whole degree and Fahrenheit numbers to the nearest tenth of a degree.
@@ -353,7 +353,7 @@ But what if you want to place a box around every **Code**, **Text**, **_and_** *
 We just use the **Box** mode option!
 
 While we can't place boxes around text (or space) fields using `` `B ``,
-we can place a box around ***each*** field (*regardless* of type) by setting **∆F**'s *third* option, **Box** [mode](#f-call-syntax-details), to `1`:
+we can place a box around ***each*** field (*regardless* of type) by setting **∆F**'s *third* option, **Box** [mode](#f-call-syntax-details), [^17] to `1`:
 
 ```
    C← 11.3 29.55 59.99
@@ -395,7 +395,7 @@ In contrast, **Code** fields that return null values (like `{""}` above) _will_ 
 > Referencing **∆F** arguments after the *f‑string*: **Omega** shortcut expressions like `` `⍵1 ``.
 
 The expression 
-
+[^18] 
 `` `⍵1 `` is equivalent to `(⍵⊃⍨ 1+⎕IO)`, selecting the first argument after the *f‑string*. Similarly, `` `⍵99 `` would select `(⍵⊃⍨99+⎕IO)`.
 
 We will use `` `⍵1 `` here, both with shortcuts and an externally defined
@@ -413,8 +413,8 @@ The temperature is 11°C or 51.8°F
 
 ## Referencing the f‑string Itself 
 
-
-
+[^19] 
+[^20] 
 The expression `` `⍵0 `` always refers to the *f‑string* itself. Try this yourself.
 
 
@@ -434,14 +434,14 @@ Our string                  `⍵0↓                  is 38 characters
 
 ## The Format Shortcut
 
-
+[^21] 
 
 > Let's add commas to some very large numbers using the **⎕FMT** shortcut `$`.
 
 We can use Dyalog's built-in formatting specifier "C" with shortcut `$` 
 to add appropriate commas to the temperatures!
 
-
+[^22] 
 ```
 ⍝  The temperature of the sun at its core in degrees C.
    sun_core← 15E6                   ⍝ 15000000 is a bit hard to parse!
@@ -451,13 +451,13 @@ The sun's core is at 15,000,000°C or 27,000,032°F
 
 ## The Shortcut for Numeric Commas 
 
-
+[^23] 
 The shortcut for *Numeric* **Commas**  `` `C `` adds commas every 3 digits (from the right) to one or more numbers or numeric strings.It has an advantage over the `$` (Dyalog's `⎕FMT`) specifier: it doesn't require you to guesstimate field widths.
 
 
 Let's use the `` `C `` shortcut to add the commas to the temperatures!
 
-
+[^24] 
 ```
    sun_core← 15E6               ⍝ 15000000 is a bit hard to parse!
    ∆F 'The sun''s core is at {`C sun_core}°C or {`C C2F sun_core}°F.'
@@ -480,7 +480,7 @@ Now, let's move on to Self-documenting **Code** fields.
 
 ## Self-documenting **Code** fields (SDCFs)
 
- 
+[^25]  
 > Self-documenting Code fields (SDCFs) are a useful debugging tool.
 
 What's an SDCF? An SDCF allows whatever source code is in a **Code** field to be automatically displayed literally along with the result of evaluating that code.
@@ -494,7 +494,7 @@ The source code for a **Code** field can automatically be shown in **∆F**'s ou
 All you need do is enter
 
 - a right arrow <big>`→`</big> for a **horizontal** SDCF, or
-- a down arrow <big>`↓`</big> (or <big>`%`</big>) for a **vertical** SDCF,
+- a down arrow <big>`↓`</big> (or <big>`%`</big>)[^26]  for a **vertical** SDCF,
 
 as the **_last non-space_** character in the **Code** field, before the _final_ right brace.
 
@@ -541,11 +541,11 @@ To make it easier to see, here's the same result, but with a box around each fie
 
 > A cut above the rest… 
 
-
+[^27] 
 Here's a useful feature. Let's use the shortcut `%` to display one expression centered above another; 
 it's called **Above** and can *also* be expressed as `` `A ``. 
 
-
+[^28] 
 ```
    ∆F '{"Employee" % ⍪`⍵1} {"Age" % ⍪`⍵2}' ('John Smith' 'Mary Jones')(29 23)
 Employee    Age
@@ -564,7 +564,7 @@ We said we'd present the use of **Omega** shortcuts with implicit indices `` `�
 So, from left to right `` `⍵ `` is `` `⍵1 ``, `` `⍵2 ``, 
 and `` `⍵3 ``. 
 
-
+[^29] 
 ```
    ∆F '{(⍳2⍴`⍵) % (⍳2⍴`⍵) % (⍳2⍴`⍵)}' 1 2 3
     0 0
@@ -619,12 +619,12 @@ While not for the faint of heart, the expression above can be recast as this som
 
 ## A Shortcut for Dates and Times (Part I)  
 
-
+[^30] 
 **∆F** supports a simple **Date-Time** shortcut `` `T `` built from **1200⌶** and **⎕DT**. It takes one or more Dyalog `⎕TS`-format timestamps as the right argument and a date-time specification as the (optional) left argument. Trailing elements of a timestamp may be omitted (they will each be treated as `0` in the specification string).
 
 Let's look at the use of the `` `T `` shortcut to show the current time (now).
 
-
+[^31] 
 
 ```
    ∆F 'It is now {"t:mm pp" `T ⎕TS}.'
@@ -632,7 +632,7 @@ It is now 8:08 am.
 ```
 
 
-Here's a fancier example.
+Here's a fancier example[^32] .
 (We've added the _truncated_ timestamp `2025 01 01` right into the *f‑string*.)
 
 ```
@@ -651,7 +651,7 @@ you can use `` `D ``, which means exactly the same thing.
 ```
 
 Here, we'll pass the time stamp via a single **Omega**
-expression `` `⍵1 ``, whose argument  is passed in parentheses.
+expression `` `⍵1 ``, whose argument [^33]  is passed in parentheses.
 
 ```
    ∆F '{ "D Mmm YYYY ''was a'' Dddd." `T `⍵1}' (2025 1 21)
@@ -671,7 +671,7 @@ expression: `` `⍵1 `⍵2 `⍵3 ``.
 
 > Placing quotes around string elements of an array.
 
-
+[^34] 
 The **Quote** shortcut `` `Q `` recursively scans its right argument, matching rows of character arrays, character vectors, and character scalars, doubling internal single quotes and placing single quotes around the items found.
 
 Non-character data is returned as is. This is useful, for example, when you wish to clearly distinguish character from numeric data.
@@ -736,7 +736,7 @@ Voilà, quotes appear around the character digits, but not the actual APL number
 
 The shortcut **Wrap** `` `W `` is <span class="red">**_experimental_**</span>. `` `W `` is used 
 when you want to place a **_decorator_** string immediately to the left or right of **_each_** row of simple objects in the right argument, `⍵`. It differs from the **Quote** shortcut `` `Q ``, which puts quotes **_only_** around the character arrays in `⍵`. 
-
+[^35] 
 
 - The decorators are in `⍺`, the left argument to **Wrap**: the left decorator, `0⊃2⍴⍺`, and the right decorator, `1⊃2⍴⍺`, with `⍺` defaulting to a single quote.
 - If you need to omit one or the other decorator, simply make it a null string `""` or a _zilde_&nbsp;`⍬`.
@@ -768,7 +768,7 @@ In this next example, we place brackets around the lines of each simple array in
 
 ## Precomputed f‑strings with the <span style="font-size: 80%;">***DFN***</span> Option
 
- 
+[^36]  
 The default returned from **∆F** is always (on success) a character matrix. That can be expressed schematically via expression *(a),* shown here: 
 
     (a) 0 ∆F… 
@@ -778,7 +778,7 @@ However, if the initial [∆F Options](#f-call-syntax-details)(**_DFN_**) is `1`
 
     (b) 1 ∆F… 
     
-then 
+then [^37] 
 **∆F** returns a **dfn** that, *when called later*, will return precisely the same character expression as for *(a)*.
 This is most useful when you are making repeated use of an *f‑string*, since the overhead for analyzing the *f‑string* contents _once_ will be amortized over all the calls.
 
@@ -815,7 +815,7 @@ Now, let's proceed. Here's the code:
 > Before we get to syntax and other information…
 
 Finally, we want to show you that
-
+[^38] 
 the _dfn_ returned from `1…∆F…` can retrieve argument(s) passed on the right side of **∆F**, using the very same omega shortcut expressions (`` `⍵1 ``, etc.) as described above. 
 
 
@@ -932,12 +932,12 @@ which contains one or more **Text** fields, **Code** fields, and **Space** field
 
 ## Escape Sequences For Text Fields and Quoted Strings
 
- 
+[^39]  
 **∆F** **Text** fields and **Quoted strings** in **Code** fields may include
 a small number of escape sequences, beginning with the backtick `` ` ``. 
 Some sequences are valid in **Text** fields *only*, but not in Quoted strings:
 
-
+[^40] 
 
 | Escape Sequence | What It Inserts | Description | Where Special |
 | :-------------: | :-------------: | :---------: | :----:  | 
@@ -963,7 +963,7 @@ as well as
 -  APL's tried-and-true embedded **single-quotes**,<br>
   `∆F '{''shown like ''''this'''', "this" or «this».''}'`.
 
-
+[^41] 
 If you wish to include a traditional delimiting quote (` ' ` or ` " `) or the closing quote of a quote pair (`«`&ensp;`»`) within the **Quoted string**, you must double it. 
 You may *not* use an escape sequence (e.g. `` `" ``) for this purpose. 
 
@@ -1011,21 +1011,21 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 
 ## Appendix I: Undocumented Options
 
-1. If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
+1. If `options[0]` is `¯1`, [^42] then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
 If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option returns the code string *verbatim*, the ***DBG*** option won't *display* the code string redundantly. 
 
-2. `∆F 'help'` has a secret variant: `∆F 'help-narrow'`. 
+2. `∆F 'help'` has a secret variant: [^43] `∆F 'help-narrow'`. 
 With this variant, the help
 session will start up with a narrower screen *without* side notes. If the user widens the
 screen, the side notes will appear, as in the default 
-case: `∆F 'help'`.
+case: [^44] `∆F 'help'`.
 
 ## Appendix II: Python f‑strings
 
 &emsp;Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.<br>&emsp;
 For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
 
-
+[^45] 
 <span class="linkNotePre">See <a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https:\//docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.
 
 </div>
@@ -1057,7 +1057,7 @@ For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition 
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T140206]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T140444]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
@@ -1072,3 +1072,55 @@ Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T140206]
 </div>
 
 <!-- (C) 2025 Sam the Cat Foundation -->
+
+## Footnotes
+
+[^1]: `User command ]cd` will show you your current working directory.
+[^2]: Short for "**formatted string literals**, *f‑strings* were introduced in Python in 2016. **∆F** *f‑strings* and Python's are **not** compatible.
+[^3]: In this document, we use the symbol `◇` (`⎕UCS 9671`) to represent the APL *statement separator* (`⎕UCS 8900`), since the latter is displayed _in some browsers_ as a hard-to-read glyph.
+[^4]: An **∆F** *f‑string*— including any **Code** fields— is limited to a single, possibly very long, character vector.
+[^5]: Also known as *guillemets*, <big>**«**</big> and <big>**»**</big> are Unicode chars `⎕UCS 171 187`.
+[^6]: Details on all the [shortcuts](#code-field-shortcuts) are provided later in this document.
+[^7]: As a prototype, **∆F** is relatively slow, using an APL recursive scan to analyze the **f‑string**.  For a way to speed up frequently used *f‑strings*, see the [DFN option](#f-call-syntax-details).
+[^8]: If `∆F⍨'help'` seems exotic, try: `'help' ∆F ⍬`.
+[^9]: All examples in this document assume `⎕IO←0 ◇ ⎕ML←1`.
+[^10]: So far, this is like everybody else's *f‑strings*.
+[^11]: Now we're taking advantage of APL's array-oriented style.
+[^12]: Setting `⎕RL` ensures our random numbers aren't random!
+[^13]: We could have used a **Space** field `{ }` here as well.
+[^14]: APL mix `↑` is used to convert the names (a vector of character vectors)
+to a character matrix.
+[^15]: Again, we use APL _mix_ `↑` to generate multiline objects (matrices).
+[^16]: We could have used `0⍕⍪` and `1⍕⍪` here, of course. But we wanted to remind you what Dyalog's `⎕FMT` can do. For more, see [below](#the-format-shortcut).
+[^17]: **third option**: `⍺[2+⎕IO]`.
+[^18]: And `(⍵⊃⍨ 1+⎕IO)` is, of course, equivalent to `((1+⎕IO)⊃⍵)`.
+[^19]: `` `⍵0 `` refers to the *f‑string* independent of the the number of elements in the right argument  to **∆F** (*effectively*, `⊆⍵`).
+[^20]: We explain the <em>down arrow</em> `↓` before the <em>closing brace</em> `}` under [Self-documenting Code fields](#self-documenting-code-fields-sdcfs) below.
+[^21]: `$` (*i.e.* `⎕FMT`) can also be used monadically, but **∆F** will handle that for you in most cases.
+[^22]: `C2F← 32+9×÷∘5`
+[^23]: Typically, each number or numeric string presented to `` `C `` will represent an integer, but if a real number is presented, only the integer part will have commas added.
+[^24]: Cool! OK, not literally.
+[^25]: Our SDCFs are based on Python's single type of self-documenting expressions in *f‑strings*, but work somewhat differently. SDCFs are used ***only*** in **Code** fields (_duh_).
+[^26]: `%` is the same glyph as for the **Above** shortcut, `%` or `` `A ``, discussed in [the next section](#the-above-shortcut).
+[^27]: `%` can be used monadically. In that case, a left argument of `''` (an empty string) is assumed.
+[^28]: Remember, `` `⍵1 `` designates the **_first_** argument after the *f‑string* itself, and `` `⍵2 `` the **_second_**.
+[^29]: _Easy peasy._
+[^30]: The syntax for the Date-Time specifications in the left argument to `` `T `` can be found in the Dyalog documentation under **1200⌶**. For the curious, here's the core *dfn* code actually used by the Date-Time shortcut: <br>&emsp;`⍺←'YYYY-MM-DD hh:mm:ss'`<br>&emsp;`∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT ⊆⍵`
+[^31]: The time displayed in practice will be the *true* current time.
+[^32]: The power is in the capabilities of `1200⌶` and `⎕DT`.
+[^33]: `(2025 1 21)`
+[^34]: If a multi&shy;dimensional character array is found, its <em>rows</em> are quoted; if a character vector, it is quoted <em>in toto</em>; else, each character <em>scalar</em> is quoted in isolation.
+[^35]: For more, see [Wrap Shortcut: Details](#wrap-shortcut-details-experimental) _below_.
+[^36]: **∆F**'s default initial option (left argument) is `0`, so `0 ∆F…` and `∆F…` are equivalent. We discuss all [the options to ∆F](#f-call-syntax-details) below.
+[^37]: This assumes the resulting dfn is called with the same arguments in the same calling environment in the same state.
+[^38]: The *dfn* returned includes the original *f‑string* text used to generate it,
+available as `` `⍵0 ``.
+[^39]: See [Quoted Strings in Code Fields](#quoted-strings-in-code-fields)
+below on displaying quote characters like `"` in a string.
+[^40]: **Both**: *i.e.* **Text** fields and *Quoted Strings* in **Code** fields.
+[^41]: Compare these examples:<br>&emsp;**Invalid:**&ensp;<span class="red">∆F&ensp;'{"abc\`"def"}'</span><br>&emsp;**Valid:**&ensp;`` ∆F '{"abc""def"}' ``
+[^42]: In simple terms, this option returns the character representation of the
+*dfn* returned via the ***DFN*** option.
+[^43]: *Or*, `∆F 'help-n'`.
+[^44]: *Or*, `∆F 'help-wide'`.
+[^45]: <a id="displayText" href="#overview">Return to Overview.</a>
