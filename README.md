@@ -1022,7 +1022,7 @@ case: `∆F 'help'`.
 
 ## Appendix II: Python f‑strings
 
-Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.
+&emsp;Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.<br>&emsp;
 For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
 
 
@@ -1057,7 +1057,7 @@ For example, `f"The sum of {a} and {b} is {a + b}"` would evaluate the addition 
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T091351]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T091623]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
