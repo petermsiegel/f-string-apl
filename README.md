@@ -9,9 +9,9 @@ interprets <em>f‑strings</em>, a concise, yet powerful way to display multilin
 
 # Table of Contents  
 
-<details open>     <!-- option: open -->
+<details id="TOC">     <!-- option: open -->
 <summary class="summary">&ensp;Show/Hide <em>Table of Contents</em></summary>
-<span style="font-size: 90%;">
+<span style="font-size:75%;">
 
 - [Table of Contents](#table-of-contents)
 - [Installing and Running **∆F** in Dyalog APL](#installing-and-running-f-in-dyalog-apl)
@@ -907,7 +907,7 @@ symbols `{`, `}`, `◇`, or `` ` ``, enter ***two*** backticks ` `` `; if preced
 symbol, a ***single*** backtick will suffice.
   - If **∆F** is called with an empty string, `∆F ''`, it is interpreted as containing a single 0-length **Text** field, returning a matrix of shape `1 0`.
 - **Code** fields are run-time evaluated expressions enclosed within
-  simple, unescaped curly braces `{}`, *i.e.* those not preceded by a back-tick (see the previous paragraph). 
+  simple, unescaped curly braces `{ }`, *i.e.* those not preceded by a backtick (see the previous paragraph). 
   - **Code** fields are, under the covers, Dyalog *dfns* with some extras. 
   - For escape sequences, see **Escape Sequences** below.
 - **Space** fields appear to be a special, _degenerate_, form of **Code** fields, consisting of a single pair of simple (unescaped) curly braces `{}` with zero or more spaces in between. 
@@ -1064,7 +1064,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T155216]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T201354]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
