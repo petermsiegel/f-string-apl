@@ -1,10 +1,10 @@
 <div class="right-margin-bar"> 
-
-<br>
 <div class="pMarquee">
-<em><strong>∆F</strong></em> is a function for Dyalog APL that 
-interprets <em>f‑strings</em>, a concise, yet powerful way to display multiline APL text, arbitrary APL expressions, and multi&shy;dimensional objects using extensions to 
-<em>dfns</em> and other familiar tools.
+
+***∆F*** is a function for *Dyalog* APL that 
+interprets *f‑strings*, a concise, yet powerful way to display multiline APL text, arbitrary APL expressions, and multi&shy;dimensional objects using extensions to 
+*dfns* and other familiar tools.
+
 </div>
 
 # Table of Contents  
@@ -133,14 +133,13 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
 - **Space** fields, providing a simple mechanism both for separating adjacent **Text** fields and inserting (rectangular) blocks of any number of spaces between any two fields, where needed;
 
   - one space: `{ }`; five spaces: `{     }`; or even, zero spaces: `{}`;
-  - 1000 spaces? Use a code field instead: `{1000⍴""}`.
+  - 1000 spaces? Use a **Code** field instead: `{1000⍴""}`.
 
 - Multiline (matrix) output built up field-by-field, left-to-right, from values and expressions in the calling environment or arguments to **∆F**;
 
-  - After all fields are generated, they are concatenated (after appropriate vertical alignment) to form a single character matrix: ***the return value from*** **∆F**. 
-
+  - After all fields are generated, they are aligned vertically and concatenated to form a single character matrix: ***the return value from*** **∆F**.  
   
-**∆F** is designed for ease of use, _ad hoc_ debugging, fine-grained formatting and informal user interaction, built using Dyalog functions and operators.
+**∆F** is designed for ease of use, _ad hoc_ debugging, fine-grained formatting and informal user interaction, built using Dyalog functions and operators. 
 
 <details open>     <!-- option: open -->
 <summary class="summary">&ensp;Recap: <em>The Three Field Types</em></summary><br>  
@@ -150,7 +149,7 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
    |:------------:|:--------:|:---------:|:---------:|
    | **Text** | *Unicode text* | `` abc`◇def `` | 2-D Text  |
    | **Code** | `{`*dfn code plus*`}` | `{(32+9×÷∘5)degC}`<br> `{↑"one" "two"}` | Arbitrary APL<br>expressions via dfns |
-   | **Space** | `{`<big>␠ ␠ ␠</big>`}` | `{  }` `{}`| Spacing & separation |
+   | **Space** | `{`<big>␠ ␠ ␠</big>`}` | `{  }` &ensp; `{}`| Spacing & Field Separation |
 <div>
 Table 3a. <strong>The Three Field Types</strong>
 </div> 
@@ -210,8 +209,9 @@ Here, we assign the *f‑string* to an APL variable, then call **∆F** twice!
 
 ```
    ⎕RL← 2342342                 
-   names← 'Mary' 'Jack' 'Tony' ◇ prize← 1000
-   f← 'Customer {names⊃⍨ ?≢names} wins £{?prize}!'
+   n← ≢names← 'Mary' 'Jack' 'Tony' 
+   prize← 1000
+   f← 'Customer {names⊃⍨ ?n} wins £{?prize}!'
    ∆F f
 Customer Jack wins £80!
    ∆F f
@@ -224,10 +224,12 @@ Isn't Jack lucky, winning twice in a row!
 
 ``` 
  ⍝ Be sure everyone wins something.
-   ∆F '{ ↑names }{ ⍪3⍴⊂"wins" }{ "£",⍕⍪?prize⍴⍨ ≢names }'
-Jack wins £509
-Mary wins £332
-Ted  wins £589
+   n← ≢names← 'Mary' 'Jack' 'Tony' 
+   prize← 1000
+   ∆F '{ ↑names }{ ⍪n⍴ ⊂"wins" }{ "£", ⍕⍪?n⍴ prize}'
+Mary wins £711
+Jack wins £298
+Tony wins £242
 ```
 
 </details>
@@ -414,20 +416,23 @@ The temperature is 11°C or 51.8°F
 ## Referencing the f‑string Itself 
 
 
-
 The expression `` `⍵0 `` always refers to the *f‑string* itself. Try this yourself.
 
-
 ```
-   ∆F 'Our string {`⍵0↓} is {≢`⍵0} characters'
+   bL bR← '«»'                     ⍝ ⎕UCS 171 187
+   ∆F 'Our string {bL, `⍵0, bR} has {≢`⍵0} characters.'
 ```
 
 <details id="pPeek"><summary class="summary">&ensp;Peek</summary>
 
 ```
-   ∆F 'Our string {`⍵0↓} is {≢`⍵0} characters'
-Our string                  `⍵0↓                  is 38 characters
-           Our string {`⍵0↓} is {≢`⍵0} characters                 
+   bL bR← '«»'                     ⍝ ⎕UCS 171 187
+   ∆F 'Our string {bL, `⍵0, bR} has {≢`⍵0} characters.'
+Our string «Our string {bL, `⍵0, bR} has {≢`⍵0} characters» has 47 characters.
+
+⍝  Check our work...
+   ≢'Our string {bL, `⍵0, bR} has {≢`⍵0} characters.'
+47
 ``` 
 
 </details>
@@ -764,9 +769,16 @@ In this next example, we place brackets around the lines of each simple array in
        [1 0 0]
        [1 1 0]
 ```
-</div>
 
-## Precomputed f‑strings with the <span style="font-size: 80%;">***DFN***</span> Option
+Try recasting this earlier example to use **Wrap** `` `W ``.
+
+```
+   n← ≢names← 'Mary' 'Jack' 'Tony' 
+   prize← 1000
+   ∆F '{ ↑names }{ ⍪n⍴ ⊂"wins" }{ "£", ⍕⍪?n⍴ prize }'
+```
+
+<details id="pPeek"><summary class="summary">&ensp;Below is one solution..</summary>
 
  
 The default returned from **∆F** is always (on success) a character matrix. That can be expressed schematically via expression *(a),* shown here: 
@@ -1029,11 +1041,12 @@ case: `∆F 'help'`.
 
 ## Appendix II: Python f‑strings
 
-&emsp;Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.
-<br>&emsp;For example, the Python expression&ensp;<strong>`f"The sum of {a} and {b} is {a + b}"`</strong>&ensp;would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
+&emsp; Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.
+<br>&emsp; For example, the Python expression&ensp;<strong>`f"The sum of {a} and {b} is {a + b}"`</strong>&ensp;would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
 
+*See* 
 
-<span class="linkNotePre">See <a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https:\//docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.
+<a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https:\//docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.
 
 </div>
 </div>
@@ -1064,7 +1077,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T201354]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T162907]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

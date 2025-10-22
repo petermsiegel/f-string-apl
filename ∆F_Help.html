@@ -44,7 +44,7 @@
       border: 1px solid white;
       box-shadow: 0 0 0 2px #062f7c;
       border-width: 3px;
-      padding: 15px;
+      padding: 0px 15px ; 
       box-sizing: border-box; /* Includes padding and border within the defined width/height */
     }
 
@@ -107,11 +107,8 @@
       }
 
     /* For links you don't want followed outside the Help html*-- a msg appears instead.
-       See <pLinkNote>...</pLinkNote>                         * bc you can't get back!
+       See <pLink>...</pLink>                         * bc you can't get back!
     */
-      .linkNotePre { /* Preamble */
-          font-size: 22px;
-      }
       .linkNote { /* Actual link */
           font-size: 20px;
       }
@@ -370,12 +367,13 @@
 <h1 class="title">∆F Formatted String Literals</h1>
 </header>
 <div class="right-margin-bar"> 
-
-<br>
 <div class="pMarquee">
-<em><strong>∆F</strong></em> is a function for Dyalog APL that 
-interprets <em>f‑strings</em>, a concise, yet powerful way to display multiline APL text, arbitrary APL expressions, and multi&shy;dimensional objects using extensions to 
-<em>dfns</em> and other familiar tools.
+
+<p><em><strong>∆F</strong></em> is a function for <em>Dyalog</em> APL
+that interprets <em>f‑strings</em>, a concise, yet powerful way to
+display multiline APL text, arbitrary APL expressions, and
+multi­dimensional objects using extensions to <em>dfns</em> and other
+familiar tools.</p>
 </div>
 
 <h1 data-number="1" id="table-of-contents"><span
@@ -610,24 +608,24 @@ where needed;</p>
 <ul>
 <li>one space: <code>{ }</code>; five spaces: <code>{     }</code>; or
 even, zero spaces: <code>{}</code>;</li>
-<li>1000 spaces? Use a code field instead: <code>{1000⍴""}</code>.</li>
+<li>1000 spaces? Use a <strong>Code</strong> field instead:
+<code>{1000⍴""}</code>.</li>
 </ul></li>
 <li><p>Multiline (matrix) output built up field-by-field, left-to-right,
 from values and expressions in the calling environment or arguments to
 <strong>∆F</strong>;</p>
 <ul>
-<li>After all fields are generated, they are concatenated (after
-appropriate vertical alignment) to form a single character matrix:
-<em><strong>the return value from</strong></em>
-<strong>∆F</strong>.</li>
-</ul></li>
-</ul>
-<p><span class="margin-note">As a prototype, <strong>∆F</strong> is
+<li>After all fields are generated, they are aligned vertically and
+concatenated to form a single character matrix: <em><strong>the return
+value from</strong></em> <strong>∆F</strong>.
+<span class="margin-note"><br>As a prototype, <strong>∆F</strong> is
 relatively slow, using an APL recursive scan to analyze the
 <strong>f‑string</strong>. For a way to speed up frequently used
 <em>f‑strings</em>, see the <a href="#f-call-syntax-details">DFN
-option</a>.</span><br />
-<strong>∆F</strong> is designed for ease of use, <em>ad hoc</em>
+option</a>.</span></li>
+</ul></li>
+</ul>
+<p><strong>∆F</strong> is designed for ease of use, <em>ad hoc</em>
 debugging, fine-grained formatting and informal user interaction, built
 using Dyalog functions and operators.</p>
 <details>     <!-- option: open -->
@@ -662,8 +660,8 @@ dfns</td>
 <td style="text-align: center;"><strong>Space</strong></td>
 <td style="text-align: center;"><code>{</code><big>␠ ␠
 ␠</big><code>}</code></td>
-<td style="text-align: center;"><code>{  }</code> <code>{}</code></td>
-<td style="text-align: center;">Spacing &amp; separation</td>
+<td style="text-align: center;"><code>{  }</code>   <code>{}</code></td>
+<td style="text-align: center;">Spacing &amp; Field Separation</td>
 </tr>
 </tbody>
 </table>
@@ -718,8 +716,9 @@ The temperature is 35°C or  95°F.
 <p><span class="margin-note">Setting <code>⎕RL</code> ensures our random
 numbers aren't random!</span></p>
 <pre><code>   ⎕RL← 2342342                 
-   names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; ◇ prize← 1000
-   f← &#39;Customer {names⊃⍨ ?≢names} wins £{?prize}!&#39;
+   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000
+   f← &#39;Customer {names⊃⍨ ?n} wins £{?prize}!&#39;
    ∆F f
 Customer Jack wins £80!
    ∆F f
@@ -728,10 +727,12 @@ Customer Jack wins £230!</code></pre>
 <details id="pPeek"><summary class="summary">&ensp;View a fancier example...</summary>
 
 <pre><code> ⍝ Be sure everyone wins something.
-   ∆F &#39;{ ↑names }{ ⍪3⍴⊂&quot;wins&quot; }{ &quot;£&quot;,⍕⍪?prize⍴⍨ ≢names }&#39;
-Jack wins £509
-Mary wins £332
-Ted  wins £589</code></pre>
+   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000
+   ∆F &#39;{ ↑names }{ ⍪n⍴ ⊂&quot;wins&quot; }{ &quot;£&quot;, ⍕⍪?n⍴ prize}&#39;
+Mary wins £711
+Jack wins £298
+Tony wins £242</code></pre>
 </details>
 
 <h2 data-number="5.2" id="text-fields-and-space-fields"><span
@@ -906,18 +907,19 @@ Itself</h2>
 <p><span class="margin-note"> <code>`⍵0</code> refers to the
 <em>f‑string</em> independent of the the number of elements in the right
 argument to <strong>∆F</strong> (<em>effectively</em>,
-<code>⊆⍵</code>).</span> <span class="margin-note"> We explain the
-<em>down arrow</em> <code>↓</code> before the <em>closing brace</em>
-<code>}</code> under <a
-href="#self-documenting-code-fields-sdcfs">Self-documenting Code
-fields</a> below.</span> The expression <code>`⍵0</code> always refers
+<code>⊆⍵</code>).</span> The expression <code>`⍵0</code> always refers
 to the <em>f‑string</em> itself. Try this yourself.</p>
-<pre><code>   ∆F &#39;Our string {`⍵0↓} is {≢`⍵0} characters&#39;</code></pre>
+<pre><code>   bL bR← &#39;«»&#39;                     ⍝ ⎕UCS 171 187
+   ∆F &#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;</code></pre>
 <details id="pPeek"><summary class="summary">&ensp;Peek</summary>
 
-<pre><code>   ∆F &#39;Our string {`⍵0↓} is {≢`⍵0} characters&#39;
-Our string                  `⍵0↓                  is 38 characters
-           Our string {`⍵0↓} is {≢`⍵0} characters                 </code></pre>
+<pre><code>   bL bR← &#39;«»&#39;                     ⍝ ⎕UCS 171 187
+   ∆F &#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
+Our string «Our string {bL, `⍵0, bR} has {≢`⍵0} characters» has 47 characters.
+
+⍝  Check our work...
+   ≢&#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
+47</code></pre>
 </details>
 
 <h2 data-number="5.9" id="the-format-shortcut"><span
@@ -1257,6 +1259,23 @@ simple array in a complex array.</p>
                      [GHI]
        [1 0 0]
        [1 1 0]</code></pre>
+<p>Try recasting this earlier example to use <strong>Wrap</strong>
+<code>`W</code>.</p>
+<pre><code>   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000
+   ∆F &#39;{ ↑names }{ ⍪n⍴ ⊂&quot;wins&quot; }{ &quot;£&quot;, ⍕⍪?n⍴ prize }&#39;</code></pre>
+<details id="pPeek"><summary class="summary">&ensp;Below is one solution..</summary>
+
+<p><span class="margin-note"><br><br>The string <code>"wins "</code> is
+the left prefix to <strong>Wrap</strong>, and <code>""</code> the
+right.<span class="margin-note"></p>
+<pre><code>   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000                              
+   ∆F &#39;{ ↑names } { &quot;wins &quot; &quot;&quot; `W &quot;£&quot;, ⍕⍪?n⍴ prize }&#39;
+Mary wins £201
+Jack wins £ 73
+Tony wins £349</code></pre>
+</details>
 </div>
 
 <h2 data-number="5.19"
@@ -1891,22 +1910,23 @@ notes will appear, as in the default case:
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
 f‑strings</h2>
-<p> Python f-strings, introduced in Python 3.6, are a modern and elegant
-way to format strings by embedding expressions directly inside string
-literals. You create an f-string by prefixing a string with the letter
-'f' or 'F', and then you can include any Python expression inside curly
-braces within the string. When the string is evaluated, these
+<p>  Python f-strings, introduced in Python 3.6, are a modern and
+elegant way to format strings by embedding expressions directly inside
+string literals. You create an f-string by prefixing a string with the
+letter 'f' or 'F', and then you can include any Python expression inside
+curly braces within the string. When the string is evaluated, these
 expressions are executed and their results are automatically converted
-to strings and inserted at that position. <br> For example, the Python
+to strings and inserted at that position. <br>  For example, the Python
 expression <strong><code>f"The sum of {a} and {b} is {a + b}"</code></strong> would
 evaluate the addition and embed the result directly in the string. This
 combination of simplicity, power, and performance has made f-strings the
 preferred string formatting approach in modern Python code. <em>[Claude
 (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic,
 October 19, 2025.]</em></p>
-<p><span class="margin-note"><a id="displayText" href="#overview">Return
-to Overview.</a></span> <span class="linkNotePre">See
-<a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a></span>.</p>
+<p><em>See</em>
+<span class="margin-note"><a id="displayText" href="#overview">Return to
+Overview.</a></span>
+<a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.</p>
 </div>
 </div>
 
@@ -1935,7 +1955,7 @@ to Overview.</a></span> <span class="linkNotePre">See
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251021T201354]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T162907]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
