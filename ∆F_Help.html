@@ -822,8 +822,8 @@ href="#the-format-shortcut">below</a>. </span></p>
 <code>$</code> (a shortcut for <code>⎕FMT</code>) to round Centigrade
 numbers to the nearest whole degree and Fahrenheit numbers to the
 nearest tenth of a degree.</p>
-<pre><code>   C← 11.3 29.55 59.99
-   ∆F &#39;The temperature is {&quot;I2&quot; $ C}°C or {&quot;F5.1&quot;$ 32+9×C÷5}°F&#39;
+<pre><code>   cv← 11.3 29.55 59.99
+   ∆F &#39;The temperature is {&quot;I2&quot; $ cv}°C or {&quot;F5.1&quot;$ 32+9×cv÷5}°F&#39;
 The temperature is 11°C or  52.3°F
                    30       85.2
                    60      140.0</code></pre>
@@ -832,8 +832,8 @@ class="header-section-number">5.5</span> The Box Shortcut</h2>
 <p>We now introduce the <strong>Box</strong> shortcut <code>`B</code>.
 Here we place boxes around key <strong>Code</strong> fields in this same
 example.</p>
-<pre><code>   C← 11.3 29.55 59.99
-   ∆F &#39;`◇The temperature is {`B &quot;I2&quot; $ C}`◇°C or {`B &quot;F5.1&quot; $ 32+9×C÷5}`◇°F&#39;
+<pre><code>   cv← 11.3 29.55 59.99
+   ∆F &#39;`◇The temperature is {`B &quot;I2&quot; $ cv}`◇°C or {`B &quot;F5.1&quot; $ 32+9×cv÷5}`◇°F&#39;
                    ┌──┐      ┌─────┐
 The temperature is │11│°C or │ 52.3│°F
                    │30│      │ 85.2│
@@ -852,9 +852,9 @@ setting <strong>∆F</strong>'s <em>third</em> option,
 <strong>Box</strong> <a href="#f-call-syntax-details">mode</a>,
 <span class="margin-note"><strong>third option</strong>:
 <code>⍺[2+⎕IO]</code>.</span>to <code>1</code>:</p>
-<pre><code>   C← 11.3 29.55 59.99
+<pre><code>   cv← 11.3 29.55 59.99
        ↓¯¯¯ Box mode
-   0 0 1 ∆F &#39;`◇The temperature is {&quot;I2&quot; $ C}`◇°C or {&quot;F5.1&quot; $ 32+9×C÷5}`◇°F&#39;
+   0 0 1 ∆F &#39;`◇The temperature is {&quot;I2&quot; $ cv}`◇°C or {&quot;F5.1&quot; $ 32+9×cv÷5}`◇°F&#39;
 ┌───────────────────┬──┬──────┬─────┬──┐
 │                   │11│      │ 52.3│  │
 │The temperature is │30│°C or │ 85.2│°F│
@@ -915,11 +915,12 @@ to the <em>f‑string</em> itself. Try this yourself.</p>
 
 <pre><code>   bL bR← &#39;«»&#39;                     ⍝ ⎕UCS 171 187
    ∆F &#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
-Our string «Our string {bL, `⍵0, bR} has {≢`⍵0} characters» has 47 characters.
+Our string «Our string {bL, `⍵0, bR} has {≢`⍵0} characters» has 47 characters.</code></pre>
+<details id="pPeek"><summary class="summary">&ensp;Let's check our work...</summary>
 
-⍝  Check our work...
-   ≢&#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
+<pre><code>   ≢&#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
 47</code></pre>
+</details>
 </details>
 
 <h2 data-number="5.9" id="the-format-shortcut"><span
@@ -1292,62 +1293,83 @@ character matrix. That can be expressed schematically via expression
 <em>(a),</em> shown here:</p>
 <pre><code>(a) 0 ∆F… </code></pre>
 <p>However, if the initial <a href="#f-call-syntax-details">∆F
-Options</a>(<strong><em>DFN</em></strong>) is <code>1</code>, as in
+Option</a>, <strong><em>DFN</em></strong>, is <code>1</code>, as in
 <em>(b),</em></p>
 <pre><code>(b) 1 ∆F… </code></pre>
 <p>then <span class="margin-note">This assumes the resulting dfn is
 called with the same arguments in the same calling environment in the
-same state. </span> <strong>∆F</strong> returns a <strong>dfn</strong>
+same state.</span> <strong>∆F</strong> returns a <strong>dfn</strong>
 that, <em>when called later</em>, will return precisely the same
 character expression as for <em>(a)</em>. This is most useful when you
 are making repeated use of an <em>f‑string</em>, since the overhead for
 analyzing the <em>f‑string</em> contents <em>once</em> will be amortized
-over all the calls.</p>
+over <em><strong>all</strong></em> the calls.</p>
 <p>Let's explore an example where getting the best performance for a
 heavily used <strong>∆F</strong> string is important.</p>
-<p>First, let's grab <code>cmpx</code>, so we can compare the
-performance…</p>
-<pre><code>   &#39;cmpx&#39; ⎕CY &#39;dfns&#39;</code></pre>
-<p>Now, let's proceed. Here's the code:</p>
-<pre><code>   C← 11 30 60
+<p>First, let's grab <code>cmpx</code> and set the variable
+<code>cv</code>, so we can compare the performance…</p>
+<pre><code>   &#39;cmpx&#39; ⎕CY &#39;dfns&#39;
+   cv← 11 30 60 </code></pre>
+<p>Now, let's proceed. Here's our <strong>∆F</strong> String
+<code>t</code>:</p>
+<pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ cv}°C or {&quot;F5.1&quot; $ F← 32+9×cv÷5}°F&#39;</code></pre>
+<details id="pPeek"><summary class="summary">Evaluate <code>∆F t</code>...</summary>
 
-⍝ Here&#39;s our ∆F String t
-   t←&#39;The temperature is {&quot;I2&quot; $ C}°C or {&quot;F5.1&quot; $ F← 32+9×C÷5}°F&#39;
+<pre><code>   ∆F t 
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0  </code></pre>
+</details>
 
-⍝  Let&#39;s precompute a dfn T, given ∆F String t.
-⍝  It has everything needed to generate the output
-⍝  (except any external variables or additional arguments referenced).
-   T←1 ∆F t
+<p>Let's precompute a dfn <code>T</code>, given the string
+<code>t</code>. <code>T</code> has everything needed to generate the
+output (given the same definition of the vector <code>cv</code>, when
+<code>T</code> is evaluated).</p>
+<pre><code>   T← 1 ∆F t</code></pre>
+<details id="pPeek"><summary class="summary">Evaluate <code>T ⍬</code>...</summary>
 
-⍝  Compare the performance of the two formats…
-⍝  The precomputed version is about 17 times faster, in this run.
-   cmpx &#39;∆F t&#39; &#39;T ⍬&#39;
+<pre><code>   T ⍬
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0  </code></pre>
+</details>
+
+<p>Now, let's compare the performance of the two formats.
+<span class="margin-note"><br><br><br>Both <code>t</code> and
+<code>T</code> will reference <code>cv</code>.</span></p>
+<pre><code>   cmpx &#39;∆F t&#39; &#39;T ⍬&#39;
 ∆F t → 1.7E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
  T ⍬ → 1.0E¯5 | -94% ⎕⎕</code></pre>
-<blockquote>
-<p>Before we get to syntax and other information…</p>
-</blockquote>
-<p>Finally, we want to show you that <span class="margin-note">The
-<em>dfn</em> returned includes the original <em>f‑string</em> text used
-to generate it, available as <code>`⍵0</code>.</span> the <em>dfn</em>
-returned from <code>1…∆F…</code> can retrieve argument(s) passed on the
-right side of <strong>∆F</strong>, using the very same omega shortcut
-expressions (<code>`⍵1</code>, etc.) as described above.</p>
-<p>As a variation on the example above, let's share the centigrade
-value, not as a <em>variable</em>, but as the <em>first argument</em> to
-<strong>∆F</strong> (<em>i.e.</em> <code>`⍵1`</code>).</p>
+<p>The precomputed version is about <mark>17 times faster</mark>, at
+least in this run.</p>
+<p>Before we get to syntax and other information, we want to show you
+that <span class="margin-note">The <em>dfn</em> returned includes the
+original <em>f‑string</em> text used to generate it, available as
+<code>`⍵0</code>.</span> the <em>dfn</em> returned via the <em>DFN</em>
+option can retrieve one or more arguments passed on the right side of
+<strong>∆F</strong>, using the very same omega shortcut expressions
+(like <code>`⍵1</code>) we've discussed above.</p>
+<p>Let's share the Centigrade values <code>cv</code> from our current
+example, not as a <em>variable</em>, but as the <em>first argument</em>
+to <strong>∆F</strong>. We'll access the value as <code>`⍵1`</code>.</p>
 <pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ `⍵1}°C or {&quot;F5.1&quot; $ F← 32+9×`⍵1÷5}°F&#39;
    T← 1 ∆F t
 
-   ∆F t 35
-The temperature is 35°C or 95.0°F
+   ∆F t (11 30 60)
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0 
 
-   T 35
-The temperature is 35°C or 95.0°F
+   T ⊂(11 30 60)
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0 
 
-   cmpx &#39;∆F t 35&#39; &#39;T 35&#39;
-∆F t 35 → 1.7E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
-   T 35 → 8.9E¯6 | -95% ⎕⎕</code></pre>
+   cmpx &#39;∆F t (11 30 60)&#39; &#39;T ⊂(11 30 60)&#39;
+∆F t 35 → 1.8E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
+   T 35 → 1.2E¯5 | -94% ⎕⎕</code></pre>
+<p>The precomputed version shows a comparable speedup over the default
+version, around <mark>15 times faster</mark>.</p>
 <hr />
 <p>Below, we summarize key information you've already gleaned from the
 examples.</p>
@@ -1955,7 +1977,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T162907]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T203528]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
