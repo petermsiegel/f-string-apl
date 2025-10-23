@@ -783,6 +783,22 @@ Try recasting this earlier example to use **Wrap** `` `W ``.
 
 <details id="pPeek"><summary class="summary">&ensp;Below is one solution...</summary>
 
+
+
+```
+   n← ≢names← 'Mary' 'Jack' 'Tony' 
+   prize← 1000                              
+   ∆F '{ ↑names } { "wins " "" `W "£", ⍕⍪?n⍴ prize }'
+Mary wins £201
+Jack wins £ 73
+Tony wins £349
+```
+
+</details>
+</div>
+
+## Precomputed f‑strings with the <span style="font-size: 80%;">***DFN***</span> Option
+
  
 The default returned from **∆F** is always (on success) a character matrix. That can be expressed schematically via expression *(a),* shown here: 
 
@@ -1108,7 +1124,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T204122]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T204440]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
