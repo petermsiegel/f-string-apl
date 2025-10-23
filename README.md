@@ -155,7 +155,6 @@ Table 3a. <strong>The Three Field Types</strong>
 </div> 
 
 <br>
-</details>
 </details> 
 
 # Displaying ∆F **Help** in APL 
@@ -782,7 +781,7 @@ Try recasting this earlier example to use **Wrap** `` `W ``.
    ∆F '{ ↑names }{ ⍪n⍴ ⊂"wins" }{ "£", ⍕⍪?n⍴ prize }'
 ```
 
-<details id="pPeek"><summary class="summary">&ensp;Below is one solution..</summary>
+<details id="pPeek"><summary class="summary">&ensp;Below is one solution...</summary>
 
  
 The default returned from **∆F** is always (on success) a character matrix. That can be expressed schematically via expression *(a),* shown here: 
@@ -1109,7 +1108,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T203528]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T204122]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
