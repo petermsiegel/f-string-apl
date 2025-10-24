@@ -1055,11 +1055,14 @@ Shortcut</h2>
 <p><span class="margin-note"><code>`J</code> is a variant of
 <code>just</code>, found in the <em>dfns</em> library.</span> The Text
 <strong>Justification</strong> shortcut <code>`J</code> treats its right
-argument as a character matrix, justifying each line to the left
+argument as a character array, justifying each line to the left
 (<code>⍺="L"</code>, the default), to the right (<code>⍺="R"</code>), or
-centered (<code>⍺="C"</code>). If its right argument is numeric, it will
-be converted to character form with an implicit print precision of
-<code>⎕PP=34</code>.</p>
+centered (<code>⍺="C"</code>). <span class="margin-note"><strong>Maximum
+<code>⎕PP</code>:</strong> the (maximum) <code>⎕PP</code> is
+<code>17</code> for 64-bit floats, and <code>34</code> for 128-bit
+floats.</span> If its right argument contains floating point numbers,
+they will be displayed with the maximum print precision <code>⎕PP</code>
+available.</p>
 <pre><code>   a← ↑&#39;elephants&#39; &#39;cats&#39; &#39;rhinoceroses&#39;
    ∆F &#39;{&quot;L&quot; `J a}  {&quot;C&quot; `J a}  {&quot;R&quot; `J a}&#39; 
 elephants      elephants       elephants
@@ -1688,12 +1691,12 @@ or numbers.</td>
 <td style="text-align: left;"><strong>`J</strong></td>
 <td style="text-align: left;">Justify</td>
 <td style="text-align: left;"><code>[⍺] `J ⍵</code>. Justify each row of
-a matrix:<br> <em>left</em>: ⍺="L"; <em>center</em>: ⍺="C";
-<em>right</em> ⍺="R".<br>You may use
+object <code>⍵</code> as text:<br> <em>left</em>: ⍺="L";
+<em>center</em>: ⍺="C"; <em>right</em> ⍺="R".<br>You may use
 <code>¯1</code>|<code>0</code>|<code>1</code> in place of
 <code>"L"</code>|<code>"C"</code>|<code>"R"</code>.<br>If omitted,
-<code>⍺←'L'</code>. <em>Note: Displays numbers at
-<code>⎕PP=34</code>.</em></td>
+<code>⍺←'L'</code>. <em>Note: Displays numbers with the maximum
+precision available.</em></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>`Q</strong></td>
@@ -2005,7 +2008,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251023T172522]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251023T202352]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

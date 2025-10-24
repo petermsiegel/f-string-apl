@@ -374,13 +374,13 @@
     Ð← XR scÐ2← HT   ' ⎕THIS.Ð ' ' 0∘⎕SE.Dyalog.Utils.disp¯1∘↓'                           
     F← XR scF2←      ' ⎕FMT '    ' ⎕FMT ' 
       ⎕SHADOW 'jCod'
-      jCod← { ⍝ Justify: Left "l", Center "c"), Right justify "r" (ignore case).
+      jCod← { ⍝ Justify: Left "L", Center "C"), Right justify "R" (ignore case).
           _← '{'
-          _,←   '⎕PP←34⋄⍺←''l''⋄B←{+/∧\'' ''=⍵}⋄'
-          _,←   'w⌽⍨(⎕C⍺){'
-          _,←         '⍺∊''l''¯1:B ⍵⋄'
-          _,←         '⍺∊''c'' 0:⌈0.5×⍵-⍥B⌽⍵⋄'
-          _,←         '⍺∊''r'' 1:-B⌽⍵⋄'
+          _,←   '⎕PP←34⋄⍺←''L''⋄B←{+/∧\'' ''=⍵}⋄'
+          _,←   'w⌽⍨(1⎕C⍺){'
+          _,←         '⍺∊''L''¯1:B ⍵⋄'
+          _,←         '⍺∊''C'' 0:⌈0.5×⍵-⍥B⌽⍵⋄'
+          _,←         '⍺∊''R'' 1:-B⌽⍵⋄'
           _,←         '⍳¯1'         ⍝ Signal a DOMAIN ERROR if we fall through
           _,←   '}w←⎕FMT⍵'
           _, '}' 
