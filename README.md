@@ -566,7 +566,7 @@ Mary Jones  23
 ## Text Justification Shortcut
 
 
-The Text **Justification** shortcut `` `J `` treats its right argument as a character matrix, justifying each line to the left (`⍺="L"`, the default), to the right (`⍺="R"`), or centered (`⍺="C"`). If its right argument is numeric, it will be converted to character form with an implicit print precision of `⎕PP=34`.
+The Text **Justification** shortcut `` `J `` treats its right argument as a character array, justifying each line to the left (`⍺="L"`, the default), to the right (`⍺="R"`), or centered (`⍺="C"`). If its right argument contains numbers, they will be displayed with an implicit print precision of `⎕PP=34`.
 
 ``` 
    a← ↑'elephants' 'cats' 'rhinoceroses'
@@ -1002,7 +1002,7 @@ symbol, a ***single*** backtick will suffice.
 | **\`C** | Commas | `` `C ⍵ ``. Adds commas to `⍵` after every 3rd digit of the integer part of `⍵`, right-to-left. `⍵` is a vector of num strings or numbers. |
 | **\`D** | Date-Time | Synonym for **\`T**. |
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL documentation). |
-| **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of a matrix:<br>&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`.<br>If omitted, `⍺←'L'`. *Note: Displays numbers at `⎕PP=34`.*|
+| **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`.<br>If omitted, `⍺←'L'`. *Note: Displays numbers at* `⎕PP=34`.|
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is.<br>If omitted, `⍺←''''`. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format.<br>If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right).<br>If omitted, `⍺←''''`. _See details below._ |
@@ -1141,7 +1141,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251023T172522]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251023T173330]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
