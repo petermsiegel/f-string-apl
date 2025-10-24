@@ -1,15 +1,16 @@
 <div class="right-margin-bar"> 
 <div class="pMarquee">
 
-***∆F*** is a function for *Dyalog* APL that 
-interprets *f‑strings*, a concise, yet powerful way to display multiline APL text, arbitrary APL expressions, and multi&shy;dimensional objects using extensions to 
+***∆F*** is a function for *Dyalog* APL that interprets *f‑strings*, 
+a concise, yet powerful way to display multiline APL text, arbitrary 
+APL expressions, and multi&shy;dimensional objects using extensions to 
 *dfns* and other familiar tools.
 
 </div>
 
 # Table of Contents  
 
-<details id="TOC">     <!-- option: open -->
+<details id="TOC">     <!-- option: open  Set id="TOC" here only. -->
 <summary class="summary">&ensp;Show/Hide <em>Table of Contents</em></summary>
 <span style="font-size:75%;">
 
@@ -32,6 +33,7 @@ interprets *f‑strings*, a concise, yet powerful way to display multiline APL t
   - [The Shortcut for Numeric Commas](#the-shortcut-for-numeric-commas)
   - [Self-documenting **Code** fields (SDCFs)](#self-documenting-code-fields-sdcfs)
   - [The Above Shortcut](#the-above-shortcut)
+  - [Text Justification Shortcut](#text-justification-shortcut)
   - [Omega Shortcuts (Implicit)](#omega-shortcuts-implicit)
   - [Shortcuts With Individual Expressions](#shortcuts-with-individual-expressions)
   - [A Shortcut for Dates and Times (Part I)](#a-shortcut-for-dates-and-times-part-i)
@@ -44,7 +46,7 @@ interprets *f‑strings*, a concise, yet powerful way to display multiline APL t
   - [∆F Call Syntax Details](#f-call-syntax-details)
   - [∆F Options](#f-options)
   - [∆F Return Value](#f-return-value)
-  - [∆F f‑string Building Blocks](#f-fstring-building-blocks)
+  - [∆F F‑string Building Blocks](#f-fstring-building-blocks)
   - [Code Field Shortcuts](#code-field-shortcuts)
   - [Escape Sequences For Text Fields and Quoted Strings](#escape-sequences-for-text-fields-and-quoted-strings)
   - [Quoted Strings in Code Fields](#quoted-strings-in-code-fields)
@@ -561,6 +563,20 @@ John Smith  29
 Mary Jones  23
 ```
 
+## Text Justification Shortcut
+
+
+The Text **Justification** shortcut `` `J `` treats its right argument as a character matrix, justifying each line to the left (`⍺="L"`, the default), to the right (`⍺="R"`), or centered (`⍺="C"`). If its right argument is numeric, it will be converted to character form with an implicit print precision of `⎕PP=34`.
+
+``` 
+   a← ↑'elephants' 'cats' 'rhinoceroses'
+   ∆F '{"L" `J a}  {"C" `J a}  {"R" `J a}' 
+elephants      elephants       elephants
+cats              cats              cats
+rhinoceroses  rhinoceroses  rhinoceroses
+```
+
+
 ## Omega Shortcuts (Implicit)  
 
 > The _next_ best thing: the use of `` `⍵ `` in **Code** field expressions…
@@ -867,8 +883,8 @@ Now, let's compare the performance of the two formats.
 
 The precomputed version is about <mark>17 times faster</mark>, at least in this run.
 
-Before we get to syntax and other information, we want to show you that
-
+Before we get to syntax and other information, we want to show you 
+that 
 the _dfn_ returned via the *DFN* option can retrieve one or more arguments passed on the right side of **∆F**, using the very same omega shortcut expressions (like `` `⍵1 ``) we've 
 discussed above.
 
@@ -953,7 +969,7 @@ Below, we summarize key information you've already gleaned from the examples.
 - If the **DFN** option is selected, **∆F** always returns a standard Dyalog dfn on success.
 - On failure of any sort, an informative APL error is signaled.
 
-## ∆F f‑string Building Blocks
+## ∆F F‑string Building Blocks
 
 The first element in the right arg to ∆F is a character vector, an *f‑string*,
 which contains one or more **Text** fields, **Code** fields, and **Space** fields in any combination.
@@ -981,14 +997,15 @@ symbol, a ***single*** backtick will suffice.
 
 | Shortcut<div style="width:100px"></div> | Name<div style="width:150px"></div>      | Meaning |
 | :----- | :---------- | :----- |
-| **\`A**, **%** | Above | `[⍺] % ⍵`. Centers array `⍺` above array `⍵`. If omitted, `⍺←''`, *i.e.* a blank line. |
+| **\`A**, **%** | Above | `[⍺] % ⍵`. Centers array `⍺` above array `⍵`.<br>If omitted, `⍺←''`, *i.e.* a blank line. |
 | **\`B** | Box | `` `B ⍵ ``. Places `⍵` in a box. `⍵` is any array. |
 | **\`C** | Commas | `` `C ⍵ ``. Adds commas to `⍵` after every 3rd digit of the integer part of `⍵`, right-to-left. `⍵` is a vector of num strings or numbers. |
 | **\`D** | Date-Time | Synonym for **\`T**. |
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL documentation). |
-| **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
-| **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
-| **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. _See details below._ |
+| **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of a matrix:<br>&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`.<br>If omitted, `⍺←'L'`. *Note: Displays numbers at `⎕PP=34`.*|
+| **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is.<br>If omitted, `⍺←''''`. |
+| **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format.<br>If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
+| **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right).<br>If omitted, `⍺←''''`. _See details below._ |
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut (<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. _See details below._ |
 | **\`⍵**, **⍹** | Omega Shortcut (<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. _See details below._ |
 | **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small>| `→`/`↓` (synonym: `%`) signal that the source code for the **Code** field appears before/above its value. Surrounding blanks are significant. *See [SDCFs](#self-documenting-code-fields-sdcfs) in __Examples__ for details.* |
@@ -1124,7 +1141,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T204440]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251023T172522]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

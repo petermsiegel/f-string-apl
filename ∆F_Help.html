@@ -378,7 +378,7 @@ familiar tools.</p>
 
 <h1 data-number="1" id="table-of-contents"><span
 class="header-section-number">1</span> Table of Contents</h1>
-<details id="TOC">     <!-- option: open -->
+<details id="TOC">     <!-- option: open  Set id="TOC" here only. -->
 <summary class="summary">&ensp;Show/Hide <em>Table of Contents</em></summary>
 <span style="font-size:75%;">
 
@@ -413,6 +413,8 @@ Commas</a></li>
 <li><a href="#self-documenting-code-fields-sdcfs">Self-documenting
 <strong>Code</strong> fields (SDCFs)</a></li>
 <li><a href="#the-above-shortcut">The Above Shortcut</a></li>
+<li><a href="#text-justification-shortcut">Text Justification
+Shortcut</a></li>
 <li><a href="#omega-shortcuts-implicit">Omega Shortcuts
 (Implicit)</a></li>
 <li><a href="#shortcuts-with-individual-expressions">Shortcuts With
@@ -434,7 +436,7 @@ Information</a>
 <li><a href="#f-call-syntax-details">∆F Call Syntax Details</a></li>
 <li><a href="#f-options">∆F Options</a></li>
 <li><a href="#f-return-value">∆F Return Value</a></li>
-<li><a href="#f-fstring-building-blocks">∆F f‑string Building
+<li><a href="#f-fstring-building-blocks">∆F F‑string Building
 Blocks</a></li>
 <li><a href="#code-field-shortcuts">Code Field Shortcuts</a></li>
 <li><a
@@ -1047,8 +1049,24 @@ itself, and <code>`⍵2</code> the <strong><em>second</em></strong>.
 Employee    Age
 John Smith  29
 Mary Jones  23</code></pre>
-<h2 data-number="5.13" id="omega-shortcuts-implicit"><span
-class="header-section-number">5.13</span> Omega Shortcuts
+<h2 data-number="5.13" id="text-justification-shortcut"><span
+class="header-section-number">5.13</span> Text Justification
+Shortcut</h2>
+<p><span class="margin-note"><code>`J</code> is a variant of
+<code>just</code>, found in the <em>dfns</em> library.</span> The Text
+<strong>Justification</strong> shortcut <code>`J</code> treats its right
+argument as a character matrix, justifying each line to the left
+(<code>⍺="L"</code>, the default), to the right (<code>⍺="R"</code>), or
+centered (<code>⍺="C"</code>). If its right argument is numeric, it will
+be converted to character form with an implicit print precision of
+<code>⎕PP=34</code>.</p>
+<pre><code>   a← ↑&#39;elephants&#39; &#39;cats&#39; &#39;rhinoceroses&#39;
+   ∆F &#39;{&quot;L&quot; `J a}  {&quot;C&quot; `J a}  {&quot;R&quot; `J a}&#39; 
+elephants      elephants       elephants
+cats              cats              cats
+rhinoceroses  rhinoceroses  rhinoceroses</code></pre>
+<h2 data-number="5.14" id="omega-shortcuts-implicit"><span
+class="header-section-number">5.14</span> Omega Shortcuts
 (Implicit)</h2>
 <blockquote>
 <p>The <em>next</em> best thing: the use of <code>`⍵</code> in
@@ -1086,8 +1104,8 @@ right, starting with <code>`⍵1</code>, the first, <em>i.e.</em>
    b← ∆F &#39;{(⍳2⍴`⍵1) % (⍳2⍴`⍵2) % (⍳2⍴`⍵3)}&#39; 1 2 3  ⍝ Explicit Omega expressions
    a ≡ b                                           ⍝ Are they the same?
 1                                                  ⍝ Yes!</code></pre>
-<h2 data-number="5.14" id="shortcuts-with-individual-expressions"><span
-class="header-section-number">5.14</span> Shortcuts With Individual
+<h2 data-number="5.15" id="shortcuts-with-individual-expressions"><span
+class="header-section-number">5.15</span> Shortcuts With Individual
 Expressions</h2>
 <p>Shortcuts often make sense with individual expressions, not just
 entire <strong>Code</strong> fields. They can be manipulated like
@@ -1117,8 +1135,8 @@ as this somewhat hard to read alternative:</p>
 <blockquote>
 <p>There are loads of other examples to discover.</p>
 </blockquote>
-<h2 data-number="5.15" id="a-shortcut-for-dates-and-times-part-i"><span
-class="header-section-number">5.15</span> A Shortcut for Dates and Times
+<h2 data-number="5.16" id="a-shortcut-for-dates-and-times-part-i"><span
+class="header-section-number">5.16</span> A Shortcut for Dates and Times
 (Part I)</h2>
 <p><span class="margin-note">The syntax for the Date-Time specifications
 in the left argument to <code>`T</code> can be found in the Dyalog
@@ -1144,8 +1162,8 @@ added the <em>truncated</em> timestamp <code>2025 01 01</code> right
 into the <em>f‑string</em>.)</p>
 <pre><code>   ∆F &#39;{ &quot;D MMM YYYY &#39;&#39;was a&#39;&#39; Dddd.&quot;`T 2025 01 01}&#39;
 1 JAN 2025 was a Wednesday.</code></pre>
-<h2 data-number="5.16" id="a-shortcut-for-dates-and-times-part-ii"><span
-class="header-section-number">5.16</span> A Shortcut for Dates and Times
+<h2 data-number="5.17" id="a-shortcut-for-dates-and-times-part-ii"><span
+class="header-section-number">5.17</span> A Shortcut for Dates and Times
 (Part II)</h2>
 <p>If it bothers you to use <code>`T</code> for a date-only expression,
 you can use <code>`D</code>, which means exactly the same thing.</p>
@@ -1163,8 +1181,8 @@ equivalent to the <em>slightly</em> verbose expression:
 <code>`⍵1 `⍵2 `⍵3</code>.</p>
 <pre><code>   ∆F &#39;{ &quot;D Mmm YYYY &#39;&#39;was a&#39;&#39; Dddd.&quot; `T `⍵ `⍵ `⍵}&#39; 2025 1 21
 21 Jan 2025 was a Tuesday.</code></pre>
-<h2 data-number="5.17" id="the-quote-shortcut"><span
-class="header-section-number">5.17</span> The Quote Shortcut</h2>
+<h2 data-number="5.18" id="the-quote-shortcut"><span
+class="header-section-number">5.18</span> The Quote Shortcut</h2>
 <blockquote>
 <p>Placing quotes around string elements of an array.</p>
 </blockquote>
@@ -1213,8 +1231,8 @@ mix of character and numeric scalars only). We'll call the object
 
 <p>Voilà, quotes appear around the character digits, but not the actual
 APL numbers!</p>
-<h2 data-number="5.18" id="the-wrap-shortcut-experimental"><span
-class="header-section-number">5.18</span> The Wrap Shortcut
+<h2 data-number="5.19" id="the-wrap-shortcut-experimental"><span
+class="header-section-number">5.19</span> The Wrap Shortcut
 <span class="red">(Experimental)</span></h2>
 <div class="test-feature">
 
@@ -1268,7 +1286,7 @@ simple array in a complex array.</p>
 
 <p><span class="margin-note"><br><br>The string <code>"wins "</code> is
 the left prefix to <strong>Wrap</strong>, and <code>""</code> the
-right.<span class="margin-note"></p>
+right.</span></p>
 <pre><code>   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
    prize← 1000                              
    ∆F &#39;{ ↑names } { &quot;wins &quot; &quot;&quot; `W &quot;£&quot;, ⍕⍪?n⍴ prize }&#39;
@@ -1278,9 +1296,9 @@ Tony wins £349</code></pre>
 </details>
 </div>
 
-<h2 data-number="5.19"
+<h2 data-number="5.20"
 id="precomputed-fstrings-with-the-dfn-option"><span
-class="header-section-number">5.19</span> Precomputed f‑strings with the
+class="header-section-number">5.20</span> Precomputed f‑strings with the
 <span style="font-size: 80%;"><em><strong>DFN</strong></em></span>
 Option</h2>
 <p><span class="margin-note"><strong>∆F</strong>'s default initial
@@ -1566,7 +1584,7 @@ always returns a standard Dyalog dfn on success.</li>
 <li>On failure of any sort, an informative APL error is signaled.</li>
 </ul>
 <h2 data-number="6.5" id="f-fstring-building-blocks"><span
-class="header-section-number">6.5</span> ∆F f‑string Building
+class="header-section-number">6.5</span> ∆F F‑string Building
 Blocks</h2>
 <p>The first element in the right arg to ∆F is a character vector, an
 <em>f‑string</em>, which contains one or more <strong>Text</strong>
@@ -1637,7 +1655,7 @@ style="text-align: left;">Shortcut<div style="width:100px"></div></th>
 <strong>%</strong></td>
 <td style="text-align: left;">Above</td>
 <td style="text-align: left;"><code>[⍺] % ⍵</code>. Centers array
-<code>⍺</code> above array <code>⍵</code>. If omitted,
+<code>⍺</code> above array <code>⍵</code>.<br>If omitted,
 <code>⍺←''</code>, <em>i.e.</em> a blank line.</td>
 </tr>
 <tr>
@@ -1667,12 +1685,23 @@ or numbers.</td>
 <code>[⍺] ⎕FMT ⍵</code>. (See APL documentation).</td>
 </tr>
 <tr>
+<td style="text-align: left;"><strong>`J</strong></td>
+<td style="text-align: left;">Justify</td>
+<td style="text-align: left;"><code>[⍺] `J ⍵</code>. Justify each row of
+a matrix:<br> <em>left</em>: ⍺="L"; <em>center</em>: ⍺="C";
+<em>right</em> ⍺="R".<br>You may use
+<code>¯1</code>|<code>0</code>|<code>1</code> in place of
+<code>"L"</code>|<code>"C"</code>|<code>"R"</code>.<br>If omitted,
+<code>⍺←'L'</code>. <em>Note: Displays numbers at
+<code>⎕PP=34</code>.</em></td>
+</tr>
+<tr>
 <td style="text-align: left;"><strong>`Q</strong></td>
 <td style="text-align: left;">Quote</td>
 <td style="text-align: left;"><code>[⍺]`Q ⍵</code>. Recursively scans
 <code>⍵</code>, putting char. vectors, scalars, and rows of
-higher-dimensional strings in APL quotes, leaving other elements as is.
-If omitted, <code>⍺←''''</code>.</td>
+higher-dimensional strings in APL quotes, leaving other elements as
+is.<br>If omitted, <code>⍺←''''</code>.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>`T</strong></td>
@@ -1681,7 +1710,7 @@ If omitted, <code>⍺←''''</code>.</td>
 timestamp(s) <code>⍵</code> according to date-time template
 <code>⍺</code>. <code>⍵</code> is one or more APL timestamps
 <code>⎕TS</code>. <code>⍺</code> is a date-time template in
-<code>1200⌶</code> format. If omitted,
+<code>1200⌶</code> format.<br>If omitted,
 <code>⍺← 'YYYY-MM-DD hh:mm:ss'</code>.</td>
 </tr>
 <tr>
@@ -1690,7 +1719,7 @@ timestamp(s) <code>⍵</code> according to date-time template
 <span class="red"><small><strong>EXPERIMENTAL!</strong></small></span></td>
 <td style="text-align: left;"><code>[⍺]`W ⍵</code>. Wraps the rows of
 simple arrays in ⍵ in decorators <code>0⊃2⍴⍺</code> (on the left) and
-<code>1⊃2⍴⍺</code> (on the right). If omitted, <code>⍺←''''</code>.
+<code>1⊃2⍴⍺</code> (on the right).<br>If omitted, <code>⍺←''''</code>.
 <em>See details below.</em></td>
 </tr>
 <tr>
@@ -1976,7 +2005,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251022T204122]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251023T172522]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

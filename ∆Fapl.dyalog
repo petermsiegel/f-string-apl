@@ -1,5 +1,5 @@
 :Namespace ⍙Fapl
-  ⎕IO  ⎕ML←0 1                 ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
+  ⎕IO  ⎕ML ⎕PP←0 1 34          ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                     ⍝ DEBUG←1 turns off top-level error trapping...
   helpHtmlFi← '∆F_Help.html'   ⍝ Called from 'help' option. Globally set here
 
@@ -189,10 +189,10 @@
   ⍝ User Shortcuts: A, B, C, F, T~D, Q, W.  
   ⍝ Non-user Internal Shortcut Code and dfns: scÐ, Ð;  scM, M.
   ⍝ See ⍙LoadShortcuts for shortcut details and associated variables scA, scB, etc.     
-    scA scB scC scÐ scF scM scT scQ scW← inline⊃¨ scList ⍝ code fragments.
+    scA scB scC scÐ scF scJ scM scT scQ scW← inline⊃¨ scList ⍝ code fragments.
   ⍝  userSCs must be ordered acc. to sc (sc← 'ABCFTDQW'). See function MapSC and its use.  
-  ⍝           `A  `B  `C      `F  `T  `D  `Q  `W 
-    userSCs← scA scB scC     scF scT scT scQ scW            
+  ⍝           `A  `B  `C      `F  `J  `T  `D  `Q  `W 
+    userSCs← scA scB scC     scF  scJ scT scT scQ scW            
  
   ⍝ Pseudo-globals  camelCaseG 
   ⍝    fldsG-   global field list
@@ -339,12 +339,13 @@
 ⍝ C       commas          monadic    `C                Add commas to numbers every 3 digits R-to-L
 ⍝ Ð       display ⍵       dyadic                       Var Ð only used internally...
 ⍝ F       [⍺]format ⍵     ambi       `F, $             ⎕FMT.   Std is $
+⍝ J       [⍺] justify ⍵   ambi       `J                justify rows of ⍵. ⍺←'l'. ⍺∊'lcr' left/ctr/rght.
 ⍝ M       merge[⍺] ⍵      ambi                         Var M only used internally...
 ⍝ Q       quote ⍵         ambi       `Q                Put only text in quotes. ⍺←''''
 ⍝ T       ⍺ date-time ⍵   dyadic     `T, `D            Format ⍵, ⎕TS date-time(s), acc. to ⍺.
 ⍝ W       [⍺1 ⍺2]wrap ⍵   ambi       `W                Wrap ⍵ in decorators, ⍺1 ⍺2.  ⍺←''''. See doc.
 ⍝
-⍝ For A, B, C, D, F, M, Q, T, W; all like A example shown here:
+⍝ For A, B, C, D, F, J, M, Q, T, W; all like A example shown here:
 ⍝     A← an executable dfn in this namespace (⎕THIS).
 ⍝     scA2← name codeString, where
 ⍝          name is (⍕⎕THIS),'.A'
@@ -371,7 +372,20 @@
       }⍬
     C← XR scC2← HT   ' ⎕THIS.C ' cCod 
     Ð← XR scÐ2← HT   ' ⎕THIS.Ð ' ' 0∘⎕SE.Dyalog.Utils.disp¯1∘↓'                           
-    F← XR scF2←      ' ⎕FMT '    ' ⎕FMT '                                                
+    F← XR scF2←      ' ⎕FMT '    ' ⎕FMT ' 
+      ⎕SHADOW 'jCod'
+      jCod← { ⍝ Justify: Left "l", Center "c"), Right justify "r" (ignore case).
+          _← '{'
+          _,←   '⎕PP←34⋄⍺←''l''⋄B←{+/∧\'' ''=⍵}⋄'
+          _,←   'w⌽⍨(⎕C⍺){'
+          _,←         '⍺∊''l''¯1:B ⍵⋄'
+          _,←         '⍺∊''c'' 0:⌈0.5×⍵-⍥B⌽⍵⋄'
+          _,←         '⍺∊''r'' 1:-B⌽⍵⋄'
+          _,←         '⍳¯1'         ⍝ Signal a DOMAIN ERROR if we fall through
+          _,←   '}w←⎕FMT⍵'
+          _, '}' 
+      } ⍬
+    J← XR scJ2← HT   ' ⎕THIS.J ' jCod                                                
     M← XR scM2← HT   ' ⎕THIS.M ' '{⎕ML←1⋄⍺←⊢⋄⊃,/((⌈/≢¨)↑¨⊢)⎕FMT¨⍺⍵}'                     
       ⎕SHADOW 'qCod'
       qCod← {
@@ -388,8 +402,8 @@
     T← XR scT2← HT   ' ⎕THIS.T ' '{⎕ML←1⋄⍺←''YYYY-MM-DD hh:mm:ss''⋄∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT⊆⍵}'  
     W← XR scW2← HT   ' ⎕THIS.W ' '{⎕ML←1⋄⍺←⎕UCS 39⋄ 1<|≡⍵: ⍺∘∇¨⍵⋄L R←2⍴⍺⋄{L,R,⍨⍕⍵}⍤1⊢⍵}'
   ⍝ Load externals: scList, nSC, MapSC 
-    scList← scA2 scB2 scC2 scÐ2 scF2 scM2 scT2 scQ2 scW2  ⍝ All shortcuts, including internal ones.
-    nSC← ≢  sc← 'ABCFTDQW'                                ⍝ sc: User-callable shortcuts  (`A, etc.)
+    scList← scA2 scB2 scC2 scÐ2 scF2 scJ2 scM2 scT2 scQ2 scW2  ⍝ All shortcuts, including internal ones.
+    nSC← ≢  sc← 'ABCFJTDQW'                   ⍝ sc: User-callable shortcuts  (`A, etc.)
     MapSC←  sc∘⍳ 
     ok← 1 
   ∇
