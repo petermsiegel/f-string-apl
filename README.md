@@ -40,6 +40,7 @@ APL expressions, and multi&shy;dimensional objects using extensions to
   - [A Shortcut for Dates and Times (Part II)](#a-shortcut-for-dates-and-times-part-ii)
   - [The Quote Shortcut](#the-quote-shortcut)
   - [The Wrap Shortcut (Experimental)](#the-wrap-shortcut-experimental)
+  - [The Session Library Shortcut (Experimental)](#the-session-library-shortcut-experimental)
   - [Precomputed f‑strings with the ***DFN*** Option](#precomputed-fstrings-with-the-dfn-option)
 - [∆F Syntax and Other Information](#f-syntax-and-other-information)
   - [∆F Call Syntax Overview](#f-call-syntax-overview)
@@ -51,7 +52,8 @@ APL expressions, and multi&shy;dimensional objects using extensions to
   - [Escape Sequences For Text Fields and Quoted Strings](#escape-sequences-for-text-fields-and-quoted-strings)
   - [Quoted Strings in Code Fields](#quoted-strings-in-code-fields)
   - [Omega Shortcut Expressions: Details](#omega-shortcut-expressions-details)
-  - [Wrap Shortcut: Details (Experimental)](#wrap-shortcut-details-experimental)
+  - [Wrap Shortcut: Details](#wrap-shortcut-details)
+  - [Session Library Shortcut: Details](#session-library-shortcut-details)
 - [Appendices](#appendices)
   - [Appendix I: Undocumented Options](#appendix-i-undocumented-options)
   - [Appendix II: Python f‑strings](#appendix-ii-python-fstrings)
@@ -73,13 +75,13 @@ APL expressions, and multi&shy;dimensional objects using extensions to
    - During the test phase, go to <mark>github.com/petermsiegel/f‑string-apl</mark>. 
 2. Copy the files **∆Fapl.dyalog** and **∆F_Help.html** into your current working directory . 
 3. Then, from your Dyalog session (typically `#` or `⎕SE`), enter:<br>
-  `]load ∆Fapl [-target=`**_myns_**`]` 
-   1. Each time it is called, the `]load` will create function **∆F** and namespace **⍙Fapl** in the active namespace (or **_myns_**).
+  `]load ∆Fapl [-target=`**_anyNs_**`]` 
+   1. Each time it is called, the `]load` will create function **∆F** and namespace **⍙Fapl** in the active namespace (or **_anyNs_**).
       1. **⍙Fapl** contains utilities used by **∆F** and, once`]load`ed, ***should not*** be moved. 
       2. **∆F** *may* be relocated; it will refer to **⍙Fapl** in its original location.
    2. If **∆F_Help.html** is available at `]load` time, it will be copied into **⍙Fapl** (or a message will note its absence).
 
-Now, **∆F** is available in the active namespace (or **_myns_**), along with **⍙Fapl**. 
+Now, **∆F** is available in the active namespace (or **_anyNs_**), along with **⍙Fapl**. 
 
 ## Running **∆F** (After It's Been Installed)
 
@@ -105,7 +107,8 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
 
 - **Text** fields, supporting multiline Unicode text within each field, with the sequence `` `◇ `` (**backtick** + **statement separator**) generating a newline, <small>`⎕UCS 13`</small>; 
 
-- **Code** fields, allowing users to evaluate and display APL arrays of any dimensionality, depth and type in the user environment, arrays passed as **∆F** arguments, as well as arbitrary APL expressions based on full multi-statement dfn logic.Each **Code** field must return a value, simple or otherwise, which will be catenated with other fields and returned from **∆F**;
+- **Code** fields, allowing users to evaluate and display APL arrays of any dimensionality, depth and type in the user environment, arrays passed as **∆F** arguments, as well as arbitrary APL expressions based on full multi-statement dfn 
+logic. Each **Code** field must return a value, simple or otherwise, which will be catenated with other fields and returned from **∆F**;
 
   **Code** fields also provide a number of concise, convenient extensions, such as:
 
@@ -120,14 +123,14 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
 
   - Simple shortcuts for
 
-    - **format**ting numeric arrays, **\$** (short for **⎕FMT**): `∆F '{"F7.5" $ ?0 0}'`,
-    - putting a **box** around a specific expression, **\`B**: `` ∆F'{`B ⍳2 2}' ``,
-    - placing the output of one expression **above** another, **%**: `∆F'{"Pi"% ○1}'`,
-    - formatting **date** and **time** expressions from APL timestamps (**⎕TS**) using **\`T** (combining&nbsp;**1200⌶** and **⎕DT**): `` ∆F'{"hh:mm:ss" `T ⎕TS}' ``,
+    - **format**ting numeric arrays, **\$** (short for **⎕FMT**):<br>`∆F '{"F7.5" $ ?0 0}'`,
+    - putting a **box** around a specific expression, **\`B**:<br>`` ∆F'{`B ⍳2 2}' ``,
+    - placing the output of one expression **above** another, **%**:<br>`∆F'{"Pi"% ○1}'`,
+    - formatting **date** and **time** expressions from APL timestamps (**⎕TS**) using **\`T** (combining&nbsp;**1200⌶** and **⎕DT**): <br>` ∆F'{"hh:mm:ss" `T ⎕TS}' ``,
     - _and more_;
 
   - Simple mechanisms for concisely formatting and displaying data from
-    - user arrays or arbitrary code: <br>`tempC←10 110 40`<br>`∆F'{tempC}'` or `∆F'{ {⍵<100: 32+9×⍵÷5 ◇ "(too hot)"}¨tempC }'`,
+    - user arrays or arbitrary code:<br>`tempC←10 110 40`<br>`∆F'{tempC}'` or `∆F'{ {⍵<100: 32+9×⍵÷5 ◇ "(too hot)"}¨tempC }'`,
       <br>
     - arguments to **∆F** that follow the format string:<br>`` ∆F'{32+`⍵1×9÷5}' (10 110 40) ``,<br> where `` `⍵1 `` is a shortcut for `(⍵⊃⍨1+⎕IO)` (here `10 110 40`),
     - _and more_;
@@ -139,7 +142,7 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
 
 - Multiline (matrix) output built up field-by-field, left-to-right, from values and expressions in the calling environment or arguments to **∆F**;
 
-  - After all fields are generated, they are aligned vertically and concatenated to form a single character matrix: ***the return value from*** **∆F**.  
+  - After all fields are generated, they are aligned vertically, then concatenated to form a single character matrix: ***the return value from*** **∆F**.  
   
 **∆F** is designed for ease of use, _ad hoc_ debugging, fine-grained formatting and informal user interaction, built using Dyalog functions and operators. 
 
@@ -223,6 +226,9 @@ Isn't Jack lucky, winning twice in a row!
 
 <details id="pPeek"><summary class="summary">&ensp;View a fancier example...</summary>
 
+
+<div id="winner1">
+
 ``` 
  ⍝ Be sure everyone wins something.
    n← ≢names← 'Mary' 'Jack' 'Tony' 
@@ -233,6 +239,7 @@ Jack wins £298
 Tony wins £242
 ```
 
+</div>
 </details>
 
 ## Text Fields and Space Fields
@@ -444,7 +451,8 @@ Our string «Our string {bL, `⍵0, bR} has {≢`⍵0} characters» has 47 chara
 
 ## The Format Shortcut
 
-
+ (short for `⎕FMT`) can also be used monadically, but **∆F** will handle that for you in most cases.
+</span>
 
 > Let's add commas to some very large numbers using the **⎕FMT** shortcut `$`.
 
@@ -633,7 +641,8 @@ Here, we display one boxed value above the other.
 
 <details id="pPeek"><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
 
-While not for the faint of heart, the expression above can be recast as this somewhat hard to read alternative: 
+While not for the faint of heart, the expression above can be recast as this 
+concise alternative: 
 
 ``` 
    ∆F '{%/ `B∘⍳¨ `⍵1 `⍵2}' (2 2)(3 3)
@@ -760,6 +769,7 @@ Voilà, quotes appear around the character digits, but not the actual APL number
 
 > Wrapping results in left and right decorators...
 
+
 The shortcut **Wrap** `` `W `` is <span class="red">**_experimental_**</span>. `` `W `` is used 
 when you want to place a **_decorator_** string immediately to the left or right of **_each_** row of simple objects in the right argument, `⍵`. It differs from the **Quote** shortcut `` `Q ``, which puts quotes **_only_** around the character arrays in `⍵`. 
 
@@ -791,7 +801,11 @@ In this next example, we place brackets around the lines of each simple array in
        [1 1 0]
 ```
 
-Try recasting this earlier example to use **Wrap** `` `W ``.
+<div id="winner2">
+
+
+Now, let's try recasting an earlier example to use **Wrap** `` `W ``.
+
 
 ```
    n← ≢names← 'Mary' 'Jack' 'Tony' 
@@ -799,6 +813,7 @@ Try recasting this earlier example to use **Wrap** `` `W ``.
    ∆F '{ ↑names }{ ⍪n⍴ ⊂"wins" }{ "£", ⍕⍪?n⍴ prize }'
 ```
 
+</div>
 <details id="pPeek"><summary class="summary">&ensp;Below is one solution...</summary>
 
 
@@ -813,6 +828,84 @@ Tony wins £349
 ```
 
 </details>
+</div>
+
+## The Session Library Shortcut <span class="red">(Experimental)</span>
+
+<div class="test-feature">
+ 
+The shortcut (Session) **Library** `£`  is <span class="red">**experimental**</span>. 
+`£` denotes 
+
+a "private" namespace
+in which the user may place any functions or variables useful for the duration
+of the ***current*** *APL* session. For example, it may be useful to have available
+regularly used utilities from the ***dfns*** workspace or objects that are
+referred to or incremented across a range of uses. 
+The shortcut refers to a namespace within the **⍙Fapl** namespace created when
+**∆Fapl** was `]load`ed. 
+
+In this example, the user wants to generate all primes between 1 and 100 using
+two routines in the ***dfns*** workspace, `sieve` and `to`. To achieve this,
+we copy both routines from ***dfns***.
+
+
+
+```
+    ∆F '{"sieve" "to" ⎕CY "dfns"}{sieve 2 to 100}'
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
+```
+
+On subsequent calls, `sieve` and `to` are already available, as we can see here:
+
+```
+    ∆F '{ £.⎕NL ¯3 }'
+ sieve  to 
+```
+
+
+But, **∆F** provides a simpler solution! If the user references a name 
+via `£.`*name* that 
+has not (yet) been defined in the library, 
+an attempt is made to copy that name into the library from workspace **dfns**, 
+unless the item appears on the left-side of a simple assigment `←`.
+
+In this next example, we use *for the first time* the function `pco` from the 
+**dfns** workspace. 
+
+```
+    ∆F '{ {⍵/⍳⍴⍵} 1 pco ⍳100 }' 
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
+```
+
+The function is quietly copied in and is available *without the overhead
+of copying* for the rest of this *APL* session. 
+
+
+
+Here is an example where we define a local session variable `ctr`, 
+a counter of the number of times a particular
+statement is executed. Since we define the counter, `£.ctr←0`, 
+**∆F** makes ***no*** attempt to copy it from the **dfns** workspace.
+
+```
+   ∆F '{ ⍬⊣£.ctr←0 }'         ⍝ Initialise £.ctr.
+   t← 'We''ve been called {£.ctr← £.ctr+1} times.'
+⍝  ...                    
+   ∆F t
+We've been called 1 times.
+   ∆F t
+We've been called 2 times.
+```
+This may be sensible when ∆F is called from a variety of namespaces and/or
+if the user doesn't wish to clutter the active namespace.
+
+
+<span style="font-size: 130%;">👉 </span>
+When a *dfn* created via **∆F** with the *DFN* option runs, any uses of `£` will 
+require the associated ⍙Fapl namespace to be present.
+
+
 </div>
 
 ## Precomputed f‑strings with the <span style="font-size: 80%;">***DFN***</span> Option
@@ -949,10 +1042,10 @@ Below, we summarize key information you've already gleaned from the examples.
 | ***options***:&nbsp;*mode* | `options←` <span class="red">[</span> <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">]</span>     <span class="red">]</span>     <span class="red">]</span>     <span class="red">]</span>     &nbsp;<span class="red">**\|**</span> `'help'` <span class="red">]</span> |
 | &emsp;***options[0]***:<br>&emsp;&emsp;  ***DFN*** *output mode* | If `1`: **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If `0` (default): **∆F** returns a char. matrix. |
 | &emsp;***options[1]***:<br>&emsp;&emsp; ***DBG*** *(debug) mode* | If `1`: Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if **_DFN_** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***DFN*** option above).<br>If `0` (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***DFN*** source code is not displayed.      |
-| &emsp;***options[2]***:<br>&emsp;&emsp; ***BOX*** *mode*         | If `1`: Each field (except a null **Text** field) is boxed separately.<br>If `0` (default): Nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><small>**Note**: ***BOX*** mode can be used both with ***DFN*** and default output mode.</small> |
-| &emsp;***options[3]***:<br>&emsp;&emsp;***INLINE*** *mode*       | If `1` and the ***DFN*** option is set: The code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If `0` (default): Whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br><small>**Note:** This option is experimental and may simply disappear one day.</small> |
+| &emsp;***options[2]***:<br>&emsp;&emsp; ***BOX*** *mode*         | If `1`: Each field (except a null **Text** field) is boxed separately.<br>If `0` (default): Nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><small>***BOX*** **mode can be used both with** ***DFN*** **and default output mode.**</small> |
+| &emsp;***options[3]***:<br>&emsp;&emsp;***INLINE*** *mode*       | If `1` and the ***DFN*** option is set: The code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If `0` (default): Whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br><small>**This option is experimental and may simply disappear one day.**</small> |
 | &emsp;'help' | If `'help'` is specified, this amazing documentation is displayed. |
-| **_result_** | If `0=⊃options`, the result is always a character matrix.<br>If `1=⊃options`, the result is a dfn that, _when executed in the same environment with the same arguments_, generates that same character matrix. <br><small>**Note**: If an error is signalled, no result is returned.</small> |
+| **_result_** | If `0=⊃options`, the result is always a character matrix.<br>If `1=⊃options`, the result is a dfn that, _when executed in the same environment with the same arguments_, generates that same character matrix. <br><small>**If an error is signalled, no result is returned.**</small> |
 <div>Table 6b. <strong>∆F Call Syntax Details</strong></div>
 
 
@@ -1004,13 +1097,14 @@ symbol, a ***single*** backtick will suffice.
 | **\`C** | Commas | `` `C ⍵ ``. Adds commas to `⍵` after every 3rd digit of the integer part of `⍵`, right-to-left. `⍵` is a vector of num strings or numbers. |
 | **\`D** | Date-Time | Synonym for **\`T**. |
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL documentation). |
-| **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`.<br>If omitted, `⍺←'L'`. *Note: Displays numbers with the maximum precision available.*|
-| **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is.<br>If omitted, `⍺←''''`. |
-| **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format.<br>If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
-| **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right).<br>If omitted, `⍺←''''`. _See details below._ |
-| **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut (<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. _See details below._ |
-| **\`⍵**, **⍹** | Omega Shortcut (<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. _See details below._ |
-| **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small>| `→`/`↓` (synonym: `%`) signal that the source code for the **Code** field appears before/above its value. Surrounding blanks are significant. *See [SDCFs](#self-documenting-code-fields-sdcfs) in __Examples__ for details.* |
+| **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>*Displays numbers with the maximum precision available.*</small> |
+| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of assignments, **∆F** will attempt to copy undefined objects from workspace **dfns**. *See details below.*</small>|
+| **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
+| **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
+| **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>_See details below._</small> |
+| **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut (<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. <small>_See details below._</small>|
+| **\`⍵**, **⍹** | Omega Shortcut (<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. <small>_See details below._ <small>|
+| **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small>| `→`/`↓` (synonym: `%`) signal that the source code for the **Code** field appears before/above its value. Surrounding blanks are significant. <small>*See [SDCFs](#self-documenting-code-fields-sdcfs) in __Examples__ for details.*</small> |
 <div>Table 6c. <strong>Code Field Shortcuts</strong></div>
 
 <br>
@@ -1076,7 +1170,8 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 
 <div class="test-feature">
 
-## Wrap Shortcut: Details (Experimental) 
+
+## Wrap Shortcut: Details
 
 1. Syntax: `` [⍺←''''] `W ⍵ ``.
 2. Let `L←0⊃2⍴⍺` and `R←1⊃2⍴⍺`.
@@ -1084,6 +1179,14 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 4. `⍵` is an array of any shape and depth.`L`and `R`are char. vectors or scalars or `⍬` (treated as `''`).
 5. If there is one scalar or enclosed vector `⍺`, it is replicated _per (2) above_.
 6. By default,`⍺← ''''`,*i.e.* APL quotes will wrap the array ⍵, row by row, whether character, numeric or otherwise.
+
+
+## Session Library Shortcut: Details
+
+1. If an object `£.name` is referenced, but not defined, an attempt is made to copy it to £ from workspace **dfns**, *unless* it is being assigned. It will be available for the duration of the session.
+2. In the case of a simple assignment (with `←`), the object assigned must be new or
+of a compatible *APL* class, else a domain error will be signaled. 
+3. Assignments of the form `£.name+←`*`val`* are allowed.
 
 ---
 
@@ -1105,10 +1208,14 @@ session will start up with a narrower screen *without* side notes. If the user w
 screen, the side notes will appear, as in the default 
 case: `∆F 'help'`.
 
+
 ## Appendix II: Python f‑strings
+
+<div style="line-height: 1.3;">
 
 &emsp; Python f-strings, introduced in Python 3.6, are a modern and elegant way to format strings by embedding expressions directly inside string literals. You create an f-string by prefixing a string with the letter 'f' or 'F', and then you can include any Python expression inside curly braces within the string. When the string is evaluated, these expressions are executed and their results are automatically converted to strings and inserted at that position.
 <br>&emsp; For example, the Python expression&ensp;<strong>`f"The sum of {a} and {b} is {a + b}"`</strong>&ensp;would evaluate the addition and embed the result directly in the string. This combination of simplicity, power, and performance has made f-strings the preferred string formatting approach in modern Python code. *[Claude (AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic, October 19, 2025.]*
+</div>
 
 *See* 
 
@@ -1143,7 +1250,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251023T202352]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251025T205737]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

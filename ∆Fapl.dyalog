@@ -98,6 +98,7 @@
           c= dol:    (pfx, scF) ∇ w                    ⍝ $ => ⎕FMT (scF shortcut)
           c= esc:    (pfx, a)  ∇ w⊣ a w← CFEsc w       ⍝ `⍵, `⋄, `A, `B, etc.
           c= omUs:   (pfx, a)  ∇ w⊣ a w← CFOm w        ⍝ ⍹, alias to `⍵ (see CFEsc).
+          c= pnd:    (pfx, libUtil.Auto w) ∇ w             ⍝ £ => our private library
          ~c∊ sdcfCh: ⎕SIGNAL cfLogicÊ 
           p← +/∧\' '=w  
         ⍝ SDCF Detection...       
@@ -159,8 +160,9 @@
     CFEsc← {                                    
       0= ≢⍵: esc 
         c w← (0⌷⍵) (1↓⍵) ⋄ cfLenG+← 1   
-      c∊ om_omUs: CFOm w                               ⍝ Permissively allow `⍹ as equiv to  `⍵ OR ⍹   
-      nSC> p← MapSC c: (p⊃ userSCs) w                  ⍝ userSCs: user shortcuts `[ABFTDW]. 
+      c∊ om_omUs: CFOm w                               ⍝ Permissively allow `⍹ as equiv to  `⍵ OR ⍹ 
+      c='L': (libUtil.Auto w) w    
+      nSC> p← MapSC c: (p⊃ userSCs) w                  ⍝ userSCs: user shortcuts `[ABFJLTDW]. 
       c∊⍥⎕C ⎕A: ⎕SIGNAL ShortcutÊ c                    ⍝ Unknown shortcut!
         ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
     } ⍝ End CFEsc 
@@ -183,34 +185,36 @@
 ⍝ ===========================================================================  
 ⍝   Validate options ⍺: ⍺[0]∊ ¯1 0 1, ∧/ ⍺[1 2 3]∊ 0 1
     0∊ 0 1∊⍨ (|⊃⍺), 1↓⍺: ⎕SIGNAL optÊ                  ⍝ Invalid options (⍺)!
-    (dfn dbg box inline) fStr← ⍺ ⍵                     ⍝ ↓ When dbg=¯1, don't show (⎕←) code str, 
-    DM← (⎕∘←)⍣(dbg∧¯1≠dfn)                             ⍝ ← since we return it verbatim.
+    (dfn dbg box inline) fStr← ⍺ ⍵                       
+    DMsg← (⎕∘←)⍣(dbg∧¯1≠dfn)                           ⍝ Debug message
     nlG← dbg⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
   ⍝ User Shortcuts: A, B, C, F, T~D, Q, W.  
   ⍝ Non-user Internal Shortcut Code and dfns: scÐ, Ð;  scM, M.
   ⍝ See ⍙LoadShortcuts for shortcut details and associated variables scA, scB, etc.     
-    scA scB scC scÐ scF scJ scM scT scQ scW← inline⊃¨ scList ⍝ code fragments.
-  ⍝  userSCs must be ordered acc. to sc (sc← 'ABCFTDQW'). See function MapSC and its use.  
-  ⍝           `A  `B  `C      `F  `J  `T  `D  `Q  `W 
-    userSCs← scA scB scC     scF  scJ scT scT scQ scW            
+    scA scB scC scÐ scF scJ scM scT scQ scW← inline⊃ scList  
+  ⍝  userSCs must be ordered acc. to sc (sc← 'ABCFJLTDQW'). 
+  ⍝ See function MapSC and its use.  For £, `L, see namespace libUtil.
+  ⍝          `A  `B  `C  `F  `J  `T  `D  `Q  `W 
+    userSCs← scA scB scC scF scJ scT scT scQ scW            
  
   ⍝ Pseudo-globals  camelCaseG 
-  ⍝    fldsG-   global field list
-  ⍝    omIxG-   omega index counter: current index for omega shortcuts (`⍵, ⍹)  
-  ⍝    nBracG-  running count of braces '{' lb, '}' rb
-  ⍝    cfLenG-  code field running length (used when a self-doc code field (q.v.) occurs)  
+  ⍝    fldsG-     global field list
+  ⍝    omIxG-     omega index counter: current index for omega shortcuts (`⍵, ⍹)  
+  ⍝    nBracG-    running count of braces '{' lb, '}' rb
+  ⍝    cfLenG-    code field running length (used when a self-doc code field (q.v.) occurs)
+  ⍝               DEFINED AT ]LOAD TIME!
     fldsG← ⍬                                           ⍝ zilde
     omIxG← nBracG← cfLenG← 0                           ⍝ zero
   
   ⍝ Start the scan                                     ⍝ We start with a (possibly null) text field, 
     _← '' TF ⍵                                         ⍝ recursively calling CF_SF and (from CF_SF) SF & TF itself, &
                                                        ⍝ ... setting fields ¨fldsG¨ as we go.
-  0= ≢fldsG: DM '(1 0⍴⍬)', '⍨'/⍨ dfn≠0                 ⍝ If there are no flds, return 1 by 0 matrix
+  0= ≢fldsG: DMsg '(1 0⍴⍬)', '⍨'/⍨ dfn≠0                 ⍝ If there are no flds, return 1 by 0 matrix
     fldsG← OrderFlds fldsG                             ⍝ We will evaluate fields L-to-R
     code← '⍵',⍨ lb, rb,⍨ fldsG,⍨ box⊃ scM scÐ
-  0=dfn: DM code                                       ⍝ Not dfn. Emit code ready to execute
+  0=dfn: DMsg code                                       ⍝ Not dfn. Emit code ready to execute
     quoted← ',⍨⊂', AplQt fStr                          ⍝ Is dfn (1,¯1): add quoted fmt string (`⍵0)
-    DM lb, code, quoted, rb                            ⍝ Emit dfn str ready to cvt to dfn in caller
+    DMsg lb, code, quoted, rb                            ⍝ Emit dfn str ready to cvt to dfn in caller
   } ⍝ FmtScan 
 ⍝ === End of FmtScan ========================================================  
 
@@ -233,7 +237,7 @@
 ⍝ lDAQ, rDAQ: LEFT- and RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK, aka guillemets  
   lDAQ rDAQ← '«»'                                      ⍝ ⎕UCS 171 187 
 ⍝ Order brklist chars roughly by frequency, high to low.       
-  cfBrkList← lDAQ,⍨ sp sq dq esc lb rb dol omUs ra da pct← ' ''"`{}$⍹→↓%' 
+  cfBrkList← lDAQ,⍨ sp sq dq esc lb rb dol omUs ra da pct pnd← ' ''"`{}$⍹→↓%£' 
   tfBrkList← esc lb   ⍝ SKIP: nl                 
   lb_rb← lb rb ⋄ om_omUs← om omUs ⋄ sp_sq← sp sq ⋄   esc_lb_rb← esc lb rb  
   qtsL qtsR← lDAQ rDAQ,⍨¨ ⊂dq sq                       ⍝ Expected freq hi to lo: dq sq l/rDAQ
@@ -268,6 +272,40 @@
 
 ⍝ AplQt:  Created an APL-style single-quoted string.
   AplQt←  sq∘(⊣,⊣,⍨⊢⊢⍤/⍨1+=)                           ⍝ { sq, sq,⍨ ⍵/⍨ 1+ sq= ⍵ }
+
+⍝ =========================================================================
+⍝ libUtil: Handle £ and `L shortcuts. 
+:Namespace libUtil 
+  ulRef← ##.ûLib⊣ ulNm← 'ûLib'##.⎕NS⍬      ⍝ ulRef, ulNm: user library reference and name.
+⍝ Auto: str2←  ∇ s@CV 
+⍝ Auto with helper function ⍙Auto:
+⍝  Expects s to start 1 char after £ or `L.
+⍝  If s starts with '.' and is followed by (optional spaces) and  a valid APL name, 
+⍝     if that name exists in ûLib, done.
+⍝     else if it isn't followed by an assignment ←, 
+⍝          copy that name from workspace ¨dfns¨.
+⍝  Else: done.
+⍝  Does NOT affect the string being scanned. Only used for its ⎕CY side effect.
+⍝  Returns ulNm (@CV).  
+⍝          '\h*\.(\p{L}\w*)\h*(\P{L}?←)?'
+  ⍙Auto← {  
+    0=≢⍵: ⍬                        
+    '.'≠⊃s← NLB ⍵: ⍬  
+    ~⍙A∊⍨ ⊃s←1↓ s: ⍬                
+    0≠ulRef.⎕NC nm← s↑⍨ t← +/∧\s∊ ⍙AD: ⍬               ⍝ tally (length) of name          
+    '←'∊ 2↑NLB t↓ s: ⍬                                 ⍝ assignment? nm+←... or nm←...
+    nm ∆CY 'dfns': OKCpy nm ⋄ ErrCpy nm 
+  } 
+  Auto← ulNm⍨⍙Auto                                     ⍝ Auto: Call ⍙Auto, always returning ulNm
+⍝ libUtil-internal helpers  
+  NLB← { ⍵↓⍨ +/∧\' '=⍵}
+  OKCpy←  ulNm∘{ 'DEBUG INFO: Copied "',⍵,'" into "',⍺,'"' }⍣##.DEBUG
+  ErrCpy← ulNm∘{ 'DEBUG WARNING: Unable to copy "',⍵,'" into "',⍺,'"' }⍣##.DEBUG
+  ∆CY← { 11:: 0 ⋄ 1⊣ ⍺ ulRef.⎕CY ⍵ }                   ⍝ Returns 1 on success, else 0.
+⍝ ⍙A: Valid 1st chars of APL names!
+  ⍙A← { ⍺←'' ⋄ 0=≢⍵: ⍺~'⍺⍵∇' ⋄ ¯1=⎕NC ⊃⍵: ⍺ ∇ 1↓⍵ ⋄ (⍺,⊃⍵) ∇ 1↓⍵ }⎕AV
+  ⍙AD← ⍙A, ⎕D
+:EndNamespace 
 
 ⍝ Escape key Handlers: TFEsc QSEsc   (CFEsc, with side effects, is within FmtScan)
 ⍝ *** No side effects *** 
@@ -340,6 +378,7 @@
 ⍝ Ð       display ⍵       dyadic                       Var Ð only used internally...
 ⍝ F       [⍺]format ⍵     ambi       `F, $             ⎕FMT.   Std is $
 ⍝ J       [⍺] justify ⍵   ambi       `J                justify rows of ⍵. ⍺←'l'. ⍺∊'lcr' left/ctr/rght.
+⍝ -       [⍺] library ⍵   niladic     £, `L            handled ad hoc.
 ⍝ M       merge[⍺] ⍵      ambi                         Var M only used internally...
 ⍝ Q       quote ⍵         ambi       `Q                Put only text in quotes. ⍺←''''
 ⍝ T       ⍺ date-time ⍵   dyadic     `T, `D            Format ⍵, ⎕TS date-time(s), acc. to ⍺.
@@ -357,7 +396,7 @@
     ; XR ;HT 
     XR← ⎕THIS.⍎⊃∘⌽                                   ⍝ XR: Execute the right-hand expression
     HT← '⎕THIS' ⎕R (⍕⎕THIS)                          ⍝ HT: "Hardwire" absolute ⎕THIS. 
-    ⎕SHADOW '; sc; scA2; scB2; scC2; scÐ2; scF2; scM2; scT2; scQ2; scW2' ~';' 
+    ⎕SHADOW '; sc; scA2; scB2; scC2; scÐ2; scF2; scJ2; scM2; scQ2; scT2; scW2' ~';' 
     A← XR scA2← HT   ' ⎕THIS.A ' '{⎕ML←1⋄⍺←⍬⋄⊃⍪/(⌈2÷⍨w-m)⌽¨f↑⍤1⍨¨m←⌈/w←⊃∘⌽⍤⍴¨f←⎕FMT¨⍺⍵}' 
     B← XR scB2← HT   ' ⎕THIS.B ' '{⎕ML←1⋄⍺←0⋄⍺⎕SE.Dyalog.Utils.disp⊂⍣(1≥≡⍵),⍣(0=≡⍵)⊢⍵}' 
       ⎕SHADOW 'cCod' 
@@ -385,8 +424,9 @@
           _,←   '}w←⎕FMT⍵'
           _, '}' 
       } ⍬
-    J← XR scJ2← HT   ' ⎕THIS.J ' jCod                                                
-    M← XR scM2← HT   ' ⎕THIS.M ' '{⎕ML←1⋄⍺←⊢⋄⊃,/((⌈/≢¨)↑¨⊢)⎕FMT¨⍺⍵}'                     
+    J← XR scJ2← HT   ' ⎕THIS.J '   jCod  
+  ⍝ £, `L: Not here-- handled ad hoc...     
+    M← XR scM2← HT   ' ⎕THIS.M '   '{⎕ML←1⋄⍺←⊢⋄⊃,/((⌈/≢¨)↑¨⊢)⎕FMT¨⍺⍵}'                     
       ⎕SHADOW 'qCod'
       qCod← {
           _←  '{'
@@ -401,8 +441,9 @@
     Q← XR scQ2← HT   ' ⎕THIS.Q ' qCod 
     T← XR scT2← HT   ' ⎕THIS.T ' '{⎕ML←1⋄⍺←''YYYY-MM-DD hh:mm:ss''⋄∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT⊆⍵}'  
     W← XR scW2← HT   ' ⎕THIS.W ' '{⎕ML←1⋄⍺←⎕UCS 39⋄ 1<|≡⍵: ⍺∘∇¨⍵⋄L R←2⍴⍺⋄{L,R,⍨⍕⍵}⍤1⊢⍵}'
-  ⍝ Load externals: scList, nSC, MapSC 
-    scList← scA2 scB2 scC2 scÐ2 scF2 scJ2 scM2 scT2 scQ2 scW2  ⍝ All shortcuts, including internal ones.
+  ⍝ Load shortcuts: [internal+external] scList; [external only] nSC, MapSC.
+  ⍝ £, `L (niladic) are handled ad hoc.  
+    scList← 0 1⊃¨¨ ⊂scA2 scB2 scC2 scÐ2 scF2 scJ2 scM2 scT2 scQ2 scW2 
     nSC← ≢  sc← 'ABCFJTDQW'                   ⍝ sc: User-callable shortcuts  (`A, etc.)
     MapSC←  sc∘⍳ 
     ok← 1 
