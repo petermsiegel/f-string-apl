@@ -1,6 +1,7 @@
 :Namespace ⍙Fapl
-  ⎕IO  ⎕ML ⎕PP←0 1 34          ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
-  DEBUG← 1                     ⍝ DEBUG←1 turns off top-level error trapping...
+  ⎕IO ⎕ML ⎕PP←0 1 34           ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
+  DEBUG← 0                     ⍝ DEBUG: If 1, turns off error trapping in ∆F
+  VERBOSE← 0                   ⍝ VERBOSE: Compile and runtime verbosity flag
   helpHtmlFi← '∆F_Help.html'   ⍝ Called from 'help' option. Globally set here
 
 ⍝ ============================   ∆F User Function   ============================= ⍝
@@ -98,7 +99,7 @@
           c= dol:    (pfx, scF) ∇ w                    ⍝ $ => ⎕FMT (scF shortcut)
           c= esc:    (pfx, a)  ∇ w⊣ a w← CFEsc w       ⍝ `⍵, `⋄, `A, `B, etc.
           c= omUs:   (pfx, a)  ∇ w⊣ a w← CFOm w        ⍝ ⍹, alias to `⍵ (see CFEsc).
-          c= pnd:    (pfx, libUtil.Auto w) ∇ w             ⍝ £ => our private library
+          c= pnd:    (pfx, dbgG libUtil.Auto w) ∇ w             ⍝ £ => our private library
          ~c∊ sdcfCh: ⎕SIGNAL cfLogicÊ 
           p← +/∧\' '=w  
         ⍝ SDCF Detection...       
@@ -161,7 +162,7 @@
       0= ≢⍵: esc 
         c w← (0⌷⍵) (1↓⍵) ⋄ cfLenG+← 1   
       c∊ om_omUs: CFOm w                               ⍝ Permissively allow `⍹ as equiv to  `⍵ OR ⍹ 
-      c='L': (libUtil.Auto w) w    
+      c='L': (dbgG libUtil.Auto w) w    
       nSC> p← MapSC c: (p⊃ userSCs) w                  ⍝ userSCs: user shortcuts `[ABFJLTDW]. 
       c∊⍥⎕C ⎕A: ⎕SIGNAL ShortcutÊ c                    ⍝ Unknown shortcut!
         ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
@@ -185,9 +186,9 @@
 ⍝ ===========================================================================  
 ⍝   Validate options ⍺: ⍺[0]∊ ¯1 0 1, ∧/ ⍺[1 2 3]∊ 0 1
     0∊ 0 1∊⍨ (|⊃⍺), 1↓⍺: ⎕SIGNAL optÊ                  ⍝ Invalid options (⍺)!
-    (dfn dbg box inline) fStr← ⍺ ⍵                       
-    DMsg← (⎕∘←)⍣(dbg∧¯1≠dfn)                           ⍝ Debug message
-    nlG← dbg⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
+    (dfn dbgG box inline) fStr← ⍺ ⍵                       
+    DMsg← (⎕∘←)⍣(dbgG∧¯1≠dfn)                           ⍝ Debug message
+    nlG← dbgG⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
   ⍝ User Shortcuts: A, B, C, F, T~D, Q, W.  
   ⍝ Non-user Internal Shortcut Code and dfns: scÐ, Ð;  scM, M.
   ⍝ See ⍙LoadShortcuts for shortcut details and associated variables scA, scB, etc.     
@@ -198,11 +199,11 @@
     userSCs← scA scB scC scF scJ scT scT scQ scW            
  
   ⍝ Pseudo-globals  camelCaseG 
+  ⍝    dbgG-      runtime debug flag. Set above.
   ⍝    fldsG-     global field list
   ⍝    omIxG-     omega index counter: current index for omega shortcuts (`⍵, ⍹)  
   ⍝    nBracG-    running count of braces '{' lb, '}' rb
   ⍝    cfLenG-    code field running length (used when a self-doc code field (q.v.) occurs)
-  ⍝               DEFINED AT ]LOAD TIME!
     fldsG← ⍬                                           ⍝ zilde
     omIxG← nBracG← cfLenG← 0                           ⍝ zero
   
@@ -274,37 +275,96 @@
   AplQt←  sq∘(⊣,⊣,⍨⊢⊢⍤/⍨1+=)                           ⍝ { sq, sq,⍨ ⍵/⍨ 1+ sq= ⍵ }
 
 ⍝ =========================================================================
-⍝ libUtil: Handle £ and `L shortcuts. 
+⍝ libUtil (namespace): Handles £ and `L shortcuts. 
+⍝ This has options that can be tailored via a file .∆F in the current directory.
+⍝ ∘ The "default" location for user routines is:
+⍝     dfns workspace, then MyDyalogLib in the current directory.
+⍝   This can be changed to an arbitrary list, along with the file types searched for.
+⍝   See SetParmDefaults below.
+⍝ ∘ The "user" namespace referenced by £ and `L equivalently is
+⍝   ûLib, which is established at ]Load time.
+⍝
+⍝ Auto:
+⍝ The main workhorse is Auto, the only function called from the main scan 
+⍝ routines CF_SF and CF_Esc. 
+⍝ 
 :Namespace libUtil 
-  ulRef← ##.ûLib⊣ ulNm← 'ûLib'##.⎕NS⍬      ⍝ ulRef, ulNm: user library reference and name.
-⍝ Auto: str2←  ∇ s@CV 
+⍝ Loadtime: user library initialization
+  ulÑ← ##.ûLib⊣ ulNm← 'ûLib'##.⎕NS⍬      ⍝ ulÑ, ulNm: user library reference and name.
+  _← ulÑ.⎕DF '£=[',ulNm,']'
+  
+⍝ Auto: Runtime routine  (ulNm⍨⍙Auto)
+⍝ Auto: str2←  dbg ∇ s@CV 
 ⍝ Auto with helper function ⍙Auto:
 ⍝  Expects s to start 1 char after £ or `L.
 ⍝  If s starts with '.' and is followed by (optional spaces) and  a valid APL name, 
 ⍝     if that name exists in ûLib, done.
-⍝     else if it isn't followed by an assignment ←, 
-⍝          copy that name from workspace ¨dfns¨.
+⍝     else if it isn't followed by a SIMPLE assignment ←  (simple means no +←),
+⍝          copy that name from workspace ¨dfns¨.  
 ⍝  Else: done.
 ⍝  Does NOT affect the string being scanned. Only used for its ⎕CY side effect.
 ⍝  Returns ulNm (@CV).  
-⍝          '\h*\.(\p{L}\w*)\h*(\P{L}?←)?'
-  ⍙Auto← {  
-    0=≢⍵: ⍬                        
-    '.'≠⊃s← NLB ⍵: ⍬  
-    ~⍙A∊⍨ ⊃s←1↓ s: ⍬                
-    0≠ulRef.⎕NC nm← s↑⍨ t← +/∧\s∊ ⍙AD: ⍬               ⍝ tally (length) of name          
-    '←'∊ 2↑NLB t↓ s: ⍬                                 ⍝ assignment? nm+←... or nm←...
-    nm ∆CY 'dfns': OKCpy nm ⋄ ErrCpy nm 
+⍝  This is our search pattern:  '\h*\.(\p{L}\w*)\h*(←?)'
+  ⍙Auto← { dbg← ⍺
+    0=≢⍵: ⍬ ⋄ '.'≠⊃s← NLB ⍵: ⍬ ⋄ ~⍙A∊⍨ ⊃s←1↓ s: ⍬                
+    0≠ulÑ.⎕NC nm← s↑⍨ t← +/∧\s∊ ⍙AD: ⍬                 ⍝ tally (length) of name          
+    '←'= ⊃NLB t↓ s: ⍬                                  ⍝ assignment? nm← ONLY. +← treated as next case.
+    ulÑ dbg parms ⍙FindLoad nm 
   } 
   Auto← ulNm⍨⍙Auto                                     ⍝ Auto: Call ⍙Auto, always returning ulNm
-⍝ libUtil-internal helpers  
-  NLB← { ⍵↓⍨ +/∧\' '=⍵}
-  OKCpy←  ulNm∘{ 'DEBUG INFO: Copied "',⍵,'" into "',⍺,'"' }⍣##.DEBUG
-  ErrCpy← ulNm∘{ 'DEBUG WARNING: Unable to copy "',⍵,'" into "',⍺,'"' }⍣##.DEBUG
-  ∆CY← { 11:: 0 ⋄ 1⊣ ⍺ ulRef.⎕CY ⍵ }                   ⍝ Returns 1 on success, else 0.
-⍝ ⍙A: Valid 1st chars of APL names!
-  ⍙A← { ⍺←'' ⋄ 0=≢⍵: ⍺~'⍺⍵∇' ⋄ ¯1=⎕NC ⊃⍵: ⍺ ∇ 1↓⍵ ⋄ (⍺,⊃⍵) ∇ 1↓⍵ }⎕AV
-  ⍙AD← ⍙A, ⎕D
+  ⍝ ⍙FindLoad:  
+  ⍝ Find <nm> in search directories and dfns workspace, according to parameters <parms>.
+  ⍝ Called by ⍙Auto (above).
+  ⍝    ⍬← ns dbg parms ∇ nm 
+  ⍝ Returns ⍬ no matter what, having established <nm> in ns (ulÑ) on success.
+  ⍙FindLoad← {
+      ns dbg parms←⍺ ⋄ nm← ⍵  
+      fail← 'DEBUG WARNING: Could not copy '
+      succ← 'DEBUG INFO: Copied '
+      _Msg_← ulÑ { ⍵⍵: ⍬⊣ ⎕← ⍺,'"',⍵,'" into', ⍺⍺ ⋄ ⍬ } (parms.verbose∨ dbg)
+    ⍝ ∆DFN: Search the dfn if ⍺=⍺⍺.  ∆FI: Search files (FL ⍵) along path 
+      ∆DFN← parms.dfnsOrder {⍺⍺≢ ⍺: 0 ⋄ 11:: 0 ⋄ 1⊣⍵ ns.⎕CY'dfns'}
+      ∆FI← { 22 11:: 0  
+        fis← ,parms.path∘.,('/',¨ ('/',⍨¨parms.prefix),¨⊂⍵)∘.,'.',¨parms.suffix
+        (⊂⍵)∊ 2∘ns.⎕FIX { 0=≢⍵: ⍬ ⋄ ⎕NEXISTS ⊃⍵: ⍺⍺ ⊃⍵ ⋄ ∇ 1↓⍵ } fis 
+      }
+    ⍝ Executive for ∆Scan 
+    'first' ∆DFN nm: succ _Msg_ nm ⋄ ∆FI nm: succ _Msg_ nm  
+    'last'  ∆DFN nm: succ _Msg_ nm ⋄         fail _Msg_ nm  
+  }
+  ⍝ Internal helpers for Auto 
+  ⍝ NLB: Non-leading blanks; ⍙A: valid initials of APL nms; ⍙AD: valid chars of APL nms. 
+    NLB← { ⍵↓⍨ +/∧\' '=⍵}
+    ⍙A← { ⍺←'' ⋄ 0=≢⍵: ⍺~'⍺⍵∇' ⋄ ¯1=⎕NC ⊃⍵: ⍺ ∇ 1↓⍵ ⋄ (⍺,⊃⍵) ∇ 1↓⍵ }⎕AV  
+    ⍙AD← ⍙A, ⎕D                                        
+
+⍝ SetParmDefaults: Load time routine
+⍝   Sets parameters ⍵.verbose, ⍵.path, ⍵.prefix, ⍵.suffix,⍵.readParmFi, and ⍵.dfnsOrder
+  SetParmDefaults← { p← ⍵ 
+      p.verbose← ##.VERBOSE         ⋄  p.path←    ⊆'.'
+      p.prefix←  ⊆'' 'MyDyalogLib'  ⋄  p.suffix←  ⊆'aplf' 'aplo' 'dyalog'
+    ⍝ dfnsOrder:  'first' | 'last' | 'skip' 
+      p.dfnsOrder← 'first' ⋄ p.readParmFi← 0           ⍝ Haven't read .∆FI yet.
+      p 
+  }
+⍝ LoadParmFi: Load time routine
+⍝    Loads parameter file ⍵ (if it exists) into namespace ⍺
+  LoadParmFi← { ⎕PW←100 ⋄ jO← ('Dialect' 'JSON5')('Compact' 0)
+      parmFi← ⍵ ⋄ parms← SetParmDefaults ⎕NS ⍬ 
+      CShow← { ⍵.verbose: ⍬⊣ ⎕← ⎕JSON⍠ jO⊢ ⍵ ⋄ ⍬}   ⍝ Conditionally show parameters
+    ~⎕NEXISTS parmFi: CShow parms 
+      _← 'parms' ⎕NS ⎕JSON⍠ jO⊢ ⊃⎕NGET parmFi 
+      parms.verbose∨← ##.VERBOSE                       ⍝ Re-assert ##.VERBOSE
+      parms.readParmFi← 1                              ⍝ We've read .∆FI, the parm file
+      _← CShow parms 
+      'first' 'last' 'skip' ∊⍨ ⊂parms.dfnsOrder: ⍬     ⍝ Success
+    ⍝ Bad parms.dfnsOrder. Just use 'skip' (i.e. don't check/use ws "dfns")
+      e←'!!! ERROR: Parameter dfnsOrder has invalid value "','"',⍨ parms.dfnsOrder
+      parms.dfnsOrder← 'skip' 
+      ⎕← e,'. Using "','".',⍨ parms.dfnsOrder 
+  } 
+⍝ Load Runtime Parameters!
+  parms← LoadParmFi '.∆F'
 :EndNamespace 
 
 ⍝ Escape key Handlers: TFEsc QSEsc   (CFEsc, with side effects, is within FmtScan)

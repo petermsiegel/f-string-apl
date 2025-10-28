@@ -428,7 +428,14 @@ Dates and Times (Part II)</a></li>
 <li><a href="#the-wrap-shortcut-experimental">The Wrap Shortcut
 (Experimental)</a></li>
 <li><a href="#the-session-library-shortcut-experimental">The Session
-Library Shortcut (Experimental)</a></li>
+Library Shortcut (Experimental)</a>
+<ul>
+<li><a href="#explicitly-copied-library-objects">Explicitly Copied
+Library Objects</a></li>
+<li><a href="#automatically-copied-library-objects">Automatically Copied
+Library Objects</a></li>
+<li><a href="#session-variables">Session Variables</a></li>
+</ul></li>
 <li><a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
 f‑strings with the <em><strong>DFN</strong></em> Option</a></li>
 </ul></li>
@@ -1154,7 +1161,7 @@ class="header-section-number">5.16</span> A Shortcut for Dates and Times
 (Part I)</h2>
 <p><span class="margin-note">The syntax for the Date-Time specifications
 in the left argument to <code>`T</code> can be found in the Dyalog
-documentation under <strong>1200⌶</strong>. For the curious, here's the
+doc­ument­ation under <strong>1200⌶</strong>. For the curious, here's the
 core <em>dfn</em> code actually used by the Date-Time shortcut:
 <br> <code>⍺←'YYYY-MM-DD hh:mm:ss'</code><br> <code>∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT ⊆⍵</code>
 </span> <strong>∆F</strong> supports a simple <strong>Date-Time</strong>
@@ -1323,18 +1330,23 @@ class="header-section-number">5.20</span> The Session Library Shortcut
 
 <p>The shortcut (Session) <strong>Library</strong> <code>£</code> is
 <span class="red"><strong>experimental</strong></span>. <code>£</code>
-denotes <span class="margin-note">£ alias: <code>`L</code>. £ is from
-the first letter of the Latin <em>lībra</em>, "pound".</span> a
-"private" namespace in which the user may place any functions or
+denotes <span class="margin-note"><strong>£ alias:</strong>
+<code>`L</code>. £ is from the first letter of the Latin <em>lībra</em>,
+"pound", very apt for a
+<em>libra</em>-ry.<br><br><strong>⍙Fapl</strong>: Installed with the
+active <strong>∆F</strong>. See <a href="#installing-f">Installing
+<strong>∆F</strong></a>, above.</span> a "private" namespace in
+<strong>⍙Fapl</strong>, into which the user may place any functions or
 variables useful for the duration of the
 <em><strong>current</strong></em> <em>APL</em> session. For example, it
-may be useful to have available regularly used utilities from the
-<em><strong>dfns</strong></em> workspace or objects that are referred to
-or incremented across a range of uses. The shortcut refers to a
-namespace within the <strong>⍙Fapl</strong> namespace created when
-<strong>∆Fapl</strong> was <span class="margin-note">See <a
-href="#installing-f">Installing <strong>∆F</strong></a>,
-above.</span><code>]load</code>ed.</p>
+may be useful to have available regularly used functions or operators
+defined in the <code>dfns</code> workspace or in files in a local
+directory or create objects that might be referred to or modified across
+the session. <em>For details, see <a href="#code-field-shortcuts">Code
+Field Shortcuts</a> below.</em></p>
+<h3 data-number="5.20.1" id="explicitly-copied-library-objects"><span
+class="header-section-number">5.20.1</span> Explicitly Copied Library
+Objects</h3>
 <p>In this example, the user wants to generate all primes between 1 and
 100 using two routines in the <em><strong>dfns</strong></em> workspace,
 <code>sieve</code> and <code>to</code>. To achieve this, we copy both
@@ -1349,15 +1361,20 @@ routines from <em><strong>dfns</strong></em>.</p>
 already available, as we can see here:</p>
 <pre><code>    ∆F &#39;{ £.⎕NL ¯3 }&#39;
  sieve  to </code></pre>
-<p><span class="margin-note">If the item does not exist in the
-<strong>dfns</strong> workspace, an error will be signalled when it is
-referenced.</span> But, <strong>∆F</strong> provides a simpler solution!
-If the user references a name via <code>£.</code><em>name</em> that has
-not (yet) been defined in the library, an attempt is made to copy that
-name into the library from workspace <strong>dfns</strong>, unless the
-item appears on the left-side of a simple assigment <code>←</code>.</p>
+<h3 data-number="5.20.2" id="automatically-copied-library-objects"><span
+class="header-section-number">5.20.2</span> Automatically Copied Library
+Objects</h3>
+<p><span class="margin-note">We only show examples of objects from the
+<em>dfns</em> library here. <em>See <a href="#code-field-shortcuts">Code
+Field Shortcuts</a> below.</em></span> But, <strong>∆F</strong> provides
+a simpler solution! If the user references a name via
+<code>£.</code><em>name</em> that has not (yet) been defined in the
+library, an attempt is made to copy that name into the library from
+workspace <strong>dfns</strong> or a text file, unless the item appears
+on the left-side of a <strong>simple</strong> assigment
+<code>←</code>.</p>
 <p>In this next example, we use <em>for the first time</em> the function
-<code>pco</code> from the <strong>dfns</strong> workspace.</p>
+<code>pco</code> from the <code>dfns</code> workspace.</p>
 <pre><code>    ∆F &#39;{ {⍵/⍳⍴⍵} 1 pco ⍳100 }&#39; 
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 </code></pre>
 <p>The function is quietly copied in and is available <em>without the
@@ -1365,12 +1382,14 @@ overhead of copying</em> for the rest of this <em>APL</em> session.</p>
 <p><span class="margin-note">NB. If <code>£.ctr</code> already exists as
 a function or operator, it must be deleted before it can be assigned,
 per <em>APL</em> rules.</span></p>
+<h3 data-number="5.20.3" id="session-variables"><span
+class="header-section-number">5.20.3</span> Session Variables</h3>
 <p>Here is an example where we define a local session variable
 <code>ctr</code>, a counter of the number of times a particular
 statement is executed. Since we define the counter,
 <code>£.ctr←0</code>, <strong>∆F</strong> makes
 <em><strong>no</strong></em> attempt to copy it from the
-<strong>dfns</strong> workspace.</p>
+<code>dfns</code> workspace or a file.</p>
 <pre><code>   ∆F &#39;{ ⍬⊣£.ctr←0 }&#39;         ⍝ Initialise £.ctr.
    t← &#39;We&#39;&#39;ve been called {£.ctr← £.ctr+1} times.&#39;
 ⍝  ...                    
@@ -1631,7 +1650,7 @@ disappear one day.</strong></small></td>
 <tr>
 <td style="text-align: justify;"> 'help'</td>
 <td style="text-align: justify;">If <code>'help'</code> is specified, this
-amazing documentation is displayed.</td>
+amazing doc­ument­ation is displayed.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong><em>result</em></strong></td>
@@ -1772,7 +1791,7 @@ or numbers.</td>
 <strong>$</strong></td>
 <td style="text-align: justify;">⎕FMT</td>
 <td style="text-align: justify;"><code>[⍺] $ ⍵</code>. Short for
-<code>[⍺] ⎕FMT ⍵</code>. (See APL documentation).</td>
+<code>[⍺] ⎕FMT ⍵</code>. (See APL doc­ument­ation).</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`J</strong></td>
@@ -1795,8 +1814,10 @@ private library (namespace) local to the <strong>∆F</strong> runtime
 environ­ment into which functions or objects (including name­spaces) may
 be placed (e.g. via <code>⎕CY</code>) for the duration of the
 <em>APL</em> session. <small>Outside of assignments, <strong>∆F</strong>
-will attempt to copy undefined objects from workspace
-<strong>dfns</strong>. <em>See details below.</em></small></td>
+will attempt to copy undefined objects from workspace <code>dfns</code>
+or from directory <strong>./MyDyalogLib</strong> (with file extensions
+<em>.aplf, .aplo, .dyalog</em>). <em>See Undocumented Options
+(below).</em></small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`Q</strong></td>
@@ -2033,15 +2054,19 @@ the array ⍵, row by row, whether character, numeric or otherwise.</li>
 class="header-section-number">6.11</span> Session Library Shortcut:
 Details</h2>
 <ol type="1">
-<li>If an object <code>£.name</code> is referenced, but not defined, an
-attempt is made to copy it to £ from workspace <strong>dfns</strong>,
-<em>unless</em> it is being assigned. It will be available for the
-duration of the session.</li>
-<li>In the case of a simple assignment (with <code>←</code>), the object
-assigned must be new or of a compatible <em>APL</em> class, else a
-domain error will be signaled.</li>
-<li>Assignments of the form
-<code>£.name+←</code><em><code>val</code></em> are allowed.</li>
+<li>If <span class="margin-note">See Dyalog documentation on filetypes
+<em>.aplf, .aplo, .dyalog</em>.</span> an object <code>£.name</code> is
+referenced, but not yet defined in <code>£</code>, an attempt is made to
+copy it to <code>£</code> from workspace <code>dfns</code> or from files
+<strong>name.aplf</strong> (fn), <strong>name.aplo</strong> (operator),
+or <strong>name.dyalog</strong> (otherwise) in directory
+<strong>./MyDyalogLib</strong>, <em>unless</em> it is being assigned. It
+will be available for the duration of the session.</li>
+<li>In the case of a simple assignment (<code>£.name←...</code>), the
+object assigned must be new or of a compatible <em>APL</em> class with
+its existing value, else a domain error will be signaled.</li>
+<li>Modified assignments of the form <code>£.name+←...</code> are
+allowed and treated as in the first case.</li>
 </ol>
 <hr />
 </div> 
@@ -2074,6 +2099,15 @@ variant, the help session will start up with a narrower screen
 notes will appear, as in the default case:
 <span class="margin-note"><em>Or</em>,
 <code>∆F 'help-wide'</code>.</span><code>∆F 'help'</code>.</p></li>
+<li><p>The <span class="margin-note">NB. The complex code runs at
+<code>]load</code> time, with a modest runtime performance impact—
+scanning the first name that follows the symbol. If <strong>not</strong>
+used, the impact is nil.</span> Session Library shortcut (<code>£</code>
+or <code>`L</code>) is deceptively simple, but the code to support it is
+a tad complex. There are parameters, tailored via a <em>Json</em>
+parameter file (<strong>.∆F</strong> in the current file directory),
+that are not documented outside of the code. Is there enough
+value?</p></li>
 </ol>
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
@@ -2127,7 +2161,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251025T205737]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251027T180527]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
