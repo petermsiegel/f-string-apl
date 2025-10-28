@@ -303,17 +303,19 @@
 ⍝          copy that name from workspace ¨dfns¨.  
 ⍝  Else: done.
 ⍝  Does NOT affect the string being scanned. Only used for its ⎕CY side effect.
-⍝  Returns ulNm (@CV).  
+⍝  Returns ulNm (@CV), no matter what.  
 ⍝  This is our search pattern:  '\h*\.(\p{L}\w*)\h*(←?)'
-  ⍙Auto← { dbg← ⍺
-    0=≢⍵: ⍬ ⋄ '.'≠⊃s← NLB ⍵: ⍬ ⋄ ~⍙A∊⍨ ⊃s←1↓ s: ⍬                
-    0≠ulÑ.⎕NC nm← s↑⍨ t← +/∧\s∊ ⍙AD: ⍬                 ⍝ tally (length) of name          
-    '←'= ⊃NLB t↓ s: ⍬                                  ⍝ assignment? nm← ONLY. +← treated as next case.
-    ulÑ dbg parms ⍙FindLoad nm 
+  Auto← { dbg← ⍺ ⋄ u← ulNm 
+    0=≢⍵: u ⋄ '.'≠⊃s← NLB ⍵: u ⋄ ~⍙A∊⍨ ⊃s←1↓ s: u                
+    0≠ulÑ.⎕NC nm← s↑⍨ t← +/∧\s∊ ⍙AD: u                 ⍝ Name exists? We're done.         
+    '←'= ⊃NLB t↓ s: u                                  ⍝ simple assignment? We're done.
+    u⊣ ulÑ dbg parms ⍙FindLoad nm                      ⍝ Load <nm> from file or dfns w/s.
   } 
-  Auto← ulNm⍨⍙Auto                                     ⍝ Auto: Call ⍙Auto, always returning ulNm
-  ⍝ ⍙FindLoad:  
-  ⍝ Find <nm> in search directories and dfns workspace, according to parameters <parms>.
+  
+  ⍝ ⍙FindLoad: 
+  ⍝     ulŃ@ns dbg@B parms@ns ∇ nm@CVS 
+  ⍝ Find <nm> in search directories (parms.path) and dfns workspace, according to parameters <parms>.
+  ⍝ If parms.dfnsOrder is 'first', try the dfns w/s first. If 'last', try last. If 'skip', skip.
   ⍝ Called by ⍙Auto (above).
   ⍝    ⍬← ns dbg parms ∇ nm 
   ⍝ Returns ⍬ no matter what, having established <nm> in ns (ulÑ) on success.
@@ -325,7 +327,9 @@
     ⍝ ∆DFN: Search the dfn if ⍺=⍺⍺.  ∆FI: Search files (FL ⍵) along path 
       ∆DFN← parms.dfnsOrder {⍺⍺≢ ⍺: 0 ⋄ 11:: 0 ⋄ 1⊣⍵ ns.⎕CY'dfns'}
       ∆FI← { 22 11:: 0  
-        fis← ,parms.path∘.,('/',¨ ('/',⍨¨parms.prefix),¨⊂⍵)∘.,'.',¨parms.suffix
+        ⍝ Generate all the file specs to check!
+          isPfx← 0≠≢ parms.prefix 
+          fis← ,parms.path∘.,('/',¨ (isPfx/parms.prefix,¨'/'),¨⊂⍵)∘.,'.',¨parms.suffix
         (⊂⍵)∊ 2∘ns.⎕FIX { 0=≢⍵: ⍬ ⋄ ⎕NEXISTS ⊃⍵: ⍺⍺ ⊃⍵ ⋄ ∇ 1↓⍵ } fis 
       }
     ⍝ Executive for ∆Scan 
@@ -339,7 +343,10 @@
     ⍙AD← ⍙A, ⎕D                                        
 
 ⍝ SetParmDefaults: Load time routine
-⍝   Sets parameters ⍵.verbose, ⍵.path, ⍵.prefix, ⍵.suffix,⍵.readParmFi, and ⍵.dfnsOrder
+⍝   Sets parameters ⍵.verbose, ⍵.path, ⍵.prefix, ⍵.suffix,⍵.readParmFi, and ⍵.dfnsOrder.
+⍝   If ⍵.dfnsOrder←'skip' the dfns w/s isn't checked.
+⍝   If ⍵.path←⍬ or ⍵.suffix←⍬, no files are checked.
+⍝   
   SetParmDefaults← { p← ⍵ 
       p.verbose← ##.VERBOSE         ⋄  p.path←    ⊆'.'
       p.prefix←  ⊆'' 'MyDyalogLib'  ⋄  p.suffix←  ⊆'aplf' 'aplo' 'dyalog'
@@ -350,10 +357,10 @@
 ⍝ LoadParmFi: Load time routine
 ⍝    Loads parameter file ⍵ (if it exists) into namespace ⍺
   LoadParmFi← { ⎕PW←100 ⋄ jO← ('Dialect' 'JSON5')('Compact' 0)
-      parmFi← ⍵ ⋄ parms← SetParmDefaults ⎕NS ⍬ 
-      CShow← { ⍵.verbose: ⍬⊣ ⎕← ⎕JSON⍠ jO⊢ ⍵ ⋄ ⍬}   ⍝ Conditionally show parameters
-    ~⎕NEXISTS parmFi: CShow parms 
-      _← 'parms' ⎕NS ⎕JSON⍠ jO⊢ ⊃⎕NGET parmFi 
+      parmFi← ⍵  
+      CShow← { ⍵.verbose: ⍬⊣ ⎕← ⎕JSON⍠ jO⊢ ⍵ ⋄ ⍬}      ⍝ Conditionally show parameters
+    ~⎕NEXISTS parmFi: _← CShow parms 
+      _← 'parms' ⎕NS ⎕JSON⍠ jO⊢ ⊃⎕NGET parmFi          ⍝ Update parameters from parm file.
       parms.verbose∨← ##.VERBOSE                       ⍝ Re-assert ##.VERBOSE
       parms.readParmFi← 1                              ⍝ We've read .∆FI, the parm file
       _← CShow parms 
@@ -361,10 +368,11 @@
     ⍝ Bad parms.dfnsOrder. Just use 'skip' (i.e. don't check/use ws "dfns")
       e←'!!! ERROR: Parameter dfnsOrder has invalid value "','"',⍨ parms.dfnsOrder
       parms.dfnsOrder← 'skip' 
-      ⎕← e,'. Using "','".',⍨ parms.dfnsOrder 
+      1: ⎕← e,'. Using "','".',⍨ parms.dfnsOrder 
   } 
 ⍝ Load Runtime Parameters!
-  parms← LoadParmFi '.∆F'
+  parms← SetParmDefaults ⎕NS ⍬ 
+  LoadParmFi '.∆F'
 :EndNamespace 
 
 ⍝ Escape key Handlers: TFEsc QSEsc   (CFEsc, with side effects, is within FmtScan)

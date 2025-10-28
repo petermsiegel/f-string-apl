@@ -1334,10 +1334,10 @@ denotes <span class="margin-note"><strong>£ alias:</strong>
 <code>`L</code>. £ is from the first letter of the Latin <em>lībra</em>,
 "pound", very apt for a
 <em>libra</em>-ry.<br><br><strong>⍙Fapl</strong>: Installed with the
-active <strong>∆F</strong>. See <a href="#installing-f">Installing
-<strong>∆F</strong></a>, above.</span> a "private" namespace in
-<strong>⍙Fapl</strong>, into which the user may place any functions or
-variables useful for the duration of the
+active <strong>∆F</strong> instance. See <a
+href="#installing-f">Installing <strong>∆F</strong></a>, above.</span> a
+"private" namespace in <strong>⍙Fapl</strong>, into which the user may
+place any functions or variables useful for the duration of the
 <em><strong>current</strong></em> <em>APL</em> session. For example, it
 may be useful to have available regularly used functions or operators
 defined in the <code>dfns</code> workspace or in files in a local
@@ -1355,7 +1355,7 @@ routines from <em><strong>dfns</strong></em>.</p>
 `⎕CY` returns `0⍴⊂''` on success, i.e. a 0-width string!
 </span>
 
-<pre><code>    ∆F &#39;{&quot;sieve&quot; &quot;to&quot; ⎕CY &quot;dfns&quot;}{sieve 2 to 100}&#39;
+<pre><code>    ∆F &#39;{&quot;sieve&quot; &quot;to&quot; £.⎕CY &quot;dfns&quot;}{£.sieve 2 £.to 100}&#39;
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
 <p>On subsequent calls, <code>sieve</code> and <code>to</code> are
 already available, as we can see here:</p>
@@ -1367,15 +1367,18 @@ Objects</h3>
 <p><span class="margin-note">We only show examples of objects from the
 <em>dfns</em> library here. <em>See <a href="#code-field-shortcuts">Code
 Field Shortcuts</a> below.</em></span> But, <strong>∆F</strong> provides
-a simpler solution! If the user references a name via
-<code>£.</code><em>name</em> that has not (yet) been defined in the
-library, an attempt is made to copy that name into the library from
-workspace <strong>dfns</strong> or a text file, unless the item appears
-on the left-side of a <strong>simple</strong> assigment
-<code>←</code>.</p>
+a simpler solution! If the user references a name of the form
+<code>£.name</code> that has not (yet) been defined in the library, an
+attempt is made to copy that name into the library either from the
+<strong>dfns</strong> workspace or from a text file; if the name appears
+to the left-side of a <strong>simple</strong> assigment <code>←</code>,
+it is assumed to exist (as always).</p>
+<p><span style="font-size: 130%;">👉 </span> If <strong>∆F</strong> is
+unable to find the item during its search, a standard <em>APL</em> error
+will be signaled.</p>
 <p>In this next example, we use <em>for the first time</em> the function
 <code>pco</code> from the <code>dfns</code> workspace.</p>
-<pre><code>    ∆F &#39;{ {⍵/⍳⍴⍵} 1 pco ⍳100 }&#39; 
+<pre><code>    ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 </code></pre>
 <p>The function is quietly copied in and is available <em>without the
 overhead of copying</em> for the rest of this <em>APL</em> session.</p>
@@ -1813,11 +1816,13 @@ Library<br><span class="red"><small><strong>EXPERIMENTAL!</strong></small></span
 private library (namespace) local to the <strong>∆F</strong> runtime
 environ­ment into which functions or objects (including name­spaces) may
 be placed (e.g. via <code>⎕CY</code>) for the duration of the
-<em>APL</em> session. <small>Outside of assignments, <strong>∆F</strong>
-will attempt to copy undefined objects from workspace <code>dfns</code>
-or from directory <strong>./MyDyalogLib</strong> (with file extensions
-<em>.aplf, .aplo, .dyalog</em>). <em>See Undocumented Options
-(below).</em></small></td>
+<em>APL</em> session. <small>Outside of simple assignments,
+<strong>∆F</strong> will attempt to copy undefined objects from
+workspace <code>dfns</code> or from directory
+<strong>./MyDyalogLib</strong> (with file extensions <em>.aplf, .aplo,
+.dyalog</em>). <em>See <a
+href="#session-library-shortcut-details">Session Library Shortcut:
+Details</a> below.</em></small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`Q</strong></td>
@@ -2106,8 +2111,8 @@ used, the impact is nil.</span> Session Library shortcut (<code>£</code>
 or <code>`L</code>) is deceptively simple, but the code to support it is
 a tad complex. There are parameters, tailored via a <em>Json</em>
 parameter file (<strong>.∆F</strong> in the current file directory),
-that are not documented outside of the code. Is there enough
-value?</p></li>
+that are not documented outside of the code. Additional documentation is
+needed, should this go forward.</p></li>
 </ol>
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
@@ -2161,7 +2166,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251027T180527]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251027T223435]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

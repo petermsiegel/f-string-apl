@@ -855,7 +855,7 @@ we copy both routines from ***dfns***.
 
 
 ```
-    ∆F '{"sieve" "to" ⎕CY "dfns"}{sieve 2 to 100}'
+    ∆F '{"sieve" "to" £.⎕CY "dfns"}{£.sieve 2 £.to 100}'
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
 ```
 
@@ -869,18 +869,19 @@ On subsequent calls, `sieve` and `to` are already available, as we can see here:
 ### Automatically Copied Library Objects
 
 
-But, **∆F** provides a simpler solution! If the user references a name 
-via `£.`*name* that 
+But, **∆F** provides a simpler solution! If the user references a name of the form 
+`£.name` that 
 has not (yet) been defined in the library, 
-an attempt is made to copy that name into the library from workspace **dfns** or a text
-file, 
-unless the item appears on the left-side of a **simple** assigment `←`.
+an attempt is made to copy that name into the library either from the **dfns** workspace  or from a text file; if the name appears to the left-side of a **simple** assigment `←`, it is assumed to exist (as always).  
+
+<span style="font-size: 130%;">👉 </span>
+If **∆F** is unable to find the item during its search, a standard *APL* error will be signaled.
 
 In this next example, we use *for the first time* the function `pco` from the 
 `dfns` workspace. 
 
 ```
-    ∆F '{ {⍵/⍳⍴⍵} 1 pco ⍳100 }' 
+    ∆F '{ ⍸ 1 £.pco ⍳100 }' 
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
 ```
 
@@ -1106,7 +1107,7 @@ symbol, a ***single*** backtick will suffice.
 | **\`D** | Date-Time | Synonym for **\`T**. |
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL doc&shy;ument&shy;ation). |
 | **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>*Displays numbers with the maximum precision available.*</small> |
-| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of assignments, **∆F** will attempt to copy undefined objects from workspace `dfns` or from directory **./MyDyalogLib** (with file extensions *.aplf, .aplo, .dyalog*). *See Undocumented Options (below).*</small>|
+| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of simple assignments, **∆F** will attempt to copy undefined objects from workspace `dfns` or from directory **./MyDyalogLib** (with file extensions *.aplf, .aplo, .dyalog*). *See [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>_See details below._</small> |
@@ -1225,7 +1226,8 @@ the code to support it is a tad
 complex. 
 There are parameters, tailored via a *Json* parameter file 
 (**.∆F** in the current file directory),
-that are not documented outside of the code. Is there enough value?
+that are not documented outside of the code. Additional documentation
+is needed, should this go forward.
 
 
 ## Appendix II: Python f‑strings
@@ -1269,7 +1271,7 @@ that are not documented outside of the code. Is there enough value?
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251027T180527]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251027T223435]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
