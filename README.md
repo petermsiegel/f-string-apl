@@ -1190,10 +1190,11 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 6. By default,`⍺← ''''`,*i.e.* APL quotes will wrap the array ⍵, row by row, whether character, numeric or otherwise.
 
 
+
 ## Session Library Shortcut: Details
 
 1. If 
-an object `£.name` is referenced, but not yet defined in `£`, an attempt is made to copy it to `£` from workspace `dfns` or from  files **name.aplf** (fn), **name.aplo** (operator), or
+an object `£.name` is referenced, but not yet defined in `£`, an attempt is made to copy it to `£` from workspace `dfns` or from  files **name.aplf** (for functions), **name.aplo** (for operators), or
 **name.dyalog** (otherwise) in directory
 **./MyDyalogLib**, *unless* it is being assigned. It will be available for the duration of the session.
 1. In the case of a simple assignment (`£.name←...`), the object assigned must be new or
@@ -1224,10 +1225,47 @@ case: `∆F 'help'`.
 Session Library shortcut (`£` or `` `L ``) is deceptively simple, but
 the code to support it is a tad 
 complex. 
-There are parameters, tailored via a *Json* parameter file 
+There are parameters, tailored via a *JSON* parameter file 
 (**.∆F** in the current file directory),
-that are not documented outside of the code. Additional documentation
+that is only briefly documented here (below). Additional documentation
 is needed, should this go forward.
+
+<details open><summary class="summary">&ensp;<em>Show/Hide Default JSON Parameter File</em> <big><strong>.∆F</strong></big></summary>
+
+```
+// Default .∆F 
+{                                                                             
+// Items not to be (re)set by user should be omitted/commented out.           
+// Exceptions: auto and verbose can be set to get value from ∆Fapl header  variables    
+//   AUTO_LIB←2 and VERBOSE←1, where  (AUTO_LIB∊0 1 2) (VERBOSE∊0). 
+// auto:                                                                      
+//   If 0, user must load own objects; nothing is automatic.     
+//   If 1, only dfns are checked. File path setups are not done.              
+//   If 2, dfns and files checked                                             
+//   If null, the value is set from AUTO_LIB global                           
+   auto:    null,                                                             
+// verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
+   verbose: null,                                                             
+// dfnsOrder:                                                                 
+//   "first" the dfns ws is checked before any files on the path;             
+//   "last"  the dfns ws is checked AFTER any files on the path;              
+//   "skip"  the dfns ws is skipped entirely.                                 
+   dfnsOrder: "first",                 // first|last|skip.                    
+// path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
+   path: ["."],                                                               
+// prefix: subdirectories to check on each path. [] is equiv. to [""].        
+   prefix: ["", "MyDyalogLib"],                                               
+// suffix: at least one suffix is required. The "." is prefixed for you!      
+   suffix: ["aplf", "aplo", "dyalog"],                                        
+/* -----------------------------------                                        
+   Internal (hidden parameters):                                              
+   _readParmFi: 0,                     // 1 when parm file ./.∆F is read.     
+   _fullPath:  [...],                  // generated from path and prefixes.   
+*/                                                                            
+}   
+``` 
+
+</details>
 
 
 ## Appendix II: Python f‑strings
@@ -1271,7 +1309,7 @@ is needed, should this go forward.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251027T223435]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251028T215452]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

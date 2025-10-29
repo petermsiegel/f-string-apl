@@ -2054,7 +2054,9 @@ replicated <em>per (2) above</em>.</li>
 <li>By default,<code>⍺← ''''</code>,<em>i.e.</em> APL quotes will wrap
 the array ⍵, row by row, whether character, numeric or otherwise.</li>
 </ol>
-<p><span class="margin-note"><span class="red"><br>Experimental</span></span></p>
+<p><span class="margin-note"><span class="red"><br>Experimental</span></span>
+<span class="margin-note"><br>Default behaviour is briefly discussed
+here.</span></p>
 <h2 data-number="6.11" id="session-library-shortcut-details"><span
 class="header-section-number">6.11</span> Session Library Shortcut:
 Details</h2>
@@ -2063,10 +2065,10 @@ Details</h2>
 <em>.aplf, .aplo, .dyalog</em>.</span> an object <code>£.name</code> is
 referenced, but not yet defined in <code>£</code>, an attempt is made to
 copy it to <code>£</code> from workspace <code>dfns</code> or from files
-<strong>name.aplf</strong> (fn), <strong>name.aplo</strong> (operator),
-or <strong>name.dyalog</strong> (otherwise) in directory
-<strong>./MyDyalogLib</strong>, <em>unless</em> it is being assigned. It
-will be available for the duration of the session.</li>
+<strong>name.aplf</strong> (for functions), <strong>name.aplo</strong>
+(for operators), or <strong>name.dyalog</strong> (otherwise) in
+directory <strong>./MyDyalogLib</strong>, <em>unless</em> it is being
+assigned. It will be available for the duration of the session.</li>
 <li>In the case of a simple assignment (<code>£.name←...</code>), the
 object assigned must be new or of a compatible <em>APL</em> class with
 its existing value, else a domain error will be signaled.</li>
@@ -2109,11 +2111,45 @@ notes will appear, as in the default case:
 scanning the first name that follows the symbol. If <strong>not</strong>
 used, the impact is nil.</span> Session Library shortcut (<code>£</code>
 or <code>`L</code>) is deceptively simple, but the code to support it is
-a tad complex. There are parameters, tailored via a <em>Json</em>
+a tad complex. There are parameters, tailored via a <em>JSON</em>
 parameter file (<strong>.∆F</strong> in the current file directory),
-that are not documented outside of the code. Additional documentation is
-needed, should this go forward.</p></li>
+that is only briefly documented here (below). Additional documentation
+is needed, should this go forward.</p></li>
 </ol>
+<details><summary class="summary">&ensp;<em>Show/Hide Default JSON Parameter File</em> <big><strong>.∆F</strong></big></summary>
+
+<pre><code>// Default .∆F 
+{                                                                             
+// Items not to be (re)set by user should be omitted/commented out.           
+// Exceptions: auto and verbose can be set to get value from ∆Fapl header  variables    
+//   AUTO_LIB←2 and VERBOSE←1, where  (AUTO_LIB∊0 1 2) (VERBOSE∊0). 
+// auto:                                                                      
+//   If 0, user must load own objects; nothing is automatic.     
+//   If 1, only dfns are checked. File path setups are not done.              
+//   If 2, dfns and files checked                                             
+//   If null, the value is set from AUTO_LIB global                           
+   auto:    null,                                                             
+// verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
+   verbose: null,                                                             
+// dfnsOrder:                                                                 
+//   &quot;first&quot; the dfns ws is checked before any files on the path;             
+//   &quot;last&quot;  the dfns ws is checked AFTER any files on the path;              
+//   &quot;skip&quot;  the dfns ws is skipped entirely.                                 
+   dfnsOrder: &quot;first&quot;,                 // first|last|skip.                    
+// path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
+   path: [&quot;.&quot;],                                                               
+// prefix: subdirectories to check on each path. [] is equiv. to [&quot;&quot;].        
+   prefix: [&quot;&quot;, &quot;MyDyalogLib&quot;],                                               
+// suffix: at least one suffix is required. The &quot;.&quot; is prefixed for you!      
+   suffix: [&quot;aplf&quot;, &quot;aplo&quot;, &quot;dyalog&quot;],                                        
+/* -----------------------------------                                        
+   Internal (hidden parameters):                                              
+   _readParmFi: 0,                     // 1 when parm file ./.∆F is read.     
+   _fullPath:  [...],                  // generated from path and prefixes.   
+*/                                                                            
+}   </code></pre>
+</details>
+
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
 f‑strings</h2>
@@ -2166,7 +2202,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251027T223435]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251028T215452]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
