@@ -1226,55 +1226,58 @@ is briefly documented *below*.
 <details open><summary class="summary">&ensp;<em>Show/Hide Default JSON £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
 
 ```json5
-{    
-// Default .∆F JSON5 Parameter File
-// Items not to be (re)set by user should be omitted/commented out.           
-// Exceptions: 
-// [1-2] auto and verbose can each be set to null to signal 
-//       that their value should come from the ∆Fapl globals AUTO_LIB or VERBOSE.
-// [3]   prefix, which if null is the same as [""], i.e. a 0-length string prefix.
-//
-// The typical default for ∆F global variables AUTO_LIB and VERBOSE are: 
-//   AUTO_LIB:  2   We want to get library objects from workspace "dfns" and files,
-//                  using the default or user-specified path.
-//   AUTO_LIB:  1   We want to get library objects solely from workspace "dfns".
-//   AUTO_LIB:  0   We don't want to use the AUTO_LIB feature.
-//   VERBOSE:   1   Will display loadtime and runtime msgs, 
-//                  both library-related and general.
-//                  The debug ∆F option will also display limited runtime msgs.
-//   VERBOSE:   0   Will only display error or important warning msgs.
-  
-// auto:                                                                      
-//   If 0, user must load own objects; nothing is automatic.     
-//   If 1, only dfns are searched for objects. File path setups are not done.              
-//   If 2, dfns and files searched for objects. See path below.                
-//   If null, the value is set from AUTO_LIB global                           
-   auto:    null,                // Set to 2 in .∆F if you have library files.
-
-// verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
-   verbose: null,   
-
-// dfnsOrder:                                                                 
-//   "first" the dfns ws is searched before any files on the path;             
-//   "last"  the dfns ws is searched AFTER any files on the path;              
-//   "skip"  the dfns ws is skipped entirely.                                 
-   dfnsOrder: "last",                 // First try my own files, then dfns! 
-
-// path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
-   path: ["."], 
-
-// prefix: literal string to prefix to each name. [] is equiv. to [""]. 
-//        Example given name "mydfn" and {prefix: ["∆F_", "MyLib/"], suffix: ["aplf"]}  
-//        gives: ["∆F_mydfn.aplf", "MyLib/mydfn.aplf"]   
-   prefix: ["", "MyDyalogLib/"], 
-                           
-// suffix: at least one suffix is required. The "." is prefixed for you!      
-   suffix: ["aplf", "aplo", "dyalog"],  
-
-// Internal Runtime (Hidden) parameters:                               
-   _readParmFi: 0,                     // 1 when parm file ./.∆F is read.     
-   _fullPath:  [],                     // Generated from path and prefixes.     
-}   
+{
+  // Default .∆F (JSON5) Parameter File                           
+  // Items not to be (re)set by user should be omitted/commented out.              
+  // Exceptions: 
+  // [1-2] auto and verbose can each be set to null to signal 
+  //       that their value should come from the ∆Fapl globals LIB_AUTO or VERBOSE.
+  // [3]   prefix, which if null is the same as [""], i.e. 0-length string prefix.
+       
+  // ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
+  // Their usual values are LIB_AUTO← 1 ⋄ VERBOSE← 0
+  // The values are explained here:
+  //   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
+  //                  using the default or user-specified path.
+  //   LIB_AUTO:  0   We don't want to use the LIB_AUTO feature.
+  //   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related and general.
+  //                  The debug ∆F option will also display limited runtime msgs.
+  //   VERBOSE:   0   Will only display error or important warning msgs.
+       
+  // auto:
+  //   If 0, user must load own objects; nothing is automatic.                 
+  //   If 1, dfns and files searched in sequence set by dfnsOrder. 
+  //         See path for directory search sequence.                        
+  //   If null, the value is set from LIB_AUTO global 
+     auto:  null,   
+       
+  // verbose: 
+  //    If 0 (quiet), if 1 (verbose).  
+  //    If null, value is set from VERBOSE global. 
+     verbose: null,  
+                                                          
+  // path: The dirs and/or workspaces  to search.  
+  //       For a directory, use a string:  
+  //           "MyDyalogLib"
+  //       For a workspace, use a single string in a list:  
+  //           ["dfns"] or ["MyDyalogLib/mathfns"]
+     path: [ ".", "./MyDyalogLib", ["dfns"], ],  
+                   
+  // prefix: literal string to prefix to each name, when searching directories.
+  //         Ignored for workspaces.
+  //         [] is equiv. to [""]. 
+  //         Example given name "mydfn" and {prefix: ["∆F_", "MyLib/"], suffix: ["aplf"]}  
+  //         ==> ["∆F_mydfn.aplf", "MyLib/mydfn.aplf"]   
+     prefix: [], 
+                               
+  // suffix: at least one suffix is required. The "." is prepended for you!  
+  //         Ignored for workspaces.    
+     suffix: ["aplf", "aplo", "dyalog"],     
+                   
+  //  Internal Runtime (hidden) Parameters                                               
+     _readParmFi: 0,                     // 0: Haven't read .∆F yet. 1 afterwards.     
+     _fullPath:   [],                    // Generated from path and prefixes.                                                                              
+}  
 ``` 
 
 </details>
@@ -1343,7 +1346,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251029T214945]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T163245]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

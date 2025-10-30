@@ -3,14 +3,13 @@
   ⎕IO ⎕ML ⎕PP←0 1 34           ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                     ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                   ⍝ VERBOSE: Compile and runtime verbosity flag
-⍝ AUTO_LIB: >0   if we by default want to use the AUTO_LIB feature.  
+⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
 ⍝            2   We want to get lib objects from workspace "dfns" and files.
 ⍝            1   We want to get lib objects solely from workspace "dfns"
-⍝            0   We don't want to use the AUTO_LIB feature.
-  AUTO_LIB← 1    ⍝ Default is only from dfns, unless overridden!                  
-  helpHtmlFi← '∆F_Help.html'   ⍝ Called from 'help' option. Globally set here
-
-  ⎕←'∆F globals: { DEBUG:',DEBUG,', VERBOSE:',VERBOSE, ', AUTO_LIB:',AUTO_LIB,'}' 
+⍝            0   We don't want to use the LIB_AUTO feature.
+  LIB_AUTO← 1    ⍝ Default is only from dfns, unless overridden!   
+  LIB_AUTO_FI←  '∆FlibAuto.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
+  HELP_HTML_FI← '∆F_Help.html'       ⍝ Called from 'help' option. Globally set here
 
 ⍝ ============================   ∆F User Function   ============================= ⍝
 ⍝ ∆F: 
@@ -260,7 +259,7 @@
   optÊ←        Ê 'Invalid option(s) in left argument. For help: ∆F⍨''help'''
   ShortcutÊ←   Ê {'Sequence "`',⍵,'" does not represent a valid shortcut.'}
   EscÊ←        Ê {'Sequence "`',⍵,'" is not valid in code outside strings. Did you mean "',⍵,'"?'}
-  helpFiÊ←  22 Ê 'Help file "',helpHtmlFi,'" not found in current directory'
+  helpFiÊ←  22 Ê 'Help file "',HELP_HTML_FI,'" not found in current directory'
 
 ⍝ =========================================================================
 ⍝ Utilities (fns/ops) for FmtScan above.
@@ -313,13 +312,13 @@
 ⍝       'help' ∆F anything  OR  ∆F⍨'help'
 ⍝ (1 0⍴⍬)← ∇ ⍵
 ⍝ 1. If ⍵ is not 'help' (any case), an error is signaled.
-⍝ 2. If helpHtml is not defined or if DEBUG=1, helpHtmlFi will be read and copied into helpHtml. 
+⍝ 2. If helpHtml is not defined or if DEBUG=1, HELP_HTML_FI will be read and copied into helpHtml. 
 ⍝ 3. Displays helpHtml.
   Help← { 
     'help'≢  ⎕C 4↑⎕C⍵: ⎕SIGNAL optÊ 
     h← {  
       22:: ⎕SIGNAL helpFiÊ 
-      DEBUG∨ ⍵: ⊢⎕THIS.helpHtml← ⊃⎕NGET helpHtmlFi 
+      DEBUG∨ ⍵: ⊢⎕THIS.helpHtml← ⊃⎕NGET HELP_HTML_FI 
         ⎕THIS.helpHtml  
     } 0= ⎕NC 'helpHtml' 
   ⍝ Undocumented: [a] 'help' vs [b] ('help-n[arrow]' (vs 'help-w[ide]')
@@ -332,191 +331,15 @@
 ⍝:EndSection HELP 
 
 ⍝:Section SPECIAL ROUTINES "LIBRARY" (libUtil.Auto-- run time, others-- fix time)
-:Namespace libUtil 
-⍝ libUtil (namespace): Handles £ and `L shortcuts. 
-⍝ This has options that can be tailored via a file .∆F in the current directory.
-⍝ ∘ The "default" location for user routines is:
-⍝     dfns workspace, then MyDyalogLib in the current directory.
-⍝   This can be changed to an arbitrary list, along with the file types searched for.
-⍝   See SetParmDefaults below.
-⍝ ∘ The "user" namespace referenced by £ and `L equivalently is
-⍝   ûLib, which is established at ]Load time.
-⍝
-⍝ Auto:
-⍝ The main workhorse is Auto, the only function called from the main scan 
-⍝ routines CF_SF and CF_Esc. 
+:Namespace ûLib
+:EndNamespace
 
-⍝ Loadtime: user library initialization
-  ulNs← ##.ûLib⊣ ulNm← 'ûLib'##.⎕NS⍬      ⍝ ulNs, ulNm: user library reference and name.
-  _← ulNs.⎕DF '£=[',ulNm,']'
+:Namespace libUtil
+  ⍝ This is a stub.  If ∆FlibAuto.dyalog is loaded, this will disappear!
+   uLibNm← ⍕ûLib 
+   Auto← { uLibNm }
+:EndNamespace 
 
-⍝ Auto: Runtime routine:  Auto with helper function ⍙Auto
-⍝   Our task is to find nm in £.nm...[←] and find src code for it.
-⍝   Does NOT affect the string being scanned. Only used for its ⎕CY or ⎕FIX side effect.
-⍝ Auto: u@nsNm←  dbg@B ∇ s@CV, 
-⍝  s starts 1 char after £ or `L. 
-⍝  See steps below. 
-⍝ Returns: ulNm (@CV), no matter what.  
-  ∇ u← dbg Auto s
-    u← ulNm                                            ⍝ Return ulNm no matter what!
-    :If 0=≢ s                                          ⍝ Empty str? Done
-    :OrIf '.'≠⊃s← NoLB s                               ⍝ No dot after £? Done
-    :OrIf ~⍙A∊⍨ ⊃s← 1↓s                                ⍝ Word after dot not APL name? Done
-    :OrIf 0≠ulNs.⎕NC nm← s↑⍨ t← +/∧\s∊ ⍙AD             ⍝ Not a valid APL name? Done
-    :OrIf '←'= ⊃NoLB t↓s                               ⍝ Is simple assignment? Done
-    :Else 
-        ulNs dbg parms ⍙FindLoad nm                    ⍝ Else, try to find and load the obj. named.
-    :EndIf 
-  ∇ 
-  ⍝ (⍳20) ⎕STOP 'Auto'
-  
-  ⍝ ⍙FindLoad: 
-  ⍝     (1|0)@B← ulŃ@ns dbg@B parms@ns ∇ nm@CVS 
-  ⍝ Find <nm> in search directories (parms.path) and dfns workspace, according to parameters <parms>.
-  ⍝ If parms.dfnsOrder is 'first', try the dfns w/s first. If 'last', try last. If 'skip', skip.
-  ⍝ Called by ⍙Auto (above).
-  ⍝    (1|0)← ns dbg parms ∇ nm 
-  ⍝ Returns SHY 1 (succ) or SHY 0 (fail), having established <nm> in ns (ulNs) on success.
-  ⍙FindLoad← { ns dbg parms←⍺ ⋄ nm← ⍵ 
-
-      _Msg_← ulNs { (rc msg)(nm from)← ⍺ ⍵  
-        ~⍵⍵: rc ⋄ rc⊣ ⎕← msg, '"', nm, '" into', ⍺⍺, ('from ','"','"',⍨from)/⍨ ⍬≢ from  
-      } (parms.verbose∨ dbg)
-
-    ⍝ ∆DFN: Search the dfns ws for <nm> if ⍺≡⍺⍺.  
-      ∆DFN← parms.dfnsOrder {⍺⍺≢ ⍺: 0 ⋄ 11:: 0 ⋄ 1⊣⍵ ns.⎕CY'dfns'}
-
-    ⍝ ∆FI: If parms.auto=2, search files for ⍵.aplf, etc. along full path parms._fullPath
-      ∆FI← { 22 11:: 0 ⍬ 
-        parms.auto<2: 0 ⍬ 
-            fis← ,parms._fullPath∘.,(⊂⍵)∘.,'.',¨parms.suffix
-        0≡fi← { 0=≢ ⍵: ⍬ ⋄ ⎕NEXISTS ⊃⍵: ⊃⍵ ⋄ ∇ 1↓⍵ } fis: 0 ⍬   
-            ((⊂⍵)∊ 2∘ns.⎕FIX fi) fi   
-      }
-
-    ⍝ Executive for ⍙FindLoad 
-    'first' ∆DFN nm: _← succ _Msg_ nm 'ws:dfns' ⋄ ⊃_ fi← ∆FI nm: _← succ _Msg_ nm fi  
-    'last'  ∆DFN nm: _← succ _Msg_ nm 'ws:dfns' ⋄ 1: _← fail _Msg_ nm ⍬  
-  }
-  
-  ⍝ Internal util. and constants for Auto 
-  ⍝ NoLB: Non-leading blanks; ⍙A: valid initials of APL nms; ⍙AD: valid chars of APL nms. 
-    NoLB← { ⍵↓⍨ +/∧\' '=⍵}
-    ⍙A← { ⍺←'' ⋄ 0=≢⍵: ⍺~'⍺⍵∇' ⋄ ¯1=⎕NC ⊃⍵: ⍺ ∇ 1↓⍵ ⋄ (⍺,⊃⍵) ∇ 1↓⍵ }⎕AV  
-    ⍙AD← ⍙A, ⎕D    
-    fail← 0 'DEBUG WARNING: Could not copy '
-    succ← 1 'DEBUG INFO: Copied '                                    
-
-⍝ SetParmDefaults: Load time routine
-⍝   Sets parameters 
-⍝        ⍵.auto, ⍵.verbose, ⍵.path, ⍵.prefix, ⍵.suffix,⍵._readParmFi, and ⍵.dfnsOrder.
-⍝   If ⍵.auto← 0 after SetParmDefaults & LoadParmFi, 
-⍝       then no more processing is done and Auto is a nop.
-⍝   If ⍵.dfnsOrder←'skip' the dfns w/s isn't checked.
-⍝   If ⍵.path←⍬ or ⍵.suffix←⍬, no files are checked.  
-  SetParmDefaults← { 
-
-    ⍝ These are the default JSON settings. User can override in "profile" ./.∆F 
-    ⍝ To replace with APL-style {...} ⎕NS when v.20 arrives. 
-      DefParms← {  
-      ⍝ // Default .∆F (JSON5) Parameter File                                                                             
-      ⍝ // Items not to be (re)set by user should be omitted/commented out.           
-      ⍝ // Exceptions: auto and verbose can be set to get value from ∆Fapl header  variables    
-      ⍝ // Items not to be (re)set by user should be omitted/commented out.           
-      ⍝ // Exceptions: 
-      ⍝ // [1-2] auto and verbose can each be set to null to signal 
-      ⍝ //       that their value should come from the ∆Fapl globals AUTO_LIB or VERBOSE.
-      ⍝ // [3]   prefix, which if null is the same as [""], i.e. 0-length string prefix.
-       
-      ⍝ // The typical default for ∆F global variables AUTO_LIB and VERBOSE are: 
-      ⍝ //   AUTO_LIB:  2   We want to get library objects from workspace "dfns" and files,
-      ⍝ //                  using the default or user-specified path.
-      ⍝ //   AUTO_LIB:  1   We want to get library objects solely from workspace "dfns".
-      ⍝ //   AUTO_LIB:  0   We don't want to use the AUTO_LIB feature.
-      ⍝ //   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related and general.
-      ⍝ //                  The debug ∆F option will also display limited runtime msgs.
-      ⍝ //   VERBOSE:   0   Will only display error or important warning msgs.
-       
-      ⍝ // auto:
-      ⍝ //   If 0, user must load own objects; nothing is automatic.     
-      ⍝ //   If 1, only dfns are searched. File path setups are not done; 
-      ⍝ //         dfnsOrder is ignored.             
-      ⍝ //   If 2, dfns and files searched in sequence set by dfnsOrder. 
-      ⍝ //         See path for directory search sequence.                        
-      ⍝ //   If null, the value is set from AUTO_LIB global 
-      ⍝    auto:  null,   
-       
-      ⍝ // verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
-      ⍝    verbose: null,  
-                                       
-      ⍝ // dfnsOrder:         
-      ⍝ //   "first" the dfns ws is searched before any files on the path;             
-      ⍝ //   "last"  the dfns ws is searched AFTER any files on the path;              
-      ⍝ //   "skip"  the dfns ws is skipped entirely.                                 
-      ⍝    dfnsOrder: "last",                 // First try my own files, then dfns! 
-                   
-      ⍝ // path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
-      ⍝    path: ["."],  
-                   
-      ⍝ // prefix: literal string to prefix to each name. [] is equiv. to [""]. 
-      ⍝ //         Example given name "mydfn" and {prefix: ["∆F_", "MyLib/"], suffix: ["aplf"]}  
-      ⍝ //         ==> ["∆F_mydfn.aplf", "MyLib/mydfn.aplf"]   
-      ⍝    prefix: ["", "MyDyalogLib/"], 
-                               
-      ⍝ // suffix: at least one suffix is required. The "." is prefixed for you!      
-      ⍝    suffix: ["aplf", "aplo", "dyalog"],     
-                   
-      ⍝ //  Internal Runtime (hidden) Parameters                                               
-      ⍝    _readParmFi: 0,                     // 0: Haven't read .∆F yet. 1 afterwards.     
-      ⍝    _fullPath:   [],                    // Generated from path and prefixes.                                                                              
-      }  
-      cr← ⎕UCS 13 
-      _← 'parms' ⎕NS ⎕JSON⍠ jOpts⊣∊cr,⍨¨'{',1↓'^ *⍝' ⎕R ''⊣⎕NR'DefParms' 
-      1: _← 1 
-  }
-⍝ LoadParmFi: Load time routine
-⍝ Loads parameter file ⍵ (if it exists) into namespace ⍺
-⍝   If parms.verbose in the parameter file is null or omitted, the default (##.VERBOSE) will be used.
-  LoadParmFi← { ⎕PW←100 ⋄ parmFi← ⍵  
-
-    ⍝ CShow: Cond'lly show all json parameters in 'parms' EXCEPT internal ones starting with '_'
-      CShow← { ⍵.verbose: ⍬⊣ ⎕← ⎕JSON⍠ jOpts⊢ ⍵.(⎕NS { ⍵/⍨ '_'≠⊃¨⍵} ⎕NL -2) ⋄ ⍬ } 
-    ⍝ Fi2Json: Update parameters from parm file.
-      Fi2Json← { ~⎕NEXISTS ⍵: ⍬ ⋄ parms._readParmFi← 1 ⊣ 'parms' ⎕NS ⎕JSON⍠ jOpts⊢ ⊃⎕NGET ⍵} 
-    ⍝ ∆IfNull: Replace null or [], where required. 
-      ∆IfNull← {(⍬∘≡∨⎕NULL∘≡)⍺.⎕OR ⊃⍵: ⍺⍎'←⊃⌽⍵',⍨⊃⍵ ⋄ ⍬}¨ 
-    ⍝ parmÊ Report load-time parameter error (no reason to abort-- it won't continue anyway)
-      parmÊ← { p← ⍕parms.⎕OR ⍺
-        '!!! ERROR: Parameter ',⍺,' has invalid value ¨',p,'¨. Using ¨',(⍕⍵),'¨' 
-        parms⍎⍺,'←⍵'
-      }   
-
-      _← Fi2Json parmFi       
-      _← parms ∆IfNull('verbose' ##.VERBOSE)('auto' ##.AUTO_LIB)('prefix' (⊂''))
-    ~0 1 2∊⍨ ⊂parms.auto: ⎕← 'auto' parmÊ 0
-
-  ⍝ If parms.auto=0, we make Auto a nop {}. We're done.
-    0≡parms.auto: 0⊣ ⎕FX 'Auto←{' '}'
-      _← CShow parms 
-
-  ⍝ If parms.auto is 1, done. 
-    1≡parms.auto: _← ⍬  
-
-  ⍝ Now parms.auto is 2. Complete file preprocessing.                                
-      parms._fullPath← ,parms.path∘., '/',¨ parms.prefix
-      ok← 'first' 'last' 'skip' ∊⍨ ⊂parms.dfnsOrder
-    ok: _← 1   ⍝ Success
-  
-  ⍝ Bad parms.dfnsOrder.
-    1: ⎕← 'dfnsOrder' parmÊ 'skip'
-  } 
-  jOpts← ('Dialect' 'JSON5')('Compact' 0)('Null' ⎕NULL)
-
-⍝ Load Runtime Parameters!
-  SetParmDefaults ⍬
-  LoadParmFi '.∆F'
-
-:EndNamespace   ⍝ libUtil
 ⍝:EndSection SPECIAL ROUTINES "LIBRARY" (Auto-- run time), others-- fix time)
 
 ⍝:Section Core FIX_TIME_ROUTINES 
@@ -614,19 +437,36 @@
     MapSC←  sc∘⍳ 
     ok← 1 
   ∇
-  ∇ ok← ⍙LoadHelp; ⎕PW; e1; e2 
+  ∇ ok← ⍙LoadHelp hfi; ⎕PW; e1; e2 
+  ⍝ Loading the help html file...
     ⎕PW←120
-    :If 0=≢   { 22:: ⍬ ⋄ ⎕THIS.helpHtml← ⊃⎕NGET ⍵ } helpHtmlFi
-         e1← 'WARNING: When loading ∆Fapl, the help file "',helpHtmlFi,'" was not found in current directory.'
+    :If 0=≢   { 22:: ⍬ ⋄ ⎕THIS.helpHtml← ⊃⎕NGET ⍵ } hfi
+         e1← 'WARNING: When loading ∆Fapl, the help file "',hfi,'" was not found in current directory.'
          e2← 'WARNING: ∆F help will not be available without user intervention.'
          e1,(⎕UCS 13),e2
     :EndIf 
+    ⎕← 'Loaded Help Html File: ',hfi 
     ok← 1 
   ∇
+  ∇ ok← ⍙LoadLibAuto fi 
+    :TRAP 22 
+        ok← ⎕FIX fi
+        ⎕←'Loaded Library Autoload functions: ',fi 
+    :Else
+        ok←0 ⋄  LIB_AUTO← 0 
+        ⎕←'Warning: Unable to load Library Autoload services: ',fi
+        ⎕←'£ and `L shortcuts are available without these services (auto: 0).'
+    :EndTrap
+  ∇
+
 ⍝ Execute FIX-time routines
   ⍙Promote_∆F ##  
   ⍙LoadShortcuts
-  ⍙LoadHelp
+  ⍙LoadHelp HELP_HTML_FI
+  ⍙LoadLibAuto LIB_AUTO_FI
+
+  ⎕←'∆F globals: { DEBUG:',DEBUG,', VERBOSE:',VERBOSE, ', LIB_AUTO:',LIB_AUTO,'}' 
+
  
 ⍝ === END OF CODE ================================================================================
 ⍝ === END OF CODE ================================================================================
