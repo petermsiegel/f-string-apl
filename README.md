@@ -57,8 +57,11 @@ APL expressions, and multi&shy;dimensional objects using extensions to
   - [Omega Shortcut Expressions: Details](#omega-shortcut-expressions-details)
   - [Wrap Shortcut: Details](#wrap-shortcut-details)
   - [Session Library Shortcut: Details](#session-library-shortcut-details)
+    - [Session Library Shortcut: Parameters](#session-library-shortcut-parameters)
 - [Appendices](#appendices)
-  - [Appendix I: Undocumented Options](#appendix-i-undocumented-options)
+  - [Appendix I: Un(der)documented Features](#appendix-i-underdocumented-features)
+    - [∆F Option for Dfn Source Code](#f-option-for-dfn-source-code)
+    - [∆F Help's Secret Variant](#f-helps-secret-variant)
   - [Appendix II: Python f‑strings](#appendix-ii-python-fstrings)
 
 ---
@@ -1190,16 +1193,91 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 6. By default,`⍺← ''''`,*i.e.* APL quotes will wrap the array ⍵, row by row, whether character, numeric or otherwise.
 
 
-
 ## Session Library Shortcut: Details
 
 1. If 
-an object `£.name` is referenced, but not yet defined in `£`, an attempt is made to copy it to `£` from workspace `dfns` or from  files **name.aplf** (for functions), **name.aplo** (for operators), or
+an object `£.name` is referenced, but not yet defined in `£`, an attempt is made to copy it to `£` from workspace `dfns` and/or from  files **name.aplf** (for functions), **name.aplo** (for operators), or
 **name.dyalog** (otherwise) in directory
 **./MyDyalogLib**, *unless* it is being assigned. It will be available for the duration of the session.
 1. In the case of a simple assignment (`£.name←...`), the object assigned must be new or
 of a compatible *APL* class with its existing value, else a domain error will be signaled. 
 1. Modified assignments of the form `£.name+←...` are allowed and treated as in the first case.
+
+### Session Library Shortcut: Parameters 
+
+The Session Library shortcut (`£` or `` `L ``) is deceptively simple, but
+the code to support 
+it is a tad complex. 
+The complex library code runs only at `]load` time, with a modest runtime
+performance impact&mdash;
+if the **auto** parameter is enabled.
+If the **auto** parameter is *disabled,* the runtime impact of the feature is more modest still; if *not* used, there is no runtime impact.
+
+There are parameters, optionally tailored via a *JSON* parameter file **.&ThinSpace;∆F** (in the current file directory).  Parameters include: 
+
+-  **auto**: the ability to turn on or off any automatic loading
+of object definitions from the **dfns** workspace or files; 
+-  **dfnsOrder**: whether to search the **dfns** workspace before or after searching for definitions in files;
+-  **path**: what directories to search for the object definitions; and so on.
+
+The parameter file 
+is briefly documented *below*. 
+
+<details open><summary class="summary">&ensp;<em>Show/Hide Default JSON £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
+
+```json5
+{    
+// Default .∆F JSON5 Parameter File
+// Items not to be (re)set by user should be omitted/commented out.           
+// Exceptions: 
+// [1-2] auto and verbose can each be set to null to signal 
+//       that their value should come from the ∆Fapl globals AUTO_LIB or VERBOSE.
+// [3]   prefix, which if null is the same as [""], i.e. a 0-length string prefix.
+//
+// The typical default for ∆F global variables AUTO_LIB and VERBOSE are: 
+//   AUTO_LIB:  2   We want to get library objects from workspace "dfns" and files,
+//                  using the default or user-specified path.
+//   AUTO_LIB:  1   We want to get library objects solely from workspace "dfns".
+//   AUTO_LIB:  0   We don't want to use the AUTO_LIB feature.
+//   VERBOSE:   1   Will display loadtime and runtime msgs, 
+//                  both library-related and general.
+//                  The debug ∆F option will also display limited runtime msgs.
+//   VERBOSE:   0   Will only display error or important warning msgs.
+  
+// auto:                                                                      
+//   If 0, user must load own objects; nothing is automatic.     
+//   If 1, only dfns are searched for objects. File path setups are not done.              
+//   If 2, dfns and files searched for objects. See path below.                
+//   If null, the value is set from AUTO_LIB global                           
+   auto:    null,                // Set to 2 in .∆F if you have library files.
+
+// verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
+   verbose: null,   
+
+// dfnsOrder:                                                                 
+//   "first" the dfns ws is searched before any files on the path;             
+//   "last"  the dfns ws is searched AFTER any files on the path;              
+//   "skip"  the dfns ws is skipped entirely.                                 
+   dfnsOrder: "last",                 // First try my own files, then dfns! 
+
+// path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
+   path: ["."], 
+
+// prefix: literal string to prefix to each name. [] is equiv. to [""]. 
+//        Example given name "mydfn" and {prefix: ["∆F_", "MyLib/"], suffix: ["aplf"]}  
+//        gives: ["∆F_mydfn.aplf", "MyLib/mydfn.aplf"]   
+   prefix: ["", "MyDyalogLib/"], 
+                           
+// suffix: at least one suffix is required. The "." is prefixed for you!      
+   suffix: ["aplf", "aplo", "dyalog"],  
+
+// Internal Runtime (Hidden) parameters:                               
+   _readParmFi: 0,                     // 1 when parm file ./.∆F is read.     
+   _fullPath:  [],                     // Generated from path and prefixes.     
+}   
+``` 
+
+</details>
 
 ---
 
@@ -1210,62 +1288,18 @@ of a compatible *APL* class with its existing value, else a domain error will be
  
 <details open><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
 
-## Appendix I: Undocumented Options
+## Appendix I: Un(der)documented Features 
 
-1. If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
+### ∆F Option for Dfn Source Code
+If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
 If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option *returns* the code string, the ***DBG*** option won't also *display* the code string. 
 
-1. `∆F 'help'` has a secret variant: `∆F 'help-narrow'`. 
+### ∆F Help's Secret Variant
+`∆F 'help'` has a secret variant: `∆F 'help-narrow'`. 
 With this variant, the help
 session will start up with a narrower screen *without* side notes. If the user widens the
 screen, the side notes will appear, as in the default 
 case: `∆F 'help'`.
-
-1. The 
-Session Library shortcut (`£` or `` `L ``) is deceptively simple, but
-the code to support it is a tad 
-complex. 
-There are parameters, tailored via a *JSON* parameter file 
-(**.∆F** in the current file directory),
-that is only briefly documented here (below). Additional documentation
-is needed, should this go forward.
-
-<details open><summary class="summary">&ensp;<em>Show/Hide Default JSON Parameter File</em> <big><strong>.∆F</strong></big></summary>
-
-```
-// Default .∆F 
-{                                                                             
-// Items not to be (re)set by user should be omitted/commented out.           
-// Exceptions: auto and verbose can be set to get value from ∆Fapl header  variables    
-//   AUTO_LIB←2 and VERBOSE←1, where  (AUTO_LIB∊0 1 2) (VERBOSE∊0). 
-// auto:                                                                      
-//   If 0, user must load own objects; nothing is automatic.     
-//   If 1, only dfns are checked. File path setups are not done.              
-//   If 2, dfns and files checked                                             
-//   If null, the value is set from AUTO_LIB global                           
-   auto:    null,                                                             
-// verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
-   verbose: null,                                                             
-// dfnsOrder:                                                                 
-//   "first" the dfns ws is checked before any files on the path;             
-//   "last"  the dfns ws is checked AFTER any files on the path;              
-//   "skip"  the dfns ws is skipped entirely.                                 
-   dfnsOrder: "first",                 // first|last|skip.                    
-// path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
-   path: ["."],                                                               
-// prefix: subdirectories to check on each path. [] is equiv. to [""].        
-   prefix: ["", "MyDyalogLib"],                                               
-// suffix: at least one suffix is required. The "." is prefixed for you!      
-   suffix: ["aplf", "aplo", "dyalog"],                                        
-/* -----------------------------------                                        
-   Internal (hidden parameters):                                              
-   _readParmFi: 0,                     // 1 when parm file ./.∆F is read.     
-   _fullPath:  [...],                  // generated from path and prefixes.   
-*/                                                                            
-}   
-``` 
-
-</details>
 
 
 ## Appendix II: Python f‑strings
@@ -1309,7 +1343,7 @@ is needed, should this go forward.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251028T215452]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251029T214945]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

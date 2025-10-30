@@ -195,7 +195,7 @@
     }
     ul, li {
       font-size: 100%;
-      line-height: 140%;
+      line-height: 120%; /* 140%; */
     }
 
   /* # headers: Make h1 headers (#...) the same size as h2 (##...) */ 
@@ -458,12 +458,21 @@ Fields</a></li>
 Expressions: Details</a></li>
 <li><a href="#wrap-shortcut-details">Wrap Shortcut: Details</a></li>
 <li><a href="#session-library-shortcut-details">Session Library
-Shortcut: Details</a></li>
+Shortcut: Details</a>
+<ul>
+<li><a href="#session-library-shortcut-parameters">Session Library
+Shortcut: Parameters</a></li>
+</ul></li>
 </ul></li>
 <li><a href="#appendices">Appendices</a>
 <ul>
-<li><a href="#appendix-i-undocumented-options">Appendix I: Undocumented
-Options</a></li>
+<li><a href="#appendix-i-underdocumented-features">Appendix I:
+Un(der)documented Features</a>
+<ul>
+<li><a href="#f-option-for-dfn-source-code">∆F Option for Dfn Source
+Code</a></li>
+<li><a href="#f-helps-secret-variant">∆F Help's Secret Variant</a></li>
+</ul></li>
 <li><a href="#appendix-ii-python-fstrings">Appendix II: Python
 f‑strings</a></li>
 </ul></li>
@@ -1382,9 +1391,9 @@ will be signaled.</p>
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 </code></pre>
 <p>The function is quietly copied in and is available <em>without the
 overhead of copying</em> for the rest of this <em>APL</em> session.</p>
-<p><span class="margin-note">NB. If <code>£.ctr</code> already exists as
-a function or operator, it must be deleted before it can be assigned,
-per <em>APL</em> rules.</span></p>
+<p><span class="margin-note"><br><br>NB. If <code>£.ctr</code> already
+exists, it must be in the same class as its new value, consistent with
+<em>APL</em> rules.</span></p>
 <h3 data-number="5.20.3" id="session-variables"><span
 class="header-section-number">5.20.3</span> Session Variables</h3>
 <p>Here is an example where we define a local session variable
@@ -2054,27 +2063,109 @@ replicated <em>per (2) above</em>.</li>
 <li>By default,<code>⍺← ''''</code>,<em>i.e.</em> APL quotes will wrap
 the array ⍵, row by row, whether character, numeric or otherwise.</li>
 </ol>
-<p><span class="margin-note"><span class="red"><br>Experimental</span></span>
-<span class="margin-note"><br>Default behaviour is briefly discussed
-here.</span></p>
+<p><span class="margin-note"><span class="red"><br>Experimental</span></span></p>
 <h2 data-number="6.11" id="session-library-shortcut-details"><span
 class="header-section-number">6.11</span> Session Library Shortcut:
 Details</h2>
 <ol type="1">
-<li>If <span class="margin-note">See Dyalog documentation on filetypes
+<li>If <span class="margin-note">See Dyalog doc­ument­ation on filetypes
 <em>.aplf, .aplo, .dyalog</em>.</span> an object <code>£.name</code> is
 referenced, but not yet defined in <code>£</code>, an attempt is made to
-copy it to <code>£</code> from workspace <code>dfns</code> or from files
-<strong>name.aplf</strong> (for functions), <strong>name.aplo</strong>
-(for operators), or <strong>name.dyalog</strong> (otherwise) in
-directory <strong>./MyDyalogLib</strong>, <em>unless</em> it is being
-assigned. It will be available for the duration of the session.</li>
+copy it to <code>£</code> from workspace <code>dfns</code>
+<span class="margin-note">Depending on the <code>auto</code> param­eter.
+<em>See below.</em></span>and/or from files <strong>name.aplf</strong>
+(for functions), <strong>name.aplo</strong> (for operators), or
+<strong>name.dyalog</strong> (otherwise) in directory
+<strong>./MyDyalogLib</strong>, <em>unless</em> it is being assigned. It
+will be available for the duration of the session.</li>
 <li>In the case of a simple assignment (<code>£.name←...</code>), the
 object assigned must be new or of a compatible <em>APL</em> class with
 its existing value, else a domain error will be signaled.</li>
 <li>Modified assignments of the form <code>£.name+←...</code> are
 allowed and treated as in the first case.</li>
 </ol>
+<h3 data-number="6.11.1" id="session-library-shortcut-parameters"><span
+class="header-section-number">6.11.1</span> Session Library Shortcut:
+Parameters</h3>
+<p>The Session Library shortcut (<code>£</code> or <code>`L</code>) is
+deceptively simple, but the code to support it is a tad complex.
+<span class="margin-note">If <code>auto: 2</code> is set, the
+<em>first</em> time each name is used there is the potential for
+substantial overhead in searching for and fixing it in the session
+library.</span> The complex library code runs only at <code>]load</code>
+time, with a modest runtime performance impact— if the
+<strong>auto</strong> parameter is enabled. If the <strong>auto</strong>
+parameter is <em>disabled,</em> the runtime impact of the feature is
+more modest still; if <em>not</em> used, there is no runtime impact.</p>
+<p>There are parameters, optionally tailored via a <em>JSON</em>
+parameter file <strong>. ∆F</strong> (in the current file directory).
+Parameters include:</p>
+<ul>
+<li><strong>auto</strong>: the ability to turn on or off any automatic
+loading of object definitions from the <strong>dfns</strong> workspace
+or files;</li>
+<li><strong>dfnsOrder</strong>: whether to search the
+<strong>dfns</strong> workspace before or after searching for
+definitions in files;</li>
+<li><strong>path</strong>: what directories to search for the object
+definitions; and so on.</li>
+</ul>
+<p>The parameter file <span class="margin-note">Additional doc­ument­ation
+is need­ed, should this go forward.</span> is briefly documented
+<em>below</em>.</p>
+<details><summary class="summary">&ensp;<em>Show/Hide Default JSON £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
+
+<pre class="json5"><code>{    
+// Default .∆F JSON5 Parameter File
+// Items not to be (re)set by user should be omitted/commented out.           
+// Exceptions: 
+// [1-2] auto and verbose can each be set to null to signal 
+//       that their value should come from the ∆Fapl globals AUTO_LIB or VERBOSE.
+// [3]   prefix, which if null is the same as [&quot;&quot;], i.e. a 0-length string prefix.
+//
+// The typical default for ∆F global variables AUTO_LIB and VERBOSE are: 
+//   AUTO_LIB:  2   We want to get library objects from workspace &quot;dfns&quot; and files,
+//                  using the default or user-specified path.
+//   AUTO_LIB:  1   We want to get library objects solely from workspace &quot;dfns&quot;.
+//   AUTO_LIB:  0   We don&#39;t want to use the AUTO_LIB feature.
+//   VERBOSE:   1   Will display loadtime and runtime msgs, 
+//                  both library-related and general.
+//                  The debug ∆F option will also display limited runtime msgs.
+//   VERBOSE:   0   Will only display error or important warning msgs.
+  
+// auto:                                                                      
+//   If 0, user must load own objects; nothing is automatic.     
+//   If 1, only dfns are searched for objects. File path setups are not done.              
+//   If 2, dfns and files searched for objects. See path below.                
+//   If null, the value is set from AUTO_LIB global                           
+   auto:    null,                // Set to 2 in .∆F if you have library files.
+
+// verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
+   verbose: null,   
+
+// dfnsOrder:                                                                 
+//   &quot;first&quot; the dfns ws is searched before any files on the path;             
+//   &quot;last&quot;  the dfns ws is searched AFTER any files on the path;              
+//   &quot;skip&quot;  the dfns ws is skipped entirely.                                 
+   dfnsOrder: &quot;last&quot;,                 // First try my own files, then dfns! 
+
+// path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
+   path: [&quot;.&quot;], 
+
+// prefix: literal string to prefix to each name. [] is equiv. to [&quot;&quot;]. 
+//        Example given name &quot;mydfn&quot; and {prefix: [&quot;∆F_&quot;, &quot;MyLib/&quot;], suffix: [&quot;aplf&quot;]}  
+//        gives: [&quot;∆F_mydfn.aplf&quot;, &quot;MyLib/mydfn.aplf&quot;]   
+   prefix: [&quot;&quot;, &quot;MyDyalogLib/&quot;], 
+                           
+// suffix: at least one suffix is required. The &quot;.&quot; is prefixed for you!      
+   suffix: [&quot;aplf&quot;, &quot;aplo&quot;, &quot;dyalog&quot;],  
+
+// Internal Runtime (Hidden) parameters:                               
+   _readParmFi: 0,                     // 1 when parm file ./.∆F is read.     
+   _fullPath:  [],                     // Generated from path and prefixes.     
+}   </code></pre>
+</details>
+
 <hr />
 </div> 
 </details> 
@@ -2083,11 +2174,13 @@ allowed and treated as in the first case.</li>
 class="header-section-number">7</span> Appendices</h1>
 <details><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
 
-<h2 data-number="7.1" id="appendix-i-undocumented-options"><span
-class="header-section-number">7.1</span> Appendix I: Undocumented
-Options</h2>
-<ol type="1">
-<li><p>If <code>options[0]</code> is <code>¯1</code>,
+<h2 data-number="7.1" id="appendix-i-underdocumented-features"><span
+class="header-section-number">7.1</span> Appendix I: Un(der)documented
+Features</h2>
+<h3 data-number="7.1.1" id="f-option-for-dfn-source-code"><span
+class="header-section-number">7.1.1</span> ∆F Option for Dfn Source
+Code</h3>
+<p>If <code>options[0]</code> is <code>¯1</code>,
 <span class="margin-note">In simple terms, this option returns the
 character representation of the <em>dfn</em> returned via the
 <em><strong>DFN</strong></em> option. </span>then <strong>∆F</strong>
@@ -2097,59 +2190,17 @@ returns a character vector that contains the source code for the
 <em><strong>DBG</strong></em> is also set, newlines from <code>`◇</code>
 are shown as visible <code>␤</code>. However, since this option
 <em>returns</em> the code string, the <em><strong>DBG</strong></em>
-option won't also <em>display</em> the code string.</p></li>
-<li><p><code>∆F 'help'</code> has a secret variant:
+option won't also <em>display</em> the code string.</p>
+<h3 data-number="7.1.2" id="f-helps-secret-variant"><span
+class="header-section-number">7.1.2</span> ∆F Help's Secret Variant</h3>
+<p><code>∆F 'help'</code> has a secret variant:
 <span class="margin-note"><em>Or</em>,
 <code>∆F 'help-n'</code>.</span><code>∆F 'help-narrow'</code>. With this
 variant, the help session will start up with a narrower screen
 <em>without</em> side notes. If the user widens the screen, the side
 notes will appear, as in the default case:
 <span class="margin-note"><em>Or</em>,
-<code>∆F 'help-wide'</code>.</span><code>∆F 'help'</code>.</p></li>
-<li><p>The <span class="margin-note">NB. The complex code runs at
-<code>]load</code> time, with a modest runtime performance impact—
-scanning the first name that follows the symbol. If <strong>not</strong>
-used, the impact is nil.</span> Session Library shortcut (<code>£</code>
-or <code>`L</code>) is deceptively simple, but the code to support it is
-a tad complex. There are parameters, tailored via a <em>JSON</em>
-parameter file (<strong>.∆F</strong> in the current file directory),
-that is only briefly documented here (below). Additional documentation
-is needed, should this go forward.</p></li>
-</ol>
-<details><summary class="summary">&ensp;<em>Show/Hide Default JSON Parameter File</em> <big><strong>.∆F</strong></big></summary>
-
-<pre><code>// Default .∆F 
-{                                                                             
-// Items not to be (re)set by user should be omitted/commented out.           
-// Exceptions: auto and verbose can be set to get value from ∆Fapl header  variables    
-//   AUTO_LIB←2 and VERBOSE←1, where  (AUTO_LIB∊0 1 2) (VERBOSE∊0). 
-// auto:                                                                      
-//   If 0, user must load own objects; nothing is automatic.     
-//   If 1, only dfns are checked. File path setups are not done.              
-//   If 2, dfns and files checked                                             
-//   If null, the value is set from AUTO_LIB global                           
-   auto:    null,                                                             
-// verbose: 0 (quiet), 1 (verbose). If null, value is set from VERBOSE global 
-   verbose: null,                                                             
-// dfnsOrder:                                                                 
-//   &quot;first&quot; the dfns ws is checked before any files on the path;             
-//   &quot;last&quot;  the dfns ws is checked AFTER any files on the path;              
-//   &quot;skip&quot;  the dfns ws is skipped entirely.                                 
-   dfnsOrder: &quot;first&quot;,                 // first|last|skip.                    
-// path: The dirs to search. If [], no files are checked. Use auto: 1 instead.
-   path: [&quot;.&quot;],                                                               
-// prefix: subdirectories to check on each path. [] is equiv. to [&quot;&quot;].        
-   prefix: [&quot;&quot;, &quot;MyDyalogLib&quot;],                                               
-// suffix: at least one suffix is required. The &quot;.&quot; is prefixed for you!      
-   suffix: [&quot;aplf&quot;, &quot;aplo&quot;, &quot;dyalog&quot;],                                        
-/* -----------------------------------                                        
-   Internal (hidden parameters):                                              
-   _readParmFi: 0,                     // 1 when parm file ./.∆F is read.     
-   _fullPath:  [...],                  // generated from path and prefixes.   
-*/                                                                            
-}   </code></pre>
-</details>
-
+<code>∆F 'help-wide'</code>.</span><code>∆F 'help'</code>.</p>
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
 f‑strings</h2>
@@ -2202,7 +2253,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251028T215452]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251029T214945]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
