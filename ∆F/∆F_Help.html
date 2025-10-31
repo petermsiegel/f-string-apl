@@ -497,21 +497,23 @@ class="header-section-number">2.1</span> Installing
 <li>During the test phase, go to
 <mark>github.com/petermsiegel/f‑string-apl</mark>.</li>
 </ul></li>
-<li>Note your current directory. In this directory,
-<span class="margin-note"><code>User command ]cd</code> will show you
-your current working directory.</span> create a new directory,
-<strong>∆F</strong>.</li>
-<li>Copy the files <strong>∆Fapl.dyalog</strong>,
-<strong>∆FlibAuto.dyalog</strong>, and <strong>∆F_Help.html</strong>
-into <strong>∆F</strong>.</li>
+<li>Note<span class="margin-note"><code>User command ]cd</code> will
+show you your current working directory.</span> your current
+directory.</li>
+<li>Copy the file <strong>∆F.dyalog</strong> and directory
+<strong>∆F</strong> (and all its contents) into the current working
+directory, ensuring they are
+peers.<span class="margin-note"><strong>peers:</strong> <em>i.e.</em> at
+the same level.</span></li>
 <li>Ensure your current directory remains as before.</li>
 <li>Then, from your Dyalog session (typically <code>#</code> or
-<code>⎕SE</code>), enter:<br>
-<code>]load ∆F/∆Fapl [-target=</code><strong><em>anyNs</em></strong><code>]</code>
+<code>⎕SE</code>), enter:<br><span class="margin-note">We suggest
+<code>-target=⎕SE</code>.</span>
+<code>]←load ∆F [-target=</code><code><strong><em>anyNs</em></strong>]</code>
 <ol type="1">
 <li>Each time it is called, the <code>]load</code> will create function
-<strong>∆F</strong> and namespace <strong>⍙Fapl</strong> in the active
-namespace (or <strong><em>anyNs</em></strong>).
+<strong>∆F</strong> and namespace <strong>⍙Fapl</strong> in the target
+namespace.
 <ol type="1">
 <li><strong>⍙Fapl</strong> contains utilities used by
 <strong>∆F</strong> and, once<code>]load</code>ed, <em><strong>should
@@ -524,15 +526,16 @@ time, it will be copied into <strong>⍙Fapl</strong> (or a message will
 note its absence).</li>
 </ol></li>
 </ol>
-<p>Now, <strong>∆F</strong> is available in the active namespace (or
-<strong><em>anyNs</em></strong>), along with <strong>⍙Fapl</strong>.</p>
+<p>Now, <strong>∆F</strong> is available for use.</p>
 <h2 data-number="2.2" id="running-f-after-its-been-installed"><span
 class="header-section-number">2.2</span> Running <strong>∆F</strong>
 (After It's Been Installed)</h2>
 <ol type="1">
-<li><code>]load ∆F/∆Fapl [-target=</code><em><strong>anyNs</strong></em><code>]</code>
-(see above), ensuring that <strong>∆F</strong> and
-<strong>⍙Fapl</strong> are accessible from the current namespace.</li>
+<li><code>]←load ∆F [-target=</code><code><em><strong>anyNs</strong></em>]</code>
+(see above), ensuring that <strong>∆F</strong> is
+executable<span class="margin-note"><strong>Accessible:</strong>
+<em>e.g.</em> via <code>⎕PATH</code></span> from the current
+namespace.</li>
 <li>Call <code>∆F</code> with the desired argument(s) and <a
 href="#f-call-syntax-details">options</a>. <strong>∆F</strong> is
 <code>⎕IO</code>- and <code>⎕ML</code>-independent.</li>
@@ -2256,7 +2259,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T085906]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T141355]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
