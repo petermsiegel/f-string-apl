@@ -2,13 +2,13 @@
 :Namespace ⍙Fapl
   ⎕IO ⎕ML ⎕PP←0 1 34           ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                     ⍝ DEBUG: If 1, turns off error trapping in ∆F
-  VERBOSE← 1                    ⍝ VERBOSE: Compile and runtime verbosity flag
+  VERBOSE← 0                    ⍝ VERBOSE: Compile and runtime verbosity flag
 ⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
 ⍝            2   We want to get lib objects from workspace "dfns" and files.
 ⍝            1   We want to get lib objects solely from workspace "dfns"
 ⍝            0   We don't want to use the LIB_AUTO feature.
   LIB_AUTO← 1    ⍝ Default is only from dfns, unless overridden!   
-  LIB_AUTO_FI←  '∆F/∆FlibAuto.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
+  LIB_AUTO_FI←  '∆F/∆Fapl_LibSC.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
   HELP_HTML_FI← '∆F/∆F_Help.html'       ⍝ Called from 'help' option. Globally set here
 
 ⍝ ============================   ∆F User Function   ============================= ⍝
