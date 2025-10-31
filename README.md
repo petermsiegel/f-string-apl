@@ -79,22 +79,22 @@ APL expressions, and multi&shy;dimensional objects using extensions to
 
 1. On Github, search for <mark>"f‑string-apl"</mark>. 
    - During the test phase, go to <mark>github.com/petermsiegel/f‑string-apl</mark>. 
-2. Note your current directory. In this directory, 
-create a new directory, **∆F**.
-3. Copy the files **∆Fapl.dyalog**, **∆FlibAuto.dyalog**, and **∆F_Help.html** into **∆F**. 
-4. Ensure your current directory remains as before.
-5. Then, from your Dyalog session (typically `#` or `⎕SE`), enter:<br>
-  `]load ∆F/∆Fapl [-target=`**_anyNs_**`]` 
-   1. Each time it is called, the `]load` will create function **∆F** and namespace **⍙Fapl** in the active namespace (or **_anyNs_**).
+2. Note your current directory. 
+3. Copy the file  **∆F.dyalog** and directory **∆F** (and all its contents) into the current working directory,
+ensuring they are peers. 
+1. Ensure your current directory remains as before.
+2. Then, from your Dyalog session (typically `#` or `⎕SE`), enter:<br>
+  `]←load ∆F [-target=`<code>**_anyNs_**]</code> 
+   1. Each time it is called, the `]load` will create function **∆F** and namespace **⍙Fapl** in the target namespace.
       1. **⍙Fapl** contains utilities used by **∆F** and, once`]load`ed, ***should not*** be moved. 
       2. **∆F** *may* be relocated; it will refer to **⍙Fapl** in its original location.
    2. If **∆F_Help.html** is available at `]load` time, it will be copied into **⍙Fapl** (or a message will note its absence).
 
-Now, **∆F** is available in the active namespace (or **_anyNs_**), along with **⍙Fapl**. 
+Now, **∆F** is available for use.
 
 ## Running **∆F** (After It's Been Installed)
 
-1. `]load ∆F/∆Fapl [-target=`***anyNs***`]` (see above), ensuring that **∆F** and **⍙Fapl** are accessible from the current namespace.  
+1. `]←load ∆F [-target=`<code>***anyNs***]</code> (see above), ensuring that **∆F** is executable from the current namespace.  
 2. Call `∆F` with the desired argument(s) and [options](#f-call-syntax-details). **∆F** is `⎕IO`- and `⎕ML`-independent. 
 
 ---
@@ -1347,7 +1347,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T085906]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T141355]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
