@@ -80,7 +80,7 @@ APL expressions, and multi&shy;dimensional objects using extensions to
 1. On Github, search for <mark>"f‑string-apl"</mark>. 
    - During the test phase, go to <mark>github.com/petermsiegel/f‑string-apl</mark>. 
 2. Note your current directory. 
-3. Copy the file  **∆F.dyalog** and directory **∆F** (and all its contents) into the current working directory,
+3. Copy the file  **∆F.dyalog** and directory **∆F** (which contains several files) into the current working directory,
 ensuring they are peers. 
 1. Ensure your current directory remains as before.
 2. Then, from your Dyalog session (typically `#` or `⎕SE`), enter:<br>
@@ -1347,7 +1347,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T141355]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T142431]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
