@@ -94,7 +94,7 @@ Now, **∆F** is available in the active namespace (or **_anyNs_**), along with 
 
 ## Running **∆F** (After It's Been Installed)
 
-1. `]load ∆F/∆Fapl` (see above), ensuring that **∆F** and **⍙Fapl** are accessible from the current namespace.  
+1. `]load ∆F/∆Fapl [-target=`***anyNs***`]` (see above), ensuring that **∆F** and **⍙Fapl** are accessible from the current namespace.  
 2. Call `∆F` with the desired argument(s) and [options](#f-call-syntax-details). **∆F** is `⎕IO`- and `⎕ML`-independent. 
 
 ---
@@ -1347,7 +1347,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T224019]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T084540]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
