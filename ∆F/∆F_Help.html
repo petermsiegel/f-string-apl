@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>∆F Formatted String Literals</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!-- 
+   ∆F Help function Header  -- PMS Style and Javascript 
+  -->
+
+  <style>
+  /* ======================================================== */
+  /* Special styles for PMS attributes */
+
+  /* A fancy text box class */
+    .pMarquee {  
+      width: 100%; /* ..% of the viewport width */
+      font-size: 105%;
+      text-align: center;  
+      line-height: 1.2;
+      color: white;
+      background-color: #062f7c;
+      border: 1px solid white;
+      box-shadow: 0 0 0 2px #062f7c;
+      border-width: 3px;
+      padding: 0px 15px ; 
+      box-sizing: border-box; /* Includes padding and border within the defined width/height */
+    }
+
+  /* <details><pSummary>  */  
+    details > summary {
+       list-style-type: '▶️';  
+    }
+    details summary::marker {
+      color: darkgreen;
+      opacity: 1;
+    }
+    details[open] > summary {
+      color: darkgreen;
+      opacity: 0.3;  
+      list-style-type: '🔽';  
+    }
+    .summary {
+        margin: 0px;
+    }
+
+  /* For red things! */
+    .red {
+      color: red;
+    }
+
+  /* for <pNote> margin notes (side notes  */
+    .margin-note {
+      font-family: Tahoma, sans-serif;
+      float: right; /* Aligns the note to the right */
+      width: 220px; 
+  /*  The negative margin-right value should be at least equal to the width of the note */
+      margin-right: -300px; /* Shifts the note out of the main content flow */
+      font-size: 0.70em;    /* Adjust font size for readability */
+      line-height: 1.2;     /* Adjust line height for readability */
+      margin-bottom: 10px;
+      text-align: justify;
+      clear: right; /* Ensures the note doesn't overlap with other floated elements */
+    }
+  /* For the line separating main text from the margin notes */
+    .right-margin-bar {  
+      border-right: 2px solid rgb(244, 230, 227); /* Adjust color and thickness as needed */
+      padding-right: 55px; /* Space between the bar and content */
+      margin-right: 55px;  /* Optional: Space from the right edge of the page */
+      height: auto; /* Or set a fixed height, *e.g.*, 200px */
+      /* overflow: hidden; Do not use w/ margin notes. */
+    }
+  /* Suppress margin notes if screen is narrow (1000 px or less) */
+     @media screen and (max-width: 1000px) {  
+        body {
+          width: 100%;
+        }
+        .margin-note {
+          width: 0px;
+          margin-right: 0px;
+          visibility: hidden;
+        }
+        .right-margin-bar{
+          overflow: hidden;  
+        }
+      }
+
+    /* For links you don't want followed outside the Help html*-- a msg appears instead.
+       See <pLink>...</pLink>                         * bc you can't get back!
+    */
+      .linkNote { /* Actual link */
+          font-size: 20px;
+      }
+
+  /* ======================================================== */
+  /* Regular markdown styles follow */
+
+  /* The main body style */
+   body {
+      background-color:#fffef4;  /* Off-white */
+      font-family: Georgia, serif;
+      font-size:   15pt;
+      text-align: justify;
+      padding: 1% 4%;
+      margin-left: 25px;
+      margin-right: 175px;
+      margin-bottom: 0.5in;
+      max-width: 1200px; /* Sets a maximum width */
+    }
+
+  /* For document title, passed via pandoc */
+    .title { 
+        text-align: center; margin: 5px 10px;
+     }
+
+  /* Inline code */
+    code { 
+      font-size: 88%;
+      background-color: #ddfafaff;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: "APL386 Unicode", APL386, "APL385 Unicode", APL385,
+        "Courier New", Courier, Lucida Console", "Consolas", monospace;
+    }
+
+  /* Code blocks */
+    pre { 
+      background-color: #ddfafaff;
+      color: #0a0a0aff;
+      font-size: 13pt;
+      line-height: 110%;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: "APL386 Unicode", APL386, "APL385 Unicode", APL385,
+          "Courier New", Courier, "Lucida Console", "Consolas", monospace;
+    }
+
+  /* Tables */
+    table {
+      background-color: #ffffffff;
+      line-height: 1.1;
+      font-size: 90%; /* 100%; */
+      border: 2px solid #210074ff;
+      vertical-align: top;
+      font-family: "APL386 Unicode", APL386, "APL385 Unicode", APL385,
+          "Courier New", Courier, "Lucida Console", "Consolas", monospace;
+    }
+    th { /* Table header */
+      font-family:  Georgia,"Courier New", Courier, "Lucida Console", "Consolas", monospace;
+      font-weight: 900;
+      line-height: 1.1;
+      padding: 7px 7px;
+      vertical-align: top;
+      background-color: #25027eff;
+      color: #ffffffff;
+    }
+    td { /* Table data */
+      font-family: Georgia,"Courier New", Courier, "Lucida Console", "Consolas", monospace;
+      font-weight: 200;
+      padding: 5px 7px;
+      text-align: justify;
+      vertical-align: top;
+    }
+    tr:nth-child(odd) {
+      background-color: #ebebebff; /* Light grey for odd rows */
+    }
+    tr:nth-child(even) {
+      background-color: #ffffffff; /* White for even rows */
+    }
+    blockquote {
+      font-size: 110%;
+      background-color: #f4f5f5ff;
+    }
+    ul, li {
+      font-size: 100%;
+      line-height: 120%; /* 140%; */
+    }
+
+  /* # headers: Make h1 headers (#...) the same size as h2 (##...) */ 
+    h1 { 
+    font-size: 1.5em;   
+    }
+
+  /* links-- make them less obtrusive */
+    a:link {         /* link not visited */
+      color: black;   
+      font-size: 1.1em;
+      text-decoration-style: dotted; 
+     }
+    a:visited {      /* visited link */
+       color:  darkolivegreen;  
+    }
+    a:hover {
+      color: blue;
+      transition: color 0.3s; /* font-size 2.0s ease; /* Smooth transition */
+    }
+    a:active {       /* selected link */
+      color: red;
+    }
+
+  /* For features that aren't ready for prime time */
+    .test-feature { /* Left red bar for ∆F items being evaluated */
+      border-left: 2px solid #ea2f0eff; /* Adjust color and thickness */
+      padding-left: 15px;    /* Space between the bar and content */
+      margin-left: 0px;      /* Optional: Space from the left edge of the page */
+      height: auto;          /* Or set a fixed height, *e.g.*, 200px */
+      /* Do not use overflow: hidden -- it clears floats like margin-notes */
+    }
+
+  /* For the fixed navigation footer we set up */
+    .doc-footer {  
+      position: fixed;
+      font-size: 90%;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #e7e7e7ff;
+      color: black;
+      text-align: center;
+      padding: 6px 0;
+    }
+
+  /* Fixed size white on green button in navig footer */
+    .happy-button { 
+      width: 175px;
+      font-size: 90%;
+      color: white;
+      background-color: rgb(43, 122, 61);
+    }
+
+  /* Fixed size white on red button in navig footer */
+    .warn-button { 
+      width: 175px;
+      font-size: 90%;
+      color: white; 
+      background-color: red;
+    }
+
+
+  /* For updating user on page resizing, etc. 
+     See JS code
+  */
+    .pAlertMsg { 
+      display: none;
+      position: fixed;
+      text-align: center;
+      top: 50%; left: 40%; transform: translate(-50%, -50%);
+      color: black; background-color: #E9DCC9;
+      padding: 5px; border: 10px double black;
+    }
+  </style>
+
+  <script>
+  //  Handle Expand/Collapse button at bottom of Help page 
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleButton = document.getElementById('toggleDetails');
+      
+      toggleButton.addEventListener('click', () => {
+        // Select all <details> elements that do NOT have the pPeek id (id="pPeek").
+        const detailsToToggle = document.querySelectorAll('details:not(#pPeek)');
+        
+        // Check if the button should expand or collapse
+        // This example toggles based on the current text of the button
+        const isExpanding = toggleButton.textContent.includes('Expand');
+        
+        detailsToToggle.forEach(detail => {
+          if (isExpanding) {
+            // Expand the details element by adding the 'open' attribute
+            detail.setAttribute('open', '');
+          } else {
+            // Collapse the details element by removing the 'open' attribute
+            detail.removeAttribute('open');
+          }
+        });
+        // Update the button text
+        if (isExpanding) {
+          toggleButton.textContent = 'Collapse All Sections';
+        } else {
+          toggleButton.textContent = 'Expand   All Sections';
+        }
+      });
+    });
+
+
+  // Close the Help window
+  // - for the Close Window button at bottom of Help page
+    function closeWindowNow() {
+      showAlert("Closing Window...", 1000, 1);
+      setTimeout(window.close, 1000);
+    }
+
+  // Informational Alert 
+  // showAlert( text, howLong in ms to show, urgent)
+  // urgent: 1= show ⚠️; 0= show ℹ️  
+    function showAlert(displayMe, howLong, urgent) {
+        var alertBox = document.getElementById("pAlertMsg");
+        var alertPfx = document.getElementById("pAlertPfx");
+        var alertTxt = document.getElementById("pAlertText");
+        alertBox.style.display = "block"; // Show the alert
+        if (urgent==1) {
+          alertPfx.textContent = "⚠️ ";
+        } else {
+          alertPfx.textContent = "ℹ️ ";
+        }
+        alertTxt.textContent = displayMe;
+        // Set a timeout to hide the alert after <howLong> milliseconds  
+        setTimeout(function() {
+            alertBox.style.display = "none"; // Hide the alert
+        }, howLong);
+    }
+    function linkAlert(){
+        showAlert("Use regular browser to explore link.", 2000, 1);
+    }
+
+  // Listener for narrow/wide text
+  // (triggered when text crosses width boundary specified) 
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    mediaQuery.addEventListener('change', (event) => {
+        if (event.matches) {
+            showAlert("Omitting Margin Notes...", 2000, 1);
+        } else {
+            showAlert("Showing Margin Notes...", 2000, 0);
+        }
+    });
+
+
+    // Listener for copy: Cmd-C, Meta-C; quit: Cmd-Q, Meta-Q
+    document.addEventListener('keydown', (event) => {
+    // Check for a specific key combination, e.g., Ctrl + C (event.ctrlKey || 
+      if (event.ctrlKey || event.metaKey) {
+        if (event.key === 'c'){ // We can't seem to copy onto clipboard directly
+          showAlert("To copy, right-click and select the copy option.", 1500, 1);
+        } else if (event.key === 'q') {
+          closeWindowNow();  
+        }
+      }
+    });
+
+
+  // (C) 2025 Sam the Cat Foundation 
+  </script>
+
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">∆F Formatted String Literals</h1>
+</header>
+<div class="right-margin-bar"> 
+<div class="pMarquee">
+
+<p><em><strong>∆F</strong></em> is a function for <em>Dyalog</em> APL
+that interprets <em>f‑strings</em>, a concise, yet powerful way to
+display multiline APL text, arbitrary APL expressions, and
+multi­dimensional objects using extensions to <em>dfns</em> and other
+familiar tools.</p>
+</div>
+
+<h1 data-number="1" id="table-of-contents"><span
+class="header-section-number">1</span> Table of Contents</h1>
+<details id="TOC">     <!-- option: open  Set id="TOC" here only. -->
+<summary class="summary">&ensp;Show/Hide <em>Table of Contents</em></summary>
+<span style="font-size:75%;">
+
+<ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#installing-and-running-f-in-dyalog-apl">Installing and
+Running <strong>∆F</strong> in Dyalog APL</a>
+<ul>
+<li><a href="#installing-f">Installing <strong>∆F</strong></a></li>
+<li><a href="#running-f-after-its-been-installed">Running
+<strong>∆F</strong> (After It's Been Installed)</a></li>
+</ul></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#displaying-f-help-in-apl">Displaying ∆F
+<strong>Help</strong> in APL</a></li>
+<li><a href="#f-examples-a-primer">∆F Examples: A Primer</a>
+<ul>
+<li><a href="#code-fields">Code Fields</a></li>
+<li><a href="#text-fields-and-space-fields">Text Fields and Space
+Fields</a></li>
+<li><a href="#null-space-fields">Null Space Fields</a></li>
+<li><a href="#code-fields-continued">Code Fields (Continued)</a></li>
+<li><a href="#the-box-shortcut">The Box Shortcut</a></li>
+<li><a href="#box-mode">Box Mode</a></li>
+<li><a href="#omega-shortcuts-explicit">Omega Shortcuts
+(Explicit)</a></li>
+<li><a href="#referencing-the-fstring-itself">Referencing the f‑string
+Itself</a></li>
+<li><a href="#the-format-shortcut">The Format Shortcut</a></li>
+<li><a href="#the-shortcut-for-numeric-commas">The Shortcut for Numeric
+Commas</a></li>
+<li><a href="#self-documenting-code-fields-sdcfs">Self-documenting
+<strong>Code</strong> fields (SDCFs)</a></li>
+<li><a href="#the-above-shortcut">The Above Shortcut</a></li>
+<li><a href="#text-justification-shortcut">Text Justification
+Shortcut</a></li>
+<li><a href="#omega-shortcuts-implicit">Omega Shortcuts
+(Implicit)</a></li>
+<li><a href="#shortcuts-with-individual-expressions">Shortcuts With
+Individual Expressions</a></li>
+<li><a href="#a-shortcut-for-dates-and-times-part-i">A Shortcut for
+Dates and Times (Part I)</a></li>
+<li><a href="#a-shortcut-for-dates-and-times-part-ii">A Shortcut for
+Dates and Times (Part II)</a></li>
+<li><a href="#the-quote-shortcut">The Quote Shortcut</a></li>
+<li><a href="#the-wrap-shortcut-experimental">The Wrap Shortcut
+(Experimental)</a></li>
+<li><a href="#the-session-library-shortcut-experimental">The Session
+Library Shortcut (Experimental)</a>
+<ul>
+<li><a href="#explicitly-copied-library-objects">Explicitly Copied
+Library Objects</a></li>
+<li><a href="#automatically-copied-library-objects">Automatically Copied
+Library Objects</a></li>
+<li><a href="#session-variables">Session Variables</a></li>
+</ul></li>
+<li><a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
+f‑strings with the <em><strong>DFN</strong></em> Option</a></li>
+</ul></li>
+<li><a href="#f-syntax-and-other-information">∆F Syntax and Other
+Information</a>
+<ul>
+<li><a href="#f-call-syntax-overview">∆F Call Syntax Overview</a></li>
+<li><a href="#f-call-syntax-details">∆F Call Syntax Details</a></li>
+<li><a href="#f-options">∆F Options</a></li>
+<li><a href="#f-return-value">∆F Return Value</a></li>
+<li><a href="#f-fstring-building-blocks">∆F F‑string Building
+Blocks</a></li>
+<li><a href="#code-field-shortcuts">Code Field Shortcuts</a></li>
+<li><a
+href="#escape-sequences-for-text-fields-and-quoted-strings">Escape
+Sequences For Text Fields and Quoted Strings</a></li>
+<li><a href="#quoted-strings-in-code-fields">Quoted Strings in Code
+Fields</a></li>
+<li><a href="#omega-shortcut-expressions-details">Omega Shortcut
+Expressions: Details</a></li>
+<li><a href="#wrap-shortcut-details">Wrap Shortcut: Details</a></li>
+<li><a href="#session-library-shortcut-details">Session Library
+Shortcut: Details</a>
+<ul>
+<li><a href="#session-library-shortcut-parameters">Session Library
+Shortcut: Parameters</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#appendices">Appendices</a>
+<ul>
+<li><a href="#appendix-i-underdocumented-features">Appendix I:
+Un(der)documented Features</a>
+<ul>
+<li><a href="#f-option-for-dfn-source-code">∆F Option for Dfn Source
+Code</a></li>
+<li><a href="#f-helps-secret-variant">∆F Help's Secret Variant</a></li>
+</ul></li>
+<li><a href="#appendix-ii-python-fstrings">Appendix II: Python
+f‑strings</a></li>
+</ul></li>
+</ul>
+<hr />
+</span>
+</details>
+
+<h1 data-number="2" id="installing-and-running-f-in-dyalog-apl"><span
+class="header-section-number">2</span> Installing and Running
+<strong>∆F</strong> in Dyalog APL</h1>
+<details>            <!-- option: open -->
+<summary class="summary">&ensp;Show/Hide <em>Installing and Running <bold>∆F</bold></em>
+</summary>
+
+<h2 data-number="2.1" id="installing-f"><span
+class="header-section-number">2.1</span> Installing
+<strong>∆F</strong></h2>
+<ol type="1">
+<li>On Github, search for <mark>"f‑string-apl"</mark>.
+<ul>
+<li>During the test phase, go to
+<mark>github.com/petermsiegel/f‑string-apl</mark>.</li>
+</ul></li>
+<li>Copy the files <strong>∆Fapl.dyalog</strong> and
+<strong>∆F_Help.html</strong> into your current working directory
+<span class="margin-note"><code>User command ]cd</code> will show you
+your current working directory.</span>.</li>
+<li>Then, from your Dyalog session (typically <code>#</code> or
+<code>⎕SE</code>), enter:<br>
+<code>]load ∆Fapl [-target=</code><strong><em>anyNs</em></strong><code>]</code>
+<ol type="1">
+<li>Each time it is called, the <code>]load</code> will create function
+<strong>∆F</strong> and namespace <strong>⍙Fapl</strong> in the active
+namespace (or <strong><em>anyNs</em></strong>).
+<ol type="1">
+<li><strong>⍙Fapl</strong> contains utilities used by
+<strong>∆F</strong> and, once<code>]load</code>ed, <em><strong>should
+not</strong></em> be moved.</li>
+<li><strong>∆F</strong> <em>may</em> be relocated; it will refer to
+<strong>⍙Fapl</strong> in its original location.</li>
+</ol></li>
+<li>If <strong>∆F_Help.html</strong> is available at <code>]load</code>
+time, it will be copied into <strong>⍙Fapl</strong> (or a message will
+note its absence).</li>
+</ol></li>
+</ol>
+<p>Now, <strong>∆F</strong> is available in the active namespace (or
+<strong><em>anyNs</em></strong>), along with <strong>⍙Fapl</strong>.</p>
+<h2 data-number="2.2" id="running-f-after-its-been-installed"><span
+class="header-section-number">2.2</span> Running <strong>∆F</strong>
+(After It's Been Installed)</h2>
+<ol type="1">
+<li><code>]load ∆Fapl</code> (see above), ensuring that
+<strong>∆F</strong> and <strong>⍙Fapl</strong> are accessible from the
+current namespace.</li>
+<li>Call <code>∆F</code> with the desired argument(s) and <a
+href="#f-call-syntax-details">options</a>. <strong>∆F</strong> is
+<code>⎕IO</code>- and <code>⎕ML</code>-independent.</li>
+</ol>
+<hr />
+</details>
+
+<h1 data-number="3" id="overview"><span
+class="header-section-number">3</span> Overview</h1>
+<details open><summary class="summary">&ensp;Show/Hide <em>Overview</em></summary>
+
+<p><span class="margin-note">Short for "<strong>formatted string
+literals</strong>, <em>f‑strings</em> were introduced in Python in 2016.
+<strong>∆F</strong> <em>f‑strings</em> and Python's are
+<strong>not</strong> compatible.</span> Inspired by <a
+href="#appendix-ii-python-fstrings">Python f‑strings</a>,
+<strong>∆F</strong> includes a variety of capabilities to make it easy
+to evaluate, format, annotate, and display related multi­dimensional
+information.</p>
+<p><strong>∆F</strong> <em>f‑strings</em> include:</p>
+<ul>
+<li>The abstraction of 2-dimensional character
+<em><strong>fields</strong></em>, generated one-by-one from the user's
+specifications and data, then aligned and catenated into a single
+overall character matrix result;</li>
+</ul>
+<p><span class="margin-note">In this document, we use the symbol
+<code>◇</code> (<code>⎕UCS 9671</code>) to represent the APL
+<em>statement separator</em> (<code>⎕UCS 8900</code>), since the latter
+is displayed <em>in some browsers</em> as a hard-to-read
+glyph.</span></p>
+<ul>
+<li><p><strong>Text</strong> fields, supporting multiline Unicode text
+within each field, with the sequence <code>`◇</code>
+(<strong>backtick</strong> + <strong>statement separator</strong>)
+generating a newline, <small><code>⎕UCS 13</code></small>;</p></li>
+<li><p><strong>Code</strong> fields, <span class="margin-note">An
+<strong>∆F</strong> <em>f‑string</em>— including any
+<strong>Code</strong> fields— is limited to a single, possibly very
+long, character vector. </span>allowing users to evaluate and display
+APL arrays of any dimensionality, depth and type in the user
+environment, arrays passed as <strong>∆F</strong> arguments, as well as
+arbitrary APL expressions based on full multi-statement dfn logic. Each
+<strong>Code</strong> field must return a value, simple or otherwise,
+which will be catenated with other fields and returned from
+<strong>∆F</strong>;</p>
+<p><strong>Code</strong> fields also provide a number of concise,
+convenient extensions, such as:</p>
+<ul>
+<li><p><strong>Quoted strings</strong> in <strong>Code</strong> fields,
+with several quote styles:</p>
+<ul>
+<li><strong>double-quotes</strong><br> <code>∆F '{"like this"}'</code>
+or <code>∆F '{"on`◇""three""`◇lines"}</code>,</li>
+<li><strong>double angle quotation
+marks</strong>,<span class="margin-note">Also known as
+<em>guillemets</em>, <big><strong>«</strong></big> and
+<big><strong>»</strong></big> are Unicode chars
+<code>⎕UCS 171 187</code>.</span><br>
+<code>∆F '{«with internal quotes like "this" or ''this''»}'</code>, not
+to mention</li>
+<li>APL's tried-and-true embedded <strong>single-quotes</strong>,<br>
+<code>∆F '{''shown ''''right'''' here''}'</code>.</li>
+</ul></li>
+<li><p>Simple shortcuts<span class="margin-note">Details on all the <a
+href="#code-field-shortcuts">shortcuts</a> are provided later in this
+document.</span> for</p>
+<ul>
+<li><strong>format</strong>ting numeric arrays, <strong>$</strong>
+(short for
+<strong>⎕FMT</strong>):<br><code>∆F '{"F7.5" $ ?0 0}'</code>,</li>
+<li>putting a <strong>box</strong> around a specific expression,
+<strong>`B</strong>:<br><code>∆F'{`B ⍳2 2}'</code>,</li>
+<li>placing the output of one expression <strong>above</strong> another,
+<strong>%</strong>:<br><code>∆F'{"Pi"% ○1}'</code>,</li>
+<li>formatting <strong>date</strong> and <strong>time</strong>
+expressions from APL timestamps (<strong>⎕TS</strong>) using
+<strong>`T</strong> (combining <strong>1200⌶</strong> and
+<strong>⎕DT</strong>): <br><code>∆F'{"hh:mm:ss"</code>T ⎕TS}' ``,</li>
+<li><em>and more</em>;</li>
+</ul></li>
+<li><p>Simple mechanisms for concisely formatting and displaying data
+from</p>
+<ul>
+<li>user arrays or arbitrary
+code:<br><code>tempC←10 110 40</code><br><code>∆F'{tempC}'</code> or
+<code>∆F'{ {⍵&lt;100: 32+9×⍵÷5 ◇ "(too hot)"}¨tempC }'</code>, <br></li>
+<li>arguments to <strong>∆F</strong> that follow the format
+string:<br><code>∆F'{32+`⍵1×9÷5}' (10 110 40)</code>,<br> where
+<code>`⍵1</code> is a shortcut for <code>(⍵⊃⍨1+⎕IO)</code> (here
+<code>10 110 40</code>),</li>
+<li><em>and more</em>;</li>
+</ul></li>
+</ul></li>
+<li><p><strong>Space</strong> fields, providing a simple mechanism both
+for separating adjacent <strong>Text</strong> fields and inserting
+(rectangular) blocks of any number of spaces between any two fields,
+where needed;</p>
+<ul>
+<li>one space: <code>{ }</code>; five spaces: <code>{     }</code>; or
+even, zero spaces: <code>{}</code>;</li>
+<li>1000 spaces? Use a <strong>Code</strong> field instead:
+<code>{1000⍴""}</code>.</li>
+</ul></li>
+<li><p>Multiline (matrix) output built up field-by-field, left-to-right,
+from values and expressions in the calling environment or arguments to
+<strong>∆F</strong>;</p>
+<ul>
+<li>After all fields are generated, they are aligned vertically, then
+concatenated to form a single character matrix: <em><strong>the return
+value from</strong></em> <strong>∆F</strong>.
+<span class="margin-note"><br>As a prototype, <strong>∆F</strong> is
+relatively slow, using an APL recursive scan to analyze the
+<strong>f‑string</strong>. For a way to speed up frequently used
+<em>f‑strings</em>, see the <a href="#f-call-syntax-details">DFN
+option</a>.</span></li>
+</ul></li>
+</ul>
+<p><strong>∆F</strong> is designed for ease of use, <em>ad hoc</em>
+debugging, fine-grained formatting and informal user interaction, built
+using Dyalog functions and operators.</p>
+<details>     <!-- option: open -->
+<summary class="summary">&ensp;Recap: <em>The Three Field Types</em></summary><br>  
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Field Type</th>
+<th style="text-align: center;">Syntax</th>
+<th style="text-align: center;">Examples</th>
+<th style="text-align: center;">Displaying</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Text</strong></td>
+<td style="text-align: center;"><em>Unicode text</em></td>
+<td style="text-align: center;"><code>abc`◇def</code></td>
+<td style="text-align: center;">2-D Text</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Code</strong></td>
+<td style="text-align: center;"><code>{</code><em>dfn code
+plus</em><code>}</code></td>
+<td style="text-align: center;"><code>{(32+9×÷∘5)degC}</code><br>
+<code>{↑"one" "two"}</code></td>
+<td style="text-align: center;">Arbitrary APL<br>expressions via
+dfns</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Space</strong></td>
+<td style="text-align: center;"><code>{</code><big>␠ ␠
+␠</big><code>}</code></td>
+<td style="text-align: center;"><code>{  }</code>   <code>{}</code></td>
+<td style="text-align: center;">Spacing &amp; Field Separation</td>
+</tr>
+</tbody>
+</table>
+<div>
+Table 3a. <strong>The Three Field Types</strong>
+</div> 
+
+<br>
+</details> 
+
+<h1 data-number="4" id="displaying-f-help-in-apl"><span
+class="header-section-number">4</span> Displaying ∆F
+<strong>Help</strong> in APL</h1>
+<p><span class="margin-note">If <code>∆F⍨'help'</code> seems exotic,
+try: <code>'help' ∆F ⍬</code>.</span> <span style="font-size: 130%;">👉
+</span>To display this <strong>HELP</strong> information, type:
+<code>∆F⍨ 'help'</code>.</p>
+<h1 data-number="5" id="f-examples-a-primer"><span
+class="header-section-number">5</span> ∆F Examples: A Primer</h1>
+<details>            <!-- option: open -->
+<summary class="summary">&ensp;Show/Hide <em>Examples: A Primer</em></summary>
+
+<p>Before providing information on <strong>∆F</strong> syntax and other
+details, <em>let's start with some examples</em>…</p>
+<p>First, let's set some context for the examples. (You can set these
+however you want.)</p>
+<p><span class="margin-note">All examples in this document assume
+<code>⎕IO←0 ◇ ⎕ML←1</code>.</span></p>
+<pre><code>   ⎕IO ⎕ML← 0 1        </code></pre>
+<h2 data-number="5.1" id="code-fields"><span
+class="header-section-number">5.1</span> Code Fields</h2>
+<p>Here are <strong>Code</strong> fields with simple variables.</p>
+<p><span class="margin-note">So far, this is like everybody else's
+<em>f‑strings</em>.</span></p>
+<pre><code>   name← &#39;Fred&#39; ◇ age← 43
+   ∆F &#39;The patient&#39;&#39;s name is {name}. {name} is {age} years old.&#39;
+The patient&#39;s name is Fred. Fred is 43 years old.</code></pre>
+<p><strong>Code</strong> fields can contain arbitrary expressions. With
+default options, <strong>∆F</strong> always returns a single character
+matrix. Here <strong>∆F</strong> returns a matrix with 2 rows and 32
+columns.</p>
+<p><span class="margin-note"> Now we're taking advantage of APL's
+array-oriented style. </span></p>
+<pre><code>   tempC← ⍪35 85
+   ⍴⎕← ∆F &#39;The temperature is {tempC}{2 2⍴&quot;°C&quot;} or {32+tempC×9÷5}{2 2⍴&quot;°F&quot;}&#39;
+The temperature is 35°C or  95°F.
+                   85°C    185°F
+2 32                </code></pre>
+<p>Here, we assign the <em>f‑string</em> to an APL variable, then call
+<strong>∆F</strong> twice!</p>
+<p><span class="margin-note">Setting <code>⎕RL</code> ensures our random
+numbers aren't random!</span></p>
+<pre><code>   ⎕RL← 2342342                 
+   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000
+   f← &#39;Customer {names⊃⍨ ?n} wins £{?prize}!&#39;
+   ∆F f
+Customer Jack wins £80!
+   ∆F f
+Customer Jack wins £230!</code></pre>
+<p>Isn't Jack lucky, winning twice in a row!</p>
+<details id="pPeek"><summary class="summary">&ensp;View a fancier example...</summary>
+
+<p><span class="margin-note"><a href="#winner2">See a different
+method</a> using the <strong>Wrap</strong> shortcut.</span></p>
+<div id="winner1">
+
+<pre><code> ⍝ Be sure everyone wins something.
+   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000
+   ∆F &#39;{ ↑names }{ ⍪n⍴ ⊂&quot;wins&quot; }{ &quot;£&quot;, ⍕⍪?n⍴ prize}&#39;
+Mary wins £711
+Jack wins £298
+Tony wins £242</code></pre>
+</div>
+</details>
+
+<h2 data-number="5.2" id="text-fields-and-space-fields"><span
+class="header-section-number">5.2</span> Text Fields and Space
+Fields</h2>
+<p>Below, we have some multi-line <strong>Text</strong> fields separated
+by non-null <strong>Space</strong> fields.</p>
+<ul>
+<li>The backtick is our "escape" character.</li>
+<li>The sequence `◇ generates a new line in the current text field.</li>
+<li>Each <strong>Space</strong> field <code>{ }</code> in the next
+example contains one space within its braces. It produces a matrix a
+<em>single</em> space wide with as many rows as required to catenate it
+with adjacent fields.</li>
+</ul>
+<p>A <strong>Space</strong> field is useful here because each multi-line
+field is built in its own rectangular space.</p>
+<pre><code>   ∆F &#39;This`◇is`◇an`◇example{ }Of`◇multi-line{ }Text`◇Fields&#39;
+This    Of         Text
+is      multi-line Fields
+an
+example</code></pre>
+<h2 data-number="5.3" id="null-space-fields"><span
+class="header-section-number">5.3</span> Null Space Fields</h2>
+<p>Two adjacent <strong>Text</strong> fields can be separated by a null
+<strong>Space</strong> field <code>{}</code>, for example when at least
+one field contains multiline input that you want formatted separately
+from others, keeping each field in is own rectangular space:</p>
+<pre><code>⍝  Extra space here ↓ 
+   ∆F &#39;Cat`◇Elephant `◇Mouse{}Felix`◇Dumbo`◇Mickey&#39;
+Cat      Felix
+Elephant Dumbo
+Mouse    Mickey</code></pre>
+<p>In the above example, we added an extra space after the longest
+animal name, <em>Elephant</em>, so it wouldn't run into the next word,
+<em>Dumbo</em>.</p>
+<p><strong>But wait! There's an easier way!</strong></p>
+<p>Here, you surely want the lefthand field to be guaranteed to have a
+space after <em>each</em> word without fiddling; a
+<strong>Space</strong> field with at least one space will solve the
+problem:</p>
+<pre class="apl"><code>⍝                          ↓↓↓
+   ∆F &#39;Cat`◇Elephant`◇Mouse{ }Felix`◇Dumbo`◇Mickey&#39;
+Cat      Felix
+Elephant Dumbo
+Mouse    Mickey</code></pre>
+<h2 data-number="5.4" id="code-fields-continued"><span
+class="header-section-number">5.4</span> Code Fields (Continued)</h2>
+<p><span class="margin-note">We could have used a <strong>Space</strong>
+field <code>{ }</code> here as well.</span> And this is the same example
+with <em>identical</em> output, but built using two
+<strong>Code</strong> fields separated by a <strong>Text</strong> field
+with a single space.</p>
+<p><span class="margin-note">APL mix <code>↑</code> is used to convert
+the names (a vector of character vectors) to a character matrix.
+</span></p>
+<pre><code>   ∆F &#39;{↑&quot;Cat&quot; &quot;Elephant&quot; &quot;Mouse&quot;} {↑&quot;Felix&quot; &quot;Dumbo&quot; &quot;Mickey&quot;}&#39;
+Cat      Felix
+Elephant Dumbo
+Mouse    Mickey</code></pre>
+<p>Here's a similar example with double quote-delimited strings in
+<strong>Code</strong> fields with the newline sequence,
+<code>`◇</code>:</p>
+<pre><code>   ∆F &#39;{&quot;This`◇is`◇an`◇example&quot;} {&quot;Of`◇Multi-line&quot;} {&quot;Strings`◇in`◇Code`◇Fields&quot;}&#39;
+This    Of         Strings
+is      Multi-line in
+an                 Code
+example            Fields</code></pre>
+<p>Here is some multiline data we'll add to our <strong>Code</strong>
+fields.</p>
+<p><span class="margin-note"><br><br><br><br><br>Again, we use APL
+<em>mix</em> <code>↑</code> to generate multiline objects
+(matrices).</span></p>
+<pre><code>   fNm←  &#39;John&#39; &#39;Mary&#39; &#39;Ted&#39;
+   lNm←  &#39;Smith&#39; &#39;Jones&#39; &#39;Templeton&#39;
+   addr← &#39;24 Mulberry Ln&#39; &#39;22 Smith St&#39; &#39;12 High St&#39;
+   
+   ∆F &#39;{↑fNm} {↑lNm} {↑addr}&#39;
+John Smith     24 Mulberry Ln
+Mary Jones     22 Smith St
+Ted  Templeton 12 High St</code></pre>
+<p><span class="margin-note">We could have used <code>0⍕⍪</code> and
+<code>1⍕⍪</code> here, of course. But we wanted to remind you what
+Dyalog's <code>⎕FMT</code> can do. For more, see <a
+href="#the-format-shortcut">below</a>. </span></p>
+<p>Here's a slightly more interesting code expression, using
+<code>$</code> (a shortcut for <code>⎕FMT</code>) to round Centigrade
+numbers to the nearest whole degree and Fahrenheit numbers to the
+nearest tenth of a degree.</p>
+<pre><code>   cv← 11.3 29.55 59.99
+   ∆F &#39;The temperature is {&quot;I2&quot; $ cv}°C or {&quot;F5.1&quot;$ 32+9×cv÷5}°F&#39;
+The temperature is 11°C or  52.3°F
+                   30       85.2
+                   60      140.0</code></pre>
+<h2 data-number="5.5" id="the-box-shortcut"><span
+class="header-section-number">5.5</span> The Box Shortcut</h2>
+<p>We now introduce the <strong>Box</strong> shortcut <code>`B</code>.
+Here we place boxes around key <strong>Code</strong> fields in this same
+example.</p>
+<pre><code>   cv← 11.3 29.55 59.99
+   ∆F &#39;`◇The temperature is {`B &quot;I2&quot; $ cv}`◇°C or {`B &quot;F5.1&quot; $ 32+9×cv÷5}`◇°F&#39;
+                   ┌──┐      ┌─────┐
+The temperature is │11│°C or │ 52.3│°F
+                   │30│      │ 85.2│
+                   │60│      │140.0│
+                   └──┘      └─────┘</code></pre>
+<h2 data-number="5.6" id="box-mode"><span
+class="header-section-number">5.6</span> Box Mode</h2>
+<p>But what if you want to place a box around every
+<strong>Code</strong>, <strong>Text</strong>,
+<strong><em>and</em></strong> <strong>Space</strong> field? We just use
+the <strong>Box</strong> mode option!</p>
+<p>While we can't place boxes around text (or space) fields using
+<code>`B</code>, we can place a box around
+<em><strong>each</strong></em> field (<em>regardless</em> of type) by
+setting <strong>∆F</strong>'s <em>third</em> option,
+<strong>Box</strong> <a href="#f-call-syntax-details">mode</a>,
+<span class="margin-note"><strong>third option</strong>:
+<code>⍺[2+⎕IO]</code>.</span>to <code>1</code>:</p>
+<pre><code>   cv← 11.3 29.55 59.99
+       ↓¯¯¯ Box mode
+   0 0 1 ∆F &#39;`◇The temperature is {&quot;I2&quot; $ cv}`◇°C or {&quot;F5.1&quot; $ 32+9×cv÷5}`◇°F&#39;
+┌───────────────────┬──┬──────┬─────┬──┐
+│                   │11│      │ 52.3│  │
+│The temperature is │30│°C or │ 85.2│°F│
+│                   │60│      │140.0│  │
+└───────────────────┴──┴──────┴─────┴──┘</code></pre>
+<p>We said you could place a box around every field, but there's an
+exception. Null <strong>Space</strong> fields <code>{}</code>,
+<em>i.e.</em> 0-width <strong>Space</strong> fields, are discarded once
+they've done their work of separating adjacent fields (typically
+<strong>Text</strong> fields), so they won't be placed in boxes.</p>
+<p>Try this expression on your own:</p>
+<pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;</code></pre>
+<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
+
+<pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;
+┌───┬───┬───┬┬───┬─┬───┐ 
+│abc│def│ghi││jkl│ │mno│ 
+└───┴───┴───┴┴───┴─┴───┘
+</code></pre>
+</details>
+
+<p>In contrast, <strong>Code</strong> fields that return null values
+(like <code>{""}</code> above) <em>will</em> be displayed!</p>
+<h2 data-number="5.7" id="omega-shortcuts-explicit"><span
+class="header-section-number">5.7</span> Omega Shortcuts (Explicit)</h2>
+<blockquote>
+<p>Referencing <strong>∆F</strong> arguments after the
+<em>f‑string</em>: <strong>Omega</strong> shortcut expressions like
+<code>`⍵1</code>.</p>
+</blockquote>
+<p>The expression <span class="margin-note">And <code>(⍵⊃⍨ 1+⎕IO)</code>
+is, of course, equivalent to <code>((1+⎕IO)⊃⍵)</code>.</span>
+<code>`⍵1</code> is equivalent to <code>(⍵⊃⍨ 1+⎕IO)</code>, selecting
+the first argument after the <em>f‑string</em>. Similarly,
+<code>`⍵99</code> would select <code>(⍵⊃⍨99+⎕IO)</code>.</p>
+<p>We will use <code>`⍵1</code> here, both with shortcuts and an
+externally defined function <code>C2F</code>, that converts Centigrade
+to Fahrenheit. A bit further <a
+href="#omega-shortcuts-implicit">below</a>, we discuss bare
+<code>`⍵</code> (<em>i.e.</em> without an appended non-negative
+integer).</p>
+<pre><code>   C2F← 32+9×÷∘5
+   ∆F &#39;The temperature is {&quot;I2&quot; $ `⍵1}°C or {&quot;F5.1&quot; $ C2F `⍵1}°F&#39; (11 15 20)
+The temperature is 11°C or 51.8°F
+                   15      59.0
+                   20      68.0</code></pre>
+<h2 data-number="5.8" id="referencing-the-fstring-itself"><span
+class="header-section-number">5.8</span> Referencing the f‑string
+Itself</h2>
+<p><span class="margin-note"> <code>`⍵0</code> refers to the
+<em>f‑string</em> independent of the the number of elements in the right
+argument to <strong>∆F</strong> (<em>effectively</em>,
+<code>⊆⍵</code>).</span> The expression <code>`⍵0</code> always refers
+to the <em>f‑string</em> itself. Try this yourself.</p>
+<pre><code>   bL bR← &#39;«»&#39;                     ⍝ ⎕UCS 171 187
+   ∆F &#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;</code></pre>
+<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
+
+<pre><code>   bL bR← &#39;«»&#39;                     ⍝ ⎕UCS 171 187
+   ∆F &#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
+Our string «Our string {bL, `⍵0, bR} has {≢`⍵0} characters» has 47 characters.</code></pre>
+<details id="pPeek"><summary class="summary">&ensp;Let's check our work...</summary>
+
+<pre><code>   ≢&#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
+47</code></pre>
+</details>
+</details>
+
+<h2 data-number="5.9" id="the-format-shortcut"><span
+class="header-section-number">5.9</span> The Format Shortcut</h2>
+<p><span class="margin-note">The <strong>Format</strong> shortcut
+<code>$</code> <span class="margin-note">Alias: <code>`F</code>.</span>
+(short for <code>⎕FMT</code>) can also be used monadically, but
+<strong>∆F</strong> will handle that for you in most cases. </span></p>
+<blockquote>
+<p>Let's add commas to some very large numbers using the
+<strong>⎕FMT</strong> shortcut <code>$</code>.</p>
+</blockquote>
+<p>We can use Dyalog's built-in formatting specifier "C" with shortcut
+<code>$</code> to add appropriate commas to the temperatures!</p>
+<p><span class="margin-note"><br><br><code>C2F← 32+9×÷∘5</code></span></p>
+<pre><code>⍝  The temperature of the sun at its core in degrees C.
+   sun_core← 15E6                   ⍝ 15000000 is a bit hard to parse!
+   ∆F &#39;The sun&#39;&#39;s core is at {&quot;CI10&quot; $ sun_core}°C or {&quot;CI10&quot; $ C2F sun_core}°F&#39;
+The sun&#39;s core is at 15,000,000°C or 27,000,032°F</code></pre>
+<h2 data-number="5.10" id="the-shortcut-for-numeric-commas"><span
+class="header-section-number">5.10</span> The Shortcut for Numeric
+Commas</h2>
+<p><span class="margin-note">Typically, each number or numeric string
+presented to <code>`C</code> will represent an integer, but if a real
+number is presented, only the integer part will have commas added.
+</span> The shortcut for <em>Numeric</em> <strong>Commas</strong>
+<code>`C</code> adds commas every 3 digits (from the right) to one or
+more numbers or numeric strings.It has an advantage over the
+<code>$</code> (Dyalog's <code>⎕FMT</code>) specifier: it doesn't
+require you to guesstimate field widths.</p>
+<p>Let's use the <code>`C</code> shortcut to add the commas to the
+temperatures!</p>
+<p><span class="margin-note"><br>Cool! OK, not literally.</span></p>
+<pre><code>   sun_core← 15E6               ⍝ 15000000 is a bit hard to parse!
+   ∆F &#39;The sun&#39;&#39;s core is at {`C sun_core}°C or {`C C2F sun_core}°F.&#39;
+The sun&#39;s core is at 15,000,000°C or 27,000,032°F.</code></pre>
+<p>And for a bit of a twist, let's display either degrees Centigrade or
+Fahrenheit under user control (<code>1</code> =&gt; F, <code>0</code>
+=&gt; C). Here, we establish the <em>f‑string</em> <code>sunFC</code>
+first, then pass it to <strong>∆F</strong> with an additional right
+argument.</p>
+<pre><code>   sunFC← &#39;The sun&#39;&#39;s core is at {`C C2F⍣`⍵1⊢ sun_core}°{ `⍵1⊃ &quot;CF&quot;}.&#39;
+   ∆F sunFC 1
+The sun&#39;s core is at 27,000,032°F.
+   ∆F sunFC 0
+The sun&#39;s core is at 15,000,000°C.</code></pre>
+<p>Now, let's move on to Self-documenting <strong>Code</strong>
+fields.</p>
+<h2 data-number="5.11" id="self-documenting-code-fields-sdcfs"><span
+class="header-section-number">5.11</span> Self-documenting
+<strong>Code</strong> fields (SDCFs)</h2>
+<p><span class="margin-note">Our SDCFs are based on Python's single type
+of self-documenting expressions in <em>f‑strings</em>, but work somewhat
+differently. SDCFs are used <em><strong>only</strong></em> in
+<strong>Code</strong> fields (<em>duh</em>). </span></p>
+<blockquote>
+<p>Self-documenting Code fields (SDCFs) are a useful debugging tool.</p>
+</blockquote>
+<p>What's an SDCF? An SDCF allows whatever source code is in a
+<strong>Code</strong> field to be automatically displayed literally
+along with the result of evaluating that code.</p>
+<p>The source code for a <strong>Code</strong> field can automatically
+be shown in <strong>∆F</strong>'s output—</p>
+<ul>
+<li>to the <em>left</em> of the result of evaluating that code; or,</li>
+<li>centered <em>above</em> the result of evaluating that code.</li>
+</ul>
+<p>All you need do is enter</p>
+<ul>
+<li>a right arrow <big><code>→</code></big> for a
+<strong>horizontal</strong> SDCF, or</li>
+<li>a down arrow <big><code>↓</code></big> (or
+<big><code>%</code></big>)<span class="margin-note"><code>%</code> is
+the same glyph as for the <strong>Above</strong> shortcut,
+<code>%</code> or <code>`A</code>, discussed in <a
+href="#the-above-shortcut">the next section</a>.</span> for a
+<strong>vertical</strong> SDCF,</li>
+</ul>
+<p>as the <strong><em>last non-space</em></strong> character in the
+<strong>Code</strong> field, before the <em>final</em> right brace.</p>
+<p>Here's an example of a horizontal SDCF, <em>i.e.</em> using
+<code>→</code>:</p>
+<pre><code>   name←&#39;John Smith&#39; ◇ age← 34
+   ∆F &#39;Current employee: {name→}, {age→}.&#39;
+Current employee: name→John Smith, age→34.</code></pre>
+<p>As a useful formatting feature, whatever spaces are just
+<strong><em>before</em></strong> or <strong><em>after</em></strong> the
+symbol <strong>→</strong> or <strong>↓</strong> are preserved
+<strong><em>verbatim</em></strong> in the output.</p>
+<p>Here's an example with such spaces: see how the spaces adjacent to
+the symbol <code>→</code> are mirrored in the output!</p>
+<pre><code>   name←&#39;John Smith&#39; ◇ age← 34
+   ∆F &#39;Current employee: {name → }, {age→ }.&#39;
+Current employee: name → John Smith, age→ 34.</code></pre>
+<p>Now, let's look at an example of a vertical SDCF, <em>i.e.</em> using
+<code>↓</code>:</p>
+<pre><code>   name←&#39;John Smith&#39; ◇ age← 34
+   ∆F &#39;Current employee: {name↓} {age↓}.&#39;
+Current employee:  name↓     age↓.
+                  John Smith  34</code></pre>
+<p>To make it easier to see, here's the same result, but with a box
+around each field (using the <strong>Box</strong> <a
+href="#f-call-syntax-details">option</a> <code>0 0 1</code>).</p>
+<pre><code>⍝  Box all fields
+   0 0 1 ∆F &#39;Current employee: {name↓} {age↓}.&#39;
+┌──────────────────┬──────────┬─┬────┬─┐
+│Current employee: │ name↓    │ │age↓│.│
+│                  │John Smith│ │ 34 │ │
+└──────────────────┴──────────┴─┴────┴─┘</code></pre>
+<h2 data-number="5.12" id="the-above-shortcut"><span
+class="header-section-number">5.12</span> The Above Shortcut</h2>
+<blockquote>
+<p>A cut above the rest…</p>
+</blockquote>
+<p><span class="margin-note"><code>%</code> can be used monadically. In
+that case, a left argument of <code>''</code> (an empty string) is
+assumed. </span> Here's a useful feature. Let's use the shortcut
+<code>%</code> to display one expression centered above another; it's
+called <strong>Above</strong> and can <em>also</em> be expressed as
+<code>`A</code>.</p>
+<p><span class="margin-note">Remember, <code>`⍵1</code> designates the
+<strong><em>first</em></strong> argument after the <em>f‑string</em>
+itself, and <code>`⍵2</code> the <strong><em>second</em></strong>.
+</span></p>
+<pre><code>   ∆F &#39;{&quot;Employee&quot; % ⍪`⍵1} {&quot;Age&quot; % ⍪`⍵2}&#39; (&#39;John Smith&#39; &#39;Mary Jones&#39;)(29 23)
+Employee    Age
+John Smith  29
+Mary Jones  23</code></pre>
+<h2 data-number="5.13" id="text-justification-shortcut"><span
+class="header-section-number">5.13</span> Text Justification
+Shortcut</h2>
+<p><span class="margin-note"><code>`J</code> is a variant of
+<code>just</code>, found in the <em>dfns</em> library.</span> The Text
+<strong>Justification</strong> shortcut <code>`J</code> treats its right
+argument as a character array, justifying each line to the left
+(<code>⍺="L"</code>, the default), to the right (<code>⍺="R"</code>), or
+centered (<code>⍺="C"</code>). <span class="margin-note"><strong>Maximum
+<code>⎕PP</code>:</strong> the (maximum) <code>⎕PP</code> is
+<code>17</code> for 64-bit floats, and <code>34</code> for 128-bit
+floats.</span> If its right argument contains floating point numbers,
+they will be displayed with the maximum print precision <code>⎕PP</code>
+available.</p>
+<pre><code>   a← ↑&#39;elephants&#39; &#39;cats&#39; &#39;rhinoceroses&#39;
+   ∆F &#39;{&quot;L&quot; `J a}  {&quot;C&quot; `J a}  {&quot;R&quot; `J a}&#39; 
+elephants      elephants       elephants
+cats              cats              cats
+rhinoceroses  rhinoceroses  rhinoceroses</code></pre>
+<h2 data-number="5.14" id="omega-shortcuts-implicit"><span
+class="header-section-number">5.14</span> Omega Shortcuts
+(Implicit)</h2>
+<blockquote>
+<p>The <em>next</em> best thing: the use of <code>`⍵</code> in
+<strong>Code</strong> field expressions…</p>
+</blockquote>
+<p>We said we'd present the use of <strong>Omega</strong> shortcuts with
+implicit indices <code>`⍵</code> in <strong>Code</strong> fields. The
+expression <code>`⍵</code> selects the <em>next</em> element of the
+right argument <code>⍵</code> to <strong>∆F</strong>, defaulting to
+<code>`⍵1</code> when first encountered, <em>i.e.</em> if there are
+<strong><em>no</em></strong> <code>`⍵</code> elements (<em>explicit</em>
+or <em>implicit</em>) to the <strong><em>left</em></strong> in the
+entire <em>f‑string</em>. If there is any such expression (<em>e.g.</em>
+<code>`⍵5</code>), then <code>`⍵</code> points to the element after that
+one (<em>e.g.</em> <code>`⍵6</code>). If the item to the left is
+<code>`⍵</code>, then we simply increment the index by <code>1</code>
+from that one.</p>
+<p><strong>Let's try an example.</strong> Here, we display arbitrary
+2-dimensional expressions, one above the other. <code>`⍵</code> refers
+to the <strong><em>next</em></strong> argument in sequence, left to
+right, starting with <code>`⍵1</code>, the first, <em>i.e.</em>
+<code>(⍵⊃⍨ 1+⎕IO)</code>. So, from left to right <code>`⍵</code> is
+<code>`⍵1</code>, <code>`⍵2</code>, and <code>`⍵3</code>.</p>
+<p><span class="margin-note"><em>Easy peasy.</em></span></p>
+<pre><code>   ∆F &#39;{(⍳2⍴`⍵) % (⍳2⍴`⍵) % (⍳2⍴`⍵)}&#39; 1 2 3
+    0 0
+  0 0 0 1
+  1 0 1 1
+0 0 0 1 0 2
+1 0 1 1 1 2
+2 0 2 1 2 2</code></pre>
+<p>Let's demonstrate here the equivalence of the <em>implicitly</em> and
+<em>explicitly</em> indexed <strong>Omega expressions</strong>!</p>
+<pre><code>   a← ∆F &#39;{(⍳2⍴`⍵) % (⍳2⍴`⍵) % (⍳2⍴`⍵)}&#39; 1 2 3     ⍝ Implicit Omega expressions
+   b← ∆F &#39;{(⍳2⍴`⍵1) % (⍳2⍴`⍵2) % (⍳2⍴`⍵3)}&#39; 1 2 3  ⍝ Explicit Omega expressions
+   a ≡ b                                           ⍝ Are they the same?
+1                                                  ⍝ Yes!</code></pre>
+<h2 data-number="5.15" id="shortcuts-with-individual-expressions"><span
+class="header-section-number">5.15</span> Shortcuts With Individual
+Expressions</h2>
+<p>Shortcuts often make sense with individual expressions, not just
+entire <strong>Code</strong> fields. They can be manipulated like
+ordinary APL functions; since they are just that -- ordinary APL
+functions -- under the covers. Here, we display one boxed value above
+the other.</p>
+<pre><code>   ∆F &#39;{(`B ⍳`⍵1) % `B ⍳`⍵2}&#39; (2 2)(3 3)
+  ┌───┬───┐
+  │0 0│0 1│
+  ├───┼───┤
+  │1 0│1 1│
+  └───┴───┘
+┌───┬───┬───┐
+│0 0│0 1│0 2│
+├───┼───┼───┤
+│1 0│1 1│1 2│
+├───┼───┼───┤
+│2 0│2 1│2 2│
+└───┴───┴───┘</code></pre>
+<details id="pPeek"><summary class="summary">&ensp;Peek: Shortcuts are just Functions</summary>
+
+<p>While not for the faint of heart, the expression above can be recast
+as this concise <span class="margin-note"><strong>concise:</strong>
+somewhat hard to read.</span>alternative:</p>
+<pre><code>   ∆F &#39;{%/ `B∘⍳¨ `⍵1 `⍵2}&#39; (2 2)(3 3)</code></pre>
+</details
+
+<blockquote>
+<p>There are loads of other examples to discover.</p>
+</blockquote>
+<h2 data-number="5.16" id="a-shortcut-for-dates-and-times-part-i"><span
+class="header-section-number">5.16</span> A Shortcut for Dates and Times
+(Part I)</h2>
+<p><span class="margin-note">The syntax for the Date-Time specifications
+in the left argument to <code>`T</code> can be found in the Dyalog
+doc­ument­ation under <strong>1200⌶</strong>. For the curious, here's the
+core <em>dfn</em> code actually used by the Date-Time shortcut:
+<br> <code>⍺←'YYYY-MM-DD hh:mm:ss'</code><br> <code>∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT ⊆⍵</code>
+</span> <strong>∆F</strong> supports a simple <strong>Date-Time</strong>
+shortcut <code>`T</code> built from <strong>1200⌶</strong> and
+<strong>⎕DT</strong>. It takes one or more Dyalog
+<code>⎕TS</code>-format timestamps as the right argument and a date-time
+specification as the (optional) left argument. Trailing elements of a
+timestamp may be omitted (they will each be treated as <code>0</code> in
+the specification string).</p>
+<p>Let's look at the use of the <code>`T</code> shortcut to show the
+current time (now).</p>
+<p><span class="margin-note"><br>The time displayed in practice will be
+the <em>true</em> current time.</span></p>
+<pre><code>   ∆F &#39;It is now {&quot;t:mm pp&quot; `T ⎕TS}.&#39;
+It is now 8:08 am.</code></pre>
+<p>Here's a fancier example<span class="margin-note">The power is in the
+capabilities of <code>1200⌶</code> and <code>⎕DT</code>.</span>. (We've
+added the <em>truncated</em> timestamp <code>2025 01 01</code> right
+into the <em>f‑string</em>.)</p>
+<pre><code>   ∆F &#39;{ &quot;D MMM YYYY &#39;&#39;was a&#39;&#39; Dddd.&quot;`T 2025 01 01}&#39;
+1 JAN 2025 was a Wednesday.</code></pre>
+<h2 data-number="5.17" id="a-shortcut-for-dates-and-times-part-ii"><span
+class="header-section-number">5.17</span> A Shortcut for Dates and Times
+(Part II)</h2>
+<p>If it bothers you to use <code>`T</code> for a date-only expression,
+you can use <code>`D</code>, which means exactly the same thing.</p>
+<pre><code>   ∆F &#39;{ &quot;D MMM YYYY &#39;&#39;was a&#39;&#39; Dddd.&quot; `D 2025 01 02}&#39;
+2 JAN 2025 was a Thursday.</code></pre>
+<p>Here, we'll pass the time stamp via a single <strong>Omega</strong>
+expression <code>`⍵1</code>, whose argument
+<span class="margin-note"><code>(2025 1 21)</code></span> is passed in
+parentheses.</p>
+<pre><code>   ∆F &#39;{ &quot;D Mmm YYYY &#39;&#39;was a&#39;&#39; Dddd.&quot; `T `⍵1}&#39; (2025 1 21)
+21 Jan 2025 was a Tuesday.</code></pre>
+<p>We could also pass the time stamp via a sequence of
+<strong>Omega</strong> expressions: <code>`⍵ `⍵ `⍵</code>. This is
+equivalent to the <em>slightly</em> verbose expression:
+<code>`⍵1 `⍵2 `⍵3</code>.</p>
+<pre><code>   ∆F &#39;{ &quot;D Mmm YYYY &#39;&#39;was a&#39;&#39; Dddd.&quot; `T `⍵ `⍵ `⍵}&#39; 2025 1 21
+21 Jan 2025 was a Tuesday.</code></pre>
+<h2 data-number="5.18" id="the-quote-shortcut"><span
+class="header-section-number">5.18</span> The Quote Shortcut</h2>
+<blockquote>
+<p>Placing quotes around string elements of an array.</p>
+</blockquote>
+<p><span class="margin-note">If a multi­dimensional character array is
+found, its <em>rows</em> are quoted; if a character vector, it is quoted
+<em>in toto</em>; else, each character <em>scalar</em> is quoted in
+isolation. </span> The <strong>Quote</strong> shortcut <code>`Q</code>
+recursively scans its right argument, matching rows of character arrays,
+character vectors, and character scalars, doubling internal single
+quotes and placing single quotes around the items found.</p>
+<p>Non-character data is returned as is. This is useful, for example,
+when you wish to clearly distinguish character from numeric data.</p>
+<p>Let's look at a couple of simple examples:</p>
+<p>First, let's use the <code>`Q</code> shortcut to place quotes around
+the simple character arrays in its right argument, <code>⍵</code>. This
+is useful when you want to distinguish between character output that
+might include numbers and <em>actual</em> numeric output.</p>
+<pre><code>   ∆F &#39;{`Q 1 2 &quot;three&quot; 4 5 (⍪1 &quot;2&quot;) (⍪&quot;cats&quot; &quot;dogs&quot;)}&#39;   
+1 2  &#39;three&#39;  4 5     1    &#39;cats&#39;
+                    &#39;2&#39;    &#39;dogs&#39;</code></pre>
+<p>And here's an example with a simple, mixed vector (<em>i.e.</em> a
+mix of character and numeric scalars only). We'll call the object
+<code>iv</code>, but we won't disclose its definition yet.</p>
+<p>Let's display <code>iv</code> without using the
+<strong>Quote</strong> shortcut.</p>
+<pre><code>   iv← ...
+   ∆F &#39;{iv}&#39;
+1 2 3 4 5</code></pre>
+<p>Are you <strong><em>sure</em></strong> which elements of
+<code>iv</code> are numeric and which character scalars?</p>
+<details id="pPeek"><summary class="summary">&ensp;Peek to see the example with `iv` defined.</summary>
+
+<pre><code>   iv← 1 2 &#39;3&#39; 4 &#39;5&#39;
+   ∆F &#39;{iv}&#39;
+1 2 3 4 5</code></pre>
+</details>
+
+<p>Now, we'll show the variable <code>iv</code> using the
+<strong>Quote</strong> <code>`Q</code> shortcut.</p>
+<pre><code>   iv← 1 2 &#39;3&#39; 4 &#39;5&#39;
+   ∆F &#39;{`Q iv}&#39;</code></pre>
+<details id="pPeek"><summary class="summary">&ensp;Take a peek at the <bold>∆F</bold> output.</summary>
+
+<pre><code>1 2 &#39;3&#39; 4 &#39;5&#39;</code></pre>
+</details>
+
+<p>Voilà, quotes appear around the character digits, but not the actual
+APL numbers!</p>
+<h2 data-number="5.19" id="the-wrap-shortcut-experimental"><span
+class="header-section-number">5.19</span> The Wrap Shortcut
+<span class="red">(Experimental)</span></h2>
+<div class="test-feature">
+
+<blockquote>
+<p>Wrapping results in left and right decorators...</p>
+</blockquote>
+<p><span class="margin-note">For more, see <a
+href="#wrap-shortcut-details-experimental">Wrap Shortcut: Details</a>
+<em>below</em>. </span> The shortcut <strong>Wrap</strong>
+<code>`W</code> is
+<span class="red"><strong><em>experimental</em></strong></span>.
+<code>`W</code> is used when you want to place a
+<strong><em>decorator</em></strong> string immediately to the left or
+right of <strong><em>each</em></strong> row of simple objects in the
+right argument, <code>⍵</code>. It differs from the
+<strong>Quote</strong> shortcut <code>`Q</code>, which puts quotes
+<strong><em>only</em></strong> around the character arrays in
+<code>⍵</code>.</p>
+<ul>
+<li>The decorators are in <code>⍺</code>, the left argument to
+<strong>Wrap</strong>: the left decorator, <code>0⊃2⍴⍺</code>, and the
+right decorator, <code>1⊃2⍴⍺</code>, with <code>⍺</code> defaulting to a
+single quote.</li>
+<li>If you need to omit one or the other decorator, simply make it a
+null string <code>""</code> or a <em>zilde</em> <code>⍬</code>.</li>
+</ul>
+<p><strong>Here are two simple examples.</strong></p>
+<p>In the first, we place <code>"°C"</code> after <strong>[a]</strong>
+each row of a table <code>⍪`⍵2</code>, or <strong>[b]</strong> after
+each simple vector in <code>,¨`⍵2</code>. We indicate that is no
+<em>left</em> decorator here using <code>""</code> or <code>⍬</code>, as
+here.</p>
+<pre><code>⍝         ... [a] ...       .... [b] ....
+    ∆F &#39;{ `⍵1 `W ⍪`⍵2 } ...{ `⍵1 `W ,¨`⍵2 }&#39; (⍬ &#39;°C&#39;)(18 22 33)
+18°C ... 18°C 22°C 33°C
+22°C
+33°C</code></pre>
+<p>In this next example, we place brackets around the lines of each
+simple array in a complex array.</p>
+<pre><code>   ∆F &#39;{&quot;[]&quot; `W (&quot;cats&quot;)(⍳2 2 1)(2 2⍴⍳4)(3 3⍴⎕A) }&#39;
+[cats] [0 0 0] [0 1] [ABC]
+       [0 1 0] [2 3] [DEF]
+                     [GHI]
+       [1 0 0]
+       [1 1 0]</code></pre>
+<div id="winner2">
+
+<p><span class="margin-note"><a href="#winner1">See earlier example</a>
+without <strong>Wrap</strong>.</span> Now, let's try recasting an
+earlier example to use <strong>Wrap</strong> <code>`W</code>.</p>
+<pre><code>   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000
+   ∆F &#39;{ ↑names }{ ⍪n⍴ ⊂&quot;wins&quot; }{ &quot;£&quot;, ⍕⍪?n⍴ prize }&#39;</code></pre>
+</div>
+<details id="pPeek"><summary class="summary">&ensp;Below is one solution...</summary>
+
+<p><span class="margin-note"><br><br>The string <code>"wins "</code> is
+the left prefix to <strong>Wrap</strong>, and <code>""</code> the
+right.</span></p>
+<pre><code>   n← ≢names← &#39;Mary&#39; &#39;Jack&#39; &#39;Tony&#39; 
+   prize← 1000                              
+   ∆F &#39;{ ↑names } { &quot;wins &quot; &quot;&quot; `W &quot;£&quot;, ⍕⍪?n⍴ prize }&#39;
+Mary wins £201
+Jack wins £ 73
+Tony wins £349</code></pre>
+</details>
+</div>
+
+<h2 data-number="5.20"
+id="the-session-library-shortcut-experimental"><span
+class="header-section-number">5.20</span> The Session Library Shortcut
+<span class="red">(Experimental)</span></h2>
+<div class="test-feature">
+
+<p>The shortcut (Session) <strong>Library</strong> <code>£</code> is
+<span class="red"><strong>experimental</strong></span>. <code>£</code>
+denotes <span class="margin-note"><strong>£ alias:</strong>
+<code>`L</code>. £ is from the first letter of the Latin <em>lībra</em>,
+"pound", very apt for a
+<em>libra</em>-ry.<br><br><strong>⍙Fapl</strong>: Installed with the
+active <strong>∆F</strong> instance. See <a
+href="#installing-f">Installing <strong>∆F</strong></a>, above.</span> a
+"private" namespace in <strong>⍙Fapl</strong>, into which the user may
+place any functions or variables useful for the duration of the
+<em><strong>current</strong></em> <em>APL</em> session. For example, it
+may be useful to have available regularly used functions or operators
+defined in the <code>dfns</code> workspace or in files in a local
+directory or create objects that might be referred to or modified across
+the session. <em>For details, see <a href="#code-field-shortcuts">Code
+Field Shortcuts</a> below.</em></p>
+<h3 data-number="5.20.1" id="explicitly-copied-library-objects"><span
+class="header-section-number">5.20.1</span> Explicitly Copied Library
+Objects</h3>
+<p>In this example, the user wants to generate all primes between 1 and
+100 using two routines in the <em><strong>dfns</strong></em> workspace,
+<code>sieve</code> and <code>to</code>. To achieve this, we copy both
+routines from <em><strong>dfns</strong></em>.</p>
+<span class="margin-note">
+`⎕CY` returns `0⍴⊂''` on success, i.e. a 0-width string!
+</span>
+
+<pre><code>    ∆F &#39;{&quot;sieve&quot; &quot;to&quot; £.⎕CY &quot;dfns&quot;}{£.sieve 2 £.to 100}&#39;
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
+<p>On subsequent calls, <code>sieve</code> and <code>to</code> are
+already available, as we can see here:</p>
+<pre><code>    ∆F &#39;{ £.⎕NL ¯3 }&#39;
+ sieve  to </code></pre>
+<h3 data-number="5.20.2" id="automatically-copied-library-objects"><span
+class="header-section-number">5.20.2</span> Automatically Copied Library
+Objects</h3>
+<p><span class="margin-note">We only show examples of objects from the
+<em>dfns</em> library here. <em>See <a href="#code-field-shortcuts">Code
+Field Shortcuts</a> below.</em></span> But, <strong>∆F</strong> provides
+a simpler solution! If the user references a name of the form
+<code>£.name</code> that has not (yet) been defined in the library, an
+attempt is made to copy that name into the library either from the
+<strong>dfns</strong> workspace or from a text file; if the name appears
+to the left-side of a <strong>simple</strong> assigment <code>←</code>,
+it is assumed to exist (as always).</p>
+<p><span style="font-size: 130%;">👉 </span> If <strong>∆F</strong> is
+unable to find the item during its search, a standard <em>APL</em> error
+will be signaled.</p>
+<p>In this next example, we use <em>for the first time</em> the function
+<code>pco</code> from the <code>dfns</code> workspace.</p>
+<pre><code>    ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 </code></pre>
+<p>The function is quietly copied in and is available <em>without the
+overhead of copying</em> for the rest of this <em>APL</em> session.</p>
+<p><span class="margin-note"><br><br>NB. If <code>£.ctr</code> already
+exists, it must be in the same class as its new value, consistent with
+<em>APL</em> rules.</span></p>
+<h3 data-number="5.20.3" id="session-variables"><span
+class="header-section-number">5.20.3</span> Session Variables</h3>
+<p>Here is an example where we define a local session variable
+<code>ctr</code>, a counter of the number of times a particular
+statement is executed. Since we define the counter,
+<code>£.ctr←0</code>, <strong>∆F</strong> makes
+<em><strong>no</strong></em> attempt to copy it from the
+<code>dfns</code> workspace or a file.</p>
+<pre><code>   ∆F &#39;{ ⍬⊣£.ctr←0 }&#39;         ⍝ Initialise £.ctr.
+   t← &#39;We&#39;&#39;ve been called {£.ctr← £.ctr+1} times.&#39;
+⍝  ...                    
+   ∆F t
+We&#39;ve been called 1 times.
+   ∆F t
+We&#39;ve been called 2 times.</code></pre>
+<p>This may be sensible when ∆F is called from a variety of namespaces
+and/or if the user doesn't wish to clutter the active namespace.</p>
+<p><span style="font-size: 130%;">👉 </span> When a <em>dfn</em> created
+via <strong>∆F</strong> with the <em>DFN</em> option runs, any uses of
+<code>£</code> will require the associated ⍙Fapl namespace to be
+present.</p>
+</div>
+
+<h2 data-number="5.21"
+id="precomputed-fstrings-with-the-dfn-option"><span
+class="header-section-number">5.21</span> Precomputed f‑strings with the
+<span style="font-size: 80%;"><em><strong>DFN</strong></em></span>
+Option</h2>
+<p><span class="margin-note"><strong>∆F</strong>'s default initial
+option (left argument) is <code>0</code>, so <code>0 ∆F…</code> and
+<code>∆F…</code> are equivalent. We discuss all <a
+href="#f-call-syntax-details">the options to ∆F</a> below. </span> The
+default returned from <strong>∆F</strong> is always (on success) a
+character matrix. That can be expressed schematically via expression
+<em>(a),</em> shown here:</p>
+<pre><code>(a) 0 ∆F… </code></pre>
+<p>However, if the initial <a href="#f-call-syntax-details">∆F
+Option</a>, <strong><em>DFN</em></strong>, is <code>1</code>, as in
+<em>(b),</em></p>
+<pre><code>(b) 1 ∆F… </code></pre>
+<p>then <span class="margin-note">This assumes the resulting dfn is
+called with the same arguments in the same calling environment in the
+same state.</span> <strong>∆F</strong> returns a <strong>dfn</strong>
+that, <em>when called later</em>, will return precisely the same
+character expression as for <em>(a)</em>. This is most useful when you
+are making repeated use of an <em>f‑string</em>, since the overhead for
+analyzing the <em>f‑string</em> contents <em>once</em> will be amortized
+over <em><strong>all</strong></em> the calls.</p>
+<p>Let's explore an example where getting the best performance for a
+heavily used <strong>∆F</strong> string is important.</p>
+<p>First, let's grab <code>cmpx</code> and set the variable
+<code>cv</code>, so we can compare the performance…</p>
+<pre><code>   &#39;cmpx&#39; ⎕CY &#39;dfns&#39;
+   cv← 11 30 60 </code></pre>
+<p>Now, let's proceed. Here's our <strong>∆F</strong> String
+<code>t</code>:</p>
+<pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ cv}°C or {&quot;F5.1&quot; $ F← 32+9×cv÷5}°F&#39;</code></pre>
+<details id="pPeek"><summary class="summary">Evaluate <code>∆F t</code>...</summary>
+
+<pre><code>   ∆F t 
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0  </code></pre>
+</details>
+
+<p>Let's precompute a dfn <code>T</code>, given the string
+<code>t</code>. <code>T</code> has everything needed to generate the
+output (given the same definition of the vector <code>cv</code>, when
+<code>T</code> is evaluated).</p>
+<pre><code>   T← 1 ∆F t</code></pre>
+<details id="pPeek"><summary class="summary">Evaluate <code>T ⍬</code>...</summary>
+
+<pre><code>   T ⍬
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0  </code></pre>
+</details>
+
+<p>Now, let's compare the performance of the two formats.
+<span class="margin-note"><br><br><br>Both <code>t</code> and
+<code>T</code> will reference <code>cv</code>.</span></p>
+<pre><code>   cmpx &#39;∆F t&#39; &#39;T ⍬&#39;
+∆F t → 1.7E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
+ T ⍬ → 1.0E¯5 | -94% ⎕⎕</code></pre>
+<p>The precomputed version is about <mark>17 times faster</mark>, at
+least in this run.</p>
+<p>Before we get to syntax and other information, we want to show you
+that <span class="margin-note">The <em>dfn</em> returned includes the
+original <em>f‑string</em> text used to generate it, available as
+<code>`⍵0</code>.</span> the <em>dfn</em> returned via the <em>DFN</em>
+option can retrieve one or more arguments passed on the right side of
+<strong>∆F</strong>, using the very same omega shortcut expressions
+(like <code>`⍵1</code>) we've discussed above.</p>
+<p>Let's share the Centigrade values <code>cv</code> from our current
+example, not as a <em>variable</em>, but as the <em>first argument</em>
+to <strong>∆F</strong>. We'll access the value as <code>`⍵1`</code>.</p>
+<pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ `⍵1}°C or {&quot;F5.1&quot; $ F← 32+9×`⍵1÷5}°F&#39;
+   T← 1 ∆F t
+
+   ∆F t (11 30 60)
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0 
+
+   T ⊂(11 30 60)
+The temperature is 11°C or  51.8°F
+                   30       86.0  
+                   60      140.0 
+
+   cmpx &#39;∆F t (11 30 60)&#39; &#39;T ⊂(11 30 60)&#39;
+∆F t 35 → 1.8E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
+   T 35 → 1.2E¯5 | -94% ⎕⎕</code></pre>
+<p>The precomputed version shows a comparable speedup over the default
+version, around <mark>15 times faster</mark>.</p>
+<hr />
+<p>Below, we summarize key information you've already gleaned from the
+examples.</p>
+</details>
+
+<h1 data-number="6" id="f-syntax-and-other-information"><span
+class="header-section-number">6</span> ∆F Syntax and Other
+Information</h1>
+<details>        <!-- option: open -->       
+<summary class="summary">&ensp;Show/Hide <em>Syntax Info</em></summary>
+
+<h2 data-number="6.1" id="f-call-syntax-overview"><span
+class="header-section-number">6.1</span> ∆F Call Syntax Overview</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Call
+Syntax<div style="width:290px"></div></th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td
+style="text-align: left;"><strong>∆F</strong> <em><strong>f‑string</strong></em></td>
+<td style="text-align: justify;">Display an <em>f‑string</em>; use the
+<em>default</em> options. The string may reference objects in the
+environment or in the string itself. Returns a character matrix.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><strong>∆F</strong> <em><strong>f‑string</strong></em> <em><strong>args</strong></em></td>
+<td style="text-align: justify;">Display an <em>f‑string</em>; use the
+<em>default</em> options. Arguments presented <em>may</em> be referred
+to in the f‑string. Returns a character matrix.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><em><strong>options</strong></em> <strong>∆F</strong> <em><strong>f‑string</strong></em> [<em><strong>args</strong></em>]</td>
+<td style="text-align: justify;">Display an <em>f‑string</em>; control the
+result with <em>options</em> specified (see below). <br>If <em>DFN</em>
+(see below) is <code>0</code> or omitted, returns a character
+matrix.<br>If <em>DFN</em> is <code>1</code>, returns a dfn that will
+display such a matrix (given an identical system state).</td>
+</tr>
+<tr>
+<td style="text-align: justify;">'help' <strong>∆F</strong> ' '</td>
+<td style="text-align: justify;">Display help info and examples for
+<strong>∆F</strong>. The <em>f‑string</em> is not examined.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>∆F</strong>⍨'help'</td>
+<td style="text-align: justify;">Display help info and examples for
+<strong>∆F</strong>.</td>
+</tr>
+</tbody>
+</table>
+<div>Table 6a. <strong>∆F Call Syntax Overview</strong></div>
+
+<br>
+
+<h2 data-number="6.2" id="f-call-syntax-details"><span
+class="header-section-number">6.2</span> ∆F Call Syntax Details</h2>
+<table>
+<thead>
+<tr>
+<th
+style="text-align: left;">Element<div style="width:290px"></div></th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: justify;"><strong><em>f‑string</em></strong></td>
+<td style="text-align: justify;">a format string, a single character
+vector.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong><em>args</em></strong></td>
+<td style="text-align: justify;">elements of ⍵ after the <em>f‑string</em>,
+each of which can be accessed in the <em>f‑string</em> via an
+<strong>Omega</strong> shortcut (<code>`⍵𝑑𝑑</code>, <em>etc.</em>) or an
+ordinary <em>dfn</em> <code>⍵</code> expression.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><em><strong>options</strong></em>: <em>mode</em></td>
+<td style="text-align: justify;"><code>options←</code>
+<span class="red">[</span> <span class="red">[</span> <code>0</code>
+<span class="red">[</span> <code>0</code> <span class="red">[</span>
+<code>0</code> <span class="red">[</span> <code>0</code>
+<span class="red">]</span> <span class="red">]</span>
+<span class="red">]</span> <span class="red">]</span>
+ <span class="red"><strong>|</strong></span> <code>'help'</code>
+<span class="red">]</span></td>
+</tr>
+<tr>
+<td
+style="text-align: left;"> <em><strong>options[0]</strong></em>:<br>  
+<em><strong>DFN</strong></em> <em>output mode</em></td>
+<td style="text-align: justify;">If <code>1</code>: <strong>∆F</strong>
+returns a dfn, which (upon execution) produces the same output as the
+default mode.<br>If <code>0</code> (default): <strong>∆F</strong>
+returns a char. matrix.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"> <em><strong>options[1]</strong></em>:<br>  
+<em><strong>DBG</strong></em> <em>(debug) mode</em></td>
+<td style="text-align: justify;">If <code>1</code>: Renders newline
+characters from <code>`◇</code> as the visible <code>␤</code> character.
+Displays the source code that the <em>f‑string</em>
+<strong><em>actually</em></strong> generates; if
+<strong><em>DFN</em></strong> is also <code>1</code>, this will include
+the embedded <em>f‑string</em> source (accessed as <code>`⍵0</code>).
+After the source code is displayed, it will be executed or converted to
+a <em>dfn</em> and returned (see the <em><strong>DFN</strong></em>
+option above).<br>If <code>0</code> (default): Newline characters from
+<code>`◇</code> are rendered normally as carriage returns,
+<code>⎕UCS 13</code>; the <em><strong>DFN</strong></em> source code is
+not displayed.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"> <em><strong>options[2]</strong></em>:<br>  
+<em><strong>BOX</strong></em> <em>mode</em></td>
+<td style="text-align: justify;">If <code>1</code>: Each field (except a
+null <strong>Text</strong> field) is boxed separately.<br>If
+<code>0</code> (default): Nothing is boxed automatically. Any
+<strong>Code</strong> field expression may be explicitly boxed using the
+<strong>Box</strong> shortcut,
+<code>`B</code>.<br><small><em><strong>BOX</strong></em> <strong>mode
+can be used both with</strong> <em><strong>DFN</strong></em> <strong>and
+default output mode.</strong></small></td>
+</tr>
+<tr>
+<td
+style="text-align: left;"> <em><strong>options[3]</strong></em>:<br>  <em><strong>INLINE</strong></em>
+<em>mode</em></td>
+<td style="text-align: justify;">If <code>1</code> and the
+<em><strong>DFN</strong></em> option is set: The code for each internal
+support function used is included in the <em>dfn</em> result;
+<em><strong>no</strong></em> reference to namespace
+<strong>⍙Fapl</strong> will be made during the execution of that
+<em>dfn</em>.<br>If <code>0</code> (default): Whenever
+<strong>∆F</strong> or a <em>dfn</em> generated by it is executed, it
+makes calls to library routines in the namespace <strong>⍙Fapl</strong>,
+created during the <code>]load ∆Fapl</code>
+process.<br><small><strong>This option is experimental and may simply
+disappear one day.</strong></small></td>
+</tr>
+<tr>
+<td style="text-align: justify;"> 'help'</td>
+<td style="text-align: justify;">If <code>'help'</code> is specified, this
+amazing doc­ument­ation is displayed.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong><em>result</em></strong></td>
+<td style="text-align: justify;">If <code>0=⊃options</code>, the result is
+always a character matrix.<br>If <code>1=⊃options</code>, the result is
+a dfn that, <em>when executed in the same environment with the same
+arguments</em>, generates that same character matrix.
+<br><small><strong>If an error is signalled, no result is
+returned.</strong></small></td>
+</tr>
+</tbody>
+</table>
+<div>Table 6b. <strong>∆F Call Syntax Details</strong></div>
+
+<br>
+
+<h2 data-number="6.3" id="f-options"><span
+class="header-section-number">6.3</span> ∆F Options</h2>
+<ul>
+<li>If the left argument <code>⍺</code> is omitted, the options default
+to <code>4⍴0</code>.</li>
+<li>If the left argument <code>⍺</code> is a simple integer vector or
+scalar, or an empty numeric vector <code>⍬</code>, the options are
+<code>4↑⍺</code>; subsequent elements are ignored;</li>
+<li>If the left argument <code>⍺</code> starts with <code>'help'</code>
+(case ignored), this help information is displayed. In this case only,
+the right argument to <strong>∆F</strong> is ignored.</li>
+<li>Otherwise, an error is signaled.</li>
+</ul>
+<h2 data-number="6.4" id="f-return-value"><span
+class="header-section-number">6.4</span> ∆F Return Value</h2>
+<ul>
+<li>Unless the <strong>DFN</strong> option is selected,
+<strong>∆F</strong> always returns a character matrix of at least one
+row and zero columns, <code>1 0⍴0</code>, on success. If the 'help'
+option is specified, <strong>∆F</strong> displays this information,
+returning <code>1 0⍴0</code>.</li>
+<li>If the <strong>DFN</strong> option is selected, <strong>∆F</strong>
+always returns a standard Dyalog dfn on success.</li>
+<li>On failure of any sort, an informative APL error is signaled.</li>
+</ul>
+<h2 data-number="6.5" id="f-fstring-building-blocks"><span
+class="header-section-number">6.5</span> ∆F F‑string Building
+Blocks</h2>
+<p>The first element in the right arg to ∆F is a character vector, an
+<em>f‑string</em>, which contains one or more <strong>Text</strong>
+fields, <strong>Code</strong> fields, and <strong>Space</strong> fields
+in any combination.</p>
+<ul>
+<li><strong>Text</strong> fields consist of simple text, which may
+include any Unicode characters desired, including newlines.
+<ul>
+<li>Newlines (actually, carriage returns, <code>⎕UCS 13</code>) are
+normally entered via the sequence <code>`◇</code>.</li>
+<li>Additionally, literal curly braces can be added via <code>`{</code>
+and <code>`}</code>, so they are distinct from the simple curly braces
+used to begin and end <strong>Code</strong> fields and
+<strong>Space</strong> fields.</li>
+<li>Finally, to enter a single backtick <code>`</code> just before the
+special symbols <code>{</code>, <code>}</code>, <code>◇</code>, or
+<code>`</code>, enter <em><strong>two</strong></em> backticks
+<code>``</code>; if preceding any ordinary symbol, a
+<em><strong>single</strong></em> backtick will suffice.</li>
+<li>If <strong>∆F</strong> is called with an empty string,
+<code>∆F ''</code>, it is interpreted as containing a single 0-length
+<strong>Text</strong> field, returning a matrix of shape
+<code>1 0</code>.</li>
+</ul></li>
+<li><strong>Code</strong> fields are run-time evaluated expressions
+enclosed within simple, unescaped curly braces <code>{ }</code>,
+<em>i.e.</em> those not preceded by a backtick (see the previous
+paragraph).
+<ul>
+<li><strong>Code</strong> fields are, under the covers, Dyalog
+<em>dfns</em> with some extras.</li>
+<li>For escape sequences, see <strong>Escape Sequences</strong>
+below.</li>
+</ul></li>
+<li><strong>Space</strong> fields appear to be a special,
+<em>degenerate</em>, form of <strong>Code</strong> fields, consisting of
+a single pair of simple (unescaped) curly braces <code>{}</code> with
+zero or more spaces in between.
+<ul>
+<li>A <strong>Space</strong> field with zero spaces is a
+<em><strong>null</strong></em> <strong>Space</strong> field; while it
+may separate any other fields, its typical use is to separate two
+adjacent <strong>Text</strong> fields.</li>
+<li>Between fields, <strong>∆F</strong> adds no automatic spaces; that
+spacing is under user control.</li>
+</ul></li>
+</ul>
+<h2 data-number="6.6" id="code-field-shortcuts"><span
+class="header-section-number">6.6</span> Code Field Shortcuts</h2>
+<p><strong>∆F</strong> <strong>Code</strong> fields may contain various
+shortcuts, intended to be concise and expressive tools for common tasks.
+<strong>Shortcuts</strong> are valid in <strong>Code</strong> fields
+only <em>outside</em> <strong>Quoted strings</strong>.</p>
+<p><strong>Shortcuts</strong> include:</p>
+<table>
+<thead>
+<tr>
+<th
+style="text-align: left;">Shortcut<div style="width:100px"></div></th>
+<th style="text-align: left;">Name<div style="width:150px"></div></th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: justify;"><strong>`A</strong>,
+<strong>%</strong></td>
+<td style="text-align: justify;">Above</td>
+<td style="text-align: justify;"><code>[⍺] % ⍵</code>. Centers array
+<code>⍺</code> above array <code>⍵</code>.<br>If omitted,
+<code>⍺←''</code>, <em>i.e.</em> a blank line.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`B</strong></td>
+<td style="text-align: justify;">Box</td>
+<td style="text-align: justify;"><code>`B ⍵</code>. Places <code>⍵</code>
+in a box. <code>⍵</code> is any array.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`C</strong></td>
+<td style="text-align: justify;">Commas</td>
+<td style="text-align: justify;"><code>`C ⍵</code>. Adds commas to
+<code>⍵</code> after every 3rd digit of the integer part of
+<code>⍵</code>, right-to-left. <code>⍵</code> is a vector of num strings
+or numbers.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`D</strong></td>
+<td style="text-align: justify;">Date-Time</td>
+<td style="text-align: justify;">Synonym for <strong>`T</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`F</strong>,
+<strong>$</strong></td>
+<td style="text-align: justify;">⎕FMT</td>
+<td style="text-align: justify;"><code>[⍺] $ ⍵</code>. Short for
+<code>[⍺] ⎕FMT ⍵</code>. (See APL doc­ument­ation).</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`J</strong></td>
+<td style="text-align: justify;">Justify</td>
+<td style="text-align: justify;"><code>[⍺] `J ⍵</code>. Justify each row of
+object <code>⍵</code> as text:<br>  <em>left</em>: ⍺="L";
+<em>center</em>: ⍺="C"; <em>right</em> ⍺="R".<br>You may use
+<code>¯1</code>|<code>0</code>|<code>1</code> in place of
+<code>"L"</code>|<code>"C"</code>|<code>"R"</code>. If omitted,
+<code>⍺←'L'</code>. <small><em>Displays numbers with the maximum
+precision available.</em></small></td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`L</strong>,
+<strong>£</strong></td>
+<td style="text-align: justify;">Session
+Library<br><span class="red"><small><strong>EXPERIMENTAL!</strong></small></span></td>
+<td style="text-align: justify;"><code>£</code>. <code>£</code> denotes a
+private library (namespace) local to the <strong>∆F</strong> runtime
+environ­ment into which functions or objects (including name­spaces) may
+be placed (e.g. via <code>⎕CY</code>) for the duration of the
+<em>APL</em> session. <small>Outside of simple assignments,
+<strong>∆F</strong> will attempt to copy undefined objects from
+workspace <code>dfns</code> or from directory
+<strong>./MyDyalogLib</strong> (with file extensions <em>.aplf, .aplo,
+.dyalog</em>). <em>See <a
+href="#session-library-shortcut-details">Session Library Shortcut:
+Details</a> below.</em></small></td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`Q</strong></td>
+<td style="text-align: justify;">Quote</td>
+<td style="text-align: justify;"><code>[⍺]`Q ⍵</code>. Recursively scans
+<code>⍵</code>, putting char. vectors, scalars, and rows of
+higher-dimensional strings in APL quotes, leaving other elements as is.
+If omitted, <code>⍺←''''</code>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`T</strong></td>
+<td style="text-align: justify;">Date-Time</td>
+<td style="text-align: justify;"><code>[⍺]`T ⍵</code>. Displays
+timestamp(s) <code>⍵</code> according to date-time template
+<code>⍺</code>. <code>⍵</code> is one or more APL timestamps
+<code>⎕TS</code>. <code>⍺</code> is a date-time template in
+<code>1200⌶</code> format. If omitted,
+<code>⍺← 'YYYY-MM-DD hh:mm:ss'</code>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`W</strong></td>
+<td style="text-align: justify;">Wrap
+<span class="red"><small><strong>EXPERIMENTAL!</strong></small></span></td>
+<td style="text-align: justify;"><code>[⍺]`W ⍵</code>. Wraps the rows of
+simple arrays in ⍵ in decorators <code>0⊃2⍴⍺</code> (on the left) and
+<code>1⊃2⍴⍺</code> (on the right). If omitted, <code>⍺←''''</code>.
+<small><em>See details below.</em></small></td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`⍵𝑑𝑑</strong>,
+<strong>⍹𝑑𝑑</strong></td>
+<td style="text-align: justify;">Omega Shortcut
+(<small>EXPLICIT</small>)</td>
+<td style="text-align: justify;">A shortcut of the form <code>`⍵𝑑𝑑</code>
+(or <code>⍹𝑑𝑑</code>), to access the <code>𝑑𝑑</code><strong>th</strong>
+element of <code>⍵</code>, <em>i.e.</em> <code>(⍵⊃⍨ 𝑑𝑑+⎕IO)</code>.
+<small><em>See details below.</em></small></td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`⍵</strong>,
+<strong>⍹</strong></td>
+<td style="text-align: justify;">Omega Shortcut
+(<small>IMPLICIT</small>)</td>
+<td style="text-align: justify;">A shortcut of the form <code>`⍵</code> (or
+<code>⍹</code>), to access the <strong><em>next</em></strong> element of
+<code>⍵</code>. <small><em>See details below.</em> <small></td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>→</strong><br><strong>↓</strong>
+<em>or</em> <strong>%</strong></td>
+<td style="text-align: justify;">Self-documenting <strong>Code</strong>
+Fields <small>(SDCFs)</small></td>
+<td style="text-align: justify;"><code>→</code>/<code>↓</code> (synonym:
+<code>%</code>) signal that the source code for the
+<strong>Code</strong> field appears before/above its value. Surrounding
+blanks are significant. <small><em>See <a
+href="#self-documenting-code-fields-sdcfs">SDCFs</a> in
+<strong>Examples</strong> for details.</em></small></td>
+</tr>
+</tbody>
+</table>
+<div>Table 6c. <strong>Code Field Shortcuts</strong></div>
+
+<br>
+
+<h2 data-number="6.7"
+id="escape-sequences-for-text-fields-and-quoted-strings"><span
+class="header-section-number">6.7</span> Escape Sequences For Text
+Fields and Quoted Strings</h2>
+<p><span class="margin-note">See <a
+href="#quoted-strings-in-code-fields">Quoted Strings in Code Fields</a>
+below on displaying quote characters like <code>"</code> in a string.
+</span> <strong>∆F</strong> <strong>Text</strong> fields and
+<strong>Quoted strings</strong> in <strong>Code</strong> fields may
+include a small number of escape sequences, beginning with the backtick
+<code>`</code>. Some sequences are valid in <strong>Text</strong> fields
+<em>only</em>, but not in Quoted strings:</p>
+<p><span class="margin-note"><br><br><strong>Both</strong>:
+<em>i.e.</em> <strong>Text</strong> fields and <em>Quoted Strings</em>
+in <strong>Code</strong> fields. </span></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Escape Sequence</th>
+<th style="text-align: center;">What It Inserts</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: center;">Where Special</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>`◇</strong></td>
+<td style="text-align: center;"><em>newline</em></td>
+<td style="text-align: center;">⎕UCS 13</td>
+<td style="text-align: center;">Both</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>``</strong></td>
+<td style="text-align: center;">`</td>
+<td style="text-align: center;">backtick</td>
+<td style="text-align: center;">Both</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>`{</strong></td>
+<td style="text-align: center;">{</td>
+<td style="text-align: center;">left brace</td>
+<td style="text-align: center;">Text fields only</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>`}</strong></td>
+<td style="text-align: center;">}</td>
+<td style="text-align: center;">right brace</td>
+<td style="text-align: center;">Text fields only</td>
+</tr>
+</tbody>
+</table>
+<div>Table 6d. <strong>Escape Sequences</strong></div>
+
+<p>Other instances of the backtick character in <strong>Text</strong>
+fields or <strong>Quoted strings</strong> in <strong>Code</strong>
+fields will be treated literally, <em>i.e.</em> sometimes a backtick is
+just a backtick.</p>
+<h2 data-number="6.8" id="quoted-strings-in-code-fields"><span
+class="header-section-number">6.8</span> Quoted Strings in Code
+Fields</h2>
+<p>As mentioned in the introduction, <strong>Quoted strings</strong> in
+<strong>Code</strong> fields allow several delimiting quote styles:</p>
+<ul>
+<li><strong>double-quotes</strong><br>
+<code>∆F '{"like «this» one"}'</code> or
+<code>∆F '{"like ''this'' one."}'</code>,</li>
+<li><strong>double angle quotation marks</strong>,<br>
+<code>∆F '{«like "this" or ''this''.»}'</code>,<br />
+as well as</li>
+<li>APL's tried-and-true embedded <strong>single-quotes</strong>,<br>
+<code>∆F '{''shown like ''''this'''', "this" or «this».''}'</code>.</li>
+</ul>
+<p><span class="margin-note">Compare these
+examples:<br> <strong>Invalid:</strong> <span class="red">∆F '{"abc`"def"}'</span><br> <strong>Valid:</strong> <code>∆F '{"abc""def"}'</code>
+</span> If you wish to include a traditional delimiting quote
+(<code>'</code> or <code>"</code>) or the closing quote of a quote pair
+(<code>«</code> <code>»</code>) within the <strong>Quoted
+string</strong>, you must double it. You may <em>not</em> use an escape
+sequence (e.g. <code>`"</code>) for this purpose.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Closing Quote</th>
+<th style="text-align: left;">Example</th>
+<th style="text-align: left;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>"</code></td>
+<td
+style="text-align: left;"><code>∆F '{"like ""this"" example"}'</code></td>
+<td style="text-align: justify;"><code>like "this" example</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>»</code></td>
+<td style="text-align: justify;"><code>∆F '{«or «this»» one»}'</code></td>
+<td style="text-align: justify;"><code>or «this» one</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>'</code></td>
+<td
+style="text-align: left;"><code>∆F '{''or ''''this'''' one''}'</code></td>
+<td style="text-align: justify;"><code>or 'this' one</code></td>
+</tr>
+</tbody>
+</table>
+<div>Table 6e. <strong>Closing Quotes</strong></div>
+
+<p>Note that the opening quote <code>«</code> is treated as an ordinary
+character within the string. The clumsiness of the standard single quote
+<code>'</code> examples is due to the fact that the single quote is the
+required delimiter for the outermost (APL-level) string.</p>
+<h2 data-number="6.9" id="omega-shortcut-expressions-details"><span
+class="header-section-number">6.9</span> Omega Shortcut Expressions:
+Details</h2>
+<ol type="1">
+<li><strong>⍹</strong> is a synonym for <strong>`⍵</strong>. It is
+Unicode character <code>⎕UCS 9081</code>. Either expression is valid
+only in <strong>Code</strong> fields and outside <strong>Quoted
+strings</strong>.</li>
+<li><strong>`⍵</strong> or <strong>⍹</strong> uses an "<em>omega index
+counter</em>" (<strong>OIC</strong>) which we'll represent as
+<strong>Ω</strong>, common across all <strong>Code</strong> fields,
+which is initially set to zero, <code>Ω←0</code>. (<strong>Ω</strong> is
+just used for explication; don't actually use this symbol)</li>
+<li>All <strong>Omega</strong> shortcut expressions in the
+<em>f‑string</em> are evaluated left to right and are
+⎕IO-independent.</li>
+<li><strong>`⍵𝑑𝑑</strong> or <strong>⍹𝑑𝑑</strong> sets the <em>OIC</em>
+to 𝑑𝑑, <code>Ω←𝑑𝑑</code>, and returns the expression
+<code>(⍵⊃⍨Ω+⎕IO)</code>. Here <strong>𝑑𝑑</strong> must be a
+<em>non-negative integer</em> with at least 1 digit.</li>
+<li>Bare <strong>`⍵</strong> or <strong>⍹</strong> (<em>i.e.</em> with
+no digits appended) increments the <em>OIC</em>, <code>Ω+←1</code>,
+<em>before</em> using it as the index in the expression
+<code>(⍵⊃⍨Ω+⎕IO)</code>.</li>
+<li>The <em>f‑string</em> itself (the 0-th element of
+<strong>⍵</strong>) is always accessed as <code>`⍵0</code> or
+<code>⍹0</code>. The omega with <em>implicit index</em> always
+increments its index <em>before</em> use, <em>i.e.</em> starting by
+default with <code>`⍵1</code> or <code>⍹1</code>.</li>
+<li>If an element of the dfn's right argument <strong>⍵</strong> is
+accessed at runtime via any means, shortcut or traditional, that element
+<strong><em>must</em></strong> exist.</li>
+</ol>
+<div class="test-feature">
+
+<p><span class="margin-note"><span class="red">Experimental</span></span></p>
+<h2 data-number="6.10" id="wrap-shortcut-details"><span
+class="header-section-number">6.10</span> Wrap Shortcut: Details</h2>
+<ol type="1">
+<li>Syntax: <code>[⍺←''''] `W ⍵</code>.</li>
+<li>Let <code>L←0⊃2⍴⍺</code> and <code>R←1⊃2⍴⍺</code>.</li>
+<li>Wrap each row <code>X′</code> of the simple arrays <code>X</code> in
+<code>⍵</code> (or the entire array <code>X</code> if a simple vector or
+scalar) in decorators <code>L</code> and <code>R</code>:
+<code>L,(⍕X′),R</code>.</li>
+<li><code>⍵</code> is an array of any shape and depth.<code>L</code>and
+<code>R</code>are char. vectors or scalars or <code>⍬</code> (treated as
+<code>''</code>).</li>
+<li>If there is one scalar or enclosed vector <code>⍺</code>, it is
+replicated <em>per (2) above</em>.</li>
+<li>By default,<code>⍺← ''''</code>,<em>i.e.</em> APL quotes will wrap
+the array ⍵, row by row, whether character, numeric or otherwise.</li>
+</ol>
+<p><span class="margin-note"><span class="red"><br>Experimental</span></span></p>
+<h2 data-number="6.11" id="session-library-shortcut-details"><span
+class="header-section-number">6.11</span> Session Library Shortcut:
+Details</h2>
+<ol type="1">
+<li>If <span class="margin-note">See Dyalog doc­ument­ation on filetypes
+<em>.aplf, .aplo, .dyalog</em>.</span> an object <code>£.name</code> is
+referenced, but not yet defined in <code>£</code>, an attempt is made to
+copy it to <code>£</code> from workspace <code>dfns</code>
+<span class="margin-note">Depending on the <code>auto</code> param­eter.
+<em>See below.</em></span>and/or from files <strong>name.aplf</strong>
+(for functions), <strong>name.aplo</strong> (for operators), or
+<strong>name.dyalog</strong> (otherwise) in directory
+<strong>./MyDyalogLib</strong>, <em>unless</em> it is being assigned. It
+will be available for the duration of the session.</li>
+<li>In the case of a simple assignment (<code>£.name←...</code>), the
+object assigned must be new or of a compatible <em>APL</em> class with
+its existing value, else a domain error will be signaled.</li>
+<li>Modified assignments of the form <code>£.name+←...</code> are
+allowed and treated as in the first case.</li>
+</ol>
+<h3 data-number="6.11.1" id="session-library-shortcut-parameters"><span
+class="header-section-number">6.11.1</span> Session Library Shortcut:
+Parameters</h3>
+<p>The Session Library shortcut (<code>£</code> or <code>`L</code>) is
+deceptively simple, but the code to support it is a tad complex.
+<span class="margin-note">If <code>auto: 2</code> is set, the
+<em>first</em> time each name is used there is the potential for
+substantial overhead in searching for and fixing it in the session
+library.</span> The complex library code runs only at <code>]load</code>
+time, with a modest runtime performance impact— if the
+<strong>auto</strong> parameter is enabled. If the <strong>auto</strong>
+parameter is <em>disabled,</em> the runtime impact of the feature is
+more modest still; if <em>not</em> used, there is no runtime impact.</p>
+<p>There are parameters, optionally tailored via a <em>JSON</em>
+parameter file <strong>. ∆F</strong> (in the current file directory).
+Parameters include:</p>
+<ul>
+<li><strong>auto</strong>: the ability to turn on or off any automatic
+loading of object definitions from the <strong>dfns</strong> workspace
+or files;</li>
+<li><strong>path</strong>: what directories to search for the object
+definitions; and so on.</li>
+</ul>
+<p>The parameter file <span class="margin-note">Additional doc­ument­ation
+is need­ed, should this go forward.</span> is briefly documented
+<em>below</em>.</p>
+<details><summary class="summary">&ensp;<em>Show/Hide Default JSON £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
+
+<pre class="json5"><code>{
+  // Default .∆F (JSON5) Parameter File                           
+  // Items not to be (re)set by user should be omitted/commented out.              
+  // Exceptions: 
+  // [1-2] auto and verbose can each be set to null to signal 
+  //       that their value should come from the ∆Fapl globals LIB_AUTO or VERBOSE.
+  // [3]   prefix, which if null is the same as [&quot;&quot;], i.e. 0-length string prefix.
+       
+  // ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
+  // Their usual values are LIB_AUTO← 1 ⋄ VERBOSE← 0
+  // The values are explained here:
+  //   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
+  //                  using the default or user-specified path.
+  //   LIB_AUTO:  0   We don&#39;t want to use the LIB_AUTO feature.
+  //   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related and general.
+  //                  The debug ∆F option will also display limited runtime msgs.
+  //   VERBOSE:   0   Will only display error or important warning msgs.
+       
+  // auto:
+  //   If 0, user must load own objects; nothing is automatic.                 
+  //   If 1, dfns and files searched in sequence set by path (q.v.). 
+  //   If null, the value is set from LIB_AUTO global 
+     auto:  null,   
+       
+  // verbose: 
+  //    If 0 (quiet), if 1 (verbose).  
+  //    If null, value is set from VERBOSE global. 
+     verbose: null,  
+                                                          
+  // path: The dirs and/or workspaces  to search.  
+  //       For a directory, use a string:  
+  //           &quot;MyDyalogLib&quot;
+  //       For a workspace, use a single string in a list:  
+  //           [&quot;dfns&quot;] or [&quot;MyDyalogLib/mathfns&quot;]
+     path: [ &quot;.&quot;, &quot;./MyDyalogLib&quot;, [&quot;dfns&quot;], ],  
+                   
+  // prefix: literal string to prefix to each name, when searching directories.
+  //         Ignored for workspaces.
+  //         [] is equiv. to [&quot;&quot;]. 
+  //         Example given name &quot;mydfn&quot; and {prefix: [&quot;∆F_&quot;, &quot;MyLib/&quot;], suffix: [&quot;aplf&quot;]}  
+  //         ==&gt; [&quot;∆F_mydfn.aplf&quot;, &quot;MyLib/mydfn.aplf&quot;]   
+     prefix: [], 
+                               
+  // suffix: at least one suffix is required. The &quot;.&quot; is prepended for you!  
+  //         Ignored for workspaces.    
+     suffix: [&quot;aplf&quot;, &quot;aplo&quot;, &quot;dyalog&quot;],     
+                   
+  //  Internal Runtime (hidden) Parameters                                               
+     _readParmFi: 0,                     // 0: Haven&#39;t read .∆F yet. 1 afterwards.     
+     _fullPath:   [],                    // Generated from path and prefixes.                                                                              
+}  </code></pre>
+</details>
+
+<hr />
+</div> 
+</details> 
+
+<h1 data-number="7" id="appendices"><span
+class="header-section-number">7</span> Appendices</h1>
+<details><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
+
+<h2 data-number="7.1" id="appendix-i-underdocumented-features"><span
+class="header-section-number">7.1</span> Appendix I: Un(der)documented
+Features</h2>
+<h3 data-number="7.1.1" id="f-option-for-dfn-source-code"><span
+class="header-section-number">7.1.1</span> ∆F Option for Dfn Source
+Code</h3>
+<p>If <code>options[0]</code> is <code>¯1</code>,
+<span class="margin-note">In simple terms, this option returns the
+character representation of the <em>dfn</em> returned via the
+<em><strong>DFN</strong></em> option. </span>then <strong>∆F</strong>
+returns a character vector that contains the source code for the
+<em>dfn</em> that would have been returned via the
+<em><strong>DFN</strong></em> option, <code>options[0]=1</code>. If
+<em><strong>DBG</strong></em> is also set, newlines from <code>`◇</code>
+are shown as visible <code>␤</code>. However, since this option
+<em>returns</em> the code string, the <em><strong>DBG</strong></em>
+option won't also <em>display</em> the code string.</p>
+<h3 data-number="7.1.2" id="f-helps-secret-variant"><span
+class="header-section-number">7.1.2</span> ∆F Help's Secret Variant</h3>
+<p><code>∆F 'help'</code> has a secret variant:
+<span class="margin-note"><em>Or</em>,
+<code>∆F 'help-n'</code>.</span><code>∆F 'help-narrow'</code>. With this
+variant, the help session will start up with a narrower screen
+<em>without</em> side notes. If the user widens the screen, the side
+notes will appear, as in the default case:
+<span class="margin-note"><em>Or</em>,
+<code>∆F 'help-wide'</code>.</span><code>∆F 'help'</code>.</p>
+<h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
+class="header-section-number">7.2</span> Appendix II: Python
+f‑strings</h2>
+<div style="line-height: 1.3;">
+
+<p>  Python f-strings, introduced in Python 3.6, are a modern and
+elegant way to format strings by embedding expressions directly inside
+string literals. You create an f-string by prefixing a string with the
+letter 'f' or 'F', and then you can include any Python expression inside
+curly braces within the string. When the string is evaluated, these
+expressions are executed and their results are automatically converted
+to strings and inserted at that position. <br>  For example, the Python
+expression <strong><code>f"The sum of {a} and {b} is {a + b}"</code></strong> would
+evaluate the addition and embed the result directly in the string. This
+combination of simplicity, power, and performance has made f-strings the
+preferred string formatting approach in modern Python code. <em>[Claude
+(AI). Response to Python f-strings query [edited]. Claude.ai. Anthropic,
+October 19, 2025.]</em></p>
+</div>
+
+<p><em>See</em>
+<span class="margin-note"><a id="displayText" href="#overview">Return to
+Overview.</a></span>
+<a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.</p>
+</div>
+</div>
+
+</details>
+
+<!-- Put a set of navigation tools at a fixed position at the bottom of the Help screen
+-->
+
+<div class="doc-footer">
+<button id="toggleDetails" class="button happy-button">Expand All Sections</button>&emsp;
+<a href="#top">Top</a>
+&nbsp;&nbsp;&nbsp;
+<a href="#table-of-contents">Contents</a> 
+&nbsp;&nbsp;&nbsp;  
+<a href="#f-examples-a-primer">Examples</a>
+&nbsp;&nbsp;&nbsp; 
+<a href="#f-syntax-and-other-information">Syntax</a>
+&nbsp;&nbsp;&nbsp; 
+<a href="#appendices">Appendices</a>
+&nbsp;&nbsp;&nbsp; 
+<a href="#copyright">Copyright</a>
+&nbsp;&nbsp;&nbsp; 
+<button onclick="closeWindowNow()" class="button warn-button">Close Window</span></button>
+</div>
+
+<hr />
+<br>
+<span id="copyright" style="font-family:cursive;">
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T222010]
+</span>
+<br> 
+</div> <!-- End div for right-margin-bar --> 
+
+<!-- a hidden modal expression -->
+
+<div id="pAlertMsg" class="pAlertMsg">
+  <span id="pAlertPfx"  style="font-size: 50px;">
+  </span> 
+  <span id="pAlertText" 
+        style="font-weight: bold; font-size: 20px;font-family: Tahoma,  sans-serif;">
+  </span>
+</div>
+
+<!-- (C) 2025 Sam the Cat Foundation -->
+</body>
+</html>
