@@ -2,14 +2,14 @@
 :Namespace ⍙Fapl
   ⎕IO ⎕ML ⎕PP←0 1 34           ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                     ⍝ DEBUG: If 1, turns off error trapping in ∆F
-  VERBOSE← 0                   ⍝ VERBOSE: Compile and runtime verbosity flag
+  VERBOSE← 1                    ⍝ VERBOSE: Compile and runtime verbosity flag
 ⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
 ⍝            2   We want to get lib objects from workspace "dfns" and files.
 ⍝            1   We want to get lib objects solely from workspace "dfns"
 ⍝            0   We don't want to use the LIB_AUTO feature.
   LIB_AUTO← 1    ⍝ Default is only from dfns, unless overridden!   
-  LIB_AUTO_FI←  '∆FlibAuto.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
-  HELP_HTML_FI← '∆F_Help.html'       ⍝ Called from 'help' option. Globally set here
+  LIB_AUTO_FI←  '∆F/∆FlibAuto.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
+  HELP_HTML_FI← '∆F/∆F_Help.html'       ⍝ Called from 'help' option. Globally set here
 
 ⍝ ============================   ∆F User Function   ============================= ⍝
 ⍝ ∆F: 
@@ -441,35 +441,43 @@
     MapSC←  sc∘⍳ 
     ok← 1 
   ∇
-  ∇ ok← ⍙LoadHelp hfi; ⎕PW; e1; e2 
+  ∇ ok← ⍙LoadHelp hfi;e1; e2 
   ⍝ Loading the help html file...
-    ⎕PW←120
-    :If 0=≢   { 22:: ⍬ ⋄ ⎕THIS.helpHtml← ⊃⎕NGET ⍵ } hfi
-         e1← 'WARNING: When loading ∆Fapl, the help file "',hfi,'" was not found in current directory.'
-         e2← 'WARNING: ∆F help will not be available without user intervention.'
-         e1,(⎕UCS 13),e2
-    :EndIf 
-    ⎕← 'Loaded Help Html File: ',hfi 
-    ok← 1 
+    :Trap 22 
+        ⎕THIS.helpHtml← ⊃⎕NGET hfi
+        :IF VERBOSE ⋄ ⎕← 'Loaded Help Html File: ',hfi ⋄ :EndIf  
+        ok← 1 
+    :Else 
+        e1← 'WARNING: When loading ∆Fapl, the help file "',hfi,'" was not found in current directory.'
+        e2← 'WARNING: ∆F help will not be available without user intervention.'
+        e1,(⎕UCS 13),e2
+        ok← 0 
+    :EndTrap 
   ∇
   ∇ ok← ⍙LoadLibAuto fi 
     :TRAP 22 
-        ok← ⎕FIX fi
-        ⎕←'Loaded Library Autoload functions: ',fi 
+        ⎕FIX fi
+        :If VERBOSE ⋄ ⎕←'Loaded Library Autoload functions: ',fi ⋄ :EndIf 
+        ok← 1 
     :Else
         ok←0 ⋄  LIB_AUTO← 0 
-        ⎕←'Warning: Unable to load Library Autoload services: ',fi
-        ⎕←'£ and `L shortcuts are available without these services (auto: 0).'
+        ⎕←'WARNING: Unable to load Library Autoload services: ',fi
+        ⎕←'NOTE: £ and `L shortcuts are available without these services (auto: 0).'
     :EndTrap
   ∇
+  ∇ ok← ⍙NoteGlobals 
+  :If VERBOSE 
+      ⎕←'∆F Application-wide Globals: { DEBUG:',DEBUG,', VERBOSE:',VERBOSE, ', LIB_AUTO:',LIB_AUTO,'}' 
+  :EndIf 
+  ok← 1 
+  ∇ 
 
 ⍝ Execute FIX-time routines
   ⍙Promote_∆F ##  
   ⍙LoadShortcuts
   ⍙LoadHelp HELP_HTML_FI
   ⍙LoadLibAuto LIB_AUTO_FI
-
-  ⎕←'∆F globals: { DEBUG:',DEBUG,', VERBOSE:',VERBOSE, ', LIB_AUTO:',LIB_AUTO,'}' 
+  ⍙NoteGlobals 
 
  
 ⍝ === END OF CODE ================================================================================
