@@ -497,13 +497,17 @@ class="header-section-number">2.1</span> Installing
 <li>During the test phase, go to
 <mark>github.com/petermsiegel/f‑string-apl</mark>.</li>
 </ul></li>
-<li>Copy the files <strong>∆Fapl.dyalog</strong> and
-<strong>∆F_Help.html</strong> into your current working directory
+<li>Note your current directory. In this directory,
 <span class="margin-note"><code>User command ]cd</code> will show you
-your current working directory.</span>.</li>
+your current working directory.</span> create a new directory,
+<strong>∆F</strong>.</li>
+<li>Copy the files <strong>∆Fapl.dyalog</strong>,
+<strong>∆FlibAuto.dyalog</strong>, and <strong>∆F_Help.html</strong>
+into <strong>∆F</strong>.</li>
+<li>Ensure your current directory remains as before.</li>
 <li>Then, from your Dyalog session (typically <code>#</code> or
 <code>⎕SE</code>), enter:<br>
-<code>]load ∆Fapl [-target=</code><strong><em>anyNs</em></strong><code>]</code>
+<code>]load ∆F/∆Fapl [-target=</code><strong><em>anyNs</em></strong><code>]</code>
 <ol type="1">
 <li>Each time it is called, the <code>]load</code> will create function
 <strong>∆F</strong> and namespace <strong>⍙Fapl</strong> in the active
@@ -526,7 +530,7 @@ note its absence).</li>
 class="header-section-number">2.2</span> Running <strong>∆F</strong>
 (After It's Been Installed)</h2>
 <ol type="1">
-<li><code>]load ∆Fapl</code> (see above), ensuring that
+<li><code>]load ∆F/∆Fapl</code> (see above), ensuring that
 <strong>∆F</strong> and <strong>⍙Fapl</strong> are accessible from the
 current namespace.</li>
 <li>Call <code>∆F</code> with the desired argument(s) and <a
@@ -2252,7 +2256,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T222842]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T224019]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
