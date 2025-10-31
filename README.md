@@ -1217,7 +1217,6 @@ There are parameters, optionally tailored via a *JSON* parameter file **.&ThinSp
 
 -  **auto**: the ability to turn on or off any automatic loading
 of object definitions from the **dfns** workspace or files; 
--  **dfnsOrder**: whether to search the **dfns** workspace before or after searching for definitions in files;
 -  **path**: what directories to search for the object definitions; and so on.
 
 The parameter file 
@@ -1246,8 +1245,7 @@ is briefly documented *below*.
        
   // auto:
   //   If 0, user must load own objects; nothing is automatic.                 
-  //   If 1, dfns and files searched in sequence set by dfnsOrder. 
-  //         See path for directory search sequence.                        
+  //   If 1, dfns and files searched in sequence set by path (q.v.). 
   //   If null, the value is set from LIB_AUTO global 
      auto:  null,   
        
@@ -1346,7 +1344,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T163245]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T193851]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

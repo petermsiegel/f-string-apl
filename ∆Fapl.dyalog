@@ -330,17 +330,21 @@
   } 
 ⍝:EndSection HELP 
 
-⍝:Section SPECIAL ROUTINES "LIBRARY" (libUtil.Auto-- run time, others-- fix time)
+⍝:Section "Stubs" for "LIBRARY" Shortcuts  
+⍝ See ⍙LoadLibAuto 
+⍝ ûLib is the user library.
 :Namespace ûLib
+⍝⍝⍝⍝⍝ Stub. See ⍙LoadLibAuto
 :EndNamespace
 
+⍝ Utilities for "library" shortcut (£, `L) 
+⍝ See ⍙LoadLibAuto 
 :Namespace libUtil
-  ⍝ This is a stub.  If ∆FlibAuto.dyalog is loaded, this will disappear!
+⍝⍝⍝⍝⍝ This is a stub.  
    uLibNm← ⍕ûLib 
-   Auto← { uLibNm }
+   Auto← uLibNm⍨            ⍝ Minimal "auto" just returns the user library
 :EndNamespace 
-
-⍝:EndSection SPECIAL ROUTINES "LIBRARY" (Auto-- run time), others-- fix time)
+⍝:EndSection "Stubs" for "LIBRARY" Shortuts  
 
 ⍝:Section Core FIX_TIME_ROUTINES 
 ⍝ ⍙Promote_∆F: rc← ∇ dest     

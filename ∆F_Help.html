@@ -2104,9 +2104,6 @@ Parameters include:</p>
 <li><strong>auto</strong>: the ability to turn on or off any automatic
 loading of object definitions from the <strong>dfns</strong> workspace
 or files;</li>
-<li><strong>dfnsOrder</strong>: whether to search the
-<strong>dfns</strong> workspace before or after searching for
-definitions in files;</li>
 <li><strong>path</strong>: what directories to search for the object
 definitions; and so on.</li>
 </ul>
@@ -2135,8 +2132,7 @@ is need­ed, should this go forward.</span> is briefly documented
        
   // auto:
   //   If 0, user must load own objects; nothing is automatic.                 
-  //   If 1, dfns and files searched in sequence set by dfnsOrder. 
-  //         See path for directory search sequence.                        
+  //   If 1, dfns and files searched in sequence set by path (q.v.). 
   //   If null, the value is set from LIB_AUTO global 
      auto:  null,   
        
@@ -2256,7 +2252,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T163245]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251030T193851]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
