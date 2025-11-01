@@ -505,7 +505,7 @@ directory.</li>
 working directory, ensuring they are
 peers.<span class="margin-note"><strong>peers:</strong> <em>i.e.</em> at
 the same level.</span></li>
-<li>Ensure your current directory remains as before.</li>
+<li>Confirm that your current directory remains as before.</li>
 <li>Then, from your Dyalog session (typically <code>#</code> or
 <code>⎕SE</code>), enter:<br><span class="margin-note">We suggest
 <code>-target=⎕SE</code>.</span>
@@ -1836,7 +1836,7 @@ be placed (e.g. via <code>⎕CY</code>) for the duration of the
 <strong>∆F</strong> will attempt to copy undefined objects from
 workspace <code>dfns</code> or from directory
 <strong>./MyDyalogLib</strong> (with file extensions <em>.aplf, .aplo,
-.dyalog</em>). <em>See <a
+.apla, .dyalog</em>). <em>See <a
 href="#session-library-shortcut-details">Session Library Shortcut:
 Details</a> below.</em></small></td>
 </tr>
@@ -2076,15 +2076,15 @@ class="header-section-number">6.11</span> Session Library Shortcut:
 Details</h2>
 <ol type="1">
 <li>If <span class="margin-note">See Dyalog doc­ument­ation on filetypes
-<em>.aplf, .aplo, .dyalog</em>.</span> an object <code>£.name</code> is
-referenced, but not yet defined in <code>£</code>, an attempt is made to
-copy it to <code>£</code> from workspace <code>dfns</code>
-<span class="margin-note">Depending on the <code>auto</code> param­eter.
-<em>See below.</em></span>and/or from files <strong>name.aplf</strong>
-(for functions), <strong>name.aplo</strong> (for operators), or
-<strong>name.dyalog</strong> (otherwise) in directory
-<strong>./MyDyalogLib</strong>, <em>unless</em> it is being assigned. It
-will be available for the duration of the session.</li>
+<em>.aplf, .aplo, .apla, .dyalog</em>.</span> an object
+<code>£.name</code> is referenced, but not yet defined in
+<code>£</code>, an attempt is made to copy it to <code>£</code> from
+workspace <code>dfns</code> <span class="margin-note">Depending on the
+<code>auto</code> param­eter. <em>See below.</em></span>and/or from files
+<strong>name.aplf</strong> (for functions), <strong>name.aplo</strong>
+(for operators), or <strong>name.dyalog</strong> (otherwise) in
+directory <strong>./MyDyalogLib</strong>, <em>unless</em> it is being
+assigned. It will be available for the duration of the session.</li>
 <li>In the case of a simple assignment (<code>£.name←...</code>), the
 object assigned must be new or of a compatible <em>APL</em> class with
 its existing value, else a domain error will be signaled.</li>
@@ -2259,7 +2259,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T142431]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T210135]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

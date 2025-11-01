@@ -82,7 +82,7 @@ APL expressions, and multi&shy;dimensional objects using extensions to
 2. Note your current directory. 
 3. Copy the file  **∆F.dyalog** and directory **∆F** (which contains several files) into the current working directory,
 ensuring they are peers. 
-1. Ensure your current directory remains as before.
+1. Confirm that your current directory remains as before.
 2. Then, from your Dyalog session (typically `#` or `⎕SE`), enter:<br>
   `]←load ∆F [-target=`<code>**_anyNs_**]</code> 
    1. Each time it is called, the `]load` will create function **∆F** and namespace **⍙Fapl** in the target namespace.
@@ -1113,7 +1113,7 @@ symbol, a ***single*** backtick will suffice.
 | **\`D** | Date-Time | Synonym for **\`T**. |
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL doc&shy;ument&shy;ation). |
 | **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>*Displays numbers with the maximum precision available.*</small> |
-| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of simple assignments, **∆F** will attempt to copy undefined objects from workspace `dfns` or from directory **./MyDyalogLib** (with file extensions *.aplf, .aplo, .dyalog*). *See [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
+| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of simple assignments, **∆F** will attempt to copy undefined objects from workspace `dfns` or from directory **./MyDyalogLib** (with file extensions *.aplf, .aplo, .apla, .dyalog*). *See [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>_See details below._</small> |
@@ -1347,7 +1347,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T142431]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T210135]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
