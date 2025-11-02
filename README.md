@@ -57,6 +57,7 @@ APL expressions, and multi&shy;dimensional objects using extensions to
   - [Omega Shortcut Expressions: Details](#omega-shortcut-expressions-details)
   - [Wrap Shortcut: Details](#wrap-shortcut-details)
   - [Session Library Shortcut: Details](#session-library-shortcut-details)
+    - [Session Library Shortcut: Filetypes of Source Files](#session-library-shortcut-filetypes-of-source-files)
     - [Session Library Shortcut: Parameters](#session-library-shortcut-parameters)
 - [Appendices](#appendices)
   - [Appendix I: Un(der)documented Features](#appendix-i-underdocumented-features)
@@ -170,6 +171,7 @@ Table 3a. <strong>The Three Field Types</strong>
 
 <br>
 </details> 
+</details>
 
 # Displaying ∆F **Help** in APL 
 
@@ -846,11 +848,12 @@ Tony wins £349
 The shortcut (Session) **Library** `£`  is <span class="red">**experimental**</span>. 
 `£` denotes 
 
-a "private" namespace in **⍙Fapl**,
-into which the user may place any functions or variables useful for the duration
-of the ***current*** *APL* session. For example, it may be useful to have available
-regularly used functions or operators defined in the `dfns` workspace or in files in a local directory or create objects that might be 
-referred to or modified across the session. *For details, see  [Code Field Shortcuts](#code-field-shortcuts) below.*
+a "private" *user* namespace in **⍙Fapl**,
+into which the user may place and manipulate  useful objects for the duration
+of the ***current*** *APL* session. For example, the user may wish to:  
+
+- have automatically available regularly used functions or operators, *or*  
+- create objects that might be referred to, monitored, or modified during the session. 
 
 ### Explicitly Copied Library Objects
 
@@ -874,8 +877,10 @@ On subsequent calls, `sieve` and `to` are already available, as we can see here:
 
 ### Automatically Copied Library Objects
 
+> But, **∆F** provides a simpler solution! 
 
-But, **∆F** provides a simpler solution! If the user references a name of the form 
+If 
+the user references a name of the form 
 `£.name` that 
 has not (yet) been defined in the library, 
 an attempt is made to copy that name into the library either from the **dfns** workspace  or from a text file; if the name appears to the left-side of a **simple** assigment `←`, it is assumed to exist (as always).  
@@ -890,6 +895,19 @@ In this next example, we use *for the first time* the function `pco` from the
     ∆F '{ ⍸ 1 £.pco ⍳100 }' 
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
 ```
+
+<details id="pPeek"><summary class="summary">Peek: Using the <em><bold>DBG</bold></em> (debug) option</summary>
+
+> First use of a *dfns* function, using **∆F**'s ***DBG*** (debug) option:
+> 
+``` 
+    0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }' 
+DEBUG: Copied "pco" into £=[⎕SE.⍙Fapl.ûLib] from "ws:dfns"
+{ ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
+```
+
+</details>
 
 The function is quietly copied in and is available *without the overhead
 of copying* for the rest of this *APL* session. 
@@ -1054,11 +1072,12 @@ Below, we summarize key information you've already gleaned from the examples.
 | :----- | :---------- |
 | **_f‑string_** | a format string, a single character vector. |
 | **_args_** | elements of ⍵ after the *f‑string*, each of which can be accessed in the *f‑string* via an **Omega** shortcut (`` `⍵𝑑𝑑 ``, *etc.*) or an ordinary *dfn* `⍵` expression. |
-| ***options***:&nbsp;*mode* | `options←` <span class="red">[</span> <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">[</span> `0` <span class="red">]</span>     <span class="red">]</span>     <span class="red">]</span>     <span class="red">]</span>     &nbsp;<span class="red">**\|**</span> `'help'` <span class="red">]</span> |
+| ***options***:&nbsp;*mode* | `options←` <span class="red">[</span>&ensp;<span class="red">[</span> `5↑ 0`  <span class="red">]</span>&ensp;<span class="red">**\|**</span>&ensp;`'help'`&ensp;<span class="red">]</span> |
 | &emsp;***options[0]***:<br>&emsp;&emsp;  ***DFN*** *output mode* | If `1`: **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If `0` (default): **∆F** returns a char. matrix. |
 | &emsp;***options[1]***:<br>&emsp;&emsp; ***DBG*** *(debug) mode* | If `1`: Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if **_DFN_** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***DFN*** option above).<br>If `0` (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***DFN*** source code is not displayed.      |
 | &emsp;***options[2]***:<br>&emsp;&emsp; ***BOX*** *mode*         | If `1`: Each field (except a null **Text** field) is boxed separately.<br>If `0` (default): Nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><small>***BOX*** **mode can be used both with** ***DFN*** **and default output mode.**</small> |
-| &emsp;***options[3]***:<br>&emsp;&emsp;***INLINE*** *mode*       | If `1` and the ***DFN*** option is set: The code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If `0` (default): Whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br><small>**This option is experimental and may simply disappear one day.**</small> |
+| &emsp;***options[3]***:<br>&emsp;&emsp;***NOAUTO*** *mode* | If `1`, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If `0`, honors the default and user-defined settings for `auto`.|
+| &emsp;***options[4]***:<br>&emsp;&emsp;***INLINE*** *mode*       | If `1` and the ***DFN*** option is set: The code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If `0` (default): Whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br><small>**This option is experimental and may simply disappear one day.**</small> |
 | &emsp;'help' | If `'help'` is specified, this amazing doc&shy;ument&shy;ation is displayed. |
 | **_result_** | If `0=⊃options`, the result is always a character matrix.<br>If `1=⊃options`, the result is a dfn that, _when executed in the same environment with the same arguments_, generates that same character matrix. <br><small>**If an error is signalled, no result is returned.**</small> |
 <div>Table 6b. <strong>∆F Call Syntax Details</strong></div>
@@ -1113,7 +1132,7 @@ symbol, a ***single*** backtick will suffice.
 | **\`D** | Date-Time | Synonym for **\`T**. |
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL doc&shy;ument&shy;ation). |
 | **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>*Displays numbers with the maximum precision available.*</small> |
-| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of simple assignments, **∆F** will attempt to copy undefined objects from workspace `dfns` or from directory **./MyDyalogLib** (with file extensions *.aplf, .aplo, .apla, .dyalog*). *See [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
+| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of simple assignments, **∆F** will attempt to copy undefined objects from workspace `dfns` or from directory **./MyDyalogLib** (with file extensions **.aplf**, **.aplo**, **.apla**, *etc.*). *See [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>_See details below._</small> |
@@ -1199,12 +1218,32 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 ## Session Library Shortcut: Details
 
 1. If 
-an object `£.name` is referenced, but not yet defined in `£`, an attempt is made to copy it to `£` from workspace `dfns` and/or from  files **name.aplf** (for functions), **name.aplo** (for operators), or
-**name.dyalog** (otherwise) in directory
-**./MyDyalogLib**, *unless* it is being assigned. It will be available for the duration of the session.
+an object `£.name` is referenced, but not yet defined in `£`, an attempt is made to copy it to `£` from workspace `dfns` and/or from  files **name.aplf** (for functions), **name.aplo** (for operators), *etc.* 
+in files in the (user-settable) search path,
+
+    &emsp;&emsp;**./** and **./MyDyalogLib/**, 
+
+&emsp;&emsp;*unless* it is being assigned (via `←`). It will be available for the duration of the session.
+
 1. In the case of a simple assignment (`£.name←...`), the object assigned must be new or
 of a compatible *APL* class with its existing value, else a domain error will be signaled. 
+
 1. Modified assignments of the form `£.name+←...` are allowed and treated as in the first case.
+
+### Session Library Shortcut: Filetypes of Source Files
+
+
+
+| <br>Filetype |<br>Action| APL Class<br>⎕NC |Key APL<br>Service|Available<br>by Default?|Type <br>Enforced?|
+|:-----:|:---------:|:---:|:---:|:----:|:----:|
+| aplf | Fixes function| 3 | ⎕FIX | yes | no |
+| aplo | Fixes operator | 4 | ⎕FIX | yes | no |
+| apln | Fixes namespace | 9 | ⎕FIX | yes | no |
+| apla | Assigns APLAN Array| 2, 9 | *assignment* | yes| yes | 
+| json | Fixes  namespace from JSON5| 9 | ⎕JSON | yes | yes |  
+| txt  | Assigns char. vectors | 2 | *assignment* | yes | yes | 
+| *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">no</span> | no |
+<div>Table 6f. <strong>Library Filetypes: Meaning</strong></div>
 
 ### Session Library Shortcut: Parameters 
 
@@ -1272,8 +1311,10 @@ is briefly documented *below*.
      prefix: [], 
                                
   // suffix: at least one suffix is required. The "." is prepended for you!  
-  //         Ignored for workspaces.    
-     suffix: ["aplf", "aplo", "dyalog"],     
+  //         Ignored for workspaces.  
+  //         By default,  the generic filetype "dyalog" and user-defined filetypes
+  //         are not enabled.   
+     suffix: ["aplf", "aplo", "apln", "apla", "json", "txt"],     
                    
   //  Internal Runtime (hidden) Parameters                                               
      _readParmFi: 0,                     // 0: Haven't read .∆F yet. 1 afterwards.     
@@ -1338,16 +1379,19 @@ case: `∆F 'help'`.
 &nbsp;&nbsp;&nbsp; 
 <a href="#appendices">Appendices</a>
 &nbsp;&nbsp;&nbsp; 
-<a href="#copyright">Copyright</a>
+<a href="#copyright">Bottom</a>
 &nbsp;&nbsp;&nbsp; 
 ⍠⍠⍠
+<!--  
+  ⍠⍠⍠ 
+-->
 </div>
 
 ---
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251031T210135]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251102T133604]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

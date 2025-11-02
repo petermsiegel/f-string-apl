@@ -1,7 +1,7 @@
 ⍝:Section CORE
 :Namespace ⍙Fapl
-  ⎕IO ⎕ML ⎕PP←0 1 34           ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
-  DEBUG← 0                     ⍝ DEBUG: If 1, turns off error trapping in ∆F
+  ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
+  DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile and runtime verbosity flag
 ⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
 ⍝            2   We want to get lib objects from workspace "dfns" and files.
@@ -42,7 +42,7 @@
       :EndIf 
     ⍝ Modes: 0 => array mode, 1 => dfn, ¯1 => dfn as string, else => help or error
       args← ,⊆args
-      :Select ⊃opts← 4↑ opts   
+      :Select ⊃opts← 5↑ opts   
         :Case  0       ⍝ ⍵: all args (f-string etc.), used by ⍎. FmtScan sees just the f-string.
           result← opts ((⊃⎕RSI){ ⍺⍺⍎ ⍺ ⎕THIS.FmtScan ,⊃⍵⊣ ⎕EX 'opts' 'args'}) args    
         :Case  1       ⍝ ,⊃args: just the f-string      ⍝ 1:  returns dfn    
@@ -106,7 +106,7 @@
           c= dol:    (pfx, scF) ∇ w                    ⍝ $ => ⎕FMT (scF shortcut)
           c= esc:    (pfx, a)  ∇ w⊣ a w← CFEsc w       ⍝ `⍵, `⋄, `A, `B, etc.
           c= omUs:   (pfx, a)  ∇ w⊣ a w← CFOm w        ⍝ ⍹, alias to `⍵ (see CFEsc).
-          c= pnd:    (pfx, dbgG libUtil.Auto w) ∇ w             ⍝ £ => our private library
+          c= pnd:    (pfx, libUtil.Auto w dbgG noAutoG) ∇ w             ⍝ £ => our private library
          ~c∊ sdcfCh: ⎕SIGNAL cfLogicÊ 
           p← +/∧\' '=w  
         ⍝ SDCF Detection...       
@@ -169,7 +169,7 @@
       0= ≢⍵: esc 
         c w← (0⌷⍵) (1↓⍵) ⋄ cfLenG+← 1   
       c∊ om_omUs: CFOm w                               ⍝ Permissively allow `⍹ as equiv to  `⍵ OR ⍹ 
-      c='L': (dbgG libUtil.Auto w) w    
+      c='L': (libUtil.Auto w dbgG noAutoG) w    
       nSC> p← MapSC c: (p⊃ userSCs) w                  ⍝ userSCs: user shortcuts `[ABFJLTDW]. 
       c∊⍥⎕C ⎕A: ⎕SIGNAL ShortcutÊ c                    ⍝ Unknown shortcut!
         ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
@@ -193,7 +193,7 @@
 ⍝ ===========================================================================  
 ⍝   Validate options ⍺: ⍺[0]∊ ¯1 0 1, ∧/ ⍺[1 2 3]∊ 0 1
     0∊ 0 1∊⍨ (|⊃⍺), 1↓⍺: ⎕SIGNAL optÊ                  ⍝ Invalid options (⍺)!
-    (dfn dbgG box inline) fStr← ⍺ ⍵                       
+    (dfn dbgG box noAutoG inline) fStr← ⍺ ⍵                       
     DMsg← (⎕∘←)⍣(dbgG∧¯1≠dfn)                           ⍝ Debug message
     nlG← dbgG⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
   ⍝ User Shortcuts: A, B, C, F, T~D, Q, W.  
@@ -207,6 +207,7 @@
  
   ⍝ Pseudo-globals  camelCaseG 
   ⍝    dbgG-      runtime debug flag. Set above.
+  ⍝    noAutoG-   runtime: force library auto off if 1, independent of .∆F etc.
   ⍝    fldsG-     global field list
   ⍝    omIxG-     omega index counter: current index for omega shortcuts (`⍵, ⍹)  
   ⍝    nBracG-    running count of braces '{' lb, '}' rb
