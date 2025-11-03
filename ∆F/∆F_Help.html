@@ -1698,20 +1698,44 @@ amazing doc­ument­ation is displayed.</td>
 <div>Table 6b. <strong>∆F Option Details</strong></div>
 
 <ul>
-<li>If the left argument <code>⍺</code> is omitted, the options default
-to <code>0 0 0 1 0</code>.</li>
-<li>If the left argument <code>⍺</code> is a simple integer vector or
-scalar, or an empty numeric vector <code>⍬</code>, the options are
-<code>5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺</code>; subsequent elements are
-ignored;</li>
-<li>If the left argument is a <span class="margin-note">In APL Array
-Notation, formally introduced in Dyalog 20.</span>namespace, it is
-assumed to contain the options in keyword form,<br>  e.g.
-<code>(debug: 1 ◇ auto: 0)</code>;</li>
-<li>If the left argument <code>⍺</code> starts with <code>'help'</code>
-(case ignored), this help information is displayed. In this case only,
-the right argument to <strong>∆F</strong> is ignored.</li>
-<li>Otherwise, an error is signaled.</li>
+<li><p><strong>Default options:</strong> If the left argument
+<code>⍺</code> is omitted, the options default to</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Option Style</th>
+<th style="text-align: left;">Defaults</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: justify;"><em>Positional style</em></td>
+<td style="text-align: justify;"><code>0 0 0 1 0</code></td>
+</tr>
+<tr>
+<td style="text-align: justify;"><em>Keyword style</em></td>
+<td
+style="text-align: left;"><code>(dfn: 0, debug: 0, box: 0, auto: 1, inline: 0)</code></td>
+</tr>
+</tbody>
+</table></li>
+<li><p><strong>Positional style options:</strong> If the left argument
+<code>⍺</code> is a simple integer vector or scalar, or an empty numeric
+vector <code>⍬</code>, the options are</p>
+<pre><code>5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺ </code></pre>
+<p>Trailing elements are ignored.</p></li>
+<li><p><strong>Keyword style options:</strong> If the left argument is a
+<span class="margin-note">In APL Array Notation, formally introduced in
+Dyalog 20.</span>namespace, it is assumed to contain the options in (APL
+Array Notation) keyword form,<br>  e.g.
+<code>(debug: 1 ◇ auto: 0)</code>;<br />
+Keyword options are new for Dyalog 20. They are sometimes clearer and
+more convenient than positional keywords.</p></li>
+<li><p><strong>Help option:</strong> If the left argument <code>⍺</code>
+starts with <code>'help'</code> (case ignored), this help information is
+displayed. In this case only, the right argument to <strong>∆F</strong>
+is ignored.</p></li>
+<li><p>Otherwise, an error is signaled.</p></li>
 </ul>
 <h2 data-number="6.3" id="f-return-value"><span
 class="header-section-number">6.3</span> ∆F Return Value</h2>
@@ -2364,7 +2388,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251102T211120]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T151336]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

@@ -1,10 +1,12 @@
 ⍝:Section CORE
 :Namespace ⍙Fapl
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
-  DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
+  DEBUG← 1                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile and runtime verbosity flag
-  DEFAULT_OPTIONS← 0 0 0 1 0     
-  N_OPTIONS← ≢ DEFAULT_OPTIONS 
+⍝ Positional and keyword options (⍺) for ∆F  
+  OPTION_NAMES← 'dfn' 'debug' 'box' 'auto' 'inline'  
+  OPTION_DEFAULTS← 0 0 0 1 0     
+  N_OPTIONS← ≢ OPTION_DEFAULTS 
 ⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
 ⍝            2   We want to get lib objects from workspace "dfns" and files.
 ⍝            1   We want to get lib objects solely from workspace "dfns"
@@ -35,32 +37,30 @@
 ⍝   On execution (default mode), "hides" local vars, ¨opts¨ and ¨args¨, from embedded ⎕NL, etc.
 ⍝   This avoids them showing on ⎕NL or related calls.
   ∇ result← {opts} ∆F args                             ⍝ For doc, see ∆F in ∆Fapl.dyalog.
-    :Trap 0/⍨ ~⎕THIS.DEBUG                
+    :Trap 0/⍨ ~⎕THIS.DEBUG  
+    ⍝ Get options-- pos'l (fast) or keyword (legacy is slow)              
       :If 900⌶0                                        ⍝ default options   
           opts← ⍬   
-      :ElseIf 0=80|⎕DR opts  ⍝ Simulate 9=⎕NC 'opts'  ⍝ keyword options => positional options
-      :AndIf '('=1↑opts 
-          opts← { ⍝ 9=⎕NC opts  <== Dyalog 20
-              kw← ⎕NS⍬ ⋄ ∆VSET← kw {⍺⍺⍎ ⍺,'←⍵'}¨
-              _← 'dfn' 'debug' 'box' 'auto' 'inline' ∆VSET ⎕THIS.DEFAULT_OPTIONS 
-              _← 'kw' ⎕NS ⎕SE.Dyalog.Array.Deserialise ⍵
-              kw.(dfn debug box auto inline)
-          } opts 
+      :ElseIf 9=⎕NC 'opts'                             ⍝ Keywords via APL Array Notation
+          opts← ⎕THIS.GetKWOpts opts                   ⍝    Cvt keyword opts => pos'l opts
+      :ElseIf 0= 80|⎕DR opts ⋄ :AndIf '('=⊃opts        ⍝ Legacy (<Dyal 20) keywords via APLAN string
+          opts← ⎕THIS.GetKWOptsLegacy opts             ⍝    Cvt keyword opts => pos'l opts
       :ElseIf ~11 3 ∊⍨ 80|⎕DR opts                     ⍝ 'help' or error!
           result← ⎕THIS.Help opts 
           :Return   
       :EndIf                                           ⍝ default: positional parameters
-    ⍝ Modes: 0 => array mode, 1 => dfn, ¯1 => dfn as string, else => help or error
       args← ,⊆args
-      :Select ⊃opts← ⎕THIS.N_OPTIONS↑ opts, ⎕THIS.DEFAULT_OPTIONS↑⍨ ⎕THIS.N_OPTIONS-⍨ ≢ opts    
-        :Case  0       ⍝ ⍵: all args (f-string etc.), used by ⍎. FmtScan sees just the f-string.
+      opts← ⎕THIS.N_OPTIONS↑ opts, ⎕THIS.OPTION_DEFAULTS↑⍨ ⎕THIS.N_OPTIONS-⍨ ≢ opts 
+    ⍝ Analyse modes
+      :Select ⊃opts    
+      :Case  0       ⍝ Execute fstring
           result← opts ((⊃⎕RSI){ ⍺⍺⍎ ⍺ ⎕THIS.FmtScan ,⊃⍵⊣ ⎕EX 'opts' 'args'}) args    
-        :Case  1       ⍝ ,⊃args: just the f-string      ⍝ 1:  returns dfn    
-          ⎕EX '∆F_Dfn'⊣ ⎕SHADOW '∆F_Dfn'               ⍝ Give returned dfn a mnemonic name...                                          
-          result← ∆F_dfn← (⊃⎕RSI)⍎ opts ⎕THIS.FmtScan ,⊃args
-        :Case ¯1       ⍝ ,⊃args: ust the f-string      ⍝ ¯1:  returns dfn string (undocumented)                                
+      :Case  1       ⍝ Return dfn incorporating fstring   
+          ⎕EX '∆Fdfn'⊣ ⎕SHADOW '∆Fdfn'               ⍝ Give returned dfn a mnemonic name...                                          
+          result← ∆Fdfn← (⊃⎕RSI)⍎ opts ⎕THIS.FmtScan ,⊃args
+      :Case ¯1       ⍝ Return dfn source code incorporating fstring                               
           result← opts ⎕THIS.FmtScan ,⊃args            
-        :Else          ⍝ opts matches 'help'; else error!         
+      :Else          ⍝ Help or an error         
           result← ⎕THIS.Help opts  
       :EndSelect   
     :Else 
@@ -68,6 +68,29 @@
     :EndTrap 
    ⍝ (C) 2025 Sam the Cat Foundation
   ∇
+
+⍝ Minor Utilities for ∆F above
+⍝ Keyword options (Dyalog 20) 
+  GetKWOpts← {   
+      kwÊ← 'Use legacy keyword option string if Dyalog 19.x or earlier' 
+    0:: kwÊ ⎕SIGNAL 11 
+      nms← ⎕THIS.OPTION_NAMES 
+      kw← () ∆VSET (↑nms)  ⎕THIS.OPTION_DEFAULTS
+      nms ∆VGET⍨ ⎕NS kw ⍵ 
+  }
+
+⍝ Keyword options (pre-Dyalog 20)
+  GetKWOptsLegacy← {   
+      kwLÊ← 'Invalid user option(s).'
+    0:: kwLÊ ⎕SIGNAL ⎕EN 
+      usr← ⎕SE.Dyalog.Array.Deserialise ⍵
+      KWLoad← { ⍺⊣ ⍺∘{ ⍺⍎(⊃⍵),'←⊃⌽⍵'}¨⍵ }
+      KWSet←  { ⍺⊣ (⍺{ ⍺⍺⍎⍵,'←⍵⍵.⎕OR ⍵' ⋄ ⍵⍵ }⍵)¨⍵.⎕NL¯2 }
+      kw←  (⎕NS ⍬) KWLoad OPTION_NAMES,⍥⊂¨ OPTION_DEFAULTS 
+    9≠⎕NC 'usr': kwLÊ ⎕SIGNAL 11
+      kw←  kw KWSet usr
+      kw.⎕OR¨ OPTION_NAMES
+  }
 
 ⍝ ============================   FmtScan ( top-level routine )   ============================= ⍝
 ⍝ FmtScan: 
@@ -363,8 +386,8 @@
 ⍝ Used internally only at FIX-time:
 ⍝ ∘ Fix (⎕FX) ∆F into dest, obscuring its local names and hardwiring the location of ⎕THIS. 
   ∇ rc← ⍙Promote_∆F dest ; src; snk 
-    src←    '⎕THIS.N_OPTIONS'       '⎕THIS.DEFAULT_OPTIONS'
-    snk←    (⍕⎕THIS.N_OPTIONS)      (⍕⎕THIS.DEFAULT_OPTIONS)
+    src←    '⎕THIS.N_OPTIONS'     '⎕THIS.OPTION_DEFAULTS'
+    snk←    (⍕⎕THIS.N_OPTIONS)  (⍕⎕THIS.OPTION_DEFAULTS)
     src,←   '⎕THIS'   'result'     'opts'     'args' 
     snk,←   (⍕⎕THIS)  '__∆Frësült' '__∆Föpts' '__∆Färgs' 
     rc← dest.⎕FX src ⎕R snk ⍠ 'UCP' 1⊣ ⎕NR '∆F'

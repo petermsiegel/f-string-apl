@@ -1079,11 +1079,21 @@ Below, we summarize key information you've already gleaned from the examples.
 <div>Table 6b. <strong>∆F Option Details</strong></div>
 
 
-- If the left argument `⍺` is omitted, the options default to `0 0 0 1 0`.
-- If the left argument `⍺` is a simple integer vector or scalar, or an empty numeric vector `⍬`, the options are `5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺`; subsequent elements are ignored;
-- If the left argument is a namespace,
-it is assumed to contain the options in keyword form,<br>&emsp;&emsp;e.g. `(debug: 1 ◇ auto: 0)`;
-- If the left argument `⍺` starts with `'help'` (case ignored), this help information is displayed. In this case only, the right argument to **∆F** is ignored.
+- **Default options:** If the left argument `⍺` is omitted, the options default to
+
+    | Option Style | Defaults |
+    | :--- | :--- |
+    | *Positional style* |`0 0 0 1 0`|
+    | *Keyword style*    |`(dfn: 0, debug: 0, box: 0, auto: 1, inline: 0)`|
+
+- **Positional style options:** If the left argument `⍺` is a simple integer vector or scalar, or an empty numeric vector `⍬`, the options are 
+  
+      5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺ 
+    Trailing elements are ignored.
+- **Keyword style options:** If the left argument is a namespace,
+it is assumed to contain the options in (APL Array Notation) keyword form,<br>&emsp;&emsp;e.g. `(debug: 1 ◇ auto: 0)`;  
+    Keyword options are new for Dyalog 20. They are sometimes clearer and more convenient than positional keywords.
+- **Help option:** If the left argument `⍺` starts with `'help'` (case ignored), this help information is displayed. In this case only, the right argument to **∆F** is ignored.
 - Otherwise, an error is signaled.
 
 ## ∆F Return Value
@@ -1385,7 +1395,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251102T211121]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T151336]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
