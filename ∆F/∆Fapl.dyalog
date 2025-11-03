@@ -3,6 +3,8 @@
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile and runtime verbosity flag
+  DEFAULT_OPTIONS← 0 0 0 1 0     
+  N_OPTIONS← ≢ DEFAULT_OPTIONS 
 ⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
 ⍝            2   We want to get lib objects from workspace "dfns" and files.
 ⍝            1   We want to get lib objects solely from workspace "dfns"
@@ -34,15 +36,23 @@
 ⍝   This avoids them showing on ⎕NL or related calls.
   ∇ result← {opts} ∆F args                             ⍝ For doc, see ∆F in ∆Fapl.dyalog.
     :Trap 0/⍨ ~⎕THIS.DEBUG                
-      :If 900⌶0 
-          opts← ⍬
-      :ElseIf ~11 3∊⍨ 80|⎕DR opts                      ⍝ non-numeric opts => (Help | error).  
+      :If 900⌶0                                        ⍝ default options   
+          opts← ⍬   
+      :ElseIf 0=80|⎕DR opts  ⍝ Simulate 9=⎕NC 'opts'  ⍝ keyword options => positional options
+      :AndIf '('=1↑opts 
+          opts← { ⍝ 9=⎕NC opts  <== Dyalog 20
+              kw← ⎕NS⍬ ⋄ ∆VSET← kw {⍺⍺⍎ ⍺,'←⍵'}¨
+              _← 'dfn' 'debug' 'box' 'auto' 'inline' ∆VSET ⎕THIS.DEFAULT_OPTIONS 
+              _← 'kw' ⎕NS ⎕SE.Dyalog.Array.Deserialise ⍵
+              kw.(dfn debug box auto inline)
+          } opts 
+      :ElseIf ~11 3 ∊⍨ 80|⎕DR opts                     ⍝ 'help' or error!
           result← ⎕THIS.Help opts 
-          :Return          
-      :EndIf 
+          :Return   
+      :EndIf                                           ⍝ default: positional parameters
     ⍝ Modes: 0 => array mode, 1 => dfn, ¯1 => dfn as string, else => help or error
       args← ,⊆args
-      :Select ⊃opts← 5↑ opts   
+      :Select ⊃opts← ⎕THIS.N_OPTIONS↑ opts, ⎕THIS.DEFAULT_OPTIONS↑⍨ ⎕THIS.N_OPTIONS-⍨ ≢ opts    
         :Case  0       ⍝ ⍵: all args (f-string etc.), used by ⍎. FmtScan sees just the f-string.
           result← opts ((⊃⎕RSI){ ⍺⍺⍎ ⍺ ⎕THIS.FmtScan ,⊃⍵⊣ ⎕EX 'opts' 'args'}) args    
         :Case  1       ⍝ ,⊃args: just the f-string      ⍝ 1:  returns dfn    
@@ -106,7 +116,7 @@
           c= dol:    (pfx, scF) ∇ w                    ⍝ $ => ⎕FMT (scF shortcut)
           c= esc:    (pfx, a)  ∇ w⊣ a w← CFEsc w       ⍝ `⍵, `⋄, `A, `B, etc.
           c= omUs:   (pfx, a)  ∇ w⊣ a w← CFOm w        ⍝ ⍹, alias to `⍵ (see CFEsc).
-          c= pnd:    (pfx, libUtil.Auto w dbgG noAutoG) ∇ w             ⍝ £ => our private library
+          c= pnd:    (pfx, libUtil.Auto w dbgG autoG) ∇ w             ⍝ £ => our private library
          ~c∊ sdcfCh: ⎕SIGNAL cfLogicÊ 
           p← +/∧\' '=w  
         ⍝ SDCF Detection...       
@@ -169,7 +179,7 @@
       0= ≢⍵: esc 
         c w← (0⌷⍵) (1↓⍵) ⋄ cfLenG+← 1   
       c∊ om_omUs: CFOm w                               ⍝ Permissively allow `⍹ as equiv to  `⍵ OR ⍹ 
-      c='L': (libUtil.Auto w dbgG noAutoG) w    
+      c='L': (libUtil.Auto w dbgG autoG) w    
       nSC> p← MapSC c: (p⊃ userSCs) w                  ⍝ userSCs: user shortcuts `[ABFJLTDW]. 
       c∊⍥⎕C ⎕A: ⎕SIGNAL ShortcutÊ c                    ⍝ Unknown shortcut!
         ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
@@ -193,7 +203,7 @@
 ⍝ ===========================================================================  
 ⍝   Validate options ⍺: ⍺[0]∊ ¯1 0 1, ∧/ ⍺[1 2 3]∊ 0 1
     0∊ 0 1∊⍨ (|⊃⍺), 1↓⍺: ⎕SIGNAL optÊ                  ⍝ Invalid options (⍺)!
-    (dfn dbgG box noAutoG inline) fStr← ⍺ ⍵                       
+    (dfn dbgG box autoG inline) fStr← ⍺ ⍵                       
     DMsg← (⎕∘←)⍣(dbgG∧¯1≠dfn)                           ⍝ Debug message
     nlG← dbgG⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
   ⍝ User Shortcuts: A, B, C, F, T~D, Q, W.  
@@ -207,7 +217,8 @@
  
   ⍝ Pseudo-globals  camelCaseG 
   ⍝    dbgG-      runtime debug flag. Set above.
-  ⍝    noAutoG-   runtime: force library auto off if 1, independent of .∆F etc.
+  ⍝    autoG-     runtime: If 0, disables library autoload mode, overriding the default and .∆F setting.
+  ⍝               If 1, honors default/.∆F setting.
   ⍝    fldsG-     global field list
   ⍝    omIxG-     omega index counter: current index for omega shortcuts (`⍵, ⍹)  
   ⍝    nBracG-    running count of braces '{' lb, '}' rb
@@ -352,8 +363,10 @@
 ⍝ Used internally only at FIX-time:
 ⍝ ∘ Fix (⎕FX) ∆F into dest, obscuring its local names and hardwiring the location of ⎕THIS. 
   ∇ rc← ⍙Promote_∆F dest ; src; snk 
-    src←    '⎕THIS'      'result'     'opts'     'args' 
-    snk←   (⍕⎕THIS)  '__∆Frësült' '__∆Föpts' '__∆Färgs'
+    src←    '⎕THIS.N_OPTIONS'       '⎕THIS.DEFAULT_OPTIONS'
+    snk←    (⍕⎕THIS.N_OPTIONS)      (⍕⎕THIS.DEFAULT_OPTIONS)
+    src,←   '⎕THIS'   'result'     'opts'     'args' 
+    snk,←   (⍕⎕THIS)  '__∆Frësült' '__∆Föpts' '__∆Färgs' 
     rc← dest.⎕FX src ⎕R snk ⍠ 'UCP' 1⊣ ⎕NR '∆F'
   ∇
 

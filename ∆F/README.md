@@ -44,11 +44,10 @@ APL expressions, and multi&shy;dimensional objects using extensions to
     - [Explicitly Copied Library Objects](#explicitly-copied-library-objects)
     - [Automatically Copied Library Objects](#automatically-copied-library-objects)
     - [Session Variables](#session-variables)
-  - [Precomputed f‑strings with the ***DFN*** Option](#precomputed-fstrings-with-the-dfn-option)
+  - [Precomputed f‑strings with the ***dfn*** Option](#precomputed-fstrings-with-the-dfn-option)
 - [∆F Syntax and Other Information](#f-syntax-and-other-information)
   - [∆F Call Syntax Overview](#f-call-syntax-overview)
-  - [∆F Call Syntax Details](#f-call-syntax-details)
-  - [∆F Options](#f-options)
+  - [∆F Option Details](#f-option-details)
   - [∆F Return Value](#f-return-value)
   - [∆F F‑string Building Blocks](#f-fstring-building-blocks)
   - [Code Field Shortcuts](#code-field-shortcuts)
@@ -896,9 +895,9 @@ In this next example, we use *for the first time* the function `pco` from the
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
 ```
 
-<details id="pPeek"><summary class="summary">Peek: Using the <em><bold>DBG</bold></em> (debug) option</summary>
+<details id="pPeek"><summary class="summary">Peek: Using the <em><bold>debug</bold></em> (debug) option</summary>
 
-> First use of a *dfns* function, using **∆F**'s ***DBG*** (debug) option:
+> First use of a *dfns* function, using **∆F**'s ***debug*** option:
 > 
 ``` 
     0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }' 
@@ -935,13 +934,13 @@ if the user doesn't wish to clutter the active namespace.
 
 
 <span style="font-size: 130%;">👉 </span>
-When a *dfn* created via **∆F** with the *DFN* option runs, any uses of `£` will 
+When a *dfn* created via **∆F** with the ***dfn*** option runs, any uses of `£` will 
 require the associated ⍙Fapl namespace to be present.
 
 
 </div>
 
-## Precomputed f‑strings with the <span style="font-size: 80%;">***DFN***</span> Option
+## Precomputed f‑strings with the ***dfn*** Option
 
  
 The default returned from **∆F** is always (on success) a character matrix. That can be expressed schematically via expression *(a),* shown here: 
@@ -949,7 +948,7 @@ The default returned from **∆F** is always (on success) a character matrix. Th
     (a) 0 ∆F… 
 
 
-However, if the initial [∆F Option](#f-call-syntax-details),&ensp;**_DFN_**, is `1`, as in *(b),*
+However, if the initial [∆F Option](#f-call-syntax-details),&ensp;***dfn***, is `1`, as in *(b),*
 
     (b) 1 ∆F… 
     
@@ -1013,7 +1012,7 @@ The precomputed version is about <mark>17 times faster</mark>, at least in this 
 
 Before we get to syntax and other information, we want to show you 
 that 
-the _dfn_ returned via the *DFN* option can retrieve one or more arguments passed on the right side of **∆F**, using the very same omega shortcut expressions (like `` `⍵1 ``) we've 
+the _dfn_ returned via the ***dfn*** option can retrieve one or more arguments passed on the right side of **∆F**, using the very same omega shortcut expressions (like `` `⍵1 ``) we've 
 discussed above.
 
 Let's share the Centigrade values `cv` from our current example,
@@ -1059,43 +1058,38 @@ Below, we summarize key information you've already gleaned from the examples.
 | :----- | :---------- |
 | **∆F**&ensp;***f‑string*** | Display an _f‑string_; use the _default_ options. The string may reference objects in the environment or in the string itself. Returns a character matrix. |
 | **∆F**&ensp;***f‑string***&ensp;***args*** | Display an _f‑string_; use the _default_ options. Arguments presented _may_ be referred to in the f‑string. Returns a character matrix. |
-| ***options***&ensp;**∆F**&ensp;***f‑string***&ensp;[***args***] | Display an _f‑string_; control the result with _options_ specified (see below). <br>If *DFN* (see below) is `0` or omitted, returns a character matrix.<br>If *DFN* is `1`, returns a dfn that will display such a matrix (given an identical system state). |
+| ***options***&ensp;**∆F**&ensp;***f‑string***&ensp;[***args***] | Display an _f‑string_; control the result with _options_ specified (see below). <br>If ***dfn*** (see below) is `0` or omitted, returns a character matrix.<br>If ***dfn*** is `1`, returns a dfn that will display such a matrix (given an identical system state). |
 | 'help'&ensp;**∆F**&ensp;' ' | Display help info and examples for **∆F**. The _f‑string_ is not examined. |
 | **∆F**⍨'help' | Display help info and examples for **∆F**. |
+| **_return value_** | *See below.* |
 <div>Table 6a. <strong>∆F Call Syntax Overview</strong></div>
 
 <br>
 
-## ∆F Call Syntax Details
+## ∆F Option Details
 
-| Element<div style="width:290px"></div> | Description |
-| :----- | :---------- |
-| **_f‑string_** | a format string, a single character vector. |
-| **_args_** | elements of ⍵ after the *f‑string*, each of which can be accessed in the *f‑string* via an **Omega** shortcut (`` `⍵𝑑𝑑 ``, *etc.*) or an ordinary *dfn* `⍵` expression. |
-| ***options***:&nbsp;*mode* | `options←` <span class="red">[</span>&ensp;<span class="red">[</span> `5↑ 0`  <span class="red">]</span>&ensp;<span class="red">**\|**</span>&ensp;`'help'`&ensp;<span class="red">]</span> |
-| &emsp;***options[0]***:<br>&emsp;&emsp;  ***DFN*** *output mode* | If `1`: **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If `0` (default): **∆F** returns a char. matrix. |
-| &emsp;***options[1]***:<br>&emsp;&emsp; ***DBG*** *(debug) mode* | If `1`: Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if **_DFN_** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***DFN*** option above).<br>If `0` (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***DFN*** source code is not displayed.      |
-| &emsp;***options[2]***:<br>&emsp;&emsp; ***BOX*** *mode*         | If `1`: Each field (except a null **Text** field) is boxed separately.<br>If `0` (default): Nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><small>***BOX*** **mode can be used both with** ***DFN*** **and default output mode.**</small> |
-| &emsp;***options[3]***:<br>&emsp;&emsp;***NOAUTO*** *mode* | If `1`, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If `0`, honors the default and user-defined settings for `auto`.|
-| &emsp;***options[4]***:<br>&emsp;&emsp;***INLINE*** *mode*       | If `1` and the ***DFN*** option is set: The code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If `0` (default): Whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br><small>**This option is experimental and may simply disappear one day.**</small> |
-| &emsp;'help' | If `'help'` is specified, this amazing doc&shy;ument&shy;ation is displayed. |
-| **_result_** | If `0=⊃options`, the result is always a character matrix.<br>If `1=⊃options`, the result is a dfn that, _when executed in the same environment with the same arguments_, generates that same character matrix. <br><small>**If an error is signalled, no result is returned.**</small> |
-<div>Table 6b. <strong>∆F Call Syntax Details</strong></div>
+|<center>Positional<div style="width:150px"></div>Option</center>|Keyword: *default* |Description |
+| :----- | :----: | :---------- |
+| &emsp;***options[0]***:<br>&emsp;&emsp;*output mode*|***dfn:&nbsp;0***| If ***dfn:&nbsp;1***, **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If ***dfn:&nbsp;0*** (default): **∆F** returns a char. matrix. |
+| &emsp;***options[1]:***<br>&emsp;&emsp;*debug mode*|***debug:&nbsp;0***| If ***debug:&nbsp;1***, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if ***dfn*** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br>If ***debug:&nbsp;0*** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed.      |
+| &emsp;***options[2]***:<br>&emsp;&emsp;*box mode*|***box:&nbsp;0***| If ***box:&nbsp;1***, each field (except a null **Text** field) is boxed separately.<br>If ***box:&nbsp;0*** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br>***box*** **mode can be used both with** ***dfn*** **and default output mode.**</small> |
+| &emsp;***options[3]***:<br>&emsp;&emsp;*auto mode*|***auto:&nbsp;1***| If ***auto:&nbsp;0***, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If ***auto:&nbsp;1*** (default), honors the default and user-defined settings for `auto`.|
+| &emsp;***options[4]***:<br>&emsp;&emsp;*inline mode*|***inline:&nbsp;0***| If ***inline:&nbsp;1*** and ***dfn:&nbsp;1***, the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If ***inline:&nbsp;0*** (default), whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br><small>**This option is experimental and may simply disappear one day.**</small> |
+| &emsp;'help' || If `'help'` is specified, this amazing doc&shy;ument&shy;ation is displayed. |
+<div>Table 6b. <strong>∆F Option Details</strong></div>
 
 
-<br>
-
-## ∆F Options 
-
-- If the left argument `⍺` is omitted, the options default to `4⍴0`.
-- If the left argument `⍺` is a simple integer vector or scalar, or an empty numeric vector `⍬`, the options are `4↑⍺`; subsequent elements are ignored;
+- If the left argument `⍺` is omitted, the options default to `0 0 0 1 0`.
+- If the left argument `⍺` is a simple integer vector or scalar, or an empty numeric vector `⍬`, the options are `5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺`; subsequent elements are ignored;
+- If the left argument is a namespace,
+it is assumed to contain the options in keyword form,<br>&emsp;&emsp;e.g. `(debug: 1 ◇ auto: 0)`;
 - If the left argument `⍺` starts with `'help'` (case ignored), this help information is displayed. In this case only, the right argument to **∆F** is ignored.
 - Otherwise, an error is signaled.
 
 ## ∆F Return Value
 
-- Unless the **DFN** option is selected, **∆F** always returns a character matrix of at least one row and zero columns, `1 0⍴0`, on success. If the 'help' option is specified, **∆F** displays this information, returning `1 0⍴0`.
-- If the **DFN** option is selected, **∆F** always returns a standard Dyalog dfn on success.
+- Unless the ***dfn*** option is selected, **∆F** always returns a character matrix of at least one row and zero columns, `1 0⍴0`, on success. If the 'help' option is specified, **∆F** displays this information, returning `1 0⍴0`.
+- If the ***dfn*** option is selected, **∆F** always returns a standard Dyalog dfn on success.
 - On failure of any sort, an informative APL error is signaled.
 
 ## ∆F F‑string Building Blocks
@@ -1276,7 +1270,7 @@ is briefly documented *below*.
   // [3]   prefix, which if null is the same as [""], i.e. 0-length string prefix.
        
   // ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
-  // Their usual values are LIB_AUTO← 1 ⋄ VERBOSE← 0
+  // Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
   // The values are explained here:
   //   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
   //                  using the default or user-specified path.
@@ -1336,8 +1330,8 @@ is briefly documented *below*.
 ## Appendix I: Un(der)documented Features 
 
 ### ∆F Option for Dfn Source Code
-If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***DFN*** option, `options[0]=1`. 
-If ***DBG*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option *returns* the code string, the ***DBG*** option won't also *display* the code string. 
+If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***dfn*** option, `options[0]=1`. 
+If ***debug*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option *returns* the code string, the ***debug*** option won't also *display* the code string. 
 
 ### ∆F Help's Secret Variant
 `∆F 'help'` has a secret variant: `∆F 'help-narrow'`. 
@@ -1391,7 +1385,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251102T133604]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251102T211121]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

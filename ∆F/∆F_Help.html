@@ -437,14 +437,13 @@ Library Objects</a></li>
 <li><a href="#session-variables">Session Variables</a></li>
 </ul></li>
 <li><a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
-f‑strings with the <em><strong>DFN</strong></em> Option</a></li>
+f‑strings with the <em><strong>dfn</strong></em> Option</a></li>
 </ul></li>
 <li><a href="#f-syntax-and-other-information">∆F Syntax and Other
 Information</a>
 <ul>
 <li><a href="#f-call-syntax-overview">∆F Call Syntax Overview</a></li>
-<li><a href="#f-call-syntax-details">∆F Call Syntax Details</a></li>
-<li><a href="#f-options">∆F Options</a></li>
+<li><a href="#f-option-details">∆F Option Details</a></li>
 <li><a href="#f-return-value">∆F Return Value</a></li>
 <li><a href="#f-fstring-building-blocks">∆F F‑string Building
 Blocks</a></li>
@@ -653,7 +652,8 @@ value from</strong></em> <strong>∆F</strong>.
 <span class="margin-note"><br>As a prototype, <strong>∆F</strong> is
 relatively slow, using an APL recursive scan to analyze the
 <strong>f‑string</strong>. For a way to speed up frequently used
-<em>f‑strings</em>, see the <a href="#f-call-syntax-details">DFN
+<em>f‑strings</em>, see the <a
+href="#f-call-syntax-details"><em><strong>dfn</strong></em>
 option</a>.</span></li>
 </ul></li>
 </ul>
@@ -1407,11 +1407,11 @@ will be signaled.</p>
 <code>pco</code> from the <code>dfns</code> workspace.</p>
 <pre><code>    ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 </code></pre>
-<details id="pPeek"><summary class="summary">Peek: Using the <em><bold>DBG</bold></em> (debug) option</summary>
+<details id="pPeek"><summary class="summary">Peek: Using the <em><bold>debug</bold></em> (debug) option</summary>
 
 <blockquote>
 <p>First use of a <em>dfns</em> function, using <strong>∆F</strong>'s
-<em><strong>DBG</strong></em> (debug) option:</p>
+<em><strong>debug</strong></em> option:</p>
 </blockquote>
 <pre><code>    0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
 DEBUG: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.ûLib] from &quot;ws:dfns&quot;
@@ -1442,16 +1442,15 @@ We&#39;ve been called 2 times.</code></pre>
 <p>This may be sensible when ∆F is called from a variety of namespaces
 and/or if the user doesn't wish to clutter the active namespace.</p>
 <p><span style="font-size: 130%;">👉 </span> When a <em>dfn</em> created
-via <strong>∆F</strong> with the <em>DFN</em> option runs, any uses of
-<code>£</code> will require the associated ⍙Fapl namespace to be
-present.</p>
+via <strong>∆F</strong> with the <em><strong>dfn</strong></em> option
+runs, any uses of <code>£</code> will require the associated ⍙Fapl
+namespace to be present.</p>
 </div>
 
 <h2 data-number="5.21"
 id="precomputed-fstrings-with-the-dfn-option"><span
 class="header-section-number">5.21</span> Precomputed f‑strings with the
-<span style="font-size: 80%;"><em><strong>DFN</strong></em></span>
-Option</h2>
+<em><strong>dfn</strong></em> Option</h2>
 <p><span class="margin-note"><strong>∆F</strong>'s default initial
 option (left argument) is <code>0</code>, so <code>0 ∆F…</code> and
 <code>∆F…</code> are equivalent. We discuss all <a
@@ -1461,7 +1460,7 @@ character matrix. That can be expressed schematically via expression
 <em>(a),</em> shown here:</p>
 <pre><code>(a) 0 ∆F… </code></pre>
 <p>However, if the initial <a href="#f-call-syntax-details">∆F
-Option</a>, <strong><em>DFN</em></strong>, is <code>1</code>, as in
+Option</a>, <em><strong>dfn</strong></em>, is <code>1</code>, as in
 <em>(b),</em></p>
 <pre><code>(b) 1 ∆F… </code></pre>
 <p>then <span class="margin-note">This assumes the resulting dfn is
@@ -1513,10 +1512,11 @@ least in this run.</p>
 <p>Before we get to syntax and other information, we want to show you
 that <span class="margin-note">The <em>dfn</em> returned includes the
 original <em>f‑string</em> text used to generate it, available as
-<code>`⍵0</code>.</span> the <em>dfn</em> returned via the <em>DFN</em>
-option can retrieve one or more arguments passed on the right side of
-<strong>∆F</strong>, using the very same omega shortcut expressions
-(like <code>`⍵1</code>) we've discussed above.</p>
+<code>`⍵0</code>.</span> the <em>dfn</em> returned via the
+<em><strong>dfn</strong></em> option can retrieve one or more arguments
+passed on the right side of <strong>∆F</strong>, using the very same
+omega shortcut expressions (like <code>`⍵1</code>) we've discussed
+above.</p>
 <p>Let's share the Centigrade values <code>cv</code> from our current
 example, not as a <em>variable</em>, but as the <em>first argument</em>
 to <strong>∆F</strong>. We'll access the value as <code>`⍵1`</code>.</p>
@@ -1578,10 +1578,11 @@ to in the f‑string. Returns a character matrix.</td>
 <td
 style="text-align: left;"><em><strong>options</strong></em> <strong>∆F</strong> <em><strong>f‑string</strong></em> [<em><strong>args</strong></em>]</td>
 <td style="text-align: justify;">Display an <em>f‑string</em>; control the
-result with <em>options</em> specified (see below). <br>If <em>DFN</em>
-(see below) is <code>0</code> or omitted, returns a character
-matrix.<br>If <em>DFN</em> is <code>1</code>, returns a dfn that will
-display such a matrix (given an identical system state).</td>
+result with <em>options</em> specified (see below). <br>If
+<em><strong>dfn</strong></em> (see below) is <code>0</code> or omitted,
+returns a character matrix.<br>If <em><strong>dfn</strong></em> is
+<code>1</code>, returns a dfn that will display such a matrix (given an
+identical system state).</td>
 </tr>
 <tr>
 <td style="text-align: justify;">'help' <strong>∆F</strong> ' '</td>
@@ -1593,153 +1594,140 @@ display such a matrix (given an identical system state).</td>
 <td style="text-align: justify;">Display help info and examples for
 <strong>∆F</strong>.</td>
 </tr>
+<tr>
+<td style="text-align: justify;"><strong><em>return
+value</em></strong></td>
+<td style="text-align: justify;"><em>See below.</em></td>
+</tr>
 </tbody>
 </table>
 <div>Table 6a. <strong>∆F Call Syntax Overview</strong></div>
 
 <br>
 
-<h2 data-number="6.2" id="f-call-syntax-details"><span
-class="header-section-number">6.2</span> ∆F Call Syntax Details</h2>
+<h2 data-number="6.2" id="f-option-details"><span
+class="header-section-number">6.2</span> ∆F Option Details</h2>
 <table>
 <thead>
 <tr>
 <th
-style="text-align: left;">Element<div style="width:290px"></div></th>
+style="text-align: left;"><center>Positional<div style="width:150px"></div>Option</center></th>
+<th style="text-align: center;">Keyword: <em>default</em></th>
 <th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: justify;"><strong><em>f‑string</em></strong></td>
-<td style="text-align: justify;">a format string, a single character
-vector.</td>
-</tr>
-<tr>
-<td style="text-align: justify;"><strong><em>args</em></strong></td>
-<td style="text-align: justify;">elements of ⍵ after the <em>f‑string</em>,
-each of which can be accessed in the <em>f‑string</em> via an
-<strong>Omega</strong> shortcut (<code>`⍵𝑑𝑑</code>, <em>etc.</em>) or an
-ordinary <em>dfn</em> <code>⍵</code> expression.</td>
+<td
+style="text-align: left;"> <em><strong>options[0]</strong></em>:<br>  <em>output
+mode</em></td>
+<td style="text-align: center;"><em><strong>dfn: 0</strong></em></td>
+<td style="text-align: justify;">If <em><strong>dfn: 1</strong></em>,
+<strong>∆F</strong> returns a dfn, which (upon execution) produces the
+same output as the default mode.<br>If <em><strong>dfn: 0</strong></em>
+(default): <strong>∆F</strong> returns a char. matrix.</td>
 </tr>
 <tr>
 <td
-style="text-align: left;"><em><strong>options</strong></em>: <em>mode</em></td>
-<td style="text-align: justify;"><code>options←</code>
-<span class="red">[</span> <span class="red">[</span> <code>5↑ 0</code>
-<span class="red">]</span> <span class="red"><strong>|</strong></span> <code>'help'</code> <span class="red">]</span></td>
-</tr>
-<tr>
-<td
-style="text-align: left;"> <em><strong>options[0]</strong></em>:<br>  
-<em><strong>DFN</strong></em> <em>output mode</em></td>
-<td style="text-align: justify;">If <code>1</code>: <strong>∆F</strong>
-returns a dfn, which (upon execution) produces the same output as the
-default mode.<br>If <code>0</code> (default): <strong>∆F</strong>
-returns a char. matrix.</td>
-</tr>
-<tr>
-<td
-style="text-align: left;"> <em><strong>options[1]</strong></em>:<br>  
-<em><strong>DBG</strong></em> <em>(debug) mode</em></td>
-<td style="text-align: justify;">If <code>1</code>: Renders newline
-characters from <code>`◇</code> as the visible <code>␤</code> character.
-Displays the source code that the <em>f‑string</em>
-<strong><em>actually</em></strong> generates; if
-<strong><em>DFN</em></strong> is also <code>1</code>, this will include
+style="text-align: left;"> <em><strong>options[1]:</strong></em><br>  <em>debug
+mode</em></td>
+<td style="text-align: center;"><em><strong>debug: 0</strong></em></td>
+<td style="text-align: justify;">If <em><strong>debug: 1</strong></em>,
+Renders newline characters from <code>`◇</code> as the visible
+<code>␤</code> character. Displays the source code that the
+<em>f‑string</em> <strong><em>actually</em></strong> generates; if
+<em><strong>dfn</strong></em> is also <code>1</code>, this will include
 the embedded <em>f‑string</em> source (accessed as <code>`⍵0</code>).
 After the source code is displayed, it will be executed or converted to
-a <em>dfn</em> and returned (see the <em><strong>DFN</strong></em>
-option above).<br>If <code>0</code> (default): Newline characters from
-<code>`◇</code> are rendered normally as carriage returns,
-<code>⎕UCS 13</code>; the <em><strong>DFN</strong></em> source code is
-not displayed.</td>
+a <em>dfn</em> and returned (see the <em><strong>dfn</strong></em>
+option above).<br>If <em><strong>debug: 0</strong></em> (default):
+Newline characters from <code>`◇</code> are rendered normally as
+carriage returns, <code>⎕UCS 13</code>; the
+<em><strong>dfn</strong></em> source code is not displayed.</td>
 </tr>
 <tr>
 <td
-style="text-align: left;"> <em><strong>options[2]</strong></em>:<br>  
-<em><strong>BOX</strong></em> <em>mode</em></td>
-<td style="text-align: justify;">If <code>1</code>: Each field (except a
-null <strong>Text</strong> field) is boxed separately.<br>If
-<code>0</code> (default): Nothing is boxed automatically. Any
-<strong>Code</strong> field expression may be explicitly boxed using the
-<strong>Box</strong> shortcut,
-<code>`B</code>.<br><small><em><strong>BOX</strong></em> <strong>mode
-can be used both with</strong> <em><strong>DFN</strong></em> <strong>and
+style="text-align: left;"> <em><strong>options[2]</strong></em>:<br>  <em>box
+mode</em></td>
+<td style="text-align: center;"><em><strong>box: 0</strong></em></td>
+<td style="text-align: justify;">If <em><strong>box: 1</strong></em>, each
+field (except a null <strong>Text</strong> field) is boxed
+separately.<br>If <em><strong>box: 0</strong></em> (default), nothing is
+boxed automatically. Any <strong>Code</strong> field expression may be
+explicitly boxed using the <strong>Box</strong> shortcut,
+<code>`B</code>.<br><em><strong>box</strong></em> <strong>mode can be
+used both with</strong> <em><strong>dfn</strong></em> <strong>and
 default output mode.</strong></small></td>
 </tr>
 <tr>
 <td
-style="text-align: left;"> <em><strong>options[3]</strong></em>:<br>  <em><strong>NOAUTO</strong></em>
-<em>mode</em></td>
-<td style="text-align: justify;">If <code>1</code>, user must manually
-load/create any Session Library objects for use with the £ or
-<code>`L</code> shortcuts.<br>If <code>0</code>, honors the default and
-user-defined settings for <code>auto</code>.</td>
+style="text-align: left;"> <em><strong>options[3]</strong></em>:<br>  <em>auto
+mode</em></td>
+<td style="text-align: center;"><em><strong>auto: 1</strong></em></td>
+<td style="text-align: justify;">If <em><strong>auto: 0</strong></em>, user
+must manually load/create any Session Library objects for use with the £
+or <code>`L</code> shortcuts.<br>If <em><strong>auto: 1</strong></em>
+(default), honors the default and user-defined settings for
+<code>auto</code>.</td>
 </tr>
 <tr>
 <td
-style="text-align: left;"> <em><strong>options[4]</strong></em>:<br>  <em><strong>INLINE</strong></em>
-<em>mode</em></td>
-<td style="text-align: justify;">If <code>1</code> and the
-<em><strong>DFN</strong></em> option is set: The code for each internal
-support function used is included in the <em>dfn</em> result;
+style="text-align: left;"> <em><strong>options[4]</strong></em>:<br>  <em>inline
+mode</em></td>
+<td style="text-align: center;"><em><strong>inline: 0</strong></em></td>
+<td style="text-align: justify;">If <em><strong>inline: 1</strong></em> and
+<em><strong>dfn: 1</strong></em>, the code for each internal support
+function used is included in the <em>dfn</em> result;
 <em><strong>no</strong></em> reference to namespace
 <strong>⍙Fapl</strong> will be made during the execution of that
-<em>dfn</em>.<br>If <code>0</code> (default): Whenever
-<strong>∆F</strong> or a <em>dfn</em> generated by it is executed, it
-makes calls to library routines in the namespace <strong>⍙Fapl</strong>,
-created during the <code>]load ∆Fapl</code>
+<em>dfn</em>.<br>If <em><strong>inline: 0</strong></em> (default),
+whenever <strong>∆F</strong> or a <em>dfn</em> generated by it is
+executed, it makes calls to library routines in the namespace
+<strong>⍙Fapl</strong>, created during the <code>]load ∆Fapl</code>
 process.<br><small><strong>This option is experimental and may simply
 disappear one day.</strong></small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"> 'help'</td>
+<td style="text-align: center;"></td>
 <td style="text-align: justify;">If <code>'help'</code> is specified, this
 amazing doc­ument­ation is displayed.</td>
 </tr>
-<tr>
-<td style="text-align: justify;"><strong><em>result</em></strong></td>
-<td style="text-align: justify;">If <code>0=⊃options</code>, the result is
-always a character matrix.<br>If <code>1=⊃options</code>, the result is
-a dfn that, <em>when executed in the same environment with the same
-arguments</em>, generates that same character matrix.
-<br><small><strong>If an error is signalled, no result is
-returned.</strong></small></td>
-</tr>
 </tbody>
 </table>
-<div>Table 6b. <strong>∆F Call Syntax Details</strong></div>
+<div>Table 6b. <strong>∆F Option Details</strong></div>
 
-<br>
-
-<h2 data-number="6.3" id="f-options"><span
-class="header-section-number">6.3</span> ∆F Options</h2>
 <ul>
 <li>If the left argument <code>⍺</code> is omitted, the options default
-to <code>4⍴0</code>.</li>
+to <code>0 0 0 1 0</code>.</li>
 <li>If the left argument <code>⍺</code> is a simple integer vector or
 scalar, or an empty numeric vector <code>⍬</code>, the options are
-<code>4↑⍺</code>; subsequent elements are ignored;</li>
+<code>5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺</code>; subsequent elements are
+ignored;</li>
+<li>If the left argument is a <span class="margin-note">In APL Array
+Notation, formally introduced in Dyalog 20.</span>namespace, it is
+assumed to contain the options in keyword form,<br>  e.g.
+<code>(debug: 1 ◇ auto: 0)</code>;</li>
 <li>If the left argument <code>⍺</code> starts with <code>'help'</code>
 (case ignored), this help information is displayed. In this case only,
 the right argument to <strong>∆F</strong> is ignored.</li>
 <li>Otherwise, an error is signaled.</li>
 </ul>
-<h2 data-number="6.4" id="f-return-value"><span
-class="header-section-number">6.4</span> ∆F Return Value</h2>
+<h2 data-number="6.3" id="f-return-value"><span
+class="header-section-number">6.3</span> ∆F Return Value</h2>
 <ul>
-<li>Unless the <strong>DFN</strong> option is selected,
+<li>Unless the <em><strong>dfn</strong></em> option is selected,
 <strong>∆F</strong> always returns a character matrix of at least one
 row and zero columns, <code>1 0⍴0</code>, on success. If the 'help'
 option is specified, <strong>∆F</strong> displays this information,
 returning <code>1 0⍴0</code>.</li>
-<li>If the <strong>DFN</strong> option is selected, <strong>∆F</strong>
-always returns a standard Dyalog dfn on success.</li>
+<li>If the <em><strong>dfn</strong></em> option is selected,
+<strong>∆F</strong> always returns a standard Dyalog dfn on
+success.</li>
 <li>On failure of any sort, an informative APL error is signaled.</li>
 </ul>
-<h2 data-number="6.5" id="f-fstring-building-blocks"><span
-class="header-section-number">6.5</span> ∆F F‑string Building
+<h2 data-number="6.4" id="f-fstring-building-blocks"><span
+class="header-section-number">6.4</span> ∆F F‑string Building
 Blocks</h2>
 <p>The first element in the right arg to ∆F is a character vector, an
 <em>f‑string</em>, which contains one or more <strong>Text</strong>
@@ -1788,8 +1776,8 @@ adjacent <strong>Text</strong> fields.</li>
 spacing is under user control.</li>
 </ul></li>
 </ul>
-<h2 data-number="6.6" id="code-field-shortcuts"><span
-class="header-section-number">6.6</span> Code Field Shortcuts</h2>
+<h2 data-number="6.5" id="code-field-shortcuts"><span
+class="header-section-number">6.5</span> Code Field Shortcuts</h2>
 <p><strong>∆F</strong> <strong>Code</strong> fields may contain various
 shortcuts, intended to be concise and expressive tools for common tasks.
 <strong>Shortcuts</strong> are valid in <strong>Code</strong> fields
@@ -1932,9 +1920,9 @@ href="#self-documenting-code-fields-sdcfs">SDCFs</a> in
 
 <br>
 
-<h2 data-number="6.7"
+<h2 data-number="6.6"
 id="escape-sequences-for-text-fields-and-quoted-strings"><span
-class="header-section-number">6.7</span> Escape Sequences For Text
+class="header-section-number">6.6</span> Escape Sequences For Text
 Fields and Quoted Strings</h2>
 <p><span class="margin-note">See <a
 href="#quoted-strings-in-code-fields">Quoted Strings in Code Fields</a>
@@ -1989,8 +1977,8 @@ in <strong>Code</strong> fields. </span></p>
 fields or <strong>Quoted strings</strong> in <strong>Code</strong>
 fields will be treated literally, <em>i.e.</em> sometimes a backtick is
 just a backtick.</p>
-<h2 data-number="6.8" id="quoted-strings-in-code-fields"><span
-class="header-section-number">6.8</span> Quoted Strings in Code
+<h2 data-number="6.7" id="quoted-strings-in-code-fields"><span
+class="header-section-number">6.7</span> Quoted Strings in Code
 Fields</h2>
 <p>As mentioned in the introduction, <strong>Quoted strings</strong> in
 <strong>Code</strong> fields allow several delimiting quote styles:</p>
@@ -2045,8 +2033,8 @@ style="text-align: left;"><code>∆F '{''or ''''this'''' one''}'</code></td>
 character within the string. The clumsiness of the standard single quote
 <code>'</code> examples is due to the fact that the single quote is the
 required delimiter for the outermost (APL-level) string.</p>
-<h2 data-number="6.9" id="omega-shortcut-expressions-details"><span
-class="header-section-number">6.9</span> Omega Shortcut Expressions:
+<h2 data-number="6.8" id="omega-shortcut-expressions-details"><span
+class="header-section-number">6.8</span> Omega Shortcut Expressions:
 Details</h2>
 <ol type="1">
 <li><strong>⍹</strong> is a synonym for <strong>`⍵</strong>. It is
@@ -2081,8 +2069,8 @@ accessed at runtime via any means, shortcut or traditional, that element
 <div class="test-feature">
 
 <p><span class="margin-note"><span class="red">Experimental</span></span></p>
-<h2 data-number="6.10" id="wrap-shortcut-details"><span
-class="header-section-number">6.10</span> Wrap Shortcut: Details</h2>
+<h2 data-number="6.9" id="wrap-shortcut-details"><span
+class="header-section-number">6.9</span> Wrap Shortcut: Details</h2>
 <ol type="1">
 <li>Syntax: <code>[⍺←''''] `W ⍵</code>.</li>
 <li>Let <code>L←0⊃2⍴⍺</code> and <code>R←1⊃2⍴⍺</code>.</li>
@@ -2099,8 +2087,8 @@ replicated <em>per (2) above</em>.</li>
 the array ⍵, row by row, whether character, numeric or otherwise.</li>
 </ol>
 <p><span class="margin-note"><span class="red"><br>Experimental</span></span></p>
-<h2 data-number="6.11" id="session-library-shortcut-details"><span
-class="header-section-number">6.11</span> Session Library Shortcut:
+<h2 data-number="6.10" id="session-library-shortcut-details"><span
+class="header-section-number">6.10</span> Session Library Shortcut:
 Details</h2>
 <ol type="1">
 <li><p>If <span class="margin-note">See <a
@@ -2124,9 +2112,9 @@ its existing value, else a domain error will be signaled.</p></li>
 <li><p>Modified assignments of the form <code>£.name+←...</code> are
 allowed and treated as in the first case.</p></li>
 </ol>
-<h3 data-number="6.11.1"
+<h3 data-number="6.10.1"
 id="session-library-shortcut-filetypes-of-source-files"><span
-class="header-section-number">6.11.1</span> Session Library Shortcut:
+class="header-section-number">6.10.1</span> Session Library Shortcut:
 Filetypes of Source Files</h3>
 <p><span class="margin-note"><br><br><br><br><br><br><br><br><br><strong>APLAN:</strong>
 <em>APL</em> Array Notation<br>(Dyalog 20)</span></p>
@@ -2202,8 +2190,8 @@ Filetypes of Source Files</h3>
 </table>
 <div>Table 6f. <strong>Library Filetypes: Meaning</strong></div>
 
-<h3 data-number="6.11.2" id="session-library-shortcut-parameters"><span
-class="header-section-number">6.11.2</span> Session Library Shortcut:
+<h3 data-number="6.10.2" id="session-library-shortcut-parameters"><span
+class="header-section-number">6.10.2</span> Session Library Shortcut:
 Parameters</h3>
 <p>The Session Library shortcut (<code>£</code> or <code>`L</code>) is
 deceptively simple, but the code to support it is a tad complex.
@@ -2239,7 +2227,7 @@ is need­ed, should this go forward.</span> is briefly documented
   // [3]   prefix, which if null is the same as [&quot;&quot;], i.e. 0-length string prefix.
        
   // ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
-  // Their usual values are LIB_AUTO← 1 ⋄ VERBOSE← 0
+  // Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
   // The values are explained here:
   //   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
   //                  using the default or user-specified path.
@@ -2302,14 +2290,15 @@ Code</h3>
 <p>If <code>options[0]</code> is <code>¯1</code>,
 <span class="margin-note">In simple terms, this option returns the
 character representation of the <em>dfn</em> returned via the
-<em><strong>DFN</strong></em> option. </span>then <strong>∆F</strong>
+<em><strong>dfn</strong></em> option. </span>then <strong>∆F</strong>
 returns a character vector that contains the source code for the
 <em>dfn</em> that would have been returned via the
-<em><strong>DFN</strong></em> option, <code>options[0]=1</code>. If
-<em><strong>DBG</strong></em> is also set, newlines from <code>`◇</code>
-are shown as visible <code>␤</code>. However, since this option
-<em>returns</em> the code string, the <em><strong>DBG</strong></em>
-option won't also <em>display</em> the code string.</p>
+<em><strong>dfn</strong></em> option, <code>options[0]=1</code>. If
+<em><strong>debug</strong></em> is also set, newlines from
+<code>`◇</code> are shown as visible <code>␤</code>. However, since this
+option <em>returns</em> the code string, the
+<em><strong>debug</strong></em> option won't also <em>display</em> the
+code string.</p>
 <h3 data-number="7.1.2" id="f-helps-secret-variant"><span
 class="header-section-number">7.1.2</span> ∆F Help's Secret Variant</h3>
 <p><code>∆F 'help'</code> has a secret variant:
@@ -2375,7 +2364,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251102T133603]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251102T211120]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
