@@ -1,8 +1,8 @@
 ⍝:Section CORE
 :Namespace ⍙Fapl
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
-  DEBUG← 1                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
-  VERBOSE← 1                    ⍝ VERBOSE: Compile and runtime verbosity flag
+  DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
+  VERBOSE← 0                    ⍝ VERBOSE: Compile and runtime verbosity flag
 ⍝ Positional and keyword options (⍺) for ∆F  
   OPTION_NAMES← 'dfn' 'debug' 'box' 'auto' 'inline'  
   OPTION_DEFAULTS← 0 0 0 1 0     
