@@ -1,4 +1,5 @@
-⍝:Section CORE
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251103T220948" 
+⍝:Section CORE                                   
 :Namespace ⍙Fapl
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
