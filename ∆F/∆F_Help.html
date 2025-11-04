@@ -535,7 +535,8 @@ time, it will be copied into <strong>⍙Fapl</strong> (or a message will
 note its absence).</li>
 </ol></li>
 </ol>
-<p>Now, <strong>∆F</strong> is available for use.</p>
+<p><span style="font-size: 130%;">👉 </span>Now, <strong>∆F</strong> is
+available for use.</p>
 <h2 data-number="2.2" id="running-f-after-its-been-installed"><span
 class="header-section-number">2.2</span> Running <strong>∆F</strong>
 (After It's Been Installed)</h2>
@@ -545,7 +546,8 @@ class="header-section-number">2.2</span> Running <strong>∆F</strong>
 executable<span class="margin-note"><strong>Accessible:</strong>
 <em>e.g.</em> via <code>⎕PATH</code></span> from the current
 namespace.</li>
-<li>Call <code>∆F</code> with the desired argument(s) and <a
+<li>Call <code>∆F</code> with the desired <a
+href="#f-call-syntax-overview">arguments</a> and <a
 href="#f-option-details">options</a>. <strong>∆F</strong> is
 <code>⎕IO</code>- and <code>⎕ML</code>-independent.</li>
 </ol>
@@ -911,7 +913,7 @@ they've done their work of separating adjacent fields (typically
 <strong>Text</strong> fields), so they won't be placed in boxes.</p>
 <p>Try this expression on your own:</p>
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;</code></pre>
-<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek (I tried)</summary>
 
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;
 ┌───┬───┬───┬┬───┬─┬───┐ 
@@ -955,7 +957,7 @@ argument to <strong>∆F</strong> (<em>effectively</em>,
 to the <em>f‑string</em> itself. Try this yourself.</p>
 <pre><code>   bL bR← &#39;«»&#39;                     ⍝ ⎕UCS 171 187
    ∆F &#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;</code></pre>
-<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek (I tried)</summary>
 
 <pre><code>   bL bR← &#39;«»&#39;                     ⍝ ⎕UCS 171 187
    ∆F &#39;Our string {bL, `⍵0, bR} has {≢`⍵0} characters.&#39;
@@ -1019,7 +1021,7 @@ class="header-section-number">5.11</span> Self-documenting
 <p><span class="margin-note">Our SDCFs are based on Python's single type
 of self-documenting expressions in <em>f‑strings</em>, but work somewhat
 differently. SDCFs are used <em><strong>only</strong></em> in
-<strong>Code</strong> fields (<em>duh</em>). </span></p>
+<strong>Code</strong> fields <em>(duh).</em> </span></p>
 <blockquote>
 <p>Self-documenting Code fields (SDCFs) are a useful debugging tool.</p>
 </blockquote>
@@ -1414,12 +1416,15 @@ will be signaled.</p>
 <code>pco</code> from the <code>dfns</code> workspace.</p>
 <pre><code>    ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 </code></pre>
-<details id="pPeek"><summary class="summary">Peek: Using the <em><bold>debug</bold></em> (debug) option</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek: Using the <em><strong>debug</strong></em> option</summary>
 
 <blockquote>
-<p>First use of a <em>dfns</em> function, using <strong>∆F</strong>'s
+<p>To understand when an object is automatically copied into a £ibrary,
+or to see where it's copied from, use <strong>∆F</strong>'s
 <em><strong>debug</strong></em> option:</p>
 </blockquote>
+<p><span class="margin-note"><br>First use of £.pco this
+<em>session.</em></span></p>
 <pre><code>    0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
 DEBUG: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.ûLib] from &quot;ws:dfns&quot;
 { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
@@ -1461,12 +1466,12 @@ class="header-section-number">5.21</span> Precomputed f‑strings with the
 <p><span class="margin-note"><strong>∆F</strong>'s default initial
 option (left argument) is <code>0</code>, so <code>0 ∆F…</code> and
 <code>∆F…</code> are equivalent. We discuss all <a
-href="#f-call-syntax-details">the options to ∆F</a> below. </span> The
+href="#f-option-details">the options to ∆F</a> below. </span> The
 default returned from <strong>∆F</strong> is always (on success) a
 character matrix. That can be expressed schematically via expression
 <em>(a),</em> shown here:</p>
 <pre><code>(a) 0 ∆F… </code></pre>
-<p>However, if the initial <a href="#f-call-syntax-details">∆F
+<p>However, if the initial <a href="#f-option-details">∆F
 Option</a>, <em><strong>dfn</strong></em>, is <code>1</code>, as in
 <em>(b),</em></p>
 <pre><code>(b) 1 ∆F… </code></pre>
@@ -1487,7 +1492,7 @@ heavily used <strong>∆F</strong> string is important.</p>
 <p>Now, let's proceed. Here's our <strong>∆F</strong> String
 <code>t</code>:</p>
 <pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ cv}°C or {&quot;F5.1&quot; $ F← 32+9×cv÷5}°F&#39;</code></pre>
-<details id="pPeek"><summary class="summary">Evaluate <code>∆F t</code>...</summary>
+<details id="pPeek"><summary class="summary">&ensp;Evaluate <code>∆F t</code></summary>
 
 <pre><code>   ∆F t 
 The temperature is 11°C or  51.8°F
@@ -1500,7 +1505,7 @@ The temperature is 11°C or  51.8°F
 output (given the same definition of the vector <code>cv</code>, when
 <code>T</code> is evaluated).</p>
 <pre><code>   T← 1 ∆F t</code></pre>
-<details id="pPeek"><summary class="summary">Evaluate <code>T ⍬</code>...</summary>
+<details id="pPeek"><summary class="summary">&ensp;Evaluate <code>T ⍬</code></summary>
 
 <pre><code>   T ⍬
 The temperature is 11°C or  51.8°F
@@ -1526,7 +1531,7 @@ omega shortcut expressions (like <code>`⍵1</code>) we've discussed
 above.</p>
 <p>Let's share the Centigrade values <code>cv</code> from our current
 example, not as a <em>variable</em>, but as the <em>first argument</em>
-to <strong>∆F</strong>. We'll access the value as <code>`⍵1`</code>.</p>
+to <strong>∆F</strong>. We'll access the value as <code>`⍵1</code>.</p>
 <pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ `⍵1}°C or {&quot;F5.1&quot; $ F← 32+9×`⍵1÷5}°F&#39;
    T← 1 ∆F t
 
@@ -1617,11 +1622,11 @@ class="header-section-number">6.2</span> ∆F Option Details</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;"><br><center>Pos'l
+<th style="text-align: left;"><center>Pos'l
 Option<div style="width:150px"></div></center></th>
-<th style="text-align: center;">Keyword:
-<em>default</em><div style="width:120px"></th>
-<th style="text-align: left;"><br>Description</th>
+<th style="text-align: center;">Keyword Option<br><small>(<em>keyword:
+default</em>)<div style="width:175px"></small></th>
+<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
@@ -1727,7 +1732,9 @@ style="text-align: center;"><big><strong>Positional</strong></big></td>
 style="text-align: left;"> <big><code>(dfn: 0, debug: 0, box: 0, auto: 1, inline: 0)</code></big> </td>
 </tr>
 </tbody>
-</table></li>
+</table>
+  <div>Table 6c. <strong>∆F Default Options</strong></div>
+</li>
 <li><p><strong>Positional style options:</strong> If the left argument
 <code>⍺</code> is a simple integer vector or scalar, or an empty numeric
 vector <code>⍬</code>, the options are</p>
@@ -1949,7 +1956,7 @@ href="#self-documenting-code-fields-sdcfs">SDCFs</a> in
 </tr>
 </tbody>
 </table>
-<div>Table 6c. <strong>Code Field Shortcuts</strong></div>
+<div>Table 6d. <strong>Code Field Shortcuts</strong></div>
 
 <br>
 
@@ -2004,7 +2011,7 @@ in <strong>Code</strong> fields. </span></p>
 </tr>
 </tbody>
 </table>
-<div>Table 6d. <strong>Escape Sequences</strong></div>
+<div>Table 6e. <strong>Escape Sequences</strong></div>
 
 <p>Other instances of the backtick character in <strong>Text</strong>
 fields or <strong>Quoted strings</strong> in <strong>Code</strong>
@@ -2060,7 +2067,7 @@ style="text-align: left;"><code>∆F '{''or ''''this'''' one''}'</code></td>
 </tr>
 </tbody>
 </table>
-<div>Table 6e. <strong>Closing Quotes</strong></div>
+<div>Table 6f. <strong>Closing Quotes</strong></div>
 
 <p>Note that the opening quote <code>«</code> is treated as an ordinary
 character within the string. The clumsiness of the standard single quote
@@ -2208,7 +2215,7 @@ Filetypes of Source Files</h3>
 <td style="text-align: center;">✔</td>
 </tr>
 <tr>
-<td style="text-align: center;">dyalog,<br><em>other</em></td>
+<td style="text-align: center;">dyalog, <em>other</em></td>
 <td style="text-align: center;">Fixes object</td>
 <td style="text-align: center;">3, 4, 9</td>
 <td style="text-align: center;">⎕FIX</td>
@@ -2218,7 +2225,7 @@ NEVER</small></span></td>
 </tr>
 </tbody>
 </table>
-<div>Table 6f. <strong>Library Filetypes: Meaning</strong></div>
+<div>Table 6g. <strong>Library Filetypes: Meaning</strong></div>
 
 <h3 data-number="6.10.2" id="session-library-shortcut-parameters"><span
 class="header-section-number">6.10.2</span> Session Library Shortcut:
@@ -2234,9 +2241,9 @@ time, with a modest runtime performance impact— if the
 parameter is <em>disabled,</em> the runtime impact of the feature is
 more modest still; if <em>not</em> used, there is no runtime impact.</p>
 <p>To support the Session Library auto-load process, there are
-parameters, optionally tailored via an APL Array Notation parameter file
-<strong>. ∆F</strong> (in the current file directory). Parameters
-include:</p>
+parameters, which the user may <em>optionally</em> tailor via an APL
+Array Notation parameter file <strong>. ∆F</strong> placed in the
+current file directory. Parameters include:</p>
 <ul>
 <li><strong>auto:</strong> the ability to turn on or off any automatic
 loading of object definitions from the <em>dfns</em> workspace or
@@ -2251,9 +2258,9 @@ file name during the object search;</li>
 appear below.</span>filemodes that indicate the type of object and
 (potentially) any expected conversion;</li>
 </ul>
-<p>The parameter file <span class="margin-note">Additional doc­ument­ation
-is need­ed, should this go forward.</span> is briefly documented
-<em>below</em>.</p>
+<p>The built-in <em>(default)</em> parameter file
+<span class="margin-note">Additional doc­ument­ation is need­ed, should
+this go forward.</span> is documented <em>below</em>.</p>
 <details><summary class="summary">&ensp;<em>Show/Hide Default APLAN £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary><span class="margin-note">**APLAN:** *APL* Array Notation.</span>
 
 <pre class="apl"><code>(
@@ -2350,14 +2357,14 @@ option <em>returns</em> the code string, the
 code string.</p>
 <h3 data-number="7.1.2" id="f-helps-secret-variant"><span
 class="header-section-number">7.1.2</span> ∆F Help's Secret Variant</h3>
-<p><code>∆F 'help'</code> has a secret variant:
-<span class="margin-note"><em>Or</em>,
-<code>∆F 'help-n'</code>.</span><code>∆F 'help-narrow'</code>. With this
+<p><code>∆F⍨'help'</code> has a secret variant:
+<span class="margin-note"><em>Also:</em>
+<code>∆F⍨'help-n'</code>.</span><code>∆F⍨'help-narrow'</code>. With this
 variant, the help session will start up with a narrower screen
 <em>without</em> side notes. If the user widens the screen, the side
 notes will appear, as in the default case:
-<span class="margin-note"><em>Or</em>,
-<code>∆F 'help-wide'</code>.</span><code>∆F 'help'</code>.</p>
+<span class="margin-note"><em>Also:</em>
+<code>∆F⍨'help-wide'</code>.</span><code>∆F⍨'help'</code>.</p>
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
 f‑strings</h2>
@@ -2379,8 +2386,6 @@ October 19, 2025.]</em></p>
 </div>
 
 <p><em>See</em>
-<span class="margin-note"><a id="displayText" href="#overview">Return to
-Overview.</a></span>
 <a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.</p>
 </div>
 </div>
@@ -2407,7 +2412,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251104T094206]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251104T142509]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
