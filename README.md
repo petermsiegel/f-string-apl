@@ -1405,7 +1405,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T205434]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T220947]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
