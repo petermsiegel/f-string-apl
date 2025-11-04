@@ -1268,7 +1268,86 @@ of object definitions from the **dfns** workspace or files;
 The parameter file 
 is briefly documented *below*. 
 
-<details open><summary class="summary">&ensp;<em>Show/Hide Default APLAN £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***dfn*** option, `options[0]=1`. 
+<details open><summary class="summary">&ensp;<em>Show/Hide Default APLAN £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
+
+```apl
+(
+   ⍝ Default .∆F (APLAN) Parameter File                           
+   ⍝ Items not to be (re)set by user should be omitted/commented out.              
+   ⍝ Exceptions: 
+   ⍝ [1-2] auto and verbose can each be set to null to signal 
+   ⍝       that their value should come from the ∆Fapl globals LIB_AUTO or VERBOSE.
+   ⍝ [3]   prefix, which if null is the same as [''], i.e. 0-length string prefix.
+       
+   ⍝ ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
+   ⍝ Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
+   ⍝ The values are explained here:
+   ⍝   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
+   ⍝                  using the default or user-specified path.
+   ⍝   LIB_AUTO:  0   We don't want to use the LIB_AUTO feature.
+   ⍝   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related
+   ⍝                  and general.  The debug ∆F option will also display limited 
+   ⍝                  runtime msgs.
+   ⍝   VERBOSE:   0   Will only display error or important warning msgs.
+       
+   ⍝ auto:
+   ⍝   If 0, user must load own objects; nothing is automatic.                 
+   ⍝   If 1, dfns and files searched in sequence set by path (q.v.). 
+   ⍝   If ⎕NULL, inherit setting from the LIB_AUTO global 
+     auto:  ⎕NULL   
+       
+   ⍝ verbose: 
+   ⍝    If 0, be quiet;  if 1, be verbose.  
+   ⍝    If ⎕NULL, inherit setting from VERBOSE global. 
+     verbose: ⎕NULL
+                                                          
+   ⍝ path: The dirs and/or workspaces  to search.  
+   ⍝       For a directory, use character vectors
+   ⍝           ⊂'MyOnlyDir'      or    ('MyOnlyDir' ◇ )
+   ⍝           'Dir1' 'Dir2'     or    ('Dir1' ◇ 'Dir2')
+   ⍝       For a workspace, use a single enclosed char vec or a vector of char vectors 
+   ⍝       Examples of workspace specs:  
+   ⍝            ('dfns'◇)  ('MyDyalogLib/mathfns'◇)  ('dfns' ◇ 'mathfns')
+     path: ( './MyDyalogLib' ◇ ('dfns'◇) ◇ '.' )   
+                   
+   ⍝ prefix: vector of char vectors to prefix to each name, when searching directories.
+   ⍝         Ignored for workspaces.
+   ⍝         ⍬ is equiv. to (⊂'') or (''◇). 
+   ⍝         If the name presented is 'mydfn'
+   ⍝         The following 
+   ⍝              prefix: ('∆F_' ◇ 'MyLib/')
+   ⍝              suffix: ('aplf' ◇)  
+   ⍝         will match: 
+   ⍝             '∆F_mydfn.aplf' and 'MyLib/mydfn.aplf'   
+     prefix: ⍬ 
+                               
+   ⍝ suffix: at least one suffix is required. The '.' is prepended for you!  
+   ⍝         Ignored for workspaces.  
+   ⍝         By default,  the generic filetype 'dyalog' and user-defined filetypes
+   ⍝         are not enabled.   
+     suffix: ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt')    
+                   
+   ⍝  Internal Runtime (hidden) Parameters                                               
+     _readParmFi: 0                       ⍝ 0 (zero):  Haven't read .∆F yet. 1 afterwards.     
+     _fullPath:   ⍬                       ⍝ ⍬ (zilde): Generated from path and prefixes.  
+)  
+``` 
+
+</details>
+
+---
+
+</div> 
+</details> 
+
+# Appendices
+ 
+<details open><summary class="summary">&ensp;Show/Hide <em>Appendices</em></summary>
+
+## Appendix I: Un(der)documented Features 
+
+### ∆F Option for Dfn Source Code
+If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***dfn*** option, `options[0]=1`. 
 If ***debug*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option *returns* the code string, the ***debug*** option won't also *display* the code string. 
 
 ### ∆F Help's Secret Variant
@@ -1323,7 +1402,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T160638]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T164445]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
