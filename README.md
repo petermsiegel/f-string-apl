@@ -1223,11 +1223,7 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 
 1. If 
 an object `£.name` is referenced, but not yet defined in `£`, an attempt is made to copy it to `£` from workspace `dfns` and/or from  files **name.aplf** (for functions), **name.aplo** (for operators), *etc.* 
-in files in the (user-settable) search path,
-
-    &emsp;&emsp;**./** and **./MyDyalogLib/**, 
-
-&emsp;&emsp;*unless* it is being assigned (via `←`). It will be available for the duration of the session.
+in files in the (user-settable) search path, *unless* it is being assigned (via `←`). It will be available for the duration of the session.
 
 1. In the case of a simple assignment (`£.name←...`), the object assigned must be new or
 of a compatible *APL* class with its existing value, else a domain error will be signaled. 
@@ -1402,7 +1398,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T164445]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T185212]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
