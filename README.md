@@ -1381,31 +1381,25 @@ case: `∆F 'help'`.
 
 <!-- Put a set of navigation tools at a fixed position at the bottom of the Help screen
 -->
-<div class="doc-footer">
-⍠⍠⍠&emsp;
-<a href="#top">Top</a>
-&nbsp;&nbsp;&nbsp;
-<a href="#table-of-contents">Contents</a> 
-&nbsp;&nbsp;&nbsp;  
-<a href="#f-examples-a-primer">Examples</a>
-&nbsp;&nbsp;&nbsp; 
-<a href="#f-syntax-and-other-information">Syntax</a>
-&nbsp;&nbsp;&nbsp; 
-<a href="#appendices">Appendices</a>
-&nbsp;&nbsp;&nbsp; 
-<a href="#copyright">Bottom</a>
-&nbsp;&nbsp;&nbsp; 
+<div class="doc-footer" style="text-align: left;padding-left:50px;">
+<input type="button" value="Back" class="button happy-button" onclick="history.back()"/> 
 ⍠⍠⍠
-<!--  
-  ⍠⍠⍠ 
--->
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" class="button normal-button" value="Top" onclick="window.location='#top'"/>  
+<input type="button" class="button normal-button" value="Contents" onclick="window.location='#table-of-contents'"/>  
+<input type="button" class="button normal-button" value="Examples" onclick="window.location='#f-examples-a-primer'"/> 
+<input type="button" class="button normal-button" value="Syntax" onclick="window.location='#f-syntax-and-other-information'"/>  
+<input type="button" class="button normal-button" value="Appendices" onclick="window.location='#appendices'"/> 
+<input type="button" class="button normal-button" value="Bottom" onclick="window.location='#copyright'"/> 
+&nbsp;&nbsp;&nbsp;&nbsp;  
+⍠⍠⍠
 </div>
 
 ---
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T220947]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251104T093229]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
