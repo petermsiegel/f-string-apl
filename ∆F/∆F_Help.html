@@ -539,7 +539,7 @@ executable<span class="margin-note"><strong>Accessible:</strong>
 <em>e.g.</em> via <code>⎕PATH</code></span> from the current
 namespace.</li>
 <li>Call <code>∆F</code> with the desired argument(s) and <a
-href="#f-call-syntax-details">options</a>. <strong>∆F</strong> is
+href="#f-option-details">options</a>. <strong>∆F</strong> is
 <code>⎕IO</code>- and <code>⎕ML</code>-independent.</li>
 </ol>
 <hr />
@@ -1396,8 +1396,8 @@ the <em>dfns</em> library here. <em>See <a
 href="#code-field-shortcuts">Code Field Shortcuts</a> below.</em></span>
 the user references a name of the form <code>£.name</code> that has not
 (yet) been defined in the library, an attempt is made to copy that name
-into the library either from the <strong>dfns</strong> workspace or from
-a text file; if the name appears to the left-side of a
+into the library either from the <em><strong>dfns</strong></em>
+workspace or from a text file; if the name appears to the left-side of a
 <strong>simple</strong> assigment <code>←</code>, it is assumed to exist
 (as always).</p>
 <p><span style="font-size: 130%;">👉 </span> If <strong>∆F</strong> is
@@ -1813,8 +1813,8 @@ only <em>outside</em> <strong>Quoted strings</strong>.</p>
 <thead>
 <tr>
 <th
-style="text-align: left;">Shortcut<div style="width:100px"></div></th>
-<th style="text-align: left;">Name<div style="width:150px"></div></th>
+style="text-align: left;">Shortcut<div style="width:75px"></div></th>
+<th style="text-align: center;">Name<div style="width:150px"></div></th>
 <th style="text-align: left;">Meaning</th>
 </tr>
 </thead>
@@ -1822,20 +1822,20 @@ style="text-align: left;">Shortcut<div style="width:100px"></div></th>
 <tr>
 <td style="text-align: justify;"><strong>`A</strong>,
 <strong>%</strong></td>
-<td style="text-align: justify;">Above</td>
+<td style="text-align: center;">Above</td>
 <td style="text-align: justify;"><code>[⍺] % ⍵</code>. Centers array
 <code>⍺</code> above array <code>⍵</code>.<br>If omitted,
 <code>⍺←''</code>, <em>i.e.</em> a blank line.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`B</strong></td>
-<td style="text-align: justify;">Box</td>
+<td style="text-align: center;">Box</td>
 <td style="text-align: justify;"><code>`B ⍵</code>. Places <code>⍵</code>
 in a box. <code>⍵</code> is any array.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`C</strong></td>
-<td style="text-align: justify;">Commas</td>
+<td style="text-align: center;">Commas</td>
 <td style="text-align: justify;"><code>`C ⍵</code>. Adds commas to
 <code>⍵</code> after every 3rd digit of the integer part of
 <code>⍵</code>, right-to-left. <code>⍵</code> is a vector of num strings
@@ -1843,19 +1843,19 @@ or numbers.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`D</strong></td>
-<td style="text-align: justify;">Date-Time</td>
+<td style="text-align: center;">Date-Time</td>
 <td style="text-align: justify;">Synonym for <strong>`T</strong>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`F</strong>,
 <strong>$</strong></td>
-<td style="text-align: justify;">⎕FMT</td>
+<td style="text-align: center;">⎕FMT</td>
 <td style="text-align: justify;"><code>[⍺] $ ⍵</code>. Short for
 <code>[⍺] ⎕FMT ⍵</code>. (See APL doc­ument­ation).</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`J</strong></td>
-<td style="text-align: justify;">Justify</td>
+<td style="text-align: center;">Justify</td>
 <td style="text-align: justify;"><code>[⍺] `J ⍵</code>. Justify each row of
 object <code>⍵</code> as text:<br>  <em>left</em>: ⍺="L";
 <em>center</em>: ⍺="C"; <em>right</em> ⍺="R".<br>You may use
@@ -1867,7 +1867,7 @@ precision available.</em></small></td>
 <tr>
 <td style="text-align: justify;"><strong>`L</strong>,
 <strong>£</strong></td>
-<td style="text-align: justify;">Session
+<td style="text-align: center;">Session
 Library<br><span class="red"><small><strong>EXPERIMENTAL!</strong></small></span></td>
 <td style="text-align: justify;"><code>£</code>. <code>£</code> denotes a
 private library (namespace) local to the <strong>∆F</strong> runtime
@@ -1884,7 +1884,7 @@ Details</a> below.</em></small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`Q</strong></td>
-<td style="text-align: justify;">Quote</td>
+<td style="text-align: center;">Quote</td>
 <td style="text-align: justify;"><code>[⍺]`Q ⍵</code>. Recursively scans
 <code>⍵</code>, putting char. vectors, scalars, and rows of
 higher-dimensional strings in APL quotes, leaving other elements as is.
@@ -1892,7 +1892,7 @@ If omitted, <code>⍺←''''</code>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`T</strong></td>
-<td style="text-align: justify;">Date-Time</td>
+<td style="text-align: center;">Date-Time</td>
 <td style="text-align: justify;"><code>[⍺]`T ⍵</code>. Displays
 timestamp(s) <code>⍵</code> according to date-time template
 <code>⍺</code>. <code>⍵</code> is one or more APL timestamps
@@ -1902,7 +1902,7 @@ timestamp(s) <code>⍵</code> according to date-time template
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`W</strong></td>
-<td style="text-align: justify;">Wrap
+<td style="text-align: center;">Wrap
 <span class="red"><small><strong>EXPERIMENTAL!</strong></small></span></td>
 <td style="text-align: justify;"><code>[⍺]`W ⍵</code>. Wraps the rows of
 simple arrays in ⍵ in decorators <code>0⊃2⍴⍺</code> (on the left) and
@@ -1912,8 +1912,8 @@ simple arrays in ⍵ in decorators <code>0⊃2⍴⍺</code> (on the left) and
 <tr>
 <td style="text-align: justify;"><strong>`⍵𝑑𝑑</strong>,
 <strong>⍹𝑑𝑑</strong></td>
-<td style="text-align: justify;">Omega Shortcut
-(<small>EXPLICIT</small>)</td>
+<td style="text-align: center;">Omega
+Shortcut<br>(<small>EXPLICIT</small>)</td>
 <td style="text-align: justify;">A shortcut of the form <code>`⍵𝑑𝑑</code>
 (or <code>⍹𝑑𝑑</code>), to access the <code>𝑑𝑑</code><strong>th</strong>
 element of <code>⍵</code>, <em>i.e.</em> <code>(⍵⊃⍨ 𝑑𝑑+⎕IO)</code>.
@@ -1922,8 +1922,8 @@ element of <code>⍵</code>, <em>i.e.</em> <code>(⍵⊃⍨ 𝑑𝑑+⎕IO)</cod
 <tr>
 <td style="text-align: justify;"><strong>`⍵</strong>,
 <strong>⍹</strong></td>
-<td style="text-align: justify;">Omega Shortcut
-(<small>IMPLICIT</small>)</td>
+<td style="text-align: center;">Omega
+Shortcut<br>(<small>IMPLICIT</small>)</td>
 <td style="text-align: justify;">A shortcut of the form <code>`⍵</code> (or
 <code>⍹</code>), to access the <strong><em>next</em></strong> element of
 <code>⍵</code>. <small><em>See details below.</em> <small></td>
@@ -1931,7 +1931,7 @@ element of <code>⍵</code>, <em>i.e.</em> <code>(⍵⊃⍨ 𝑑𝑑+⎕IO)</cod
 <tr>
 <td style="text-align: justify;"><strong>→</strong><br><strong>↓</strong>
 <em>or</em> <strong>%</strong></td>
-<td style="text-align: justify;">Self-documenting <strong>Code</strong>
+<td style="text-align: center;">Self-documenting <strong>Code</strong>
 Fields <small>(SDCFs)</small></td>
 <td style="text-align: justify;"><code>→</code>/<code>↓</code> (synonym:
 <code>%</code>) signal that the source code for the
@@ -2157,56 +2157,57 @@ Filetypes of Source Files</h3>
 <td style="text-align: center;">Fixes function</td>
 <td style="text-align: center;">3</td>
 <td style="text-align: center;">⎕FIX</td>
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">no</td>
+<td style="text-align: center;">✔</td>
+<td style="text-align: center;">✔<small> FUTURE</small></td>
 </tr>
 <tr>
 <td style="text-align: center;">aplo</td>
 <td style="text-align: center;">Fixes operator</td>
 <td style="text-align: center;">4</td>
 <td style="text-align: center;">⎕FIX</td>
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">no</td>
+<td style="text-align: center;">✔</td>
+<td style="text-align: center;">✔<small> FUTURE</small></td>
 </tr>
 <tr>
 <td style="text-align: center;">apln</td>
 <td style="text-align: center;">Fixes namespace</td>
 <td style="text-align: center;">9</td>
 <td style="text-align: center;">⎕FIX</td>
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">no</td>
+<td style="text-align: center;">✔</td>
+<td style="text-align: center;">✔<small> FUTURE</small></td>
 </tr>
 <tr>
 <td style="text-align: center;">apla</td>
 <td style="text-align: center;">Assigns APLAN Array</td>
 <td style="text-align: center;">2, 9</td>
 <td style="text-align: center;"><em>assignment</em></td>
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">yes</td>
+<td style="text-align: center;">✔</td>
+<td style="text-align: center;">✔</td>
 </tr>
 <tr>
 <td style="text-align: center;">json</td>
 <td style="text-align: center;">Fixes namespace from JSON5</td>
 <td style="text-align: center;">9</td>
 <td style="text-align: center;">⎕JSON</td>
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">yes</td>
+<td style="text-align: center;">✔</td>
+<td style="text-align: center;">✔</td>
 </tr>
 <tr>
 <td style="text-align: center;">txt</td>
 <td style="text-align: center;">Assigns char. vectors</td>
 <td style="text-align: center;">2</td>
 <td style="text-align: center;"><em>assignment</em></td>
-<td style="text-align: center;">yes</td>
-<td style="text-align: center;">yes</td>
+<td style="text-align: center;">✔</td>
+<td style="text-align: center;">✔</td>
 </tr>
 <tr>
-<td style="text-align: center;"><em>other</em></td>
+<td style="text-align: center;">dyalog,<br><em>other</em></td>
 <td style="text-align: center;">Fixes object</td>
 <td style="text-align: center;">3, 4, 9</td>
 <td style="text-align: center;">⎕FIX</td>
-<td style="text-align: center;"><span class="red">no</span></td>
-<td style="text-align: center;">no</td>
+<td style="text-align: center;"><span class="red">✘</span></td>
+<td style="text-align: center;"><span class="red">✘<small>
+NEVER</small></span></td>
 </tr>
 </tbody>
 </table>
@@ -2225,15 +2226,23 @@ time, with a modest runtime performance impact— if the
 <strong>auto</strong> parameter is enabled. If the <strong>auto</strong>
 parameter is <em>disabled,</em> the runtime impact of the feature is
 more modest still; if <em>not</em> used, there is no runtime impact.</p>
-<p>There are parameters, optionally tailored via an APL Array Notation
-parameter file <strong>. ∆F</strong> (in the current file directory).
-Parameters include:</p>
+<p>To support the Session Library auto-load process, there are
+parameters, optionally tailored via an APL Array Notation parameter file
+<strong>. ∆F</strong> (in the current file directory). Parameters
+include:</p>
 <ul>
-<li><strong>auto</strong>: the ability to turn on or off any automatic
-loading of object definitions from the <strong>dfns</strong> workspace
-or files;</li>
-<li><strong>path</strong>: what directories to search for the object
-definitions; and so on.</li>
+<li><strong>auto:</strong> the ability to turn on or off any automatic
+loading of object definitions from the <em>dfns</em> workspace or
+files;</li>
+<li><strong>verbose:</strong> providing limited information on
+parameters, object loading, <em>etc.</em>;</li>
+<li><strong>path:</strong> what directories to search for the object
+definitions;</li>
+<li><strong>prefix:</strong> literal character vectors to prefix to each
+file name during the object search;</li>
+<li><strong>suffix:</strong> <span class="margin-note">More details
+appear below.</span>filemodes that indicate the type of object and
+(potentially) any expected conversion;</li>
 </ul>
 <p>The parameter file <span class="margin-note">Additional doc­ument­ation
 is need­ed, should this go forward.</span> is briefly documented
@@ -2266,39 +2275,43 @@ is need­ed, should this go forward.</span> is briefly documented
      auto:  ⎕NULL   
        
    ⍝ verbose: 
-   ⍝    If 0, be quiet;  if 1, be verbose.  
-   ⍝    If ⎕NULL, inherit setting from VERBOSE global. 
+   ⍝   If 0, be quiet;  if 1, be verbose.  
+   ⍝   If ⎕NULL, inherit setting from VERBOSE global. 
      verbose: ⎕NULL
                                                           
    ⍝ path: The dirs and/or workspaces  to search.  
-   ⍝       For a directory, use character vectors
-   ⍝           ⊂&#39;MyOnlyDir&#39;      or    (&#39;MyOnlyDir&#39; ◇ )
-   ⍝           &#39;Dir1&#39; &#39;Dir2&#39;     or    (&#39;Dir1&#39; ◇ &#39;Dir2&#39;)
-   ⍝       For a workspace, use a single enclosed char vec or a vector of char vectors 
-   ⍝       Examples of workspace specs:  
-   ⍝            (&#39;dfns&#39;◇)  (&#39;MyDyalogLib/mathfns&#39;◇)  (&#39;dfns&#39; ◇ &#39;mathfns&#39;)
+   ⍝   For a directory, use character vectors
+   ⍝       ⊂&#39;MyOnlyDir&#39;      or    (&#39;MyOnlyDir&#39; ◇ )
+   ⍝       &#39;Dir1&#39; &#39;Dir2&#39;     or    (&#39;Dir1&#39; ◇ &#39;Dir2&#39;)
+   ⍝   For a workspace, use a single enclosed char vec or a vector of char vectors 
+   ⍝   Examples of workspace specs:  
+   ⍝       (&#39;dfns&#39;◇)  (&#39;MyDyalogLib/mathfns&#39;◇)  (&#39;dfns&#39; ◇ &#39;mathfns&#39;)
      path: ( &#39;./MyDyalogLib&#39; ◇ (&#39;dfns&#39;◇) ◇ &#39;.&#39; )   
                    
-   ⍝ prefix: vector of char vectors to prefix to each name, when searching directories.
-   ⍝         Ignored for workspaces.
-   ⍝         ⍬ is equiv. to (⊂&#39;&#39;) or (&#39;&#39;◇). 
-   ⍝         If the name presented is &#39;mydfn&#39;
-   ⍝         The following 
-   ⍝              prefix: (&#39;∆F_&#39; ◇ &#39;MyLib/&#39;)
-   ⍝              suffix: (&#39;aplf&#39; ◇)  
-   ⍝         will match: 
-   ⍝             &#39;∆F_mydfn.aplf&#39; and &#39;MyLib/mydfn.aplf&#39;   
+   ⍝ prefix: vector of char vectors to prefix to each name, 
+   ⍝        when searching directories.   
+   ⍝   ⍬ is equiv. to (⊂&#39;&#39;) or (&#39;&#39;◇). 
+   ⍝   If the name presented is &#39;mydfn&#39;, then the following: 
+   ⍝       prefix: (&#39;∆F_&#39; ◇ &#39;MyLib/&#39;)
+   ⍝       suffix: (&#39;aplf&#39; ◇)  
+   ⍝   will match: 
+   ⍝       &#39;∆F_mydfn.aplf&#39; and &#39;MyLib/mydfn.aplf&#39; 
+   ⍝   Note: prefix is not applicable to workspaces.  
      prefix: ⍬ 
                                
-   ⍝ suffix: at least one suffix is required. The &#39;.&#39; is prepended for you!  
-   ⍝         Ignored for workspaces.  
-   ⍝         By default,  the generic filetype &#39;dyalog&#39; and user-defined filetypes
-   ⍝         are not enabled.   
+   ⍝ suffix: at least one suffix is required for file searches to match. 
+   ⍝   The &#39;.&#39; is prepended for you!  
+   ⍝   By default,  the generic filetype &#39;dyalog&#39; and user-defined filetypes
+   ⍝   are not enabled.
+   ⍝   Types not in this list: 
+   ⍝        (&#39;aplf&#39; ◇ &#39;aplo&#39; ◇ &#39;apln&#39; ◇ &#39;apla&#39; ◇ &#39;json&#39; ◇ &#39;txt&#39;)   
+   ⍝   are loaded using 2∘FIX, i.e. equivalent to files suffixed with &quot;dyalog&quot;.
+   ⍝   Ignored for workspaces.     
      suffix: (&#39;aplf&#39; ◇ &#39;aplo&#39; ◇ &#39;apln&#39; ◇ &#39;apla&#39; ◇ &#39;json&#39; ◇ &#39;txt&#39;)    
                    
-   ⍝  Internal Runtime (hidden) Parameters                                               
-     _readParmFi: 0                       ⍝ 0 (zero):  Haven&#39;t read .∆F yet. 1 afterwards.     
-     _fullPath:   ⍬                       ⍝ ⍬ (zilde): Generated from path and prefixes.  
+   ⍝  Internal runtime parameters, set internally (not user-settable)    
+     _readParmFi: 0                       ⍝ 0 (zero):  Has .∆F been read yet?     
+     _fullPath:   ⍬                       ⍝ ⍬ (zilde): For efficient searching.  
 )  </code></pre>
 </details>
 
@@ -2393,7 +2406,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T191815]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T205434]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
