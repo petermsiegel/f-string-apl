@@ -95,7 +95,7 @@ Now, **∆F** is available for use.
 ## Running **∆F** (After It's Been Installed)
 
 1. `]←load ∆F [-target=`<code>***anyNs***]</code> (see above), ensuring that **∆F** is executable from the current namespace.  
-2. Call `∆F` with the desired argument(s) and [options](#f-call-syntax-details). **∆F** is `⎕IO`- and `⎕ML`-independent. 
+2. Call `∆F` with the desired argument(s) and [options](#f-option-details). **∆F** is `⎕IO`- and `⎕ML`-independent.   
 
 ---
 
@@ -882,7 +882,7 @@ If
 the user references a name of the form 
 `£.name` that 
 has not (yet) been defined in the library, 
-an attempt is made to copy that name into the library either from the **dfns** workspace  or from a text file; if the name appears to the left-side of a **simple** assigment `←`, it is assumed to exist (as always).  
+an attempt is made to copy that name into the library either from the ***dfns*** workspace  or from a text file; if the name appears to the left-side of a **simple** assigment `←`, it is assumed to exist (as always).  
 
 <span style="font-size: 130%;">👉 </span>
 If **∆F** is unable to find the item during its search, a standard *APL* error will be signaled.
@@ -1128,8 +1128,8 @@ symbol, a ***single*** backtick will suffice.
 
 **Shortcuts** include:
 
-| Shortcut<div style="width:100px"></div> | Name<div style="width:150px"></div>      | Meaning |
-| :----- | :---------- | :----- |
+| Shortcut<div style="width:75px"></div> | Name<div style="width:150px"></div>      | Meaning |
+| :----- | :----------: | :----- |
 | **\`A**, **%** | Above | `[⍺] % ⍵`. Centers array `⍺` above array `⍵`.<br>If omitted, `⍺←''`, *i.e.* a blank line. |
 | **\`B** | Box | `` `B ⍵ ``. Places `⍵` in a box. `⍵` is any array. |
 | **\`C** | Commas | `` `C ⍵ ``. Adds commas to `⍵` after every 3rd digit of the integer part of `⍵`, right-to-left. `⍵` is a vector of num strings or numbers. |
@@ -1140,8 +1140,8 @@ symbol, a ***single*** backtick will suffice.
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>_See details below._</small> |
-| **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut (<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. <small>_See details below._</small>|
-| **\`⍵**, **⍹** | Omega Shortcut (<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. <small>_See details below._ <small>|
+| **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut<br>(<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. <small>_See details below._</small>|
+| **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. <small>_See details below._ <small>|
 | **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small>| `→`/`↓` (synonym: `%`) signal that the source code for the **Code** field appears before/above its value. Surrounding blanks are significant. <small>*See [SDCFs](#self-documenting-code-fields-sdcfs) in __Examples__ for details.*</small> |
 <div>Table 6c. <strong>Code Field Shortcuts</strong></div>
 
@@ -1236,13 +1236,13 @@ of a compatible *APL* class with its existing value, else a domain error will be
 
 | <br>Filetype |<br>Action| APL Class<br>⎕NC |Key APL<br>Service|Available<br>by Default?|Type <br>Enforced?|
 |:-----:|:---------:|:---:|:---:|:----:|:----:|
-| aplf | Fixes function| 3 | ⎕FIX | yes | no |
-| aplo | Fixes operator | 4 | ⎕FIX | yes | no |
-| apln | Fixes namespace | 9 | ⎕FIX | yes | no |
-| apla | Assigns APLAN Array| 2, 9 | *assignment* | yes| yes | 
-| json | Fixes  namespace from JSON5| 9 | ⎕JSON | yes | yes |  
-| txt  | Assigns char. vectors | 2 | *assignment* | yes | yes | 
-| *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">no</span> | no |
+| aplf | Fixes function| 3 | ⎕FIX | ✔ | ✔<small> FUTURE</small> |
+| aplo | Fixes operator | 4 | ⎕FIX | ✔ | ✔<small> FUTURE</small> |
+| apln | Fixes namespace | 9 | ⎕FIX | ✔ | ✔<small> FUTURE</small> |
+| apla | Assigns APLAN Array| 2, 9 | *assignment* |✔| ✔ | 
+| json | Fixes  namespace from JSON5| 9 | ⎕JSON | ✔ | ✔ |  
+| txt  | Assigns char. vectors | 2 | *assignment* | ✔ | ✔ | 
+| dyalog,<br>*other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">✘</span> | <span class="red">✘<small> NEVER</small></span> |
 <div>Table 6f. <strong>Library Filetypes: Meaning</strong></div>
 
 ### Session Library Shortcut: Parameters 
@@ -1255,11 +1255,14 @@ performance impact&mdash;
 if the **auto** parameter is enabled.
 If the **auto** parameter is *disabled,* the runtime impact of the feature is more modest still; if *not* used, there is no runtime impact.
 
-There are parameters, optionally tailored via an APL Array Notation parameter file **.&ThinSpace;∆F** (in the current file directory).  Parameters include: 
+To support the Session Library auto-load process, there are parameters, optionally tailored via an APL Array Notation parameter file **.&ThinSpace;∆F** (in the current file directory).  Parameters include: 
 
--  **auto**: the ability to turn on or off any automatic loading
-of object definitions from the **dfns** workspace or files; 
--  **path**: what directories to search for the object definitions; and so on.
+-  **auto:** the ability to turn on or off any automatic loading
+of object definitions from the *dfns* workspace or files; 
+-  **verbose:** providing limited information on parameters, object loading, *etc.*;
+-  **path:** what directories to search for the object definitions; 
+-  **prefix:** literal character vectors to prefix to each file name during the object search;
+-  **suffix:** filemodes that indicate the type of object and (potentially) any expected conversion;
 
 The parameter file 
 is briefly documented *below*. 
@@ -1293,39 +1296,43 @@ is briefly documented *below*.
      auto:  ⎕NULL   
        
    ⍝ verbose: 
-   ⍝    If 0, be quiet;  if 1, be verbose.  
-   ⍝    If ⎕NULL, inherit setting from VERBOSE global. 
+   ⍝   If 0, be quiet;  if 1, be verbose.  
+   ⍝   If ⎕NULL, inherit setting from VERBOSE global. 
      verbose: ⎕NULL
                                                           
    ⍝ path: The dirs and/or workspaces  to search.  
-   ⍝       For a directory, use character vectors
-   ⍝           ⊂'MyOnlyDir'      or    ('MyOnlyDir' ◇ )
-   ⍝           'Dir1' 'Dir2'     or    ('Dir1' ◇ 'Dir2')
-   ⍝       For a workspace, use a single enclosed char vec or a vector of char vectors 
-   ⍝       Examples of workspace specs:  
-   ⍝            ('dfns'◇)  ('MyDyalogLib/mathfns'◇)  ('dfns' ◇ 'mathfns')
+   ⍝   For a directory, use character vectors
+   ⍝       ⊂'MyOnlyDir'      or    ('MyOnlyDir' ◇ )
+   ⍝       'Dir1' 'Dir2'     or    ('Dir1' ◇ 'Dir2')
+   ⍝   For a workspace, use a single enclosed char vec or a vector of char vectors 
+   ⍝   Examples of workspace specs:  
+   ⍝       ('dfns'◇)  ('MyDyalogLib/mathfns'◇)  ('dfns' ◇ 'mathfns')
      path: ( './MyDyalogLib' ◇ ('dfns'◇) ◇ '.' )   
                    
-   ⍝ prefix: vector of char vectors to prefix to each name, when searching directories.
-   ⍝         Ignored for workspaces.
-   ⍝         ⍬ is equiv. to (⊂'') or (''◇). 
-   ⍝         If the name presented is 'mydfn'
-   ⍝         The following 
-   ⍝              prefix: ('∆F_' ◇ 'MyLib/')
-   ⍝              suffix: ('aplf' ◇)  
-   ⍝         will match: 
-   ⍝             '∆F_mydfn.aplf' and 'MyLib/mydfn.aplf'   
+   ⍝ prefix: vector of char vectors to prefix to each name, 
+   ⍝        when searching directories.   
+   ⍝   ⍬ is equiv. to (⊂'') or (''◇). 
+   ⍝   If the name presented is 'mydfn', then the following: 
+   ⍝       prefix: ('∆F_' ◇ 'MyLib/')
+   ⍝       suffix: ('aplf' ◇)  
+   ⍝   will match: 
+   ⍝       '∆F_mydfn.aplf' and 'MyLib/mydfn.aplf' 
+   ⍝   Note: prefix is not applicable to workspaces.  
      prefix: ⍬ 
                                
-   ⍝ suffix: at least one suffix is required. The '.' is prepended for you!  
-   ⍝         Ignored for workspaces.  
-   ⍝         By default,  the generic filetype 'dyalog' and user-defined filetypes
-   ⍝         are not enabled.   
+   ⍝ suffix: at least one suffix is required for file searches to match. 
+   ⍝   The '.' is prepended for you!  
+   ⍝   By default,  the generic filetype 'dyalog' and user-defined filetypes
+   ⍝   are not enabled.
+   ⍝   Types not in this list: 
+   ⍝        ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt')   
+   ⍝   are loaded using 2∘FIX, i.e. equivalent to files suffixed with "dyalog".
+   ⍝   Ignored for workspaces.     
      suffix: ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt')    
                    
-   ⍝  Internal Runtime (hidden) Parameters                                               
-     _readParmFi: 0                       ⍝ 0 (zero):  Haven't read .∆F yet. 1 afterwards.     
-     _fullPath:   ⍬                       ⍝ ⍬ (zilde): Generated from path and prefixes.  
+   ⍝  Internal runtime parameters, set internally (not user-settable)    
+     _readParmFi: 0                       ⍝ 0 (zero):  Has .∆F been read yet?     
+     _fullPath:   ⍬                       ⍝ ⍬ (zilde): For efficient searching.  
 )  
 ``` 
 
@@ -1398,7 +1405,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T191815]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T205434]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
