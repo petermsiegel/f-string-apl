@@ -90,12 +90,12 @@ ensuring they are peers.
       2. **∆F** *may* be relocated; it will refer to **⍙Fapl** in its original location.
    2. If **∆F_Help.html** is available at `]load` time, it will be copied into **⍙Fapl** (or a message will note its absence).
 
-Now, **∆F** is available for use.
+  <span style="font-size: 130%;">👉 </span>Now, **∆F** is available for use.
 
 ## Running **∆F** (After It's Been Installed)
 
 1. `]←load ∆F [-target=`<code>***anyNs***]</code> (see above), ensuring that **∆F** is executable from the current namespace.  
-2. Call `∆F` with the desired argument(s) and [options](#f-option-details). **∆F** is `⎕IO`- and `⎕ML`-independent.   
+2. Call `∆F` with the desired [arguments](#f-call-syntax-overview) and [options](#f-option-details). **∆F** is `⎕IO`- and `⎕ML`-independent.   
 
 ---
 
@@ -395,7 +395,7 @@ Try this expression on your own:
    0 0 1 ∆F 'abc{}def{}{}ghi{""}jkl{ }mno'
 ```
 
-<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek (I tried)</summary>
 
 
 ```
@@ -441,7 +441,7 @@ The expression `` `⍵0 `` always refers to the *f‑string* itself. Try this yo
    ∆F 'Our string {bL, `⍵0, bR} has {≢`⍵0} characters.'
 ```
 
-<details id="pPeek"><summary class="summary">&ensp;Peek</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek (I tried)</summary>
 
 ```
    bL bR← '«»'                     ⍝ ⎕UCS 171 187
@@ -895,10 +895,14 @@ In this next example, we use *for the first time* the function `pco` from the
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
 ```
 
-<details id="pPeek"><summary class="summary">Peek: Using the <em><bold>debug</bold></em> (debug) option</summary>
+<details id="pPeek"><summary class="summary">&ensp;Peek: Using the <em><strong>debug</strong></em> option</summary>
 
-> First use of a *dfns* function, using **∆F**'s ***debug*** option:
-> 
+> To understand when an object is automatically copied into a £ibrary,
+> or to see where it's copied from, 
+> use **∆F**'s ***debug*** option:
+
+
+
 ``` 
     0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }' 
 DEBUG: Copied "pco" into £=[⎕SE.⍙Fapl.ûLib] from "ws:dfns"
@@ -947,8 +951,7 @@ The default returned from **∆F** is always (on success) a character matrix. Th
 
     (a) 0 ∆F… 
 
-
-However, if the initial [∆F Option](#f-call-syntax-details),&ensp;***dfn***, is `1`, as in *(b),*
+However, if the initial [∆F Option](#f-option-details),&ensp;***dfn***, is `1`, as in *(b),*
 
     (b) 1 ∆F… 
     
@@ -972,7 +975,7 @@ Now, let's proceed. Here's our **∆F** String `t`:
    t←'The temperature is {"I2" $ cv}°C or {"F5.1" $ F← 32+9×cv÷5}°F'
 ``` 
 
-<details id="pPeek"><summary class="summary">Evaluate <code>∆F t</code>...</summary>
+<details id="pPeek"><summary class="summary">&ensp;Evaluate <code>∆F t</code></summary>
 
 ```
    ∆F t 
@@ -989,7 +992,7 @@ Let's precompute a dfn `T`, given the string `t`.&ensp;`T` has everything needed
    T← 1 ∆F t
 ``` 
 
-<details id="pPeek"><summary class="summary">Evaluate <code>T ⍬</code>...</summary>
+<details id="pPeek"><summary class="summary">&ensp;Evaluate <code>T ⍬</code></summary>
 
 ```
    T ⍬
@@ -1017,7 +1020,7 @@ discussed above.
 
 Let's share the Centigrade values `cv` from our current example,
 not as a *variable*, but as the *first argument* to **∆F**. 
-We'll access the value as `` `⍵1` ``.
+We'll access the value as `` `⍵1 ``.
 
 ```
    t←'The temperature is {"I2" $ `⍵1}°C or {"F5.1" $ F← 32+9×`⍵1÷5}°F'
@@ -1068,7 +1071,7 @@ Below, we summarize key information you've already gleaned from the examples.
 
 ## ∆F Option Details
 
-|<br><center>Pos'l Option<div style="width:150px"></div></center>|Keyword: *default*<div style="width:120px"> |<br>Description |
+|<center>Pos'l Option<div style="width:150px"></div></center>|Keyword Option<br><small>(*keyword: default*)<div style="width:175px"></small>|Description |
 | :----- | :----: | :---------- |
 | &emsp;***options[0]***:<br>&emsp;&emsp;*output mode*|***dfn:&nbsp;0***| If ***dfn:&nbsp;1***, **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If ***dfn:&nbsp;0*** (default): **∆F** returns a char. matrix. |
 | &emsp;***options[1]:***<br>&emsp;&emsp;*debug mode*|***debug:&nbsp;0***| If ***debug:&nbsp;1***, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if ***dfn*** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br>If ***debug:&nbsp;0*** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed.      |
@@ -1085,6 +1088,7 @@ Below, we summarize key information you've already gleaned from the examples.
     | :---: | :--- |
     | <big>**Positional**</big>|&emsp;<big>`0 0 0 1 0`</big>&emsp;|
     | <big>**Keyword**</big>|&emsp;<big>`(dfn: 0, debug: 0, box: 0, auto: 1, inline: 0)`</big>&emsp;|
+    <div>Table 6c. <strong>∆F Default Options</strong></div>
 
 - **Positional style options:** If the left argument `⍺` is a simple integer vector or scalar, or an empty numeric vector `⍬`, the options are 
   
@@ -1143,7 +1147,7 @@ symbol, a ***single*** backtick will suffice.
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut<br>(<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. <small>_See details below._</small>|
 | **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. <small>_See details below._ <small>|
 | **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small>| `→`/`↓` (synonym: `%`) signal that the source code for the **Code** field appears before/above its value. Surrounding blanks are significant. <small>*See [SDCFs](#self-documenting-code-fields-sdcfs) in __Examples__ for details.*</small> |
-<div>Table 6c. <strong>Code Field Shortcuts</strong></div>
+<div>Table 6d. <strong>Code Field Shortcuts</strong></div>
 
 <br>
 
@@ -1162,7 +1166,7 @@ Some sequences are valid in **Text** fields *only*, but not in Quoted strings:
 |    **\`\`**     |        `        |  backtick   | Both|
 |     **\`{**     |        {        | left brace  | Text fields only |
 |     **\`}**     |        }        | right brace | Text fields only |
-<div>Table 6d. <strong>Escape Sequences</strong></div>
+<div>Table 6e. <strong>Escape Sequences</strong></div>
 
 
 Other instances of the backtick character in **Text** fields or **Quoted strings** in **Code** fields will be treated literally, _i.e._
@@ -1190,7 +1194,7 @@ You may *not* use an escape sequence (e.g. `` `" ``) for this purpose.
 | `"` | `∆F '{"like ""this"" example"}'`| `like "this" example` |
 |  `»` |   `∆F '{«or «this»» one»}'` | `or «this» one`|
 |  `'` |     `∆F '{''or ''''this'''' one''}'` | `or 'this' one`|
-<div>Table 6e. <strong>Closing Quotes</strong></div>
+<div>Table 6f. <strong>Closing Quotes</strong></div>
 
 
 Note that the opening quote ` « ` is treated as an ordinary character within the string. The clumsiness of the standard single quote ` ' ` examples is due to the fact that the single quote is the required delimiter for the outermost (APL-level) string. 
@@ -1242,8 +1246,8 @@ of a compatible *APL* class with its existing value, else a domain error will be
 | apla | Assigns APLAN Array| 2, 9 | *assignment* |✔| ✔ | 
 | json | Fixes  namespace from JSON5| 9 | ⎕JSON | ✔ | ✔ |  
 | txt  | Assigns char. vectors | 2 | *assignment* | ✔ | ✔ | 
-| dyalog,<br>*other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">✘</span> | <span class="red">✘<small> NEVER</small></span> |
-<div>Table 6f. <strong>Library Filetypes: Meaning</strong></div>
+| dyalog, *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">✘</span> | <span class="red">✘<small> NEVER</small></span> |
+<div>Table 6g. <strong>Library Filetypes: Meaning</strong></div>
 
 ### Session Library Shortcut: Parameters 
 
@@ -1255,7 +1259,7 @@ performance impact&mdash;
 if the **auto** parameter is enabled.
 If the **auto** parameter is *disabled,* the runtime impact of the feature is more modest still; if *not* used, there is no runtime impact.
 
-To support the Session Library auto-load process, there are parameters, optionally tailored via an APL Array Notation parameter file **.&ThinSpace;∆F** (in the current file directory).  Parameters include: 
+To support the Session Library auto-load process, there are parameters, which the user may *optionally* tailor via an APL Array Notation parameter file **.&ThinSpace;∆F** placed in the current file directory.  Parameters include: 
 
 -  **auto:** the ability to turn on or off any automatic loading
 of object definitions from the *dfns* workspace or files; 
@@ -1264,8 +1268,8 @@ of object definitions from the *dfns* workspace or files;
 -  **prefix:** literal character vectors to prefix to each file name during the object search;
 -  **suffix:** filemodes that indicate the type of object and (potentially) any expected conversion;
 
-The parameter file 
-is briefly documented *below*. 
+The built-in *(default)* parameter file 
+is documented *below*. 
 
 <details open><summary class="summary">&ensp;<em>Show/Hide Default APLAN £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
 
@@ -1354,12 +1358,11 @@ If `options[0]` is `¯1`, then **∆F** returns a character vector that contains
 If ***debug*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option *returns* the code string, the ***debug*** option won't also *display* the code string. 
 
 ### ∆F Help's Secret Variant
-`∆F 'help'` has a secret variant: `∆F 'help-narrow'`. 
+`∆F⍨'help'` has a secret variant: `∆F⍨'help-narrow'`. 
 With this variant, the help
 session will start up with a narrower screen *without* side notes. If the user widens the
 screen, the side notes will appear, as in the default 
-case: `∆F 'help'`.
-
+case: `∆F⍨'help'`.
 
 ## Appendix II: Python f‑strings
 
@@ -1370,7 +1373,6 @@ case: `∆F 'help'`.
 </div>
 
 *See* 
-
 <a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https:\//docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.
 
 </div>
@@ -1399,7 +1401,7 @@ case: `∆F 'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251104T094206]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251104T142509]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
