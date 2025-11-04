@@ -1,4 +1,5 @@
 :Namespace libUtil 
+⍝ Updated: 20251103T215632
 ⍝ libUtil (namespace): Handles £ and `L shortcuts. 
 ⍝ ∘ SetParmDefaults show the default options in APLAN format.  
 ⍝ ∘ The options may be tailored via a APLAN file in .∆F.
