@@ -151,7 +151,7 @@
        ⍝   ⍝        'MyDyalogLib'
        ⍝   ⍝    For workspaces, the item must be a vector of one or more char vectors
        ⍝   ⍝        (⊂'dfns') or (⊂'MyDyalogLib/mathfns') or ('dfns', 'myDfns')
-       ⍝     path:  '.'  './MyDyalogLib'  (⊂'dfns')  
+       ⍝     path:  ( '.'  ⋄ './MyDyalogLib' ⋄ ('dfns'⋄))  
        ⍝                   
        ⍝   ⍝ prefix: literal string to prefix to each name, when searching directories.
        ⍝   ⍝     Ignored for workspaces.
