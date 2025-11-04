@@ -2227,7 +2227,7 @@ time, with a modest runtime performance impact— if the
 <strong>auto</strong> parameter is enabled. If the <strong>auto</strong>
 parameter is <em>disabled,</em> the runtime impact of the feature is
 more modest still; if <em>not</em> used, there is no runtime impact.</p>
-<p>There are parameters, optionally tailored via a <em>JSON</em>
+<p>There are parameters, optionally tailored via an APL Array Notation
 parameter file <strong>. ∆F</strong> (in the current file directory).
 Parameters include:</p>
 <ul>
@@ -2240,61 +2240,64 @@ definitions; and so on.</li>
 <p>The parameter file <span class="margin-note">Additional doc­ument­ation
 is need­ed, should this go forward.</span> is briefly documented
 <em>below</em>.</p>
-<details><summary class="summary">&ensp;<em>Show/Hide Default JSON £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
+<details><summary class="summary">&ensp;<em>Show/Hide Default APLAN £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary><span class="margin-note">**APLAN:** *APL* Array Notation.
 
-<pre class="json5"><code>{
-  // Default .∆F (JSON5) Parameter File                           
-  // Items not to be (re)set by user should be omitted/commented out.              
-  // Exceptions: 
-  // [1-2] auto and verbose can each be set to null to signal 
-  //       that their value should come from the ∆Fapl globals LIB_AUTO or VERBOSE.
-  // [3]   prefix, which if null is the same as [&quot;&quot;], i.e. 0-length string prefix.
+<pre class="apl"><code>(
+   ⍝ Default .∆F (APLAN) Parameter File                           
+   ⍝ Items not to be (re)set by user should be omitted/commented out.              
+   ⍝ Exceptions: 
+   ⍝ [1-2] auto and verbose can each be set to null to signal 
+   ⍝       that their value should come from the ∆Fapl globals LIB_AUTO or VERBOSE.
+   ⍝ [3]   prefix, which if null is the same as [&#39;&#39;], i.e. 0-length string prefix.
        
-  // ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
-  // Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
-  // The values are explained here:
-  //   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
-  //                  using the default or user-specified path.
-  //   LIB_AUTO:  0   We don&#39;t want to use the LIB_AUTO feature.
-  //   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related and general.
-  //                  The debug ∆F option will also display limited runtime msgs.
-  //   VERBOSE:   0   Will only display error or important warning msgs.
+   ⍝ ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
+   ⍝ Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
+   ⍝ The values are explained here:
+   ⍝   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
+   ⍝                  using the default or user-specified path.
+   ⍝   LIB_AUTO:  0   We don&#39;t want to use the LIB_AUTO feature.
+   ⍝   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related and general.
+   ⍝                  The debug ∆F option will also display limited runtime msgs.
+   ⍝   VERBOSE:   0   Will only display error or important warning msgs.
        
-  // auto:
-  //   If 0, user must load own objects; nothing is automatic.                 
-  //   If 1, dfns and files searched in sequence set by path (q.v.). 
-  //   If null, the value is set from LIB_AUTO global 
-     auto:  null,   
+   ⍝ auto:
+   ⍝   If 0, user must load own objects; nothing is automatic.                 
+   ⍝   If 1, dfns and files searched in sequence set by path (q.v.). 
+   ⍝   If null, the value is set from the LIB_AUTO global 
+     auto:  ⎕NULL   
        
-  // verbose: 
-  //    If 0 (quiet), if 1 (verbose).  
-  //    If null, value is set from VERBOSE global. 
-     verbose: null,  
+   ⍝ verbose: 
+   ⍝    If 0 (quiet), if 1 (verbose).  
+   ⍝    If null, value is set from the VERBOSE global. 
+     verbose: ⎕NULL
                                                           
-  // path: The dirs and/or workspaces  to search.  
-  //       For a directory, use a string:  
-  //           &quot;MyDyalogLib&quot;
-  //       For a workspace, use a single string in a list:  
-  //           [&quot;dfns&quot;] or [&quot;MyDyalogLib/mathfns&quot;]
-     path: [ &quot;.&quot;, &quot;./MyDyalogLib&quot;, [&quot;dfns&quot;], ],  
+   ⍝ path: The dirs and/or workspaces  to search.  
+   ⍝       For a directory, use a string:  
+   ⍝           &#39;MyDyalogLib&#39;
+   ⍝       For a workspace, use a single enclosed char vec or a vector of char vectors 
+   ⍝           (⊂&#39;dfns&#39;) or (⊂&#39;MyDyalogLib/mathfns&#39;) or (&#39;dfns&#39; &#39;mathfns&#39;)
+     path: &#39;.&#39;  &#39;./MyDyalogLib&#39;  (⊂&#39;dfns&#39;)   
                    
-  // prefix: literal string to prefix to each name, when searching directories.
-  //         Ignored for workspaces.
-  //         [] is equiv. to [&quot;&quot;]. 
-  //         Example given name &quot;mydfn&quot; and {prefix: [&quot;∆F_&quot;, &quot;MyLib/&quot;], suffix: [&quot;aplf&quot;]}  
-  //         ==&gt; [&quot;∆F_mydfn.aplf&quot;, &quot;MyLib/mydfn.aplf&quot;]   
-     prefix: [], 
+   ⍝ prefix: literal string to prefix to each name, when searching directories.
+   ⍝         Ignored for workspaces.
+   ⍝         ⍬ is equiv. to (⊂&#39;&#39;). 
+   ⍝         Example given 
+   ⍝              name:  &#39;mydfn&#39; 
+   ⍝              prefix: &#39;∆F_&#39;  &#39;MyLib/&#39;
+   ⍝              suffix: ⊂&#39;aplf&#39;  
+   ⍝         ==&gt; [&#39;∆F_mydfn.aplf&#39;, &#39;MyLib/mydfn.aplf&#39;]   
+     prefix: ⍬ 
                                
-  // suffix: at least one suffix is required. The &quot;.&quot; is prepended for you!  
-  //         Ignored for workspaces.  
-  //         By default,  the generic filetype &quot;dyalog&quot; and user-defined filetypes
-  //         are not enabled.   
-     suffix: [&quot;aplf&quot;, &quot;aplo&quot;, &quot;apln&quot;, &quot;apla&quot;, &quot;json&quot;, &quot;txt&quot;],     
+   ⍝ suffix: at least one suffix is required. The &#39;.&#39; is prepended for you!  
+   ⍝         Ignored for workspaces.  
+   ⍝         By default,  the generic filetype &#39;dyalog&#39; and user-defined filetypes
+   ⍝         are not enabled.   
+     suffix: &#39;aplf&#39;, &#39;aplo&#39;, &#39;apln&#39;, &#39;apla&#39;, &#39;json&#39;, &#39;txt&#39;    
                    
-  //  Internal Runtime (hidden) Parameters                                               
-     _readParmFi: 0,                     // 0: Haven&#39;t read .∆F yet. 1 afterwards.     
-     _fullPath:   [],                    // Generated from path and prefixes.                                                                              
-}  </code></pre>
+   ⍝  Internal Runtime (hidden) Parameters                                               
+     _readParmFi: 0                       ⍝ 0 (zero):  Haven&#39;t read .∆F yet. 1 afterwards.     
+     _fullPath:   ⍬                       ⍝ ⍬ (zilde): Generated from path and prefixes.  
+)  </code></pre>
 </details>
 
 <hr />
@@ -2388,7 +2391,7 @@ Overview.</a></span>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T151336]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251103T160638]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
