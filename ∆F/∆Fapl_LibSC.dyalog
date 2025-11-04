@@ -40,7 +40,9 @@
 
     ⍝ FixFromWS: Search for name ⍺ in ws ⍵. On success, 1 'ws:⍵'; on failure, 0 ⍬
       FixFromWS← { 11:: NOTFND ⍬ ⋄ OK ('ws:',⍵)⊣ ⍺ ulNs.⎕CY ⍵ }
-    ⍝ ∆FI: Search a list of full filenames ⍵ ending in simple name ⍺ (before suffixes).
+
+    ⍝ SubScanFiles: 
+    ⍝   Search a list of full filenames ⍵ ending in simple name ⍺ (before suffixes).
     ⍝      If a) it finds a file with name ⍵, 
     ⍝         b) the ⎕FIX succeeds, and
     ⍝         c) the name ⍺ is among the names returned in the ⎕FIX, 
@@ -51,6 +53,7 @@
         ~⎕NEXISTS fi: ⍺ ∇ 1↓⍵ 
         ERR≠ rc← nm FixByType fi: rc ('file:',fi) ⋄ ERR ⍬ 
       }
+
     ⍝ FixByType:  nm ∇ fi.  Fix based on the suffix (filetype) of ⍵
       FixByType← { nm fi←⍺ ⍵   
       ⍝ ∘ The nameclass distinctions are currently NOT enforced for
@@ -65,17 +68,19 @@
       ⍝ When ⎕FIX is applied to ¨fi¨, ¨nm¨ must be among the names listed as ⎕FIXed. 
             ERR OK⊃⍨ (⊂nm)∊ 2 ulNs.⎕FIX fi            
       }
-    ⍝ ScanPath recursively for name ⍵ in each file or wsid spec of parms._fullPath 
+
+    ⍝ ScanPath: Recursively scan the path for name ⍵ in each file or wsid 
+    ⍝   spec in parms._fullPath 
     ⍝     OK@B where@S← nm@S ∇ path@NsV    
-    ⍝ If we see a array (with a single string), it's a workspace: 
+    ⍝   If we see a array (with a single string), it's a workspace: 
     ⍝     call and return result from FixFromWS nm  (⊃spec). 
-    ⍝ Otherwise, 
+    ⍝   Otherwise, 
     ⍝     call and return result from ∆FI nm spec sfx.
       ScanPath← {  
         0= ≢ ⍵: NOTFND ⍬ ⋄ nm path← ⍺ ⍵ ⋄ cur← ⊃path
-      ⍝ If cur is a vector of (0 or more) char vectors, each is assumed to be a workspace id.
-      ⍝ When done, having returned NOTFND, recursively continue ScanPath.
-      ⍝ Otherwise (OK or ERR), return from ScanPath.
+        ⍝ If cur is a vector of (0 or more) char vectors, each is assumed to be a workspace id.
+        ⍝ When done, having returned NOTFND, recursively continue ScanPath.
+        ⍝ Otherwise (OK or ERR), return from ScanPath.
           SubScanWS← ∇ {  
             0=≢⍵: nm ⍺⍺ 1↓path ⋄ NOTFND≠⊃ret← nm FixFromWS ⊃⍵: ret ⋄ ∇ 1↓⍵ 
           }
