@@ -1057,6 +1057,8 @@ Below, we summarize key information you've already gleaned from the examples.
 
 ## ∆F Call Syntax Overview
 
+  
+
 | Call Syntax<div style="width:290px"></div> | Description |
 | :----- | :---------- |
 | **∆F**&ensp;***f‑string*** | Display an _f‑string_; use the _default_ options. The string may reference objects in the environment or in the string itself. Returns a character matrix. |
@@ -1095,7 +1097,7 @@ Below, we summarize key information you've already gleaned from the examples.
       5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺ 
     Trailing elements are ignored.
 - **Keyword style options:** If the left argument is a namespace,
-it is assumed to contain the options in (APL Array Notation) keyword form,<br>&emsp;&emsp;e.g. `(debug: 1 ◇ auto: 0)`;  
+it is assumed to contain the options by name with their values,<br>&emsp;&emsp;e.g. `(debug: 1 ◇ auto: 0)`;  
     Keyword options are new for Dyalog 20. They are sometimes clearer and more convenient than positional keywords.
 - **Help option:** If the left argument `⍺` starts with `'help'` (case ignored), this help information is displayed. In this case only, the right argument to **∆F** is ignored.
 - Otherwise, an error is signaled.
@@ -1140,7 +1142,7 @@ symbol, a ***single*** backtick will suffice.
 | **\`D** | Date-Time | Synonym for **\`T**. |
 | **\`F**, **$** | ⎕FMT | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL doc&shy;ument&shy;ation). |
 | **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>*Displays numbers with the maximum precision available.*</small> |
-| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. <small>Outside of simple assignments, **∆F** will attempt to copy undefined objects from workspace `dfns` or from directory **./MyDyalogLib** (with file extensions **.aplf**, **.aplo**, **.apla**, *etc.*). *See [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
+| **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. Outside of simple assignments, **∆F** will attempt to copy undefined objects from, *in order:*<br><small>&emsp;<small>directory</small> ***"./MyDyalogLib/"***,&nbsp;<small>*APL* ws</small> ***"dfns"***, or&nbsp;<small>directory</small> **"./"**.</small><br><small>*For filetypes, see [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>_See details below._</small> |
@@ -1210,6 +1212,7 @@ Note that the opening quote ` « ` is treated as an ordinary character within th
 6.  The _f‑string_ itself (the 0-th element of **⍵**) is always accessed as `` `⍵0 `` or `⍹0`. The omega with _implicit index_ always increments its index _before_ use, *i.e.*  starting by default with `` `⍵1 `` or `⍹1`.
 7.  If an element of the dfn's right argument **⍵** is accessed at runtime via any means, shortcut or traditional, that element **_must_** exist.
 
+<details id="pPeek"><summary class="summary">&ensp;View Details on Experimental Features</summary>
 <div class="test-feature">
 
 
@@ -1242,9 +1245,9 @@ of a compatible *APL* class with its existing value, else a domain error will be
 |:-----:|:---------:|:---:|:---:|:----:|:----:|
 | aplf | Fixes function| 3 | ⎕FIX | ✔ | ✔<small> FUTURE</small> |
 | aplo | Fixes operator | 4 | ⎕FIX | ✔ | ✔<small> FUTURE</small> |
-| apln | Fixes namespace | 9 | ⎕FIX | ✔ | ✔<small> FUTURE</small> |
-| apla | Assigns APLAN Array| 2, 9 | *assignment* |✔| ✔ | 
-| json | Fixes  namespace from JSON5| 9 | ⎕JSON | ✔ | ✔ |  
+| apln | Fixes ns | 9 | ⎕FIX | ✔ | ✔<small> FUTURE</small> |
+| apla | Assigns array| 2, 9 | *assignment* |✔| ✔ | 
+| json | Fixes ns from JSON5| 9 | ⎕JSON | ✔ | ✔ |  
 | txt  | Assigns char. vectors | 2 | *assignment* | ✔ | ✔ | 
 | dyalog, *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">✘</span> | <span class="red">✘<small> NEVER</small></span> |
 <div>Table 6g. <strong>Library Filetypes: Meaning</strong></div>
@@ -1271,11 +1274,11 @@ of object definitions from the *dfns* workspace or files;
 The built-in *(default)* parameter file 
 is documented *below*. 
 
-<details open><summary class="summary">&ensp;<em>Show/Hide Default APLAN £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
+<details open><summary class="summary">&ensp;<em>Show/Hide Default £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
 
 ```apl
 (
-   ⍝ Default .∆F (APLAN) Parameter File                           
+   ⍝ Default .∆F Parameter File (in APL Array Notation)                           
    ⍝ Items not to be (re)set by user should be omitted/commented out.              
    ⍝ Exceptions: 
    ⍝ [1-2] auto and verbose can each be set to null to signal 
@@ -1321,17 +1324,20 @@ is documented *below*.
    ⍝       suffix: ('aplf' ◇)  
    ⍝   will match: 
    ⍝       '∆F_mydfn.aplf' and 'MyLib/mydfn.aplf' 
-   ⍝   Note: prefix is not applicable to workspaces.  
+   ⍝   Note: prefix is ignored for workspaces.  
      prefix: ⍬ 
                                
    ⍝ suffix: at least one suffix is required for file searches to match. 
    ⍝   The '.' is prepended for you!  
    ⍝   By default,  the generic filetype 'dyalog' and user-defined filetypes
    ⍝   are not enabled.
-   ⍝   Types not in this list: 
-   ⍝        ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt')   
-   ⍝   are loaded using 2∘FIX, i.e. equivalent to files suffixed with "dyalog".
-   ⍝   Ignored for workspaces.     
+   ⍝   Files with the following filetypes 
+   ⍝      ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt') 
+   ⍝   are expected to contain string representations of these objects:
+   ⍝      (fn ◇ operator ◇ namespace ◇ array ◇ JSON object ◇ vector of char vectors) 
+   ⍝   Those of all other filetypes are loaded using 2∘FIX, i.e. treated 
+   ⍝   as if of type "dyalog".
+   ⍝   Suffixes are ignored for workspaces.     
      suffix: ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt')    
                    
    ⍝  Internal runtime parameters, set internally (not user-settable)    
@@ -1340,7 +1346,7 @@ is documented *below*.
 )  
 ``` 
 
-</details>
+</details></details> 
 
 ---
 
@@ -1401,7 +1407,7 @@ case: `∆F⍨'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251104T185349]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251105T210814]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

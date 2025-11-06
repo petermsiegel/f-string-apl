@@ -1563,6 +1563,10 @@ Information</h1>
 
 <h2 data-number="6.1" id="f-call-syntax-overview"><span
 class="header-section-number">6.1</span> ∆F Call Syntax Overview</h2>
+<p><span class="margin-note"><br><br><br><br><br><br><br><br><br><br><br><em><strong>Options</strong></em>
+may be either <em>positional</em> or— starting in Dyalog v. 20—
+<em>keyword</em>-based. We show the posi­tion­al forms through­out the
+examples, but document the keyword forms as well here.</span></p>
 <table>
 <thead>
 <tr>
@@ -1741,10 +1745,9 @@ vector <code>⍬</code>, the options are</p>
 <pre><code>5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺ </code></pre>
 <p>Trailing elements are ignored.</p></li>
 <li><p><strong>Keyword style options:</strong> If the left argument is a
-<span class="margin-note">In APL Array Notation, formally introduced in
-Dyalog 20.</span>namespace, it is assumed to contain the options in (APL
-Array Notation) keyword form,<br>  e.g.
-<code>(debug: 1 ◇ auto: 0)</code>;<br />
+<span class="margin-note">See Dyalog documentation on <em>APL</em> Array
+Notation.</span>namespace, it is assumed to contain the options by name
+with their values,<br>  e.g. <code>(debug: 1 ◇ auto: 0)</code>;<br />
 Keyword options are new for Dyalog 20. They are sometimes clearer and
 more convenient than positional keywords.</p></li>
 <li><p><strong>Help option:</strong> If the left argument <code>⍺</code>
@@ -1887,12 +1890,12 @@ Library<br><span class="red"><small><strong>EXPERIMENTAL!</strong></small></span
 private library (namespace) local to the <strong>∆F</strong> runtime
 environ­ment into which functions or objects (including name­spaces) may
 be placed (e.g. via <code>⎕CY</code>) for the duration of the
-<em>APL</em> session. <small>Outside of simple assignments,
-<strong>∆F</strong> will attempt to copy undefined objects from
-workspace <code>dfns</code> or from directory
-<strong>./MyDyalogLib</strong> (with file extensions
-<strong>.aplf</strong>, <strong>.aplo</strong>, <strong>.apla</strong>,
-<em>etc.</em>). <em>See <a
+<em>APL</em> session. Outside of simple assignments, <strong>∆F</strong>
+will attempt to copy undefined objects from, <em>in
+order:</em><br><small> <small>directory</small>
+<em><strong>"./MyDyalogLib/"</strong></em>, <small><em>APL</em>
+ws</small> <em><strong>"dfns"</strong></em>, or <small>directory</small>
+<strong>"./"</strong>.</small><br><small><em>For filetypes, see <a
 href="#session-library-shortcut-details">Session Library Shortcut:
 Details</a> below.</em></small></td>
 </tr>
@@ -2106,6 +2109,7 @@ default with <code>`⍵1</code> or <code>⍹1</code>.</li>
 accessed at runtime via any means, shortcut or traditional, that element
 <strong><em>must</em></strong> exist.</li>
 </ol>
+<details id="pPeek"><summary class="summary">&ensp;View Details on Experimental Features</summary>
 <div class="test-feature">
 
 <p><span class="margin-note"><span class="red">Experimental</span></span></p>
@@ -2152,8 +2156,10 @@ allowed and treated as in the first case.</p></li>
 id="session-library-shortcut-filetypes-of-source-files"><span
 class="header-section-number">6.10.1</span> Session Library Shortcut:
 Filetypes of Source Files</h3>
-<p><span class="margin-note"><br><br><br><br><br><br><br><br><br><strong>APLAN:</strong>
-<em>APL</em> Array Notation<br>(Dyalog 20)</span></p>
+<p><span class="margin-note"><br><br><br><br><br><br><br><br><br><strong>apla:</strong>
+Encoded using <em>APL</em> Array Notation (Dyalog
+20).<br><br><br><strong>txt:</strong> Each line of file is converted to
+a Unicode char. vector.</span></p>
 <table>
 <thead>
 <tr>
@@ -2184,7 +2190,7 @@ Filetypes of Source Files</h3>
 </tr>
 <tr>
 <td style="text-align: center;">apln</td>
-<td style="text-align: center;">Fixes namespace</td>
+<td style="text-align: center;">Fixes ns</td>
 <td style="text-align: center;">9</td>
 <td style="text-align: center;">⎕FIX</td>
 <td style="text-align: center;">✔</td>
@@ -2192,7 +2198,7 @@ Filetypes of Source Files</h3>
 </tr>
 <tr>
 <td style="text-align: center;">apla</td>
-<td style="text-align: center;">Assigns APLAN Array</td>
+<td style="text-align: center;">Assigns array</td>
 <td style="text-align: center;">2, 9</td>
 <td style="text-align: center;"><em>assignment</em></td>
 <td style="text-align: center;">✔</td>
@@ -2200,7 +2206,7 @@ Filetypes of Source Files</h3>
 </tr>
 <tr>
 <td style="text-align: center;">json</td>
-<td style="text-align: center;">Fixes namespace from JSON5</td>
+<td style="text-align: center;">Fixes ns from JSON5</td>
 <td style="text-align: center;">9</td>
 <td style="text-align: center;">⎕JSON</td>
 <td style="text-align: center;">✔</td>
@@ -2261,10 +2267,10 @@ appear below.</span>filemodes that indicate the type of object and
 <p>The built-in <em>(default)</em> parameter file
 <span class="margin-note">Additional doc­ument­ation is need­ed, should
 this go forward.</span> is documented <em>below</em>.</p>
-<details><summary class="summary">&ensp;<em>Show/Hide Default APLAN £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary><span class="margin-note">**APLAN:** *APL* Array Notation.</span>
+<details><summary class="summary">&ensp;<em>Show/Hide Default £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
 
 <pre class="apl"><code>(
-   ⍝ Default .∆F (APLAN) Parameter File                           
+   ⍝ Default .∆F Parameter File (in APL Array Notation)                           
    ⍝ Items not to be (re)set by user should be omitted/commented out.              
    ⍝ Exceptions: 
    ⍝ [1-2] auto and verbose can each be set to null to signal 
@@ -2310,24 +2316,27 @@ this go forward.</span> is documented <em>below</em>.</p>
    ⍝       suffix: (&#39;aplf&#39; ◇)  
    ⍝   will match: 
    ⍝       &#39;∆F_mydfn.aplf&#39; and &#39;MyLib/mydfn.aplf&#39; 
-   ⍝   Note: prefix is not applicable to workspaces.  
+   ⍝   Note: prefix is ignored for workspaces.  
      prefix: ⍬ 
                                
    ⍝ suffix: at least one suffix is required for file searches to match. 
    ⍝   The &#39;.&#39; is prepended for you!  
    ⍝   By default,  the generic filetype &#39;dyalog&#39; and user-defined filetypes
    ⍝   are not enabled.
-   ⍝   Types not in this list: 
-   ⍝        (&#39;aplf&#39; ◇ &#39;aplo&#39; ◇ &#39;apln&#39; ◇ &#39;apla&#39; ◇ &#39;json&#39; ◇ &#39;txt&#39;)   
-   ⍝   are loaded using 2∘FIX, i.e. equivalent to files suffixed with &quot;dyalog&quot;.
-   ⍝   Ignored for workspaces.     
+   ⍝   Files with the following filetypes 
+   ⍝      (&#39;aplf&#39; ◇ &#39;aplo&#39; ◇ &#39;apln&#39; ◇ &#39;apla&#39; ◇ &#39;json&#39; ◇ &#39;txt&#39;) 
+   ⍝   are expected to contain string representations of these objects:
+   ⍝      (fn ◇ operator ◇ namespace ◇ array ◇ JSON object ◇ vector of char vectors) 
+   ⍝   Those of all other filetypes are loaded using 2∘FIX, i.e. treated 
+   ⍝   as if of type &quot;dyalog&quot;.
+   ⍝   Suffixes are ignored for workspaces.     
      suffix: (&#39;aplf&#39; ◇ &#39;aplo&#39; ◇ &#39;apln&#39; ◇ &#39;apla&#39; ◇ &#39;json&#39; ◇ &#39;txt&#39;)    
                    
    ⍝  Internal runtime parameters, set internally (not user-settable)    
      _readParmFi: 0                       ⍝ 0 (zero):  Has .∆F been read yet?     
      _fullPath:   ⍬                       ⍝ ⍬ (zilde): For efficient searching.  
 )  </code></pre>
-</details>
+</details></details> 
 
 <hr />
 </div> 
@@ -2412,7 +2421,7 @@ October 19, 2025.]</em></p>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251104T185349]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251105T210814]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

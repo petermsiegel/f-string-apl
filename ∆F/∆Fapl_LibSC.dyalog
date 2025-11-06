@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "20251104T185349" 
+⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "20251105T205551" 
 :Namespace libUtil 
 ⍝ libUtil (namespace): Handles £ and `L shortcuts. 
 ⍝ ∘ SetParmDefaults show the default options in APLAN format.  
@@ -38,10 +38,10 @@
   ⍝ Returns SHY 1 (succ) or SHY 0 (fail), having established <nm> in ulNs (ulNs) on success.
   ⍙LoadObj← { 
       ulNs dbg parms←⍺ ⋄ nm← ⍵ 
-      OK NOTFND ERR← 1 0 ¯1       ⍝ Possible return codes from Scan functions here.
+      rcOK rcNF rcER← 1 0 ¯1       ⍝ Return codes: OK, Not Found, Error
 
     ⍝ FixFromWS: Search for name ⍺ in ws ⍵. On success, 1 'ws:⍵'; on failure, 0 ⍬
-      FixFromWS← { 11:: NOTFND ⍬ ⋄ OK ('ws:',⍵)⊣ ⍺ ulNs.⎕CY ⍵ }
+      FixFromWS← { 11:: rcNF ⍬ ⋄ rcOK ('ws:',⍵)⊣ ⍺ ulNs.⎕CY ⍵ }
 
     ⍝ SubScanFiles: 
     ⍝   Search a list of full filenames ⍵ ending in simple name ⍺ (before suffixes).
@@ -51,9 +51,9 @@
     ⍝            returns success: 1 ('file:', fi).
     ⍝      Otherwise, failure: 0 ⍬.
       SubScanFiles← {  
-        0=≢ ⍵: NOTFND ⍬ ⋄ 22 11:: ERR ⍬ ⋄ nm← ⍺ ⋄ fi← ⊃⍵ ⋄ 
+        0=≢ ⍵: rcNF ⍬ ⋄ 22 11:: rcER ⍬ ⋄ nm← ⍺ ⋄ fi← ⊃⍵ ⋄ 
         ~⎕NEXISTS fi: ⍺ ∇ 1↓⍵ 
-        ERR≠ rc← nm FixByType fi: rc ('file:',fi) ⋄ ERR ⍬ 
+        rcER≠ rc← nm FixByType fi: rc ('file:',fi) ⋄ rcER ⍬ 
       }
 
     ⍝ FixByType:  nm ∇ fi.  Fix based on the suffix (filetype) of ⍵
@@ -61,44 +61,46 @@
       ⍝ ∘ The nameclass distinctions are currently NOT enforced for
       ⍝   the first three suffixes, but it's trivial to do.
       ⍝ ∘ When ⎕FIX is applied to ¨fi¨, ¨nm¨ must be among the names listed as ⎕FIXed. 
-        '.aplf' '.aplo' '.apln'∊⍨ ⊂5↑fi: ERR OK⊃⍨ (⊂nm)∊ 2 ulNs.⎕FIX fi 
+        '.aplf' '.aplo' '.apln'∊⍨ ⊂5↑fi: rcER rcOK⊃⍨ (⊂nm)∊ 2 ulNs.⎕FIX fi 
             SetNm ← nm∘{ulNs⍎⍺,'←⍵'}
-        '.apla'≡¯5↑fi: OK⊣ SetNm ⎕SE.Dyalog.Array.Deserialise ⊃⎕NGET  fi 1 
-        '.txt' ≡¯4↑fi:  OK⊣ SetNm ⊃⎕NGET fi 1  
-        '.json'≡¯5↑fi: OK⊣ SetNm ⎕JSON⍠jOpts ⊃⎕NGET fi 1  
+        '.apla'≡¯5↑fi: rcOK⊣ SetNm ##.Apl2AN ⊃⎕NGET  fi 1 
+        '.txt' ≡¯4↑fi:  rcOK⊣ SetNm ⊃⎕NGET fi 1  
+        '.json'≡¯5↑fi: rcOK⊣ SetNm ⎕JSON⍠jOpts ⊃⎕NGET fi 1  
       ⍝ All other suffixes, including .dyalog or a user-defined suffix.
       ⍝ When ⎕FIX is applied to ¨fi¨, ¨nm¨ must be among the names listed as ⎕FIXed. 
-            ERR OK⊃⍨ (⊂nm)∊ 2 ulNs.⎕FIX fi            
+            rcER rcOK⊃⍨ (⊂nm)∊ 2 ulNs.⎕FIX fi            
       }
       jOpts← ('Dialect' 'JSON5')('Compact' 0)('Null' ⎕NULL)                                     
 
     ⍝ ScanPath: Recursively scan the path for name ⍵ in each file or wsid 
     ⍝   spec in parms._fullPath 
-    ⍝     OK@B where@S← nm@S ∇ path@NsV    
+    ⍝     rcOK@B where@S← nm@S ∇ path@NsV    
     ⍝   If we see a array (with a single string), it's a workspace: 
     ⍝     call and return result from FixFromWS nm  (⊃spec). 
     ⍝   Otherwise, 
     ⍝     call and return result from ∆FI nm spec sfx.
       ScanPath← {  
-        0= ≢ ⍵: NOTFND ⍬ ⋄ nm path← ⍺ ⍵ ⋄ cur← ⊃path
+        0= ≢ ⍵: rcNF ⍬ ⋄ nm path← ⍺ ⍵ ⋄ cur← ⊃path
         ⍝ If cur is a vector of (0 or more) char vectors, each is assumed to be a workspace id.
-        ⍝ When done, having returned NOTFND, recursively continue ScanPath.
-        ⍝ Otherwise (OK or ERR), return from ScanPath.
+        ⍝ When done, having returned rcNF, recursively continue ScanPath.
+        ⍝ Otherwise (rcOK or rcER), return from ScanPath.
           SubScanWS← ∇ {  
-            0=≢⍵: nm ⍺⍺ 1↓path ⋄ NOTFND≠⊃ret← nm FixFromWS ⊃⍵: ret ⋄ ∇ 1↓⍵ 
+            0=≢⍵: nm ⍺⍺ 1↓path ⋄ rcNF≠⊃ret← nm FixFromWS ⊃⍵: ret ⋄ ∇ 1↓⍵ 
           }
-        1< |≡cur: SubScanWS cur            
-          ff← ,(⊂cur)∘.,(⊂nm,'.')∘.,parms.suffix             
-        NOTFND≠⊃ret← nm SubScanFiles ff: ret 
+        1< |≡cur: SubScanWS cur                        ⍝ VCV means one or more workspaces.        
+          ff← ,(⊂cur)∘.,(⊂nm,'.')∘.,parms.suffix       ⍝ cur is a CV. Generate ff, list of files.  
+        rcNF≠⊃ret← nm SubScanFiles ff: ret 
           nm ∇ 1↓path                       
       }
 
-    ⍝ Action before returning. Returns the return code ⍺ or signal an error.
+    ⍝ Action before returning.  
+    ⍝ If (~ parms.verbose∨ dbg), exit quietly, unless ⍺ is an error.
+    ⍝ Otherwise, exit with a msg based on ⍺.
       Action← ulNs { 
-        (~⍵⍵)∧ ⍺≠ERR: ⍺ ⋄ (nm where)← ⍵ ⋄ dest← ⍕⍺⍺ 
-        ⍺=OK:     ⍺ ⊣ ⎕← 'DEBUG: Copied "', nm, '" into ',dest, (0≠≢ where)/ ' from ','"',where,'"'
-        ⍺=NOTFND: ⍺ ⊣ ⎕← 'DEBUG: Object "',nm,'" not found in search path'    
-                  11 ⎕SIGNAL⍨ 'DEBUG: Error occurred when copying object "',nm,'" into ',dest  
+        (~⍵⍵)∧ ⍺≠rcER: ⍺ ⋄ (nm where)← ⍵ ⋄ dest← ⍕⍺⍺ 
+        ⍺=rcOK: ⍺ ⊣ ⎕← 'DEBUG: Copied "', nm, '" into ',dest, (0≠≢ where)/ ' from ','"',where,'"'
+        ⍺=rcNF: ⍺ ⊣ ⎕← 'DEBUG: Object "',nm,'" not found in search path'    
+          11 ⎕SIGNAL⍨ 'DEBUG: Error occurred when copying object "',nm,'" into ',dest  
       } (parms.verbose∨ dbg)
 
     ⍝ Executive for ⍙LoadObj 
@@ -106,9 +108,9 @@
     1: _← rc Action nm where  
   }
   
-  ⍝ Minor utility and constants for Auto 
+  ⍝ Utilities and constants  
   ⍝ NoLB: Non-leading blanks; ⍙A: valid initials of APL nms; ⍙AD: valid chars of APL nms. 
-    NoLB← { ⍵↓⍨ +/∧\' '=⍵}
+    NoLB← { ⍵↓⍨ +/∧\' '=⍵} 
     ⍙A← { ⍺←'' ⋄ 0=≢⍵: ⍺~'⍺⍵∇' ⋄ ¯1=⎕NC ⊃⍵: ⍺ ∇ 1↓⍵ ⋄ (⍺,⊃⍵) ∇ 1↓⍵ }⎕AV  
     ⍙AD← ⍙A, ⎕D  
 
@@ -119,8 +121,8 @@
 ⍝       then no more processing is done and Auto does nothing except return ulNm (lib ns name).
 ⍝   If ⍵.path←⍬, no files or workspaces are checked. If ⍵.suffix←⍬, only w/ss might be checked.  
   SetParmDefaults← { 
-    ⍝ These are the default JSON settings. User can override in "profile" ./.∆F 
-    ⍝ To replace with APL-style {...} ⎕NS when v.20 arrives. 
+    ⍝ These are the default APL Array Notation settings: format ok whether Dyalog 20 or earlier.
+    ⍝ User can override in ./.∆F, also in APLAN format. 
       DefParms← {
          (
           ⍝ Default .∆F (JSON5) Parameter File                           
@@ -158,7 +160,7 @@
           ⍝        'MyDyalogLib'
           ⍝    For workspaces, the item must be a vector of one or more char vectors
           ⍝        (⊂'dfns') or (⊂'MyDyalogLib/mathfns') or ('dfns', 'myDfns')
-            path:  ( '.'  ⋄ './MyDyalogLib' ⋄ ('dfns'⋄))  
+            path:  ( './MyDyalogLib' ⋄ ('dfns'⋄) ⋄ '.' ⋄ )  
                           
           ⍝ prefix: literal string to prefix to each name, when searching directories.
           ⍝     Ignored for workspaces.
@@ -178,7 +180,7 @@
             _fullPath:   ⍬                      ⍝ ⍬ Zilde: Generated from path and prefixes.
          )                                                                               
       }
-      ⎕SE.Dyalog.Array.Deserialise⊣ 1↓¯1↓ ⎕NR'DefParms'  ⍝ Before Dyalog 20
+      ##.AN2Apl 1↓¯1↓ ⎕NR'DefParms'  ⍝ Before Dyalog 20
       DefParms ⍬                                         ⍝ Dyalog 20
   }
 
@@ -187,11 +189,11 @@
 ⍝   If parms.verbose in the parameter file is null or omitted, the default (##.VERBOSE) will be used.
   LoadParmFi← { 
       parmFi← ⍵  
-    ⍝ Fi2APLAN: Update parameters from parm file.
-      Fi2APLAN← { 
+    ⍝ ReadParmFi: Update parameters from parm file.
+      ReadParmFi← { 
         ~⎕NEXISTS ⍵: ⍬     
         11:: 0⊣ ⎕← 'ERROR: UNABLE TO PARSE USER PARAMETER FILE "',⍵,'". ARRAY NOTATION MAY BE INVALID.'
-          _← 'parms' ⎕NS ⎕SE.Dyalog.Array.Deserialise ⊃⎕NGET ⍵ 
+          _← 'parms' ⎕NS ##.AN2Apl ⊃⎕NGET ⍵ 
           0⊣ parms._readParmFi← 1 
       } 
     ⍝ ∆IfNull: Replace null or [], where required. 
@@ -199,7 +201,7 @@
     ⍝ CShow: Cond'lly show all json parameters in 'parms' EXCEPT internal ones starting with '_'
       CShow← { 
         ~⍵.verbose: ⍬ ⋄ ⎕PW←100 ⋄ ⎕← 'Library Runtime Parameters (default + user-set):'
-          ⍬⊣ ⎕← ↑0 ⎕SE.Dyalog.Array.Serialise ⍵.(⎕NS {⍵/⍨ '_'≠⊃¨⍵} ⎕NL -2)  
+          ⍬⊣ ⎕← ↑##.AN2Apl ⍵.(⎕NS {⍵/⍨ '_'≠⊃¨⍵} ⎕NL -2)  
       } 
     ⍝ GenFullPath parms.path 
       GenFullPath←{ ⍺←⍬ ⋄ 0=≢⍵: ⍺ ⋄ p← ⊂⊃⍵
@@ -207,7 +209,7 @@
           (⍺, ,p∘., '/'∘.,parms.prefix) ∇ 1↓⍵                       ⍝ file 
       }  
     ⍝ Main...
-      _← Fi2APLAN parmFi       
+      _← ReadParmFi parmFi       
       _← parms ∆IfNull('verbose' ##.VERBOSE)('auto' ##.LIB_AUTO)('prefix' (,⊂''))
       _← CShow parms 
     ~parms.auto: 0⊣ ⎕FX ,⊂'Auto←{ulNm}'                             ⍝ auto=0: Auto => nop.

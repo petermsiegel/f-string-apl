@@ -1,13 +1,13 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251104T193814" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251105T205551" 
 ⍝:Section CORE                                   
 :Namespace ⍙Fapl
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile-time and run-time verbosity flag
 ⍝ Positional and keyword options (⍺) for ∆F  
-  OPT_KWS←  'dfn' 'debug' 'box' 'auto' 'inline'  
-  OPT_DEFS←  0 0 0 1 0     
-  N_OPTS←    ≢ OPT_DEFS 
+  OPTS_KW←  'dfn' 'debug' 'box' 'auto' 'inline'  
+  OPTS_DEF←  0 0 0 1 0     
+  OPTS_N←    ≢ OPTS_DEF 
 ⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
 ⍝            2   We want to get lib objects from workspace "dfns" and files.
 ⍝            1   We want to get lib objects solely from workspace "dfns"
@@ -51,7 +51,7 @@
           :Return   
       :EndIf                                           ⍝ default: positional parameters
       args← ,⊆args
-      opts← ⎕THIS.N_OPTS↑ opts, ⎕THIS.OPT_DEFS↑⍨ ⎕THIS.N_OPTS-⍨ ≢ opts 
+      opts← ⎕THIS.OPTS_N↑ opts, ⎕THIS.OPTS_DEF↑⍨ ⎕THIS.OPTS_N-⍨ ≢ opts 
     ⍝ Analyse modes
       :Select ⊃opts    
       :Case  0       ⍝ Execute fstring
@@ -73,25 +73,19 @@
 ⍝ Minor Utilities for ∆F above
 ⍝ Keyword options (Dyalog 20) 
   GetKWOpts← {   
-      kwÊ← 'Use legacy keyword option string if Dyalog 19.x or earlier' 
-    0:: kwÊ ⎕SIGNAL 11 
-      nms← ⎕THIS.OPT_KWS 
-      kw← () ∆VSET (↑nms)  ⎕THIS.OPT_DEFS
-      nms ∆VGET⍨ ⎕NS kw ⍵ 
+    0:: 11 ⎕SIGNAL⍨ 'Use legacy keyword option string if Dyalog 19.x or earlier' 
+      kw← () ⎕NS ⍵
+      kw ⎕VGET (↑OPTS_KW) OPTS_DEF 
   }
 
 ⍝ Keyword options (pre-Dyalog 20)
-  GetKWOptsLegacy← {   
-      kwLÊ← 'Invalid user option(s).'
-    0:: kwLÊ ⎕SIGNAL ⎕EN 
-      usr← ⎕SE.Dyalog.Array.Deserialise ⍵
-      KWLoad← { ⍺⊣ ⍺∘{ ⍺⍎(⊃⍵),'←⊃⌽⍵'}¨⍵ }
-      KWSet←  { ⍺⊣ (⍺{ ⍺⍺⍎⍵,'←⍵⍵.⎕OR ⍵' ⋄ ⍵⍵ }⍵)¨⍵.⎕NL¯2 }
-      kw←  (⎕NS ⍬) KWLoad OPT_KWS,⍥⊂¨ OPT_DEFS 
-    9≠⎕NC 'usr': kwLÊ ⎕SIGNAL 11
-      kw←  kw KWSet usr
-      kw.⎕OR¨ OPT_KWS
+  GetKWOptsLegacy← { 
+    0:: ⎕EN ⎕SIGNAL⍨ 'Invalid user option(s).' 
+      kw← (⎕NS⍬) ∆NS AN2Apl ⍵
+      kw ∆VG (↑OPTS_KW) OPTS_DEF 
   }
+  ∆NS← { ⍺⊣ (⍺{ ⍺⍺⍎ ⍵,'←⍵⍵.',⍵ ⋄ ⍵⍵ }⍵)¨⍵.⎕NL¯2 }
+  ∆VG← { ns←⍺ ⋄ (↓⊃⍵){ 0=ns.⎕NC ⍺: ns⍎ ⍺,'←⍵' ⋄ ns.⎕OR ⍺ }¨⊃⌽⍵ }
 
 ⍝ ============================   FmtScan ( top-level routine )   ============================= ⍝
 ⍝ FmtScan: 
@@ -314,6 +308,10 @@
 ⍝ If [0] is 0, then there was no prefix of digits. If there was, then it will be >0.
   IntOpt← { wid← +/∧\ ⍵∊⎕D ⋄ wid (⊃⊃⌽⎕VFI wid↑ ⍵) (wid↓ ⍵) }  ⍝ Idiom +/∧\
 
+⍝ Apl2AN, AN2Apl:  Deserialise/Serialise APL Array Notation. 
+  AN2Apl←  ⎕SE.Dyalog.Array.Deserialise
+  Apl2AN←  ⎕SE.Dyalog.Array.Serialise
+
 ⍝ AplQt:  Created an APL-style single-quoted string.
   AplQt←  sq∘(⊣,⊣,⍨⊢⊢⍤/⍨1+=)                           ⍝ { sq, sq,⍨ ⍵/⍨ 1+ sq= ⍵ }
 
@@ -387,8 +385,8 @@
 ⍝ Used internally only at FIX-time:
 ⍝ ∘ Fix (⎕FX) ∆F into dest, obscuring its local names and hardwiring the location of ⎕THIS. 
   ∇ rc← ⍙Promote_∆F dest ; src; snk 
-    src←    '⎕THIS.N_OPTS'     '⎕THIS.OPT_DEFS'
-    snk←   (⍕⎕THIS.N_OPTS)   (⍕⎕THIS.OPT_DEFS)
+    src←    '⎕THIS.OPTS_N'     '⎕THIS.OPTS_DEF'
+    snk←   (⍕⎕THIS.OPTS_N)   (⍕⎕THIS.OPTS_DEF)
     src,←   '⎕THIS'   'result'     'opts'     'args' 
     snk,←   (⍕⎕THIS)  '__∆Frësült' '__∆Föpts' '__∆Färgs' 
     rc← dest.⎕FX src ⎕R snk ⍠ 'UCP' 1⊣ ⎕NR '∆F'
