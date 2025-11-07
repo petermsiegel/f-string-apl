@@ -1,4 +1,4 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251105T205551" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251106T203023" 
 ⍝:Section CORE                                   
 :Namespace ⍙Fapl
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
@@ -13,7 +13,7 @@
 ⍝            1   We want to get lib objects solely from workspace "dfns"
 ⍝            0   We don't want to use the LIB_AUTO feature.
   LIB_AUTO← 1    ⍝ Default is only from dfns, unless overridden!   
-  LIB_AUTO_FI←  '∆F/∆Fapl_LibSC.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
+  LIB_AUTO_FI←  '∆F/∆Fapl_Library.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
   HELP_HTML_FI← '∆F/∆F_Help.html'       ⍝ Called from 'help' option. Globally set here
 
 ⍝ ============================   ∆F User Function   ============================= ⍝
@@ -374,9 +374,11 @@
 ⍝ Utilities for "library" shortcut (£, `L) 
 ⍝ See ⍙LoadLibAuto 
 :Namespace libUtil
-⍝⍝⍝⍝⍝ This is a stub.  
-   uLibNm← ⍕ûLib 
-   Auto← uLibNm⍨            ⍝ Minimal "auto" just returns the user library
+⍝⍝⍝⍝⍝ This is a stub. 
+  ∇ ok← BareBones
+   ok← 1 ⋄ uLibNm← ⍕##.ûLib ⋄ Auto← uLibNm⍨             
+  ∇
+  BareBones 
 :EndNamespace 
 ⍝:EndSection "Stubs" for "LIBRARY" Shortuts  
 
@@ -481,29 +483,31 @@
   ⍝ Loading the help html file...
     :Trap 22 
         ⎕THIS.helpHtml← ⊃⎕NGET hfi
-        :IF VERBOSE ⋄ ⎕← 'Loaded Help Html File: ',hfi ⋄ :EndIf  
+        :IF VERBOSE ⋄ ⎕← '>>> Loaded Help Html File "',hfi,'"' ⋄ :EndIf  
         ok← 1 
     :Else 
-        e1← 'WARNING: When loading ∆Fapl, the help file "',hfi,'" was not found in current directory.'
-        e2← 'WARNING: ∆F help will not be available without user intervention.'
+        e1← '>>> WARNING: When loading ∆Fapl, the help file "',hfi,'" was not found in current directory.'
+        e2← '>>> WARNING: ∆F help will not be available without user intervention.'
         e1,(⎕UCS 13),e2
         ok← 0 
     :EndTrap 
   ∇
   ∇ ok← ⍙LoadLibAuto fi 
     :TRAP 22 
-        ⎕FIX fi
-        :If VERBOSE ⋄ ⎕←'Loaded Library Autoload functions: ',fi ⋄ :EndIf 
+        ⎕FIX 'file://',fi
+        :If VERBOSE ⋄ ⎕←'>>> Loaded services for Library shortcut "',fi,'" into "','"',⍨⍕⎕THIS  ⋄ :EndIf 
         ok← 1 
     :Else
         ok←0 ⋄  LIB_AUTO← 0 
-        ⎕←'WARNING: Unable to load Library Autoload services: ',fi
-        ⎕←'NOTE: £ and `L shortcuts are available without these services (auto: 0).'
+        ⎕← ⎕PW⍴'='
+        ⎕←'>>> WARNING: Unable to load services for Library shortcut "',fi,'" into "','"',⍨⍕⎕THIS 
+        ⎕←'>>> NOTE:    £ and `L shortcuts are available without these services (auto: 0).'
+        ⎕← ⎕PW⍴'='
     :EndTrap
   ∇
   ∇ ok← ⍙NoteGlobals 
   :If VERBOSE 
-      ⎕←'∆F Application-wide Globals: { DEBUG:',DEBUG,', VERBOSE:',VERBOSE, ', LIB_AUTO:',LIB_AUTO,'}' 
+      ⎕←'>>> ∆F Application-wide Globals: ( DEBUG:',DEBUG,'⋄ VERBOSE:',VERBOSE, '⋄ LIB_AUTO:',LIB_AUTO,')' 
   :EndIf 
   ok← 1 
   ∇ 

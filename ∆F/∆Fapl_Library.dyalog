@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "20251105T205551" 
+⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "20251106T203023" 
 :Namespace libUtil 
 ⍝ libUtil (namespace): Handles £ and `L shortcuts. 
 ⍝ ∘ SetParmDefaults show the default options in APLAN format.  

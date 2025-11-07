@@ -15,9 +15,9 @@ APL expressions, and multi&shy;dimensional objects using extensions to
 <span style="font-size:75%;">
 
 - [Table of Contents](#table-of-contents)
-- [Installing and Running **∆F** in Dyalog APL](#installing-and-running-f-in-dyalog-apl)
+- [Installing, Loading, and Running **∆F**](#installing-loading-and-running-f)
   - [Installing **∆F**](#installing-f)
-  - [Running **∆F** (After It's Been Installed)](#running-f-after-its-been-installed)
+  - [Loading and Running **∆F**](#loading-and-running-f)
 - [Overview](#overview)
 - [Displaying ∆F **Help** in APL](#displaying-f-help-in-apl)
 - [∆F Examples: A Primer](#f-examples-a-primer)
@@ -69,10 +69,10 @@ APL expressions, and multi&shy;dimensional objects using extensions to
 </span>
 </details>
 
-# Installing and Running **∆F** in Dyalog APL
+# Installing, Loading, and Running **∆F**
 
 <details open>            <!-- option: open -->
-<summary class="summary">&ensp;Show/Hide <em>Installing and Running <bold>∆F</bold></em>
+<summary class="summary">&ensp;Show/Hide <em>Installing, Loading, and Running <bold>∆F</bold></em>
 </summary>
 
 ## Installing **∆F**
@@ -82,20 +82,19 @@ APL expressions, and multi&shy;dimensional objects using extensions to
 2. Note your current directory. 
 3. Copy the file  **∆F.dyalog** and directory **∆F** (which contains several files) into the current working directory,
 ensuring they are peers. 
+
+&emsp;<span style="font-size: 130%;">👉 </span>Now, **∆F** is available to load and use. Continue in the [next section](#loading-and-running-f).
+
+## Loading and Running **∆F**
+
 1. Confirm that your current directory remains as before.
-2. Then, from your Dyalog session (typically `#` or `⎕SE`), enter:<br>
-  `]←load ∆F [-target=`<code>**_anyNs_**]</code> 
-   1. Each time it is called, the `]load` will create function **∆F** and namespace **⍙Fapl** in the target namespace.
-      1. **⍙Fapl** contains utilities used by **∆F** and, once`]load`ed, ***should not*** be moved. 
-      2. **∆F** *may* be relocated; it will refer to **⍙Fapl** in its original location.
-   2. If **∆F_Help.html** is available at `]load` time, it will be copied into **⍙Fapl** (or a message will note its absence).
+2. From your Dyalog session (typically `#` or `⎕SE`), enter: <br>&emsp;`]load ∆F [-target=`<code><em>anyNs</em>]</code><br>replacing `anyNs` with your desired namespace. 
+3. If **∆F/∆F_Help.html** is available at `]load` time, it will be copied into **⍙Fapl** (or a message will note the absence of *help* information).
+4. Namespace <code>***anyNs***.**⍙Fapl**</code> now contains utilities used by **∆F** and, once `]load`ed, ***should not*** be moved. **∆F** always refers to **⍙Fapl** in its *original* location. 
+5. By default, namespace <code>***anyNs***</code> will be added to `#.⎕PATH`, if not already there. You may always choose to relocate or assign **∆F** anywhere you want so that it is available.
 
-  <span style="font-size: 130%;">👉 </span>Now, **∆F** is available for use.
-
-## Running **∆F** (After It's Been Installed)
-
-1. `]←load ∆F [-target=`<code>***anyNs***]</code> (see above), ensuring that **∆F** is executable from the current namespace.  
-2. Call `∆F` with the desired [arguments](#f-call-syntax-overview) and [options](#f-option-details). **∆F** is `⎕IO`- and `⎕ML`-independent.   
+&emsp;<span style="font-size: 130%;">👉 </span>You may now call `∆F` with the desired [arguments](#f-call-syntax-overview) and [options](#f-option-details).<br>
+&emsp;<span style="font-size: 130%;">👉 </span> **∆F** is `⎕IO`- and `⎕ML`-independent.   
 
 ---
 
@@ -180,7 +179,8 @@ Table 3a. <strong>The Three Field Types</strong>
 # ∆F Examples: A Primer
 
 <details open>            <!-- option: open -->
-<summary class="summary">&ensp;Show/Hide <em>Examples: A Primer</em></summary>
+<summary class="summary">&ensp;Show/Hide <em>Examples: A Primer</em>
+</summary>
 
 
 Before providing information on **∆F** syntax and other details, *let's start with some examples*…
@@ -412,7 +412,8 @@ In contrast, **Code** fields that return null values (like `{""}` above) _will_ 
 
 ## Omega Shortcuts (Explicit)  
 
-> Referencing **∆F** arguments after the *f‑string*: **Omega** shortcut expressions like `` `⍵1 ``.
+> Referencing **∆F** arguments after the *f‑string*: **Omega** 
+> shortcut expressions (like `` `⍵1 ``).
 
 The expression 
 
@@ -461,8 +462,7 @@ Our string «Our string {bL, `⍵0, bR} has {≢`⍵0} characters» has 47 chara
 
 ## The Format Shortcut
 
- (short for `⎕FMT`) can also be used monadically, but **∆F** will handle that for you in most cases.
-</span>
+
 
 > Let's add commas to some very large numbers using the **⎕FMT** shortcut `$`.
 
@@ -481,7 +481,6 @@ The sun's core is at 15,000,000°C or 27,000,032°F
 
 
 The shortcut for *Numeric* **Commas**  `` `C `` adds commas every 3 digits (from the right) to one or more numbers or numeric strings.It has an advantage over the `$` (Dyalog's `⎕FMT`) specifier: it doesn't require you to guesstimate field widths.
-
 
 Let's use the `` `C `` shortcut to add the commas to the temperatures!
 
@@ -513,7 +512,6 @@ Now, let's move on to Self-documenting **Code** fields.
 
 What's an SDCF? An SDCF allows whatever source code is in a **Code** field to be automatically displayed literally along with the result of evaluating that code.
 
-
 The source code for a **Code** field can automatically be shown in **∆F**'s output—
 
 - to the *left* of the result of evaluating that code; or,
@@ -524,8 +522,8 @@ All you need do is enter
 - a right arrow <big>`→`</big> for a **horizontal** SDCF, or
 - a down arrow <big>`↓`</big> (or <big>`%`</big>) for a **vertical** SDCF,
 
-as the **_last non-space_** character in the **Code** field, before the _final_ right brace.
-
+as the **_last non-space_** character in the **Code** field, 
+before the _final_ right brace.
 
 Here's an example of a horizontal SDCF, *i.e.* using `→`:
 
@@ -535,9 +533,11 @@ Here's an example of a horizontal SDCF, *i.e.* using `→`:
 Current employee: name→John Smith, age→34.
 ```
 
-As a useful formatting feature, whatever spaces are just **_before_** or **_after_** the symbol **→** or **↓** are preserved **_verbatim_** in the output.
+As a useful formatting feature, whatever spaces are just **_before_** 
+or **_after_** the symbol **→** or **↓** are preserved **_verbatim_** in the output.
 
-Here's an example with such spaces: see how the spaces adjacent to the symbol `→` are mirrored in the output!
+Here's an example with such spaces: see how the spaces adjacent to 
+the symbol `→` are mirrored in the output!
 
 ```
    name←'John Smith' ◇ age← 34
@@ -554,7 +554,8 @@ Current employee:  name↓     age↓.
                   John Smith  34
 ```
 
-To make it easier to see, here's the same result, but with a box around each field (using the **Box** [option](#f-call-syntax-details) `0 0 1`).
+To make it easier to see, here's the same result, but with a box around 
+each field (using the **Box** [option](#f-call-syntax-details) `0 0 1`).
 
 ```
 ⍝  Box all fields
@@ -570,7 +571,8 @@ To make it easier to see, here's the same result, but with a box around each fie
 > A cut above the rest… 
 
 
-Here's a useful feature. Let's use the shortcut `%` to display one expression centered above another; 
+Here's a useful feature. Let's use the shortcut `%` to display one 
+expression centered above another; 
 it's called **Above** and can *also* be expressed as `` `A ``. 
 
 
@@ -584,7 +586,10 @@ Mary Jones  23
 ## Text Justification Shortcut
 
 
-The Text **Justification** shortcut `` `J `` treats its right argument as a character array, justifying each line to the left (`⍺="L"`, the default), to the right (`⍺="R"`), or centered (`⍺="C"`). 
+The Text **Justification** shortcut `` `J `` treats its right argument 
+as a character array, justifying each line to the left (`⍺="L"`, 
+the default), to the right (`⍺="R"`), or centered (`⍺="C"`). 
+
 If its right argument contains floating point numbers, they will be displayed with the maximum
 print precision `⎕PP` available.
 
@@ -603,8 +608,10 @@ rhinoceroses  rhinoceroses  rhinoceroses
 
 We said we'd present the use of **Omega** shortcuts with implicit indices `` `⍵ `` in **Code** fields. The expression `` `⍵ `` selects the _next_ element of the right argument `⍵` to **∆F**, defaulting to `` `⍵1 `` when first encountered, *i.e.* if there are **_no_** `` `⍵ `` elements (*explicit* or *implicit*) to the **_left_** in the entire *f‑string*. If there is any such expression (*e.g.* `` `⍵5 ``), then `` `⍵ `` points to the element after that one (*e.g.* `` `⍵6 ``). If the item to the left is `` `⍵ ``, then we simply increment the index by `1` from that one.
 
-**Let's try an example.** Here, we display arbitrary 2-dimensional expressions, one above the other. 
-`` `⍵ `` refers to the **_next_** argument in sequence, left to right, starting with `` `⍵1 ``, the first, *i.e.* `(⍵⊃⍨ 1+⎕IO)`. 
+**Let's try an example.** Here, we display arbitrary 2-dimensional expressions, 
+one above the other. 
+`` `⍵ `` refers to the **_next_** argument in sequence, left to right, 
+starting with `` `⍵1 ``, the first, *i.e.* `(⍵⊃⍨ 1+⎕IO)`. 
 So, from left to right `` `⍵ `` is `` `⍵1 ``, `` `⍵2 ``, 
 and `` `⍵3 ``. 
 
@@ -885,7 +892,8 @@ has not (yet) been defined in the library,
 an attempt is made to copy that name into the library either from the ***dfns*** workspace  or from a text file; if the name appears to the left-side of a **simple** assigment `←`, it is assumed to exist (as always).  
 
 <span style="font-size: 130%;">👉 </span>
-If **∆F** is unable to find the item during its search, a standard *APL* error will be signaled.
+If **∆F** is unable to find the item during its search, 
+a standard *APL* error will be signaled.
 
 In this next example, we use *for the first time* the function `pco` from the 
 `dfns` workspace. 
@@ -895,11 +903,12 @@ In this next example, we use *for the first time* the function `pco` from the
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 
 ```
 
-<details id="pPeek"><summary class="summary">&ensp;Peek: Using the <em><strong>debug</strong></em> option</summary>
+<details id="pPeek">
+<summary class="summary">&ensp;Peek: Using the <em><strong>debug</strong></em> option</summary>
 
-> To understand when an object is automatically copied into a £ibrary,
-> or to see where it's copied from, 
-> use **∆F**'s ***debug*** option:
+<span style="font-size: 130%;">👉 </span>
+To understand when an object is automatically copied into a £ibrary,
+or to see where it's copied from, use **∆F**'s ***debug*** option:
 
 
 
@@ -946,15 +955,16 @@ require the associated ⍙Fapl namespace to be present.
 
 ## Precomputed f‑strings with the ***dfn*** Option
 
- 
-The default returned from **∆F** is always (on success) a character matrix. That can be expressed schematically via expression *(a),* shown here: 
+With the default first option, the value returned from **∆F** is always (on success) a character matrix. That can be expressed schematically via expression *(a),* shown here: 
 
-    (a) 0 ∆F… 
+
+
+<code>(a) 0 ∆F&nbsp;'*mycode*'</code> 
 
 However, if the initial [∆F Option](#f-option-details),&ensp;***dfn***, is `1`, as in *(b),*
 
-    (b) 1 ∆F… 
-    
+<code>(b) 1 ∆F '*mycode*'</code> 
+
 then  **∆F** returns a **dfn** that, *when called later*, will return precisely the same character expression as for *(a)*.
 This is most useful when you are making repeated use of an *f‑string*, since the overhead for analyzing the *f‑string* contents _once_ will be amortized over ***all*** the calls.
 
@@ -1262,7 +1272,7 @@ performance impact&mdash;
 if the **auto** parameter is enabled.
 If the **auto** parameter is *disabled,* the runtime impact of the feature is more modest still; if *not* used, there is no runtime impact.
 
-To support the Session Library auto-load process, there are parameters, which the user may *optionally* tailor via an APL Array Notation parameter file **.&ThinSpace;∆F** placed in the current file directory.  Parameters include: 
+To support the Session Library auto-load process, there are parameters that the user may *optionally* tailor via an APL Array Notation parameter file **.&ThinSpace;∆F** placed in the current file directory.  Parameters include: 
 
 -  **auto:** the ability to turn on or off any automatic loading
 of object definitions from the *dfns* workspace or files; 
@@ -1407,7 +1417,7 @@ case: `∆F⍨'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251105T210814]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251106T230149]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
