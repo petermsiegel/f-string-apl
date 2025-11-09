@@ -1,22 +1,23 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251106T203023" 
-⍝:Section CORE                                   
-:Namespace ⍙Fapl
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251108T171415" 
+⍝:Section CORE 
+
+:Namespace ⍙Fapl   
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
   DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile-time and run-time verbosity flag
 ⍝ Positional and keyword options (⍺) for ∆F  
-  OPTS_KW←  'dfn' 'debug' 'box' 'auto' 'inline'  
+  OPTS_KW←   'dfn' 'debug' 'box' 'auto' 'inline'           ⍝ In order 
   OPTS_DEF←  0 0 0 1 0     
-  OPTS_N←    ≢ OPTS_DEF 
-⍝ LIB_AUTO: >0   if we by default want to use the LIB_AUTO feature.  
-⍝            2   We want to get lib objects from workspace "dfns" and files.
-⍝            1   We want to get lib objects solely from workspace "dfns"
+  OPTS_N←    ≢OPTS_DEF 
+⍝ LIB_AUTO: >0   We want by default to use the LIB_AUTO feature.  
+⍝            1   We want to get lib objects from workspace "dfns" and files.
 ⍝            0   We don't want to use the LIB_AUTO feature.
-  LIB_AUTO← 1    ⍝ Default is only from dfns, unless overridden!   
+  LIB_AUTO←  1                  ⍝ Default is to load from dfns, unless overridden!   
   LIB_AUTO_FI←  '∆F/∆Fapl_Library.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
   HELP_HTML_FI← '∆F/∆F_Help.html'       ⍝ Called from 'help' option. Globally set here
 
-⍝ ============================   ∆F User Function   ============================= ⍝
+⍝ ============================   ∆F (User Function)   ==============================
+⍝ === Copied into ## as ∆F ===
 ⍝ ∆F: 
 ⍝    result← {opts←⍬} ∇ f-string [args]
 ⍝ This function must be independent of ⎕IO, ⎕ML, etc., since it will be promoted out of ⍙Fapl.
@@ -37,6 +38,7 @@
 ⍝ 
 ⍝   On execution (default mode), "hides" local vars, ¨opts¨ and ¨args¨, from embedded ⎕NL, etc.
 ⍝   This avoids them showing on ⎕NL or related calls.
+⍝ BEGIN ====================   ∆F (User Function)   ==============================
   ∇ result← {opts} ∆F args                             ⍝ For doc, see ∆F in ∆Fapl.dyalog.
     :Trap 0/⍨ ~⎕THIS.DEBUG  
     ⍝ Get options-- pos'l (fast) or keyword (legacy is slow)              
@@ -69,27 +71,34 @@
     :EndTrap 
    ⍝ (C) 2025 Sam the Cat Foundation
   ∇
+⍝ END ====================   ∆F (User Function)   ==============================
+
 
 ⍝ Minor Utilities for ∆F above
-⍝ Keyword options (Dyalog 20) 
+⍝ GetKWOpts: Keyword options (Dyalog 20)
+⍝    ∇ ns
+⍝    ns: A ns, typically generated from APL Array Notation using (kw: val ...) 
   GetKWOpts← {   
     0:: 11 ⎕SIGNAL⍨ 'Use legacy keyword option string if Dyalog 19.x or earlier' 
       kw← () ⎕NS ⍵
       kw ⎕VGET (↑OPTS_KW) OPTS_DEF 
   }
 
-⍝ Keyword options (pre-Dyalog 20)
+⍝ GetKWOptsLegacy: Keyword options (pre-Dyalog 20).
+⍝    ∇ str@CV
+⍝    str: An APL Array Notation-format string
   GetKWOptsLegacy← { 
     0:: ⎕EN ⎕SIGNAL⍨ 'Invalid user option(s).' 
+        ∆NS← { ⍺⊣ (⍺{ ⍺⍺⍎ ⍵,'←⍵⍵.',⍵ ⋄ ⍵⍵ }⍵)¨⍵.⎕NL¯2 }
+        ∆VG← { ns←⍺ ⋄ (↓⊃⍵){ 0=ns.⎕NC ⍺: ns⍎ ⍺,'←⍵' ⋄ ns.⎕OR ⍺ }¨⊃⌽⍵ }
       kw← (⎕NS⍬) ∆NS AN2Apl ⍵
       kw ∆VG (↑OPTS_KW) OPTS_DEF 
   }
-  ∆NS← { ⍺⊣ (⍺{ ⍺⍺⍎ ⍵,'←⍵⍵.',⍵ ⋄ ⍵⍵ }⍵)¨⍵.⎕NL¯2 }
-  ∆VG← { ns←⍺ ⋄ (↓⊃⍵){ 0=ns.⎕NC ⍺: ns⍎ ⍺,'←⍵' ⋄ ns.⎕OR ⍺ }¨⊃⌽⍵ }
+ 
 
 ⍝ ============================   FmtScan ( top-level routine )   ============================= ⍝
 ⍝ FmtScan: 
-⍝    result← [4↑ options] ∇ f_string
+⍝    result← [options|⍬] ∇ f_string
 ⍝ "Main" function called by ∆F above. See the Executive section below.
 ⍝ Calls Major Field Recursive Scanners: 
 ⍝    TF: text, CF_SF: code fields and space fields, CFStr: (code field) quoted strings
@@ -219,9 +228,9 @@
 ⍝ ===========================================================================
 ⍝ FmtScan Executive begins here
 ⍝ ===========================================================================  
-⍝   Validate options ⍺: ⍺[0]∊ ¯1 0 1, ∧/ ⍺[1 2 3]∊ 0 1
-    0∊ 0 1∊⍨ (|⊃⍺), 1↓⍺: ⎕SIGNAL optÊ                  ⍝ Invalid options (⍺)!
-    (dfn dbgG box autoG inline) fStr← ⍺ ⍵                       
+    (dfn dbgG box autoG inline) fStr← ⍺ ⍵    
+  ⍝ Validate options  
+    0∊ 0 1∊⍨ (|dfn),dbgG box autoG inline: ⎕SIGNAL optÊ                   
     DMsg← (⎕∘←)⍣(dbgG∧¯1≠dfn)                           ⍝ Debug message
     nlG← dbgG⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
   ⍝ User Shortcuts: A, B, C, F, T~D, Q, W.  
@@ -235,8 +244,9 @@
  
   ⍝ Pseudo-globals  camelCaseG 
   ⍝    dbgG-      runtime debug flag. Set above.
-  ⍝    autoG-     runtime: If 0, disables library autoload mode, overriding the default and .∆F setting.
-  ⍝               If 1, honors default/.∆F setting.
+  ⍝    autoG-     runtime: 
+  ⍝                 If 0, disables library autoload mode, overriding the default and .∆F setting.
+  ⍝                 If 1, honors default/.∆F setting of parms.auto∊ 0 1.
   ⍝    fldsG-     global field list
   ⍝    omIxG-     omega index counter: current index for omega shortcuts (`⍵, ⍹)  
   ⍝    nBracG-    running count of braces '{' lb, '}' rb
@@ -269,9 +279,9 @@
   om← '⍵'                                          ⍝ ⍵ not in cfBrklist, since not special. (See `⍵).
   nl nlVis← ⎕UCS 13 9252                           ⍝ 9252 (␤), 9229 (␍)               
 ⍝ Seq. `⋄ OR `◇ map onto ⎕UCS 13.
-⍝ dia2[0]: Dyalog stmt separator
+⍝ dia2[0]: Dyalog stmt separator 
 ⍝ dia2[1]: Alternative character that is easier to read in some web browsers. 
-  dia2← ⎕UCS 8900 9671
+  dia2← ⎕UCS 8900 9671                                 ⍝  ⋄ ◇
 ⍝ lDAQ, rDAQ: LEFT- and RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK, aka guillemets  
   lDAQ rDAQ← '«»'                                      ⍝ ⎕UCS 171 187 
 ⍝ Order brklist chars roughly by frequency, high to low.       
