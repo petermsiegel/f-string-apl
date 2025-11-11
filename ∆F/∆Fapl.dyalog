@@ -1,20 +1,23 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "20251108T171415" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-10T15:55:03" 
 ⍝:Section CORE 
 
 :Namespace ⍙Fapl   
-  ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI)  
+  ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI) 
+
+⍝ GENERAL GLOBAL VARIABLES 
   DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile-time and run-time verbosity flag
-⍝ Positional and keyword options (⍺) for ∆F  
-  OPTS_KW←   'dfn' 'debug' 'box' 'auto' 'inline'           ⍝ In order 
+⍝ VARIABLES FOR ∆F OPTIONS: Positional and keyword 
+  OPTS_KW←   'dfn' 'debug' 'box' 'auto' 'inline'        ⍝ In order 
   OPTS_DEF←  0 0 0 1 0     
   OPTS_N←    ≢OPTS_DEF 
-⍝ LIB_AUTO: >0   We want by default to use the LIB_AUTO feature.  
-⍝            1   We want to get lib objects from workspace "dfns" and files.
-⍝            0   We don't want to use the LIB_AUTO feature.
-  LIB_AUTO←  1                  ⍝ Default is to load from dfns, unless overridden!   
-  LIB_AUTO_FI←  '∆F/∆Fapl_Library.dyalog'   ⍝ Library shortcuts (£,  `L) utilities.             
-  HELP_HTML_FI← '∆F/∆F_Help.html'       ⍝ Called from 'help' option. Globally set here
+⍝ SESSION LIBRARY (£ or `L) VARIABLES
+⍝ LIB_LOAD:  1   We want to use the SESSION LIBRARY autoload.
+⍝            0   We don't want to use SESSION LIBRARY autoload.
+  LIB_LOAD←  1     
+  LIB_SOURCE←  '∆F/∆Fapl_Library.dyalog'  ⍝ Library shortcuts (£,  `L) utilities.
+⍝ HELP-related globals             
+  HELP_HTML←   '∆F/∆F_Help.html'          ⍝ Called from 'help' option. Globally set here
 
 ⍝ ============================   ∆F (User Function)   ==============================
 ⍝ === Copied into ## as ∆F ===
@@ -79,20 +82,24 @@
 ⍝    ∇ ns
 ⍝    ns: A ns, typically generated from APL Array Notation using (kw: val ...) 
   GetKWOpts← {   
-    0:: 11 ⎕SIGNAL⍨ 'Use legacy keyword option string if Dyalog 19.x or earlier' 
       kw← () ⎕NS ⍵
-      kw ⎕VGET (↑OPTS_KW) OPTS_DEF 
+      1∊b←~OPTS_KW∊⍨ n← kw.⎕NL ¯2: 11 ⎕SIGNAL⍨'Invalid user options(): ',∊b/n 
+      kw ⎕VGET (↑OPTS_KW) OPTS_DEF ⊣ KWValid kw  
   }
 
 ⍝ GetKWOptsLegacy: Keyword options (pre-Dyalog 20).
 ⍝    ∇ str@CV
 ⍝    str: An APL Array Notation-format string
   GetKWOptsLegacy← { 
-    0:: ⎕EN ⎕SIGNAL⍨ 'Invalid user option(s).' 
+      0::   'Invalid user option format' ⎕SIGNAL ⎕EN 
+      911:: ⎕DMX.EM ⎕SIGNAL ⎕DMX.EN 
         ∆NS← { ⍺⊣ (⍺{ ⍺⍺⍎ ⍵,'←⍵⍵.',⍵ ⋄ ⍵⍵ }⍵)¨⍵.⎕NL¯2 }
         ∆VG← { ns←⍺ ⋄ (↓⊃⍵){ 0=ns.⎕NC ⍺: ns⍎ ⍺,'←⍵' ⋄ ns.⎕OR ⍺ }¨⊃⌽⍵ }
       kw← (⎕NS⍬) ∆NS AN2Apl ⍵
-      kw ∆VG (↑OPTS_KW) OPTS_DEF 
+      kw ∆VG (↑OPTS_KW) OPTS_DEF ⊣ KWValid kw  
+  }
+  KWValid← { b← ~OPTS_KW∊⍨ n← ⍵.⎕NL ¯2
+    1∊b: 911 ⎕SIGNAL⍨'Invalid user option(s):',∊' ',¨b/n ⋄ ⍬ 
   }
  
 
@@ -299,7 +306,7 @@
   optÊ←        Ê 'Invalid option(s) in left argument. For help: ∆F⍨''help'''
   ShortcutÊ←   Ê {'Sequence "`',⍵,'" does not represent a valid shortcut.'}
   EscÊ←        Ê {'Sequence "`',⍵,'" is not valid in code outside strings. Did you mean "',⍵,'"?'}
-  helpFiÊ←  22 Ê 'Help file "',HELP_HTML_FI,'" not found in current directory'
+  helpFiÊ←  22 Ê 'Help file "',HELP_HTML,'" not found in current directory'
 
 ⍝ =========================================================================
 ⍝ Utilities (fns/ops) for FmtScan above.
@@ -356,13 +363,17 @@
 ⍝       'help' ∆F anything  OR  ∆F⍨'help'
 ⍝ (1 0⍴⍬)← ∇ ⍵
 ⍝ 1. If ⍵ is not 'help' (any case), an error is signaled.
-⍝ 2. If helpHtml is not defined or if DEBUG=1, HELP_HTML_FI will be read and copied into helpHtml. 
+⍝ 2. If helpHtml is not defined or if DEBUG=1, HELP_HTML will be read and copied into helpHtml. 
 ⍝ 3. Displays helpHtml.
-  Help← { 
-    'help'≢  ⎕C 4↑⎕C⍵: ⎕SIGNAL optÊ 
+  Help← { h← ⎕C⍵
+  ⍝ parms: Load any new parms without a ]load. 
+  ⍝        Returns display of default and user parms (as mx) in alph order.
+    'parms'≡ 5↑h: _← libUtil.LoadParms 1 1 1     
+    'help' ≢ 4↑h: ⎕SIGNAL optÊ 
+  ⍝ help, help-wide, or help-narrow?
     h← {  
       22:: ⎕SIGNAL helpFiÊ 
-      DEBUG∨ ⍵: ⊢⎕THIS.helpHtml← ⊃⎕NGET HELP_HTML_FI 
+      DEBUG∨ ⍵: ⊢⎕THIS.helpHtml← ⊃⎕NGET HELP_HTML 
         ⎕THIS.helpHtml  
     } 0= ⎕NC 'helpHtml' 
   ⍝ Undocumented: [a] 'help' vs [b] ('help-n[arrow]' (vs 'help-w[ide]')
@@ -375,18 +386,18 @@
 ⍝:EndSection HELP 
 
 ⍝:Section "Stubs" for "LIBRARY" Shortcuts  
-⍝ See ⍙LoadLibAuto 
-⍝ ûLib is the user library.
-:Namespace ûLib
-⍝⍝⍝⍝⍝ Stub. See ⍙LoadLibAuto
+⍝ See libUtil.LinkUserLib
+⍝ ûserLib is the user library.
+:Namespace ûserLib
+    ⍝⍝⍝⍝⍝ Stub. See ⍙LoadLibAuto
 :EndNamespace
 
 ⍝ Utilities for "library" shortcut (£, `L) 
 ⍝ See ⍙LoadLibAuto 
 :Namespace libUtil
 ⍝⍝⍝⍝⍝ This is a stub. 
-  ∇ ok← BareBones
-   ok← 1 ⋄ uLibNm← ⍕##.ûLib ⋄ Auto← uLibNm⍨             
+  ∇ {ns}← BareBones
+    ns← uLibNm← ⍕##.ûserLib ⋄ Auto← uLibNm⍨             
   ∇
   BareBones 
 :EndNamespace 
@@ -480,7 +491,7 @@
           _,  '}'
       }⍬
     Q← XR scQ2← HT   ' ⎕THIS.Q ' qCod 
-    T← XR scT2← HT   ' ⎕THIS.T ' '{⎕ML←1⋄⍺←''YYYY-MM-DD hh:mm:ss''⋄∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT⊆⍵}'  
+    T← XR scT2← HT   ' ⎕THIS.T ' '{⎕ML←1⋄⍺←''%ISO%''⋄∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT⊆⍵}'  
     W← XR scW2← HT   ' ⎕THIS.W ' '{⎕ML←1⋄⍺←⎕UCS 39⋄ 1<|≡⍵: ⍺∘∇¨⍵⋄L R←2⍴⍺⋄{L,R,⍨⍕⍵}⍤1⊢⍵}'
   ⍝ Load shortcuts: [internal+external] scList; [external only] nSC, MapSC.
   ⍝ £, `L (niladic) are handled ad hoc.  
@@ -489,7 +500,7 @@
     MapSC←  sc∘⍳ 
     ok← 1 
   ∇
-  ∇ ok← ⍙LoadHelp hfi;e1; e2 
+  ∇ {ok}← ⍙LoadHelp hfi;e1; e2 
   ⍝ Loading the help html file...
     :Trap 22 
         ⎕THIS.helpHtml← ⊃⎕NGET hfi
@@ -502,22 +513,22 @@
         ok← 0 
     :EndTrap 
   ∇
-  ∇ ok← ⍙LoadLibAuto fi 
+  ∇ {ok}← ⍙LoadLibAuto fi 
     :TRAP 22 
         ⎕FIX 'file://',fi
         :If VERBOSE ⋄ ⎕←'>>> Loaded services for Library shortcut "',fi,'" into "','"',⍨⍕⎕THIS  ⋄ :EndIf 
         ok← 1 
     :Else
-        ok←0 ⋄  LIB_AUTO← 0 
+        ok←0 ⋄  LIB_LOAD← 0 
         ⎕← ⎕PW⍴'='
         ⎕←'>>> WARNING: Unable to load services for Library shortcut "',fi,'" into "','"',⍨⍕⎕THIS 
         ⎕←'>>> NOTE:    £ and `L shortcuts are available without these services (auto: 0).'
         ⎕← ⎕PW⍴'='
     :EndTrap
   ∇
-  ∇ ok← ⍙NoteGlobals 
+  ∇ {ok}← ⍙NoteGlobals 
   :If VERBOSE 
-      ⎕←'>>> ∆F Application-wide Globals: ( DEBUG:',DEBUG,'⋄ VERBOSE:',VERBOSE, '⋄ LIB_AUTO:',LIB_AUTO,')' 
+      ⎕←'>>> ∆F Application-wide Globals: ( DEBUG:',DEBUG,'⋄ VERBOSE:',VERBOSE, '⋄ LIB_LOAD:',LIB_LOAD,')' 
   :EndIf 
   ok← 1 
   ∇ 
@@ -525,8 +536,8 @@
 ⍝ Execute FIX-time routines
   ⍙Promote_∆F ##  
   ⍙LoadShortcuts
-  ⍙LoadHelp HELP_HTML_FI
-  ⍙LoadLibAuto LIB_AUTO_FI
+  ⍙LoadHelp HELP_HTML
+  ⍙LoadLibAuto LIB_SOURCE
   ⍙NoteGlobals 
 
  

@@ -482,6 +482,8 @@ Un(der)documented Features</a>
 <li><a href="#f-option-for-dfn-source-code">∆F Option for Dfn Source
 Code</a></li>
 <li><a href="#f-helps-secret-variant">∆F Help's Secret Variant</a></li>
+<li><a href="#fs-library-parameter-option-parms">∆F's Library Parameter
+Option: 'parms'</a></li>
 </ul></li>
 <li><a href="#appendix-ii-python-fstrings">Appendix II: Python
 f‑strings</a></li>
@@ -524,24 +526,22 @@ class="header-section-number">2.2</span> Loading and Running
 <strong>∆F</strong></h2>
 <ol type="1">
 <li>Confirm that your current directory remains as before.</li>
-<li>From your Dyalog session (typically <code>#</code> or
-<code>⎕SE</code>), enter:
-<span class="margin-note"><em>Example:</em><br><code>   ]load ∆F -t=⎕SE</code><br><code>⎕SE.∆F + ⎕SE.⍙Fapl</code></span><br> <code>]load ∆F [-target=</code><code><em>anyNs</em>]</code><br>replacing
-<em><code>anyNs</code></em> with your desired namespace. <em>(We suggest
-<small><strong>-target=⎕SE</strong></small>.)</em></li>
+<li>From your Dyalog
+session<span class="margin-note"><em><strong>⎕SE:</strong></em> Or any
+<em>target</em> namespace you desire.</span>, enter:
+<br> <code>]load ∆F [-target=⎕SE]</code></li>
 <li>If <strong>∆F/∆F_Help.html</strong> is available at
 <code>]load</code> time, it will be copied into <strong>⍙Fapl</strong>
 (or a message will note the absence of <em>help</em> information).</li>
-<li>Namespace
-<code><em><strong>anyNs</strong></em>.<strong>⍙Fapl</strong></code> now
+<li>Namespace <code><em>⎕SE</em>.<strong>⍙Fapl</strong></code> now
 contains utilities used by <strong>∆F</strong> and, once
 <code>]load</code>ed, <em><strong>should not</strong></em> be moved.
 <strong>∆F</strong> always refers to <strong>⍙Fapl</strong> in its
 <em>original</em> location.</li>
-<li>By default, namespace <code><em><strong>anyNs</strong></em></code>
-will be added to the end of <code>⎕PATH</code>, if not already defined
-in ⎕PATH. You may always choose to relocate or assign
-<strong>∆F</strong> anywhere you want so that it is available.</li>
+<li>By default, the target namespace (<code><em>⎕SE</em></code>) will be
+added to the end of <code>⎕PATH</code>, if not already defined in ⎕PATH.
+You may always choose to relocate or assign <strong>∆F</strong> anywhere
+you want so that it is available.</li>
 </ol>
 <p> <span style="font-size: 130%;">👉 </span>You may now call
 <code>∆F</code> with the desired <a
@@ -820,7 +820,7 @@ animal name, <em>Elephant</em>, so it wouldn't run into the next word,
 space after <em>each</em> word without fiddling; a
 <strong>Space</strong> field with at least one space will solve the
 problem:</p>
-<pre class="apl"><code>⍝                          ↓↓↓
+<pre><code>⍝                          ↓↓↓
    ∆F &#39;Cat`◇Elephant`◇Mouse{ }Felix`◇Dumbo`◇Mickey&#39;
 Cat      Felix
 Elephant Dumbo
@@ -890,16 +890,16 @@ class="header-section-number">5.6</span> Box Mode</h2>
 <p>But what if you want to place a box around every
 <strong>Code</strong>, <strong>Text</strong>,
 <strong><em>and</em></strong> <strong>Space</strong> field? We just use
-the <strong>Box</strong> mode option!</p>
+the <strong>box</strong> mode option!</p>
 <p>While we can't place boxes around text (or space) fields using
 <code>`B</code>, we can place a box around
 <em><strong>each</strong></em> field (<em>regardless</em> of type) by
 setting <strong>∆F</strong>'s <em>third</em> option, <a
-href="#f-option-details"><strong>Box</strong> mode</a>,
-<span class="margin-note"><strong>third option</strong>:
-<code>⍺[2+⎕IO]</code>.</span>to <code>1</code>:</p>
+href="#f-option-details"><strong>box</strong> mode</a>,
+<span class="margin-note"><strong>third option</strong>: <em>Or</em>,
+<code>(box: 1)</code></span>to <code>1</code>:</p>
 <pre><code>   cv← 11.3 29.55 59.99
-       ↓¯¯¯ Box mode
+       ↓¯¯¯ box mode
    0 0 1 ∆F &#39;`◇The temperature is {&quot;I2&quot; $ cv}`◇°C or {&quot;F5.1&quot; $ 32+9×cv÷5}`◇°F&#39;
 ┌───────────────────┬──┬──────┬─────┬──┐
 │                   │11│      │ 52.3│  │
@@ -912,7 +912,8 @@ exception. Null <strong>Space</strong> fields <code>{}</code>,
 they've done their work of separating adjacent fields (typically
 <strong>Text</strong> fields), so they won't be placed in boxes.</p>
 <p>Try this expression on your own:</p>
-<pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;</code></pre>
+<pre><code>⍝  Dyalog 20: (box: 1) ∆F ...
+   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;      </code></pre>
 <details id="pPeek"><summary class="summary">&ensp;Peek at answer</summary>
 
 <pre><code>   0 0 1 ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;
@@ -1201,20 +1202,21 @@ class="header-section-number">5.16</span> A Shortcut for Dates and Times
 (Part I)</h2>
 <p><span class="margin-note">The syntax for the Date-Time specifications
 in the left argument to <code>`T</code> can be found in the Dyalog
-doc­ument­ation under <strong>1200⌶</strong>. For the curious, here's the
-core <em>dfn</em> code actually used by the Date-Time shortcut:
-<br> <code>⍺←'YYYY-MM-DD hh:mm:ss'</code><br> <code>∊⍣(1=≡⍵)⊢⍺(1200⌶)⊢1⎕DT ⊆⍵</code>
-</span> <strong>∆F</strong> supports a simple <strong>Date-Time</strong>
+doc­ument­ation under <strong>1200⌶</strong>. See <a
+href="#code-field-shortcuts">below</a>, for more info. </span>
+<strong>∆F</strong> supports a simple <strong>Date-Time</strong>
 shortcut <code>`T</code> built from <strong>1200⌶</strong> and
 <strong>⎕DT</strong>. It takes one or more Dyalog
 <code>⎕TS</code>-format timestamps as the right argument and a date-time
-specification as the (optional) left argument. Trailing elements of a
-timestamp may be omitted (they will each be treated as <code>0</code> in
-the specification string).</p>
+specification as the <span class="margin-note">The default left arg­ument
+is <code>⍺← '%ISO%'</code>, <em>i.e.</em> an ISO date-time.</span>
+(optional) left argument. Trailing elements of a timestamp may be
+omitted (they will each be treated as <code>0</code> in the
+specification string).</p>
 <p>Let's look at the use of the <code>`T</code> shortcut to show the
 current time (now).</p>
-<p><span class="margin-note"><br>The time displayed in practice will be
-the <em>true</em> current time.</span></p>
+<p><span class="margin-note">The time displayed in practice will be the
+<em>true</em> current time.</span></p>
 <pre><code>   ∆F &#39;It is now {&quot;t:mm pp&quot; `T ⎕TS}.&#39;
 It is now 8:08 am.</code></pre>
 <p>Here's a fancier example<span class="margin-note">The power is in the
@@ -1441,7 +1443,8 @@ copied from, use <strong>∆F</strong>'s <em><strong>debug</strong></em>
 option:</p>
 <p><span class="margin-note"><br>First use of £.pco this
 <em>session.</em></span></p>
-<pre><code>    0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
+<pre><code>⍝  Dyalog 20: (debug: 1) ∆F ...
+   0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39; 
 DEBUG: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.ûLib] from &quot;ws:dfns&quot;
 { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
@@ -1474,25 +1477,26 @@ We&#39;ve been called 2 times.</code></pre>
 <p>This may be sensible when ∆F is called from a variety of namespaces
 and/or if the user doesn't wish to clutter the active namespace.</p>
 <p><span style="font-size: 130%;">👉 </span> When a <em>dfn</em> created
-via <strong>∆F</strong> with the <em><strong>dfn</strong></em> option
-runs, any uses of <code>£</code> will require the associated ⍙Fapl
-namespace to be present. We discuss the <em>dfn</em> option in the
-<em>next</em> section!</p>
+via <strong>∆F</strong> with the <em><strong>dfn</strong></em> mode set
+<span class="margin-note">*<code>1 ∆F '...'</code>.</span>to
+<code>1</code>, any uses of <code>£</code> will require the associated
+⍙Fapl namespace to be present. We discuss the
+<em><strong>dfn</strong></em> option in the <em>next</em> section!</p>
 </div>
 
 <h2 data-number="5.21"
 id="precomputed-fstrings-with-the-dfn-option"><span
 class="header-section-number">5.21</span> Precomputed f‑strings with the
 <em><strong>dfn</strong></em> Option</h2>
-<p>As shown in Table 5a (below), with the default <em>dfn</em> option
-<em>(i),</em> the value returned from a successful call to
-<strong>∆F</strong> is always a character matrix. However,
-<span class="margin-note">This <em>(ii)</em> assumes the resulting dfn
-is called with the same arguments in the same calling environment in the
-same state.</span> if the initial <a href="#f-option-details">∆F
-Option</a> is enabled <em>(ii),</em> then <strong>∆F</strong> returns a
-<strong>dfn</strong> that— when called later— will return the identical
-character expression.</p>
+<p>As shown in Table 5a (below), with <em>(i)</em> the default
+<em>dfn</em> option set to <code>0</code>, the value returned from a
+successful call to <strong>∆F</strong> is always a character matrix.
+However, <em>(ii)</em>* <span class="margin-note">This <em>(ii)</em>
+assumes the resulting dfn is called with the same arguments in the same
+calling environment in the same state.</span> if <a
+href="#f-option-details"><em>dfn</em></a> is set to <code>1</code>, then
+<strong>∆F</strong> returns a <strong>dfn</strong> that— when called
+later— will return the identical character expression.</p>
 <table>
 <thead>
 <tr>
@@ -1506,13 +1510,13 @@ style="text-align: left;"><center>Positional<br>Parameter</center></th>
 <tbody>
 <tr>
 <td style="text-align: justify;"><em>(i)</em></td>
-<td style="text-align: center;"><small>DEFAULT</small></td>
+<td style="text-align: center;"><em><strong>default</strong></em></td>
 <td style="text-align: justify;"><code>[0] ∆F 'mycode'</code></td>
 <td style="text-align: justify;"><code>(dfn: 0) ∆F 'mycode'</code></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><em>(ii)</em></td>
-<td style="text-align: center;">dfn</td>
+<td style="text-align: center;"><em><strong>dfn</strong></em></td>
 <td style="text-align: justify;"><code> 1  ∆F 'mycode'</code></td>
 <td style="text-align: justify;"><code>(dfn: 1) ∆F 'mycode'</code></td>
 </tr>
@@ -1572,8 +1576,8 @@ least in this run.</p>
 <p>Before we get to syntax and other information, we want to show you
 that <span class="margin-note">The <em>dfn</em> returned includes the
 original <em>f‑string</em> text used to generate it, available as
-<code>`⍵0</code>.</span> the <em>dfn</em> returned via the
-<em><strong>dfn</strong></em> option can retrieve one or more arguments
+<code>`⍵0</code>.</span> the <em>dfn</em> returned when the <em>dfn</em>
+option is set to <code>1</code> can retrieve one or more arguments
 passed on the right side of <strong>∆F</strong>, using the very same
 omega shortcut expressions (like <code>`⍵1</code>) we've discussed
 above.</p>
@@ -1670,18 +1674,18 @@ class="header-section-number">6.2</span> ∆F Option Details</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;"><center>Pos'l
-Option<div style="width:150px"></div></center></th>
-<th style="text-align: center;">Keyword Option<br><small>(<em>keyword:
-default</em>)<div style="width:175px"></small></th>
-<th style="text-align: left;">Description</th>
+<th style="text-align: center;"><br><br>Mode</th>
+<th style="text-align: center;">Positional<br>Option<br>Index</th>
+<th
+style="text-align: center;">Keyword<br>Option<br><small>(<em>keyword:
+default</em>)<div style="width:150px"></small></th>
+<th style="text-align: left;"><br><br>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td
-style="text-align: left;"> <em><strong>options[0]</strong></em>:<br>  <em>output
-mode</em></td>
+<td style="text-align: center;"><strong>Dfn</strong></td>
+<td style="text-align: center;"> <em><strong>[0]</strong></em></td>
 <td style="text-align: center;"><em><strong>dfn: 0</strong></em></td>
 <td style="text-align: justify;">If <em><strong>dfn: 1</strong></em>,
 <strong>∆F</strong> returns a dfn, which (upon execution) produces the
@@ -1689,9 +1693,8 @@ same output as the default mode.<br>If <em><strong>dfn: 0</strong></em>
 (default): <strong>∆F</strong> returns a char. matrix.</td>
 </tr>
 <tr>
-<td
-style="text-align: left;"> <em><strong>options[1]:</strong></em><br>  <em>debug
-mode</em></td>
+<td style="text-align: center;"><strong>Debug</strong></td>
+<td style="text-align: center;"> <em><strong>[1]</strong></em></td>
 <td style="text-align: center;"><em><strong>debug: 0</strong></em></td>
 <td style="text-align: justify;">If <em><strong>debug: 1</strong></em>,
 Renders newline characters from <code>`◇</code> as the visible
@@ -1707,9 +1710,8 @@ carriage returns, <code>⎕UCS 13</code>; the
 <em><strong>dfn</strong></em> source code is not displayed.</td>
 </tr>
 <tr>
-<td
-style="text-align: left;"> <em><strong>options[2]</strong></em>:<br>  <em>box
-mode</em></td>
+<td style="text-align: center;"><strong>Box</strong></td>
+<td style="text-align: center;"> <em><strong>[2]</strong></em></td>
 <td style="text-align: center;"><em><strong>box: 0</strong></em></td>
 <td style="text-align: justify;">If <em><strong>box: 1</strong></em>, each
 field (except a null <strong>Text</strong> field) is boxed
@@ -1717,13 +1719,12 @@ separately.<br>If <em><strong>box: 0</strong></em> (default), nothing is
 boxed automatically. Any <strong>Code</strong> field expression may be
 explicitly boxed using the <strong>Box</strong> shortcut,
 <code>`B</code>.<br><strong>NB.</strong> <em><strong>box</strong></em>
-mode can be used with modes <strong><code>dfn: 1</code></strong>
+mode can be used with settings <strong><code>dfn: 1</code></strong>
 <em>and</em> <strong><code>dfn: 0</code>.</strong></td>
 </tr>
 <tr>
-<td
-style="text-align: left;"> <em><strong>options[3]</strong></em>:<br>  <em>auto
-mode</em></td>
+<td style="text-align: center;"><strong>Auto</strong></td>
+<td style="text-align: center;"> <em><strong>[3]</strong></em></td>
 <td style="text-align: center;"><em><strong>auto: 1</strong></em></td>
 <td style="text-align: justify;">If <em><strong>auto: 0</strong></em>, user
 must manually load/create any Session Library objects for use with the £
@@ -1732,9 +1733,8 @@ or <code>`L</code> shortcuts.<br>If <em><strong>auto: 1</strong></em>
 <code>auto</code>.</td>
 </tr>
 <tr>
-<td
-style="text-align: left;"> <em><strong>options[4]</strong></em>:<br>  <em>inline
-mode</em></td>
+<td style="text-align: center;"><strong>Inline</strong></td>
+<td style="text-align: center;"> <em><strong>[4]</strong></em></td>
 <td style="text-align: center;"><em><strong>inline: 0</strong></em></td>
 <td style="text-align: justify;">If <em><strong>inline: 1</strong></em> and
 <em><strong>dfn: 1</strong></em>, the code for each internal support
@@ -1749,10 +1749,18 @@ process.<br><strong>NB.</strong> This option is experimental and may
 simply disappear one day.</td>
 </tr>
 <tr>
-<td style="text-align: justify;"> <big>'help'</big></td>
-<td style="text-align: center;"></td>
+<td style="text-align: center;"><strong>Special</strong></td>
+<td style="text-align: center;"><em><strong>'help'</strong></em></td>
+<td style="text-align: center;">—</td>
 <td style="text-align: justify;">If <code>'help'</code> is specified, this
 amazing doc­ument­ation is displayed.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Special</strong></td>
+<td style="text-align: center;"><em><strong>'parms'</strong></em></td>
+<td style="text-align: center;">—</td>
+<td style="text-align: justify;">Updates and displays Session Library
+(<code>£</code> or <code>`L</code>) pa­ram­eters.</td>
 </tr>
 </tbody>
 </table>
@@ -1782,22 +1790,26 @@ style="text-align: left;"> <code>(dfn: 0 ◇ debug: 0 ◇ box: 0 ◇ auto: 1 �
 </table>
   <div>Table 6c. <strong>∆F Default Options</strong></div>
 </li>
-<li><p><strong>Positional style options:</strong> If the left argument
-<code>⍺</code> is a simple integer vector or scalar, or an empty numeric
-vector <code>⍬</code>, the options are</p>
-<p><code>5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺</code>   NB. <em>Trailing elements are
-ignored.</em></p></li>
+<li><p><strong>Positional style options:</strong> If
+<strong>∆F</strong>'s left argument <code>⍺</code> is a simple integer
+vector (or a scalar), omitted (trailing) elements are replaced by the
+corresponding elements of default, <code>0 0 0 1 0</code>. <em>NB. Extra
+elements are ignored.</em></p></li>
 <li><p><strong>Keyword style options:</strong> If the left argument is a
-<span class="margin-note">See Dyalog documentation on <em>APL</em> Array
-Notation.</span>namespace, it is assumed to contain option names (in any
-order) with their non-default values,<br>  e.g.
+<span class="margin-note">See Dyalog 20 documentation on <em>APL</em>
+Array Notation.</span>namespace, it is assumed to contain option names
+(in any order) with their non-default values,<br>  e.g.
 <code>(debug: 1 ◇ auto: 0)</code>;<br />
 Keyword options are new for Dyalog 20. They are sometimes clearer and
 more convenient than positional keywords.</p></li>
 <li><p><strong>Help option:</strong> If the left argument <code>⍺</code>
 starts with <code>'help'</code> (case ignored), this help information is
-displayed. In this case only, the right argument to <strong>∆F</strong>
-is ignored.</p></li>
+displayed. In this case, the right argument to <strong>∆F</strong> is
+ignored.</p></li>
+<li><p><strong>Parms option:</strong> If the left argument
+<code>⍺</code> matches <code>'parms'</code> (case ignored), the Session
+Library parameters are (re-)loaded and displayed. In this case, the
+right argument to <strong>∆F</strong> is ignored.</p></li>
 <li><p>Otherwise, an error is signaled.</p></li>
 </ul>
 <h2 data-number="6.3" id="f-return-value"><span
@@ -1807,7 +1819,9 @@ class="header-section-number">6.3</span> ∆F Return Value</h2>
 <strong>∆F</strong> always returns a character matrix of at least one
 row and zero columns, <code>1 0⍴0</code>, on success. If the 'help'
 option is specified, <strong>∆F</strong> displays this information,
-returning <code>1 0⍴0</code>.</li>
+returning <code>1 0⍴0</code>. If the 'parms' option is specified,
+<strong>∆F</strong> shows the Session Library parameters as a character
+matrix.</li>
 <li>If the <em><strong>dfn</strong></em> option is selected,
 <strong>∆F</strong> always returns a standard Dyalog dfn on
 success.</li>
@@ -1958,8 +1972,7 @@ If omitted, <code>⍺←''''</code>.</td>
 timestamp(s) <code>⍵</code> according to date-time template
 <code>⍺</code>. <code>⍵</code> is one or more APL timestamps
 <code>⎕TS</code>. <code>⍺</code> is a date-time template in
-<code>1200⌶</code> format. If omitted,
-<code>⍺← 'YYYY-MM-DD hh:mm:ss'</code>.</td>
+<code>1200⌶</code> format. If omitted, <code>⍺← '%ISO%'</code>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`W</strong></td>
@@ -2280,28 +2293,35 @@ NEVER</small></span></td>
 <h3 data-number="6.10.2" id="session-library-shortcut-parameters"><span
 class="header-section-number">6.10.2</span> Session Library Shortcut:
 Parameters</h3>
-<p>The Session Library shortcut (<code>£</code> or <code>`L</code>) is
-deceptively simple, but the code to support it is a tad complex.
-<span class="margin-note">If <code>auto: 2</code> is set, the
-<em>first</em> time each name is used there is the potential for
-substantial overhead in searching for and fixing it in the session
-library.</span> The complex library code runs only at <code>]load</code>
-time, with a modest runtime performance impact— if the
-<strong>auto</strong> parameter is enabled. If the <strong>auto</strong>
-parameter is <em>disabled,</em> the runtime impact of the feature is
-more modest still; if <em>not</em> used, there is no runtime impact.</p>
+<p>The <span class="margin-note">If the automatic search feature is
+enabled— the default—, the <em>first</em> time each name is used there
+is the potential for substantial overhead in searching for, loading, and
+fixing it in the session library.</span> Session Library shortcut
+(<code>£</code> or <code>`L</code>) is deceptively simple, but the code
+to support it is a tad complex. The complex components run only when
+<strong>∆F</strong> is loaded. If the <strong>auto</strong> parameter is
+<code>1</code>, there is a modest performance impact at runtime. If
+<code>0</code>, the runtime impact of the feature is more modest
+still.</p>
 <p>To support the Session Library auto-load process, there are
 parameters that the user may <em>optionally</em> tailor via an APL Array
 Notation parameter file <strong>. ∆F</strong> placed in the current file
 directory. Parameters include:</p>
 <ul>
-<li><strong>auto:</strong> the ability to turn on or off any automatic
-loading of object definitions from the <em>dfns</em> workspace or
-files;</li>
+<li><strong>load:</strong> the ability, when <strong>∆F</strong> is
+being loaded, to define <span class="margin-note">If
+<strong>load</strong> is set to <code>0</code>, the definition process
+is not executed and <strong>auto</strong> is ignored. </span> where— in
+which files or workspaces— to find Session Library objects, based on
+default or user parameters;</li>
+<li><strong>auto:</strong> allowing <strong>∆F</strong> to automatically
+load undefined objects of the form <code>£.obj</code> or
+<code>`L.obj</code> into the Session Library from workspaces or files on
+the search path;</li>
 <li><strong>verbose:</strong> providing limited information on
 parameters, object loading, <em>etc.</em>;</li>
-<li><strong>path:</strong> what directories to search for the object
-definitions;</li>
+<li><strong>path:</strong> listing what directories to search for the
+object definitions;</li>
 <li><strong>prefix:</strong> literal character vectors to prefix to each
 file name during the object search;</li>
 <li><strong>suffix:</strong> <span class="margin-note">More details
@@ -2313,73 +2333,65 @@ appear below.</span>filemodes that indicate the type of object and
 this go forward.</span> is documented <em>below</em>.</p>
 <details><summary class="summary">&ensp;<em>Show/Hide Default £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
 
-<pre class="apl"><code>(
-   ⍝ Default .∆F Parameter File (in APL Array Notation)                           
-   ⍝ Items not to be (re)set by user should be omitted/commented out.              
-   ⍝ Exceptions: 
-   ⍝ [1-2] auto and verbose can each be set to null to signal 
-   ⍝       that their value should come from the ∆Fapl globals LIB_AUTO or VERBOSE.
-   ⍝ [3]   prefix, which if null is the same as [&#39;&#39;], i.e. 0-length string prefix.
-       
-   ⍝ ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
-   ⍝ Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
-   ⍝ The values are explained here:
-   ⍝   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
-   ⍝                  using the default or user-specified path.
-   ⍝   LIB_AUTO:  0   We don&#39;t want to use the LIB_AUTO feature.
-   ⍝   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related
-   ⍝                  and general.  The debug ∆F option will also display limited 
-   ⍝                  runtime msgs.
-   ⍝   VERBOSE:   0   Will only display error or important warning msgs.
-       
-   ⍝ auto:
-   ⍝   If 0, user must load own objects; nothing is automatic.                 
-   ⍝   If 1, dfns and files searched in sequence set by path (q.v.). 
-   ⍝   If ⎕NULL, inherit setting from the LIB_AUTO global 
-     auto:  ⎕NULL   
-       
-   ⍝ verbose: 
-   ⍝   If 0, be quiet;  if 1, be verbose.  
-   ⍝   If ⎕NULL, inherit setting from VERBOSE global. 
-     verbose: ⎕NULL
-                                                          
-   ⍝ path: The dirs and/or workspaces  to search.  
-   ⍝   For a directory, use character vectors
-   ⍝       ⊂&#39;MyOnlyDir&#39;      or    (&#39;MyOnlyDir&#39; ◇ )
-   ⍝       &#39;Dir1&#39; &#39;Dir2&#39;     or    (&#39;Dir1&#39; ◇ &#39;Dir2&#39;)
-   ⍝   For a workspace, use a single enclosed char vec or a vector of char vectors 
-   ⍝   Examples of workspace specs:  
-   ⍝       (&#39;dfns&#39;◇)  (&#39;MyDyalogLib/mathfns&#39;◇)  (&#39;dfns&#39; ◇ &#39;mathfns&#39;)
-     path: ( &#39;./MyDyalogLib&#39; ◇ (&#39;dfns&#39;◇) ◇ &#39;.&#39; )   
-                   
-   ⍝ prefix: vector of char vectors to prefix to each name, 
-   ⍝        when searching directories.   
-   ⍝   ⍬ is equiv. to (⊂&#39;&#39;) or (&#39;&#39;◇). 
-   ⍝   If the name presented is &#39;mydfn&#39;, then the following: 
-   ⍝       prefix: (&#39;∆F_&#39; ◇ &#39;MyLib/&#39;)
-   ⍝       suffix: (&#39;aplf&#39; ◇)  
-   ⍝   will match: 
-   ⍝       &#39;∆F_mydfn.aplf&#39; and &#39;MyLib/mydfn.aplf&#39; 
-   ⍝   Note: prefix is ignored for workspaces.  
-     prefix: ⍬ 
-                               
-   ⍝ suffix: at least one suffix is required for file searches to match. 
-   ⍝   The &#39;.&#39; is prepended for you!  
-   ⍝   By default,  the generic filetype &#39;dyalog&#39; and user-defined filetypes
-   ⍝   are not enabled.
-   ⍝   Files with the following filetypes 
-   ⍝      (&#39;aplf&#39; ◇ &#39;aplo&#39; ◇ &#39;apln&#39; ◇ &#39;apla&#39; ◇ &#39;json&#39; ◇ &#39;txt&#39;) 
-   ⍝   are expected to contain string representations of these objects:
-   ⍝      (fn ◇ operator ◇ namespace ◇ array ◇ JSON object ◇ vector of char vectors) 
-   ⍝   Those of all other filetypes are loaded using 2∘FIX, i.e. treated 
-   ⍝   as if of type &quot;dyalog&quot;.
-   ⍝   Suffixes are ignored for workspaces.     
-     suffix: (&#39;aplf&#39; ◇ &#39;aplo&#39; ◇ &#39;apln&#39; ◇ &#39;apla&#39; ◇ &#39;json&#39; ◇ &#39;txt&#39;)    
-                   
-   ⍝  Internal runtime parameters, set internally (not user-settable)    
-     _readParmFi: 0                       ⍝ 0 (zero):  Has .∆F been read yet?     
-     _fullPath:   ⍬                       ⍝ ⍬ (zilde): For efficient searching.  
-)  </code></pre>
+<pre class="ignore"><code>(
+ ⍝ Default .∆F (JSON5) Parameter File                           
+ ⍝ Items not to be (re)set by user may be omitted/commented out.              
+ ⍝ If (load: ⎕NULL), then LIB_LOAD [note 1] is used for load.
+ ⍝ If (verbose: ⎕NULL), then VERBOSE [note 1] is used for verbose.
+ ⍝ If (prefix: ⎕NULL) or (prefix: ⍬), then (prefix: &#39;&#39; ⋄)     
+ ⍝ [note 1] 
+ ⍝   ∆F global variables LIB_LOAD and VERBOSE are set in ∆Fapl.dyalog.
+ ⍝    Their usual values are LIB_LOAD← 1 ⋄ VERBOSE← 0
+ ⍝    See load: and verbose: below for significance.
+
+ ⍝ load:
+ ⍝   1:     Load the runtime path to search for Session Library £ and `L.
+ ⍝   0:     Don&#39;t load...
+ ⍝   ⎕NULL: Grab value from LIB_LOAD above.
+   load: ⎕NULL 
+
+ ⍝ auto:
+ ⍝   0: user must load own objects; nothing is automatic.                 
+ ⍝   1: dfns and files (if any) searched in sequence set by dfnsOrder.
+ ⍝      See path for directory search sequence. 
+ ⍝ Note: If (load: 0) or if there are no files in the search path,
+ ⍝       auto is set to 0, since nothing will ever match.                     
+   auto: 1
+     
+ ⍝ verbose: 
+ ⍝    If 0 (quiet), 
+ ⍝    If 1 (verbose).  
+ ⍝    If ⎕NULL, value is set from VERBOSE (see above).
+   verbose: ⎕NULL  
+                                                        
+ ⍝ path: The file dirs and/or workspaces to search IN ORDER left to right:
+ ⍝    e.g. path: [ &#39;fd1&#39;, &#39;fd2&#39;, [&#39;ws1&#39;, &#39;wsdir/ws2&#39;], &#39;fd3&#39;, [&#39;ws3&#39;]]
+ ⍝    For a file directory, the item must be a simple char vector
+ ⍝        &#39;MyDyalogLib&#39;
+ ⍝    For workspaces, the item must be a vector of one or more char vectors
+ ⍝        (⊂&#39;dfns&#39;) or (⊂&#39;MyDyalogLib/mathfns&#39;) or (&#39;dfns&#39;, &#39;myDfns&#39;)
+ ⍝  To indicate we don&#39;t want to search ANY files, 
+ ⍝     best: (load: 0)
+ ⍝     ok:   (path: ⎕NULL)
+   path:  ( &#39;./MyDyalogLib&#39; ⋄ (&#39;dfns&#39;⋄) ⋄ &#39;.&#39; ⋄ )  
+                 
+ ⍝ prefix: literal string to prefix to each name, when searching directories.
+ ⍝     Ignored for workspaces.
+ ⍝     ⍬ is equiv. to  &#39;&#39;. 
+ ⍝     Example given name &#39;mydfn&#39; and (prefix: &#39;∆F_&#39; &#39;MyLib/&#39; ⋄ suffix: ⊂&#39;aplf&#39;)  
+ ⍝     ==&gt; (&#39;∆F_mydfn.aplf&#39;  &#39;MyLib/mydfn.aplf&#39;)   
+   prefix: ⍬ 
+                             
+ ⍝ suffix: at least one suffix is required. The &#39;.&#39; is prepended for you!  
+ ⍝    Not applicable to workspaces. See documentation for definitions.
+ ⍝    By default, &#39;dyalog&#39; and unknown filetypes are not enabled. 
+ ⍝    Generally, place most used definitions first.
+   suffix: (&#39;aplf&#39;  &#39;apla&#39;  &#39;aplo&#39;  &#39;apln&#39;  &#39;json&#39; &#39;txt&#39;)    
+                 
+ ⍝  Internal Runtime (hidden) Parameters                                               
+   _readParmFi: 0                      ⍝ 0 Zero: Haven&#39;t read .∆F yet. 1 afterwards.     
+   _fullPath:   ⍬                      ⍝ ⍬ Zilde: Generated from path and prefixes.
+)    </code></pre>
 </details>  
 
 <hr />
@@ -2397,13 +2409,13 @@ Features</h2>
 <h3 data-number="7.1.1" id="f-option-for-dfn-source-code"><span
 class="header-section-number">7.1.1</span> ∆F Option for Dfn Source
 Code</h3>
-<p>If <code>options[0]</code> is <code>¯1</code>,
-<span class="margin-note">In simple terms, this option returns the
-character representation of the <em>dfn</em> returned via the
-<em><strong>dfn</strong></em> option. </span>then <strong>∆F</strong>
-returns a character vector that contains the source code for the
-<em>dfn</em> that would have been returned via the
-<em><strong>dfn</strong></em> option, <code>options[0]=1</code>. If
+<p>If the <a href="#f-option-details"><em><strong>dfn</strong></em>
+option</a> is <code>¯1</code>, <em>equivalently</em>
+<code>(dfn: ¯1)</code><span class="margin-note">In simple terms, this
+option returns the character representation of the <em>dfn</em> returned
+via the <em><strong>dfn</strong></em> option. </span>,then
+<strong>∆F</strong> returns a character vector that contains the source
+code for the <em>dfn</em> returned via <code>(dfn: 1)</code>. If
 <em><strong>debug</strong></em> is also set, newlines from
 <code>`◇</code> are shown as visible <code>␤</code>. However, since this
 option <em>returns</em> the code string, the
@@ -2419,6 +2431,21 @@ variant, the help session will start up in a narrower window
 notes will appear, as in the default case:
 <span class="margin-note"><em>synonym:</em>
 <code>∆F⍨'help-wide'</code>.</span><code>∆F⍨'help'</code>.</p>
+<h3 data-number="7.1.3" id="fs-library-parameter-option-parms"><span
+class="header-section-number">7.1.3</span> ∆F's Library Parameter
+Option: 'parms'</h3>
+<p>Normally, ∆F £ibrary parameters are established when
+<strong>∆F</strong> and associated libraries are loaded (<em>e.g.</em>
+via <code>]load ∆F -t=⎕SE</code>). After editing the parameter file
+<strong>./.∆F,</strong> you may wish to update the active parameters,
+while maintaining existing user £ibrary session objects, which would
+otherwise be lost during a <code>]load</code> operation. For such an
+update, use the <strong>'parms'</strong> option.</p>
+<p><code>∆F⍨ 'parms'</code> reads the user parameter file
+<strong>./.∆F,</strong> updates the current user parameters, and returns
+them in alphabetical order, along with their values, as a single
+character matrix in APL Array Notation character; no current session
+objects are affected.</p>
 <h2 data-number="7.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">7.2</span> Appendix II: Python
 f‑strings</h2>
@@ -2465,7 +2492,7 @@ Anthropic, October 19, 2025.]</em></p>
 <hr />
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251108T211228]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [2025-11-10T20:03:26]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 

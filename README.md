@@ -62,6 +62,7 @@ APL expressions, and multi&shy;dimensional objects using extensions to
   - [Appendix I: Un(der)documented Features](#appendix-i-underdocumented-features)
     - [∆F Option for Dfn Source Code](#f-option-for-dfn-source-code)
     - [∆F Help's Secret Variant](#f-helps-secret-variant)
+    - [∆F's Library Parameter Option: 'parms'](#fs-library-parameter-option-parms)
   - [Appendix II: Python f‑strings](#appendix-ii-python-fstrings)
 
 ---
@@ -88,10 +89,10 @@ ensuring they are peers.
 ## Loading and Running **∆F**
 
 1. Confirm that your current directory remains as before.
-2. From your Dyalog session (typically `#` or `⎕SE`), enter: <br>&emsp;`]load ∆F [-target=`<code><em>anyNs</em>]</code><br>replacing <em>`anyNs`</em> with your desired namespace. <em>(We suggest <small><strong>-target=⎕SE</strong></small>.)</em> 
+2. From your Dyalog session, enter: <br>&emsp;`]load ∆F [-target=⎕SE]`
 3. If **∆F/∆F_Help.html** is available at `]load` time, it will be copied into **⍙Fapl** (or a message will note the absence of *help* information).
-4. Namespace <code>***anyNs***.**⍙Fapl**</code> now contains utilities used by **∆F** and, once `]load`ed, ***should not*** be moved. **∆F** always refers to **⍙Fapl** in its *original* location. 
-5. By default, namespace <code>***anyNs***</code> will be added to the end of `⎕PATH`, if not already defined in ⎕PATH. You may always choose to relocate or assign **∆F** anywhere you want so that it is available.
+4. Namespace <code>*⎕SE*.**⍙Fapl**</code> now contains utilities used by **∆F** and, once `]load`ed, ***should not*** be moved. **∆F** always refers to **⍙Fapl** in its *original* location. 
+5. By default, the target namespace (<code>*⎕SE*</code>) will be added to the end of `⎕PATH`, if not already defined in ⎕PATH. You may always choose to relocate or assign **∆F** anywhere you want so that it is available.
 
 &emsp;<span style="font-size: 130%;">👉 </span>You may now call `∆F` with the desired [arguments](#f-call-syntax-overview) and [options](#f-option-details).<br>
 &emsp;<span style="font-size: 130%;">👉 </span> **∆F** is `⎕IO`- and `⎕ML`-independent.   
@@ -294,7 +295,7 @@ Here, you surely want the lefthand field to be guaranteed to have a space
 after _each_ word without fiddling; a **Space** field with at least
 one space will solve the problem:
 
-```apl
+```
 ⍝                          ↓↓↓
    ∆F 'Cat`◇Elephant`◇Mouse{ }Felix`◇Dumbo`◇Mickey'
 Cat      Felix
@@ -370,14 +371,14 @@ The temperature is │11│°C or │ 52.3│°F
 ## Box Mode
 
 But what if you want to place a box around every **Code**, **Text**, **_and_** **Space** field?
-We just use the **Box** mode option!
+We just use the **box** mode option!
 
 While we can't place boxes around text (or space) fields using `` `B ``,
-we can place a box around ***each*** field (*regardless* of type) by setting **∆F**'s *third* option, [**Box** mode](#f-option-details), to `1`: 
+we can place a box around ***each*** field (*regardless* of type) by setting **∆F**'s *third* option, [**box** mode](#f-option-details), to `1`: 
 
 ```
    cv← 11.3 29.55 59.99
-       ↓¯¯¯ Box mode
+       ↓¯¯¯ box mode
    0 0 1 ∆F '`◇The temperature is {"I2" $ cv}`◇°C or {"F5.1" $ 32+9×cv÷5}`◇°F'
 ┌───────────────────┬──┬──────┬─────┬──┐
 │                   │11│      │ 52.3│  │
@@ -392,7 +393,8 @@ Null **Space** fields `{}`, *i.e.* 0-width **Space** fields, are discarded once 
 Try this expression on your own:
 
 ```
-   0 0 1 ∆F 'abc{}def{}{}ghi{""}jkl{ }mno'
+⍝  Dyalog 20: (box: 1) ∆F ...
+   0 0 1 ∆F 'abc{}def{}{}ghi{""}jkl{ }mno'      
 ```
 
 <details id="pPeek"><summary class="summary">&ensp;Peek at answer</summary>
@@ -689,7 +691,7 @@ concise alternative:
 ## A Shortcut for Dates and Times (Part I)  
 
 
-**∆F** supports a simple **Date-Time** shortcut `` `T `` built from **1200⌶** and **⎕DT**. It takes one or more Dyalog `⎕TS`-format timestamps as the right argument and a date-time specification as the (optional) left argument. Trailing elements of a timestamp may be omitted (they will each be treated as `0` in the specification string).
+**∆F** supports a simple **Date-Time** shortcut `` `T `` built from **1200⌶** and **⎕DT**. It takes one or more Dyalog `⎕TS`-format timestamps as the right argument and a date-time specification as the  (optional) left argument. Trailing elements of a timestamp may be omitted (they will each be treated as `0` in the specification string).
 
 Let's look at the use of the `` `T `` shortcut to show the current time (now).
 
@@ -934,7 +936,8 @@ or to see where it's copied from, use **∆F**'s ***debug*** option:
 
 
 ``` 
-    0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }' 
+⍝  Dyalog 20: (debug: 1) ∆F ...
+   0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }' 
 DEBUG: Copied "pco" into £=[⎕SE.⍙Fapl.ûLib] from "ws:dfns"
 { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
@@ -969,21 +972,21 @@ This may be sensible when ∆F is called from a variety of namespaces and/or
 if the user doesn't wish to clutter the active namespace.
 
 <span style="font-size: 130%;">👉 </span>
-When a *dfn* created via **∆F** with the ***dfn*** option runs, any uses of `£` will 
-require the associated ⍙Fapl namespace to be present. We discuss the *dfn* option in the *next* section!
+When a *dfn* created via **∆F** with the ***dfn*** mode set to `1`, any uses of `£` will 
+require the associated ⍙Fapl namespace to be present. We discuss the ***dfn*** option in the *next* section!
 
 </div>
 
 ## Precomputed f‑strings with the ***dfn*** Option
 
-As shown in Table 5a (below), with the default *dfn* option *(i),* the value returned from a successful call to **∆F** is always a character matrix. 
-However, 
-if the initial [∆F Option](#f-option-details) is enabled *(ii),* then **∆F** returns a **dfn** that&mdash; when called later&mdash; will return the identical character expression.
+As shown in Table 5a (below), with *(i)* the default *dfn* option set to `0`, the value returned from a successful call to **∆F** is always a character matrix. 
+However,  *(ii)** 
+if  [*dfn*](#f-option-details) is set to `1`, then **∆F** returns a **dfn** that&mdash; when called later&mdash; will return the identical character expression.
 
 | | <br>Mode | <center>Positional<br>Parameter</center> | <center>Keyword<br>Parameter</center> |
 | :---- | :---: | :----- | :----- | 
-|*(i)* | <small>DEFAULT</small> | `[0] ∆F 'mycode'` | `(dfn: 0) ∆F 'mycode'` |
-|*(ii)* | dfn | ` 1  ∆F 'mycode'`| `(dfn: 1) ∆F 'mycode'` |
+|*(i)* | ***default*** | `[0] ∆F 'mycode'` | `(dfn: 0) ∆F 'mycode'` |
+|*(ii)* | ***dfn*** | ` 1  ∆F 'mycode'`| `(dfn: 1) ∆F 'mycode'` |
 <div>Table 5a. <strong>Using the <em>dfn Option</em></strong></div>
  
  
@@ -1046,7 +1049,7 @@ The precomputed version is about <mark>17 times faster</mark>, at least in this 
 
 Before we get to syntax and other information, we want to show you 
 that 
-the _dfn_ returned via the ***dfn*** option can retrieve one or more arguments passed on the right side of **∆F**, using the very same omega shortcut expressions (like `` `⍵1 ``) we've 
+the _dfn_ returned when the *dfn* option is set to `1` can retrieve one or more arguments passed on the right side of **∆F**, using the very same omega shortcut expressions (like `` `⍵1 ``) we've 
 discussed above.
 
 Let's share the Centigrade values `cv` from our current example,
@@ -1103,14 +1106,15 @@ Below, we summarize key information you've already gleaned from the examples.
 
 ## ∆F Option Details
 
-|<center>Pos'l Option<div style="width:150px"></div></center>|Keyword Option<br><small>(*keyword: default*)<div style="width:175px"></small>|Description |
-| :----- | :----: | :---------- |
-| &emsp;***options[0]***:<br>&emsp;&emsp;*output mode*|***dfn:&nbsp;0***| If ***dfn:&nbsp;1***, **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If ***dfn:&nbsp;0*** (default): **∆F** returns a char. matrix. |
-| &emsp;***options[1]:***<br>&emsp;&emsp;*debug mode*|***debug:&nbsp;0***| If ***debug:&nbsp;1***, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if ***dfn*** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br>If ***debug:&nbsp;0*** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed.      |
-| &emsp;***options[2]***:<br>&emsp;&emsp;*box mode*|***box:&nbsp;0***| If ***box:&nbsp;1***, each field (except a null **Text** field) is boxed separately.<br>If ***box:&nbsp;0*** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br>**NB.** ***box*** mode can be used with modes <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong>|
-| &emsp;***options[3]***:<br>&emsp;&emsp;*auto mode*|***auto:&nbsp;1***| If ***auto:&nbsp;0***, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If ***auto:&nbsp;1*** (default), honors the default and user-defined settings for `auto`.|
-| &emsp;***options[4]***:<br>&emsp;&emsp;*inline mode*|***inline:&nbsp;0***| If ***inline:&nbsp;1*** and ***dfn:&nbsp;1***, the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If ***inline:&nbsp;0*** (default), whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br>**NB.** This option is experimental and may simply disappear one day.|
-| &emsp;<big>'help'</big> || If `'help'` is specified, this amazing doc&shy;ument&shy;ation is displayed. |
+|<br><br>Mode|Positional<br>Option<br>Index|Keyword<br>Option<br><small>(*keyword: default*)<div style="width:150px"></small>|<br><br>Description|
+| :----: | :-----: | :----: | :---------- |
+| **Dfn** | &emsp;***[0]***|***dfn:&nbsp;0***| If ***dfn:&nbsp;1***, **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If ***dfn:&nbsp;0*** (default): **∆F** returns a char. matrix. |
+| **Debug** | &emsp;***[1]***|***debug:&nbsp;0***| If ***debug:&nbsp;1***, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* **_actually_** generates; if ***dfn*** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``).  After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br>If ***debug:&nbsp;0*** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed.      |
+| **Box** | &emsp;***[2]***|***box:&nbsp;0***| If ***box:&nbsp;1***, each field (except a null **Text** field) is boxed separately.<br>If ***box:&nbsp;0*** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br>**NB.** ***box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong>|
+| **Auto** | &emsp;***[3]***|***auto:&nbsp;1***| If ***auto:&nbsp;0***, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If ***auto:&nbsp;1*** (default), honors the default and user-defined settings for `auto`.|
+| **Inline** | &emsp;***[4]***|***inline:&nbsp;0***| If ***inline:&nbsp;1*** and ***dfn:&nbsp;1***, the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*.<br>If ***inline:&nbsp;0*** (default), whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load ∆Fapl` process.<br>**NB.** This option is experimental and may simply disappear one day.|
+| **Special** | ***'help'*** |&mdash;| If `'help'` is specified, this amazing doc&shy;ument&shy;ation is displayed. |
+| **Special** | ***'parms'*** |&mdash;| Updates and displays Session Library (`£` or `` `L ``) pa&shy;ram&shy;eters. |
 <div>Table 6b. <strong>∆F Option Details</strong></div>
 
 
@@ -1122,19 +1126,17 @@ Below, we summarize key information you've already gleaned from the examples.
     | **Keyword**|&emsp;`(dfn: 0 ◇ debug: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)`&emsp;|
     <div>Table 6c. <strong>∆F Default Options</strong></div>
 
-- **Positional style options:** If the left argument `⍺` is a simple integer vector or scalar, or an empty numeric vector `⍬`, the options are
-  
-    <code>5↑ ⍺, 0 0 0 1 0↑⍨ 5-⍨ ≢⍺</code>&emsp;&emsp;
-    NB. *Trailing elements are ignored.* 
+- **Positional style options:** If **∆F**'s left argument `⍺` is a simple integer vector (or a scalar), omitted (trailing) elements are replaced by the corresponding elements of default,  `0 0 0 1 0`. *NB. Extra elements are ignored.*
 - **Keyword style options:** If the left argument is a namespace,
 it is assumed to contain option names (in any order) with their non-default values,<br>&emsp;&emsp;e.g. `(debug: 1 ◇ auto: 0)`;  
     Keyword options are new for Dyalog 20. They are sometimes clearer and more convenient than positional keywords.
-- **Help option:** If the left argument `⍺` starts with `'help'` (case ignored), this help information is displayed. In this case only, the right argument to **∆F** is ignored.
+- **Help option:** If the left argument `⍺` starts with `'help'` (case ignored), this help information is displayed. In this case, the right argument to **∆F** is ignored.
+- **Parms option:** If the left argument `⍺` matches `'parms'` (case ignored), the Session Library parameters are (re-)loaded and displayed. In this case, the right argument to **∆F** is ignored.
 - Otherwise, an error is signaled.
 
 ## ∆F Return Value
 
-- Unless the ***dfn*** option is selected, **∆F** always returns a character matrix of at least one row and zero columns, `1 0⍴0`, on success. If the 'help' option is specified, **∆F** displays this information, returning `1 0⍴0`.
+- Unless the ***dfn*** option is selected, **∆F** always returns a character matrix of at least one row and zero columns, `1 0⍴0`, on success. If the 'help' option is specified, **∆F** displays this information, returning `1 0⍴0`. If the 'parms' option is specified, **∆F** shows the Session Library parameters as a character matrix.
 - If the ***dfn*** option is selected, **∆F** always returns a standard Dyalog dfn on success.
 - On failure of any sort, an informative APL error is signaled.
 
@@ -1174,7 +1176,7 @@ symbol, a ***single*** backtick will suffice.
 | **\`J** | Justify | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;&emsp;*left*: ⍺="L"; *center*: ⍺="C"; *right* ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>*Displays numbers with the maximum precision available.*</small> |
 | **\`L**, **£** | Session Library<br><span class="red"><small>**EXPERIMENTAL!**</small></span> | `£`. `£` denotes a private library (namespace) local to the **∆F** runtime environ&shy;ment into which functions or objects (including name&shy;spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session. Outside of simple assignments, **∆F** will attempt to copy undefined objects from, *in order:*<br>&emsp;<small><sup>directory</sup></small>&thinsp;**./MyDyalogLib/** &nbsp;\>&nbsp; <small><sup>*APL* ws</sup></small>&thinsp;**dfns** &nbsp;\>&nbsp;<small><sup>directory</sup></small>&thinsp;**./**<br><small>*For filetypes and customisation, see [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small>|
 | **\`Q** | Quote | `` [⍺]`Q ⍵ ``. Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
-| **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← 'YYYY-MM-DD hh:mm:ss'`. |
+| **\`T** | Date-Time | `` [⍺]`T ⍵ ``. Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← '%ISO%'`. |
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span>    | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>_See details below._</small> |
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut<br>(<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. <small>_See details below._</small>|
 | **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the **_next_** element of `⍵`. <small>_See details below._ <small>|
@@ -1284,20 +1286,22 @@ of a compatible *APL* class with its existing value, else a domain error will be
 
 ### Session Library Shortcut: Parameters 
 
-The Session Library shortcut (`£` or `` `L ``) is deceptively simple, but
-the code to support 
-it is a tad complex. 
-The complex library code runs only at `]load` time, with a modest runtime
-performance impact&mdash;
-if the **auto** parameter is enabled.
-If the **auto** parameter is *disabled,* the runtime impact of the feature is more modest still; if *not* used, there is no runtime impact.
+The 
+Session Library shortcut (`£` or `` `L ``) is deceptively simple, but
+the code to support it is a tad complex. 
+The complex components run only when **∆F** is loaded. If the **auto** parameter is `1`, there is a modest 
+performance impact at runtime.
+If `0`, the runtime impact of the feature is more modest still. 
 
 To support the Session Library auto-load process, there are parameters that the user may *optionally* tailor via an APL Array Notation parameter file **.&ThinSpace;∆F** placed in the current file directory.  Parameters include: 
 
--  **auto:** the ability to turn on or off any automatic loading
-of object definitions from the *dfns* workspace or files; 
+-  **load:** the ability, when **∆F** is being loaded, to
+define 
+where&mdash; in which files or workspaces&mdash; to find Session Library objects, based on default or user parameters;
+-  **auto:** allowing **∆F** to automatically load undefined objects of the form `£.obj` or `` `L.obj `` into the Session Library from
+workspaces or files on the search path; 
 -  **verbose:** providing limited information on parameters, object loading, *etc.*;
--  **path:** what directories to search for the object definitions; 
+-  **path:** listing what directories to search for the object definitions; 
 -  **prefix:** literal character vectors to prefix to each file name during the object search;
 -  **suffix:** filemodes that indicate the type of object and (potentially) any expected conversion;
 
@@ -1306,74 +1310,66 @@ is documented *below*.
 
 <details open><summary class="summary">&ensp;<em>Show/Hide Default £ibrary Parameter File</em> <big><strong>. ∆F</strong></big></summary>
 
-```apl
+```ignore
 (
-   ⍝ Default .∆F Parameter File (in APL Array Notation)                           
-   ⍝ Items not to be (re)set by user should be omitted/commented out.              
-   ⍝ Exceptions: 
-   ⍝ [1-2] auto and verbose can each be set to null to signal 
-   ⍝       that their value should come from the ∆Fapl globals LIB_AUTO or VERBOSE.
-   ⍝ [3]   prefix, which if null is the same as [''], i.e. 0-length string prefix.
-       
-   ⍝ ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
-   ⍝ Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
-   ⍝ The values are explained here:
-   ⍝   LIB_AUTO:  1   We want to get library objects from files and/or workspaces,
-   ⍝                  using the default or user-specified path.
-   ⍝   LIB_AUTO:  0   We don't want to use the LIB_AUTO feature.
-   ⍝   VERBOSE:   1   Will display loadtime and runtime msgs, both library-related
-   ⍝                  and general.  The debug ∆F option will also display limited 
-   ⍝                  runtime msgs.
-   ⍝   VERBOSE:   0   Will only display error or important warning msgs.
-       
-   ⍝ auto:
-   ⍝   If 0, user must load own objects; nothing is automatic.                 
-   ⍝   If 1, dfns and files searched in sequence set by path (q.v.). 
-   ⍝   If ⎕NULL, inherit setting from the LIB_AUTO global 
-     auto:  ⎕NULL   
-       
-   ⍝ verbose: 
-   ⍝   If 0, be quiet;  if 1, be verbose.  
-   ⍝   If ⎕NULL, inherit setting from VERBOSE global. 
-     verbose: ⎕NULL
-                                                          
-   ⍝ path: The dirs and/or workspaces  to search.  
-   ⍝   For a directory, use character vectors
-   ⍝       ⊂'MyOnlyDir'      or    ('MyOnlyDir' ◇ )
-   ⍝       'Dir1' 'Dir2'     or    ('Dir1' ◇ 'Dir2')
-   ⍝   For a workspace, use a single enclosed char vec or a vector of char vectors 
-   ⍝   Examples of workspace specs:  
-   ⍝       ('dfns'◇)  ('MyDyalogLib/mathfns'◇)  ('dfns' ◇ 'mathfns')
-     path: ( './MyDyalogLib' ◇ ('dfns'◇) ◇ '.' )   
-                   
-   ⍝ prefix: vector of char vectors to prefix to each name, 
-   ⍝        when searching directories.   
-   ⍝   ⍬ is equiv. to (⊂'') or (''◇). 
-   ⍝   If the name presented is 'mydfn', then the following: 
-   ⍝       prefix: ('∆F_' ◇ 'MyLib/')
-   ⍝       suffix: ('aplf' ◇)  
-   ⍝   will match: 
-   ⍝       '∆F_mydfn.aplf' and 'MyLib/mydfn.aplf' 
-   ⍝   Note: prefix is ignored for workspaces.  
-     prefix: ⍬ 
-                               
-   ⍝ suffix: at least one suffix is required for file searches to match. 
-   ⍝   The '.' is prepended for you!  
-   ⍝   By default,  the generic filetype 'dyalog' and user-defined filetypes
-   ⍝   are not enabled.
-   ⍝   Files with the following filetypes 
-   ⍝      ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt') 
-   ⍝   are expected to contain string representations of these objects:
-   ⍝      (fn ◇ operator ◇ namespace ◇ array ◇ JSON object ◇ vector of char vectors) 
-   ⍝   Those of all other filetypes are loaded using 2∘FIX, i.e. treated 
-   ⍝   as if of type "dyalog".
-   ⍝   Suffixes are ignored for workspaces.     
-     suffix: ('aplf' ◇ 'aplo' ◇ 'apln' ◇ 'apla' ◇ 'json' ◇ 'txt')    
-                   
-   ⍝  Internal runtime parameters, set internally (not user-settable)    
-     _readParmFi: 0                       ⍝ 0 (zero):  Has .∆F been read yet?     
-     _fullPath:   ⍬                       ⍝ ⍬ (zilde): For efficient searching.  
-)  
+ ⍝ Default .∆F (JSON5) Parameter File                           
+ ⍝ Items not to be (re)set by user may be omitted/commented out.              
+ ⍝ If (load: ⎕NULL), then LIB_LOAD [note 1] is used for load.
+ ⍝ If (verbose: ⎕NULL), then VERBOSE [note 1] is used for verbose.
+ ⍝ If (prefix: ⎕NULL) or (prefix: ⍬), then (prefix: '' ⋄)     
+ ⍝ [note 1] 
+ ⍝   ∆F global variables LIB_LOAD and VERBOSE are set in ∆Fapl.dyalog.
+ ⍝    Their usual values are LIB_LOAD← 1 ⋄ VERBOSE← 0
+ ⍝    See load: and verbose: below for significance.
+
+ ⍝ load:
+ ⍝   1:     Load the runtime path to search for Session Library £ and `L.
+ ⍝   0:     Don't load...
+ ⍝   ⎕NULL: Grab value from LIB_LOAD above.
+   load: ⎕NULL 
+
+ ⍝ auto:
+ ⍝   0: user must load own objects; nothing is automatic.                 
+ ⍝   1: dfns and files (if any) searched in sequence set by dfnsOrder.
+ ⍝      See path for directory search sequence. 
+ ⍝ Note: If (load: 0) or if there are no files in the search path,
+ ⍝       auto is set to 0, since nothing will ever match.                     
+   auto: 1
+     
+ ⍝ verbose: 
+ ⍝    If 0 (quiet), 
+ ⍝    If 1 (verbose).  
+ ⍝    If ⎕NULL, value is set from VERBOSE (see above).
+   verbose: ⎕NULL  
+                                                        
+ ⍝ path: The file dirs and/or workspaces to search IN ORDER left to right:
+ ⍝    e.g. path: [ 'fd1', 'fd2', ['ws1', 'wsdir/ws2'], 'fd3', ['ws3']]
+ ⍝    For a file directory, the item must be a simple char vector
+ ⍝        'MyDyalogLib'
+ ⍝    For workspaces, the item must be a vector of one or more char vectors
+ ⍝        (⊂'dfns') or (⊂'MyDyalogLib/mathfns') or ('dfns', 'myDfns')
+ ⍝  To indicate we don't want to search ANY files, 
+ ⍝     best: (load: 0)
+ ⍝     ok:   (path: ⎕NULL)
+   path:  ( './MyDyalogLib' ⋄ ('dfns'⋄) ⋄ '.' ⋄ )  
+                 
+ ⍝ prefix: literal string to prefix to each name, when searching directories.
+ ⍝     Ignored for workspaces.
+ ⍝     ⍬ is equiv. to  ''. 
+ ⍝     Example given name 'mydfn' and (prefix: '∆F_' 'MyLib/' ⋄ suffix: ⊂'aplf')  
+ ⍝     ==> ('∆F_mydfn.aplf'  'MyLib/mydfn.aplf')   
+   prefix: ⍬ 
+                             
+ ⍝ suffix: at least one suffix is required. The '.' is prepended for you!  
+ ⍝    Not applicable to workspaces. See documentation for definitions.
+ ⍝    By default, 'dyalog' and unknown filetypes are not enabled. 
+ ⍝    Generally, place most used definitions first.
+   suffix: ('aplf'  'apla'  'aplo'  'apln'  'json' 'txt')    
+                 
+ ⍝  Internal Runtime (hidden) Parameters                                               
+   _readParmFi: 0                      ⍝ 0 Zero: Haven't read .∆F yet. 1 afterwards.     
+   _fullPath:   ⍬                      ⍝ ⍬ Zilde: Generated from path and prefixes.
+)    
 ``` 
 
 </details>  
@@ -1391,7 +1387,7 @@ is documented *below*.
 ## Appendix I: Un(der)documented Features 
 
 ### ∆F Option for Dfn Source Code
-If `options[0]` is `¯1`, then **∆F** returns a character vector that contains the source code for the *dfn* that would have been returned via the ***dfn*** option, `options[0]=1`. 
+If the [***dfn*** option](#f-option-details) is `¯1`, *equivalently* `(dfn: ¯1)`,then **∆F** returns a character vector that contains the source code for the *dfn* returned via `(dfn: 1)`. 
 If ***debug*** is also set, newlines from `` `◇ `` are shown as visible `␤`. However, since this option *returns* the code string, the ***debug*** option won't also *display* the code string. 
 
 ### ∆F Help's Secret Variant
@@ -1400,6 +1396,14 @@ With this variant, the help
 session will start up in a narrower window *without* side notes. If the user widens the
 window, the side notes will appear, as in the default 
 case: `∆F⍨'help'`.
+
+### ∆F's Library Parameter Option: 'parms'
+Normally, ∆F £ibrary parameters are established when **∆F** and associated libraries
+are loaded (*e.g.* via `]load ∆F -t=⎕SE`). After editing the parameter file **./.∆F,** you may wish to update the active parameters, while maintaining existing user £ibrary session objects, which would otherwise be lost during a `]load` operation. For such an update, use  the **'parms'** option. 
+
+`∆F⍨ 'parms'` reads the user parameter file **./.∆F,** 
+updates the current user parameters, and returns them in alphabetical order, along with their values, as a single character matrix in APL Array Notation character; no current session objects are affected.
+
 
 ## Appendix II: Python f‑strings
 
@@ -1436,7 +1440,7 @@ case: `∆F⍨'help'`.
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [20251108T211228]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [2025-11-10T20:03:26]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar --> 
