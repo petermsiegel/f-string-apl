@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-10T15:55:03" 
+⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-11T17:59:05" 
 :Namespace libUtil 
 
 ⍝ libUtil (namespace): Handles £ and `L shortcuts.
@@ -192,6 +192,7 @@
           ⍝  Internal Runtime (hidden) Parameters                                               
             _readParmFi: 0                      ⍝ 0 Zero: Haven't read .∆F yet. 1 afterwards.     
             _fullPath:   ⍬                      ⍝ ⍬ Zilde: Generated from path and prefixes.
+            _debug:      0                      ⍝ Synonym for verbose (internally)
          )                                                                               
       }
       ##.AN2Apl 1↓¯1↓ ⎕NR'DefParms'  ⍝ Before Dyalog 20

@@ -1,4 +1,4 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-10T15:55:03" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-11T17:59:05" 
 ⍝:Section CORE 
 
 :Namespace ⍙Fapl   
@@ -47,13 +47,14 @@
     ⍝ Get options-- pos'l (fast) or keyword (legacy is slow)              
       :If 900⌶0                                        ⍝ default options   
           opts← ⍬   
+      :ElseIf 11 83∊⍨ ⎕DR opts                         ⍝ positional (bool or small int)
+          ⋄
       :ElseIf 9=⎕NC 'opts'                             ⍝ Keywords via APL Array Notation
           opts← ⎕THIS.GetKWOpts opts                   ⍝    Cvt keyword opts => pos'l opts
       :ElseIf 0= 80|⎕DR opts ⋄ :AndIf '('=⊃opts        ⍝ Legacy (<Dyal 20) keywords via APLAN string
           opts← ⎕THIS.GetKWOptsLegacy opts             ⍝    Cvt keyword opts => pos'l opts
-      :ElseIf ~11 3 ∊⍨ 80|⎕DR opts                     ⍝ 'help' or error!
-          result← ⎕THIS.Help opts 
-          :Return   
+      :Else                                          
+          result← ⎕THIS.Help opts ⋄ :Return            ⍝ 'help' or error! 
       :EndIf                                           ⍝ default: positional parameters
       args← ,⊆args
       opts← ⎕THIS.OPTS_N↑ opts, ⎕THIS.OPTS_DEF↑⍨ ⎕THIS.OPTS_N-⍨ ≢ opts 
@@ -82,9 +83,8 @@
 ⍝    ∇ ns
 ⍝    ns: A ns, typically generated from APL Array Notation using (kw: val ...) 
   GetKWOpts← {   
-      kw← () ⎕NS ⍵
-      1∊b←~OPTS_KW∊⍨ n← kw.⎕NL ¯2: 11 ⎕SIGNAL⍨'Invalid user options(): ',∊b/n 
-      kw ⎕VGET (↑OPTS_KW) OPTS_DEF ⊣ KWValid kw  
+      kw← () ⎕NS ⍵ ⋄ _← kw KWSynonym ⊂('debug' 'verbose') 
+      kw ⎕VGET (↑OPTS_KW) OPTS_DEF 
   }
 
 ⍝ GetKWOptsLegacy: Keyword options (pre-Dyalog 20).
@@ -92,15 +92,14 @@
 ⍝    str: An APL Array Notation-format string
   GetKWOptsLegacy← { 
       0::   'Invalid user option format' ⎕SIGNAL ⎕EN 
-      911:: ⎕DMX.EM ⎕SIGNAL ⎕DMX.EN 
-        ∆NS← { ⍺⊣ (⍺{ ⍺⍺⍎ ⍵,'←⍵⍵.',⍵ ⋄ ⍵⍵ }⍵)¨⍵.⎕NL¯2 }
-        ∆VG← { ns←⍺ ⋄ (↓⊃⍵){ 0=ns.⎕NC ⍺: ns⍎ ⍺,'←⍵' ⋄ ns.⎕OR ⍺ }¨⊃⌽⍵ }
-      kw← (⎕NS⍬) ∆NS AN2Apl ⍵
-      kw ∆VG (↑OPTS_KW) OPTS_DEF ⊣ KWValid kw  
+        ∆NS← { ⍺⊣ ⍵ ⍺.{ ⍎⍵,'←⍺⍺.',⍵ ⋄ ⍺⍺ }¨⍵.⎕NL¯2 }
+        ∆VG← { (↓⊃⍵)⍺.{ 0=⎕NC ⍺: ⍎ ⍺,'←⍵' ⋄ ⎕OR ⍺ }¨⊃⌽⍵ }
+      kw← (⎕NS⍬) ∆NS AN2Apl ⍵ ⋄ _← kw KWSynonym ⊂('debug' 'verbose') 
+      kw ∆VG (↑OPTS_KW) OPTS_DEF    
   }
-  KWValid← { b← ~OPTS_KW∊⍨ n← ⍵.⎕NL ¯2
-    1∊b: 911 ⎕SIGNAL⍨'Invalid user option(s):',∊' ',¨b/n ⋄ ⍬ 
-  }
+⍝ KWSynonym:    ns@Ns ∇ (sink1@CV src1@CV)(sink2@CV src2@CV)...
+⍝     If src exists, but sink doesn't, replace sink's value with src's value.
+  KWSynonym← { ⍺.{ >/⍵ ⍺∊ ⎕NL¯2: ⊢⍎⍺,'←',⍵ ⋄ ⍬}/¨⍵ }
  
 
 ⍝ ============================   FmtScan ( top-level routine )   ============================= ⍝
@@ -385,7 +384,7 @@
   } 
 ⍝:EndSection HELP 
 
-⍝:Section "Stubs" for "LIBRARY" Shortcuts  
+⍝=== Begin LIBRARY Shortcut stubs =======================================================
 ⍝ See libUtil.LinkUserLib
 ⍝ ûserLib is the user library.
 :Namespace ûserLib
@@ -401,15 +400,15 @@
   ∇
   BareBones 
 :EndNamespace 
-⍝:EndSection "Stubs" for "LIBRARY" Shortuts  
+⍝=== End LIBRARY Shortcut stubs =======================================================
 
 ⍝:Section Core FIX_TIME_ROUTINES 
 ⍝ ⍙Promote_∆F: rc← ∇ dest     
 ⍝ Used internally only at FIX-time:
 ⍝ ∘ Fix (⎕FX) ∆F into dest, obscuring its local names and hardwiring the location of ⎕THIS. 
-  ∇ rc← ⍙Promote_∆F dest ; src; snk 
-    src←    '⎕THIS.OPTS_N'     '⎕THIS.OPTS_DEF'
-    snk←   (⍕⎕THIS.OPTS_N)   (⍕⎕THIS.OPTS_DEF)
+  ∇ rc← ⍙Promote_∆F dest ; src; snk  
+    src←    '⎕THIS.OPTS_N'     '⎕THIS.OPTS_DEF'   
+    snk←   (⍕⎕THIS.OPTS_N)   (⍕⎕THIS.OPTS_DEF)    
     src,←   '⎕THIS'   'result'     'opts'     'args' 
     snk,←   (⍕⎕THIS)  '__∆Frësült' '__∆Föpts' '__∆Färgs' 
     rc← dest.⎕FX src ⎕R snk ⍠ 'UCP' 1⊣ ⎕NR '∆F'
