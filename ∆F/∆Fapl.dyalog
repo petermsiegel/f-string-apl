@@ -1,4 +1,4 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-12T19:30:56" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-12T19:58:09" 
 ⍝:Section CORE 
 
 :Namespace ⍙Fapl   
