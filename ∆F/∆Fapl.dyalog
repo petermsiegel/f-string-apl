@@ -1,11 +1,11 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-11T17:59:05" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-12T19:30:56" 
 ⍝:Section CORE 
 
 :Namespace ⍙Fapl   
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI) 
 
 ⍝ GENERAL GLOBAL VARIABLES 
-  DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
+  DEBUG← 1                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile-time and run-time verbosity flag
 ⍝ VARIABLES FOR ∆F OPTIONS: Positional and keyword 
   OPTS_KW←   'dfn' 'debug' 'box' 'auto' 'inline'        ⍝ In order 
@@ -57,7 +57,7 @@
           result← ⎕THIS.Help opts ⋄ :Return            ⍝ 'help' or error! 
       :EndIf                                           ⍝ default: positional parameters
       args← ,⊆args
-      opts← ⎕THIS.OPTS_N↑ opts, ⎕THIS.OPTS_DEF↑⍨ ⎕THIS.OPTS_N-⍨ ≢ opts 
+      opts,←  ⎕THIS.OPTS_DEF↑⍨ 0⌊⎕THIS.OPTS_N-⍨ ≢opts 
     ⍝ Analyse modes
       :Select ⊃opts    
       :Case  0       ⍝ Execute fstring
@@ -202,7 +202,7 @@
             ⍺, ⍵↑⍨ lenW-← p                            ⍝ Done... Return
         }
         qS← AplQt '' ⍙Scan w                           ⍝ Update lenW via ⍙Scan, then update w. 
-        qS (w↑⍨ -lenW) (lenW-⍨ ≢ w)                    ⍝ w is returned sans CF quoted string 
+        qS (w↑⍨ -lenW) (lenW-⍨ ≢w)                    ⍝ w is returned sans CF quoted string 
     } ⍝ End CF Quoted-String Scan
     
   ⍝ CFEsc: Handle escapes  in Code Fields OUTSIDE of CF-Quotes.
@@ -451,14 +451,23 @@
     A← XR scA2← HT   ' ⎕THIS.A ' '{⎕ML←1⋄⍺←⍬⋄⊃⍪/(⌈2÷⍨w-m)⌽¨f↑⍤1⍨¨m←⌈/w←⊃∘⌽⍤⍴¨f←⎕FMT¨⍺⍵}' 
     B← XR scB2← HT   ' ⎕THIS.B ' '{⎕ML←1⋄⍺←0⋄⍺⎕SE.Dyalog.Utils.disp⊂⍣(1≥≡⍵),⍣(0=≡⍵)⊢⍵}' 
       ⎕SHADOW 'cCod' 
-      cCod← {
+      cCod← { ⍝ ⎕THIS.C:  [⍺] ∇ ⍵
+              ⍝ ⍺: [nseq@3 [sep@',']]  - inserts <sep> every <nseq> chars from right
+              ⍝    nseq may be a number (>0) or a single digit char('0'..'9').
+              ⍝    sep may be 0 or more characters. 
+              ⍝        Backslashes are treated as text, not escapes, but "`⋄" is here a ⎕UCS 13.
+              ⍝ ⍵: any combination of numbers (¯123244.4234) and numeric strings "¯2905224.444E¯5"
             _←  '{'
-            _,←    '1<⍴⍴⍵: ∇⍤1⊢ ⍵⋄'
-            _,←    '⎕FR ⎕PP ⎕ML← 1287 34 1⋄'
-            _,←    't←''[.Ee].*$'' ''(?<=\d)(?=(\d{3})+([-¯.Ee]|$))''⎕R''&'' '',&''⍕¨⍵⋄'
-            _,←    '1=≢⍵:⊃t⋄'
-            _,←    't'
-            _,  '}'
+            _,←   'def←3'',''⋄⍺←def⋄ n s←⍺,def↑⍨0⌊2-⍨≢⍺⋄'
+            _,←   'n←⍕n⋄s←{⍵≡⍥,''&'':''\&''⋄⍵/⍨1+''\''=⍵}s⋄' 
+            _,←   '⎕IO ⎕ML←0 1⋄'
+            _,←   'w←{1<⍴⍴⍵: ∇⍤1⊢⍵⋄'
+            _,←      '1<|≡⍵: ∇¨⍵⋄3 5 7∊⍨80|⎕DR ⍵: ∇⍕¨⍵⋄'
+            _,←      '''[.Ee].*$'' (''(?<=\d)(?=(\d{'',n,''})+([-¯.Ee]|$))'')⎕R''&'' ('''',s,''&'')⊢⍵'
+            _,←   '}⍵⋄'
+            _,←   '1=≢w: ⊃w ⋄ w'
+            _,← '}'
+            _   
       }⍬
     C← XR scC2← HT   ' ⎕THIS.C ' cCod 
     Ð← XR scÐ2← HT   ' ⎕THIS.Ð ' ' 0∘⎕SE.Dyalog.Utils.disp¯1∘↓'                           
@@ -495,7 +504,7 @@
   ⍝ Load shortcuts: [internal+external] scList; [external only] nSC, MapSC.
   ⍝ £, `L (niladic) are handled ad hoc.  
     scList← 0 1⊃¨¨ ⊂scA2 scB2 scC2 scÐ2 scF2 scJ2 scM2 scT2 scQ2 scW2 
-    nSC← ≢  sc← 'ABCFJTDQW'                   ⍝ sc: User-callable shortcuts  (`A, etc.)
+    nSC← ≢ sc← 'ABCFJTDQW'                   ⍝ sc: User-callable shortcuts  (`A, etc.)
     MapSC←  sc∘⍳ 
     ok← 1 
   ∇

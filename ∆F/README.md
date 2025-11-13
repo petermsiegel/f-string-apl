@@ -162,8 +162,8 @@ Inspired by [Python f‑strings](#appendix-ii-python-fstrings), **∆F** include
 <summary class="summary">&ensp;Recap: <em>The Three Field Types</em></summary> 
 
 ------------------------------------------------------- 
-  Field               Syntax                      Examples                        Displaying     
-  Type         
+  Field                <br>                        <br>                            <br>
+  Type                 Syntax                      Examples                        Displaying  
 -----------     --------------------------  ----------------------------------   -----------------------------------
  **Text**          _Unicode text_            `` Cats`◇and`◇dogs! ``                2-D Text               
 
@@ -957,7 +957,7 @@ DEBUG: Copied "pco" into £=[⎕SE.⍙Fapl.ûLib] from "ws:dfns"
 By default, with _(debug: 0)_, the function is quietly copied in just once this _APL_ session, and is available _without the overhead of additional
 copying_.
 
-### Session Variables
+### Session Library Variables
 
 > But we can use the Session Library shortcut for arrays as well.
 
@@ -989,14 +989,20 @@ require the associated ⍙Fapl namespace to be present. We discuss the **_dfn_**
 
 ## Precomputed f‑strings with the **_dfn_** Option
 
-As shown in Table 5a (below), with _(i)_ the default _dfn_ option set to `0`, the value returned from a successful call to **∆F** is always a character matrix.
-However, _(ii)\*\* 
-if [*dfn\*](#f-option-details) is set to `1`, then **∆F** returns a **dfn** that&mdash; when called later&mdash; will return the identical character expression.
+As shown in Table 5a (below), with _(i)_ the default _dfn_ option set to `0`, 
+the value returned from a successful call to **∆F** is always a character matrix.
+However, _(ii)_ 
+if [*dfn*](#f-option-details) is set to `1`, then **∆F** returns a **dfn** that&mdash; 
+when called later&mdash; will return the identical character expression.
 
-|        |   <br>Mode    | <center>Positional<br>Parameter</center> | <center>Keyword<br>Parameter</center> |
-| :----- | :-----------: | :--------------------------------------- | :------------------------------------ |
-| _(i)_  | **_default_** | ` 0 ∆F 'mycode'`                         | `(dfn: 0) ∆F 'mycode'`                |
-| _(ii)_ |   **_dfn_**   | ` 1 ∆F 'mycode'`                         | `(dfn: 1) ∆F 'mycode'`                |
+-------------------------------------------------------------
+                             Positional                        Keyword
+           <br>Mode          <br>Parameter                    <br>Parameter 
+-------  ---------------   ---------------------     ---------------------------------
+  _(i)_   **_default_**         `0 ∆F 'mycode'`              `(dfn: 0) ∆F 'mycode'`  
+
+ _(ii)_   **_dfn_**             `1 ∆F 'mycode'`              `(dfn: 1) ∆F 'mycode'`  
+-------------------------------------------------------------
 Table: Table 5a. <strong>Using the <em>dfn Option</em></strong>
 
 
@@ -1110,8 +1116,9 @@ Call Syntax                                                                     
 
 **_options_**&ensp;**∆F**&ensp;**_f‑string_**&ensp;[***args***]                  Display an _f‑string_; control the result with _options_ specified (see below).<br>If **_dfn_** (see below) is `0` or omitted, returns a character matrix.<br>If **_dfn_** is `1`, returns a dfn that will display such a matrix (given an identical system state).  
 
-'help'&ensp;**∆F**&ensp;' '&ensp;_or_&ensp;**∆F**⍨'help'                          Display help info and examples for **∆F**. The _f‑string_ is not examined.                                                                                                                                                             
- 
+'help'&ensp;**∆F**&ensp;' '&ensp;_or_&ensp;**∆F**⍨'help'                          Display help info and examples for **∆F**. The _f‑string_ is not examined. **NB.** See below for details and related examples.                                                                                                                                                            
+
+
 **_return value_**                                                               _See below._                                                                                                                                                                                                                                            
 --------------------------------------------------------------------------------------------------
 Table: Table 6a. <strong>∆F Call Syntax Overview</strong>
@@ -1120,24 +1127,25 @@ Table: Table 6a. <strong>∆F Call Syntax Overview</strong>
 
 ## ∆F Option Details
 
-| <br><br>Mode | Positional<br>Option<br>Index | Keyword<br>Option<br><small>(_keyword: default_)<div style="width:90px"></small> | <br><br>Description |                                                                                                                                                                                                                                                                                                                                                                      
+| <br><br>Mode | Positional<br>Option<br><small>[*index*]</small> | Keyword<br>Option<br><small>(_keyword: default_)<div style="width:90px"></small> | <br><br>Description |                                                                                                                                                                                                                                                                                                                                                                      
 | :----------: | :----------------------: | :-------------------------------------: | :------------------------------------------------------------------------------------------- |
 |   **Dfn**    |        &emsp;**_[0]_**   |                                 **_dfn:&nbsp;0_**                                 | If **_dfn:&nbsp;1_**, **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If **_dfn:&nbsp;0_** (default): **∆F** returns a char. matrix.                                                                                                                                                                                                                                                                                                                                                                                               |
 |  **Debug**   |        &emsp;**_[1]_**   |                                **_debug:&nbsp;0_**                                | If **_debug:&nbsp;1_**, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the _f‑string_ **_actually_** generates; if **_dfn_** is also `1`, this will include the embedded _f‑string_ source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a _dfn_ and returned (see the **_dfn_** option above).<br>If **_debug:&nbsp;0_** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the **_dfn_** source code is not displayed. |
 |   **Box**    |        &emsp;**_[2]_**   |                                 **_box:&nbsp;0_**                                 | If **_box:&nbsp;1_**, each field (except a null **Text** field) is boxed separately.<br>If **_box:&nbsp;0_** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br>**NB.** **_box_** mode can be used with settings <strong>`dfn: 1`</strong> _and_ <strong>`dfn: 0`.</strong>                                                                                                                                                                                                               |
-|   **Auto**   |        &emsp;**_[3]_**   |                                **_auto:&nbsp;1_**                                 | If **_auto:&nbsp;0_**, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If **_auto:&nbsp;1_** (default), honors the default and user-defined settings for `auto`.                                                                                                                                                                                                                                                                                                                                                         |
-|  **Inline**  |        &emsp;**_[4]_**   |                               **_inline:&nbsp;0_**                                | If **_inline:&nbsp;1_** and **_dfn:&nbsp;1_**, the code for each internal support function used is included in the _dfn_ result; **_no_** reference to namespace **⍙Fapl** will be made during the execution of that _dfn_.<br>If **_inline:&nbsp;0_** (default), whenever **∆F** or a _dfn_ generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br>**NB.** This option is experimental and may simply disappear one day.                                                                      |
+|   **Auto**   |        &emsp;**_[3]_**   |                                **_auto:&nbsp;1_**                                 | If **_auto:&nbsp;0_**, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If **_auto:&nbsp;1_** (default), honors the default and user-defined settings for `auto`.  **NB.** Depends on namespace **⍙Fapl** created during the `]load` process.                                                                                                                                                                                                                                                                                                                                                        |
+|  **Inline**  |        &emsp;**_[4]_**   |                               **_inline:&nbsp;0_**                                | If **_inline:&nbsp;1_** and **_dfn:&nbsp;1_**, the code for each internal support function used is included in the _dfn_ result; **_no_** reference to namespace **⍙Fapl** will be made during the execution of that _dfn_. (***Exception:*** see *Session Library Shortcuts* below.)<br>If **_inline:&nbsp;0_** (default), whenever **∆F** or a _dfn_ generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br>**NB.** This option is experimental and may simply disappear one day.                                                                      |
 | **Special**  |         **_'help'_**     |                                      &mdash;                                      | If `'help'` is specified, this amazing doc&shy;ument&shy;ation is displayed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **Special**  |         **_'parms'_**    |                                      &mdash;                                      | Updates and displays Session Library (`£` or `` `L ``) pa&shy;ram&shy;eters.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Special**  |         **_'parms'_**    |                                      &mdash;                                      | Updates and displays Session Library (`£` or `` `L ``) pa&shy;ram&shy;eters. **NB.** This option is ex&shy;peri&shy;ment&shy;al.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 Table: Table 6b. <strong>∆F Option Details</strong>
 
+
 - **Default options:** If the left argument `⍺` is omitted, the options default as shown here.
 
-   ------------------------------------------------------------
+    ------------------------------------------------------------
           Option
           Style              Defaults
-   ----------------- -------------------------------------------------------
+    ----------------- -------------------------------------------------------
      **Positional**     `0 0 0 1 0`
 
      **Keyword**        `(dfn: 0 ◇ debug: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)`
@@ -1189,7 +1197,7 @@ which contains one or more **Text** fields, **Code** fields, and **Space** field
 | :------------------------------------- | :--------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **\`A**, **%**                         |                              Above                               | `[⍺] % ⍵`. Centers array `⍺` above array `⍵`.<br>If omitted, `⍺←''`, _i.e._ a blank line.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | **\`B**                                |                               Box                                | `` `B ⍵ ``. Places `⍵` in a box. `⍵` is any array.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| **\`C**                                |                              Commas                              | `` `C ⍵ ``. Adds commas to `⍵` after every 3rd digit of the integer part of `⍵`, right-to-left. `⍵` is a vector of num strings or numbers.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **\`C**                                |                              Commas                              | ``[⍺]`C ⍵ ``. By default, adds commas after every 3rd digit (from the right) of the *integer* part of each number in `⍵` (leaving the fractional part as is). `⍵` is zero or more num strings and/or numbers. If specified, ⍺[0] is the stride, *if not 3,* as an integer or as a single quoted digit; if specified, ⍺[1] is the character (even "\`◇") to insert *in place of* a comma. <br><small>Examples: "5_" adds an underscore every 5 digits from the right. "3\`◇" puts each set of 3 digits on its own line.</small>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | **\`D**                                |                            Date-Time                             | Synonym for **\`T**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | **\`F**, **$**                         |                               ⎕FMT                               | `[⍺] $ ⍵`. Short for `[⍺] ⎕FMT ⍵`. (See APL doc&shy;ument&shy;ation).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | **\`J**                                |                             Justify                              | `` [⍺] `J ⍵ ``. Justify each row of object `⍵` as text:<br>&emsp;&emsp;_left_: ⍺="L"; _center_: ⍺="C"; _right_ ⍺="R".<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>_Displays numbers with the maximum precision available._</small>                                                                                                                                                                                                                                                                                                                                                                                            |
@@ -1472,7 +1480,7 @@ _See_
 
 <br>
 <span id="copyright" style="font-family:cursive;">
-Copyright <big>©</big> 2025 Sam the Cat Foundation. [2025-11-11T20:59:23]
+Copyright <big>©</big> 2025 Sam the Cat Foundation. [2025-11-12T19:33:00]
 </span>
 <br> 
 </div> <!-- End div for right-margin-bar -->

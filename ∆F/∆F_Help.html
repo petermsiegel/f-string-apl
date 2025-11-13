@@ -692,9 +692,9 @@ using Dyalog functions and operators.</p>
 <thead>
 <tr>
 <th style="text-align: center;">Field Type</th>
-<th style="text-align: center;">Syntax</th>
-<th style="text-align: center;">Examples</th>
-<th style="text-align: center;">Displaying</th>
+<th style="text-align: center;"><br> Syntax</th>
+<th style="text-align: center;"><br> Examples</th>
+<th style="text-align: center;"><br> Displaying</th>
 </tr>
 </thead>
 <tbody>
@@ -1473,8 +1473,9 @@ DEBUG: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.ûLib] from &quot;ws:dfns&q
 <p>By default, with <em>(debug: 0)</em>, the function is quietly copied
 in just once this <em>APL</em> session, and is available <em>without the
 overhead of additional copying</em>.</p>
-<h3 data-number="5.20.3" id="session-variables"><span
-class="header-section-number">5.20.3</span> Session Variables</h3>
+<h3 data-number="5.20.3" id="session-library-variables"><span
+class="header-section-number">5.20.3</span> Session Library
+Variables</h3>
 <blockquote>
 <p>But we can use the Session Library shortcut for arrays as well.</p>
 </blockquote>
@@ -1510,41 +1511,40 @@ class="header-section-number">5.21</span> Precomputed f‑strings with the
 <p>As shown in Table 5a (below), with <em>(i)</em> the default
 <em>dfn</em> option set to <code>0</code>, the value returned from a
 successful call to <strong>∆F</strong> is always a character matrix.
-However, <em>(ii)** <span class="margin-note">This </em>(ii)* assumes
-the resulting dfn is called with the same arguments in the same calling
-environment in the same state.</span> if <a
-href="#f-option-details">*dfn*</a> is set to <code>1</code>, then
+However, <em>(ii)</em> <span class="margin-note">Under identical
+conditions, of course.</span> if <a
+href="#f-option-details"><em>dfn</em></a> is set to <code>1</code>, then
 <strong>∆F</strong> returns a <strong>dfn</strong> that— when called
 later— will return the identical character expression.</p>
 <table>
 <caption>Table 5a. <strong>Using the <em>dfn
 Option</em></strong></caption>
 <colgroup>
-<col style="width: 6%" />
-<col style="width: 13%" />
-<col style="width: 41%" />
-<col style="width: 38%" />
+<col style="width: 10%" />
+<col style="width: 20%" />
+<col style="width: 29%" />
+<col style="width: 39%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: left;"></th>
+<th></th>
 <th style="text-align: center;"><br>Mode</th>
-<th style="text-align: left;"></th>
-<th style="text-align: left;"></th>
+<th style="text-align: center;">Positional <br>Parameter</th>
+<th style="text-align: center;">Keyword <br>Parameter</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: justify;"><em>(i)</em></td>
+<td><em>(i)</em></td>
 <td style="text-align: center;"><strong><em>default</em></strong></td>
-<td style="text-align: justify;"><code>0 ∆F 'mycode'</code></td>
-<td style="text-align: justify;"><code>(dfn: 0) ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>0 ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>(dfn: 0) ∆F 'mycode'</code></td>
 </tr>
 <tr>
-<td style="text-align: justify;"><em>(ii)</em></td>
+<td><em>(ii)</em></td>
 <td style="text-align: center;"><strong><em>dfn</em></strong></td>
-<td style="text-align: justify;"><code>1 ∆F 'mycode'</code></td>
-<td style="text-align: justify;"><code>(dfn: 1) ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>1 ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>(dfn: 1) ∆F 'mycode'</code></td>
 </tr>
 </tbody>
 </table>
@@ -1688,7 +1688,8 @@ identical system state).</td>
 <td
 style="text-align: left;">‘help’ <strong>∆F</strong> ‘ ’ <em>or</em> <strong>∆F</strong>⍨‘help’</td>
 <td style="text-align: justify;">Display help info and examples for
-<strong>∆F</strong>. The <em>f‑string</em> is not examined.</td>
+<strong>∆F</strong>. The <em>f‑string</em> is not examined.
+<strong>NB.</strong> See below for details and related examples.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong><em>return
@@ -1711,7 +1712,8 @@ class="header-section-number">6.2</span> ∆F Option Details</h2>
 <thead>
 <tr>
 <th style="text-align: center;"><br><br>Mode</th>
-<th style="text-align: center;">Positional<br>Option<br>Index</th>
+<th
+style="text-align: center;">Positional<br>Option<br><small>[<em>index</em>]</small></th>
 <th
 style="text-align: center;">Keyword<br>Option<br><small>(<em>keyword:
 default</em>)</th>
@@ -1766,7 +1768,9 @@ mode can be used with settings <strong><code>dfn: 1</code></strong>
 must manually load/create any Session Library objects for use with the £
 or <code>`L</code> shortcuts.<br>If <strong><em>auto: 1</em></strong>
 (default), honors the default and user-defined settings for
-<code>auto</code>.</td>
+<code>auto</code>. <strong>NB.</strong> Depends on namespace
+<strong>⍙Fapl</strong> created during the <code>]load</code>
+process.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Inline</strong></td>
@@ -1777,9 +1781,10 @@ or <code>`L</code> shortcuts.<br>If <strong><em>auto: 1</em></strong>
 function used is included in the <em>dfn</em> result;
 <strong><em>no</em></strong> reference to namespace
 <strong>⍙Fapl</strong> will be made during the execution of that
-<em>dfn</em>.<br>If <strong><em>inline: 0</em></strong> (default),
-whenever <strong>∆F</strong> or a <em>dfn</em> generated by it is
-executed, it makes calls to library routines in the namespace
+<em>dfn</em>. (<strong><em>Exception:</em></strong> see <em>Session
+Library Shortcuts</em> below.)<br>If <strong><em>inline: 0</em></strong>
+(default), whenever <strong>∆F</strong> or a <em>dfn</em> generated by
+it is executed, it makes calls to library routines in the namespace
 <strong>⍙Fapl</strong>, created during the <code>]load</code> process
 for <strong>∆F</strong>.<br><strong>NB.</strong> This option is
 experimental and may simply disappear one day.</td>
@@ -1796,18 +1801,19 @@ amazing doc­ument­ation is displayed.</td>
 <td style="text-align: center;"><strong><em>‘parms’</em></strong></td>
 <td style="text-align: center;">—</td>
 <td style="text-align: justify;">Updates and displays Session Library
-(<code>£</code> or <code>`L</code>) pa­ram­eters.</td>
+(<code>£</code> or <code>`L</code>) pa­ram­eters. <strong>NB.</strong>
+This option is ex­peri­ment­al.</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><p><strong>Default options:</strong> If the left argument
 <code>⍺</code> is omitted, the options default as shown here.</p>
-<table style="width:99%;">
+<table style="width:97%;">
 <caption>Table 6c. <strong>∆F Default Options</strong></caption>
 <colgroup>
-<col style="width: 24%" />
-<col style="width: 74%" />
+<col style="width: 23%" />
+<col style="width: 73%" />
 </colgroup>
 <thead>
 <tr>
@@ -1953,10 +1959,15 @@ in a box. <code>⍵</code> is any array.</td>
 <tr>
 <td style="text-align: justify;"><strong>`C</strong></td>
 <td style="text-align: center;">Commas</td>
-<td style="text-align: justify;"><code>`C ⍵</code>. Adds commas to
-<code>⍵</code> after every 3rd digit of the integer part of
-<code>⍵</code>, right-to-left. <code>⍵</code> is a vector of num strings
-or numbers.</td>
+<td style="text-align: justify;"><code>[⍺]`C ⍵</code>. By default, adds
+commas after every 3rd digit (from the right) of the <em>integer</em>
+part of each number in <code>⍵</code> (leaving the fractional part as
+is). <code>⍵</code> is zero or more num strings and/or numbers. If
+specified, ⍺[0] is the stride, <em>if not 3,</em> as an integer or as a
+single quoted digit; if specified, ⍺[1] is the character (even “`◇”) to
+insert <em>in place of</em> a comma. <br><small>Examples: “5_” adds an
+underscore every 5 digits from the right. “3`◇” puts each set of 3
+digits on its own line.</small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`D</strong></td>
@@ -2552,7 +2563,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [2025-11-11T20:59:23] </span>
+<big>©</big> 2025 Sam the Cat Foundation. [2025-11-12T19:33:00] </span>
 <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>
