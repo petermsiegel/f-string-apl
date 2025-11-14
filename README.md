@@ -55,7 +55,7 @@ other familiar tools.
       Objects](#explicitly-copied-library-objects)
     - [Automatically Copied Library
       Objects](#automatically-copied-library-objects)
-    - [Session Variables](#session-variables)
+    - [Session Library Variables](#session-library-variables)
   - [Precomputed f‑strings with the ***dfn***
     Option](#precomputed-fstrings-with-the-dfn-option)
 - [∆F Syntax and Other Information](#f-syntax-and-other-information)
@@ -109,8 +109,8 @@ other familiar tools.
     several files) into the current working directory, ensuring they are
     peers.
 
- <span style="font-size: 130%;">👉 </span>Now, **∆F** is available to
-load and use. Continue in the [next section](#loading-and-running-f).
+<span style="font-size: 130%;">👉</span> Now, **∆F** is available to load and use. Continue in the [next
+section](#loading-and-running-f).
 
 ## Loading and Running **∆F**
 
@@ -127,10 +127,10 @@ load and use. Continue in the [next section](#loading-and-running-f).
     always choose to relocate or assign **∆F** anywhere you want so that
     it is available.
 
- <span style="font-size: 130%;">👉 </span>You may now call `∆F` with the
-desired [arguments](#f-call-syntax-overview) and
-[options](#f-option-details).<br>  <span style="font-size: 130%;">👉
-</span> **∆F** is `⎕IO`- and `⎕ML`-independent.
+<span style="font-size: 130%;">👉</span> You may now call `∆F` with the desired
+[arguments](#f-call-syntax-overview) and
+[options](#f-option-details).<br> <span style="font-size: 130%;">👉</span> **∆F** is `⎕IO`- and
+`⎕ML`-independent.
 
 ------------------------------------------------------------------------
 
@@ -238,7 +238,7 @@ and operators.
 | **Code** | `{`*dfn code plus*`}` `{`*shortcuts*`}` | `{↑"one" "two"}`<br> `{"F5.1" $ (32+9×÷∘5)degC}` | Arbitrary APL Expressions <br>via dfns |
 | **Space** | `{`<big>␠ ␠ ␠</big>`}` | `{  }`   `{}` | Spacing & Field Separation |
 
-Table 3a. <strong>The Three Field Types</strong>
+3a. <strong>The Three Field Types</strong>
 
 <br>
 </details>
@@ -247,9 +247,8 @@ Table 3a. <strong>The Three Field Types</strong>
 
 # Displaying ∆F **Help** in APL
 
-
-<span style="font-size: 130%;">👉 </span>To display this **HELP**
-information, type: `∆F⍨ 'help'`.
+ <span style="font-size: 130%;">👉</span>
+To display this **HELP** information, type: `∆F⍨ 'help'`.
 
 # ∆F Examples: A Primer
 
@@ -976,8 +975,8 @@ library either from the ***dfns*** workspace or from a text file; if the
 name appears to the left-side of a **simple** assigment `←`, it is
 assumed to exist (as always), *i.e.* is not copied in.
 
-<span style="font-size: 130%;">👉 </span> If **∆F** is unable to find
-the item during its search, a standard *APL* error will be signaled.
+<span style="font-size: 130%;">👉</span> If **∆F** is unable to find the item during its search, a
+standard *APL* error will be signaled.
 
 In this next example, we use *for the first time* the function `pco`
 from the `dfns` workspace.
@@ -987,22 +986,22 @@ from the `dfns` workspace.
 
 <details id="pPeek">
 
-<summary class="summary"> Peek: Using the <em><strong>debug</strong></em> option</summary>
+<summary class="summary"> Peek: Using the <em><strong>verbose</strong></em> option</summary>
 
-<span style="font-size: 130%;">👉 </span> To understand when an object
-is automatically copied into a £ibrary, or to see where it’s copied
-from, use **∆F**’s ***debug*** option:
+<span style="font-size: 130%;">👉</span> To understand when an object is automatically copied into a
+£ibrary, or to see where it’s copied from, use **∆F**’s ***verbose***
+option:
 
 
 
-       0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }'    ⍝ 0 1 <==> (debug: 1)
-    DEBUG: Copied "pco" into £=[⎕SE.⍙Fapl.ûLib] from "ws:dfns"
+       0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }'    ⍝ 0 1 <==> (verbose: 1)
+    NOTE: Copied "pco" into £=[⎕SE.⍙Fapl.ûLib] from "ws:dfns"
     { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
     2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
 
 </details>
 
-By default, with *(debug: 0)*, the function is quietly copied in just
+By default, with `(verbose: 0)`, the function is quietly copied in just
 once this *APL* session, and is available *without the overhead of
 additional copying*.
 
@@ -1028,10 +1027,10 @@ it from the `dfns` workspace or a file.
 This may be sensible when ∆F is called from a variety of namespaces
 and/or if the user doesn’t wish to clutter the active namespace.
 
-<span style="font-size: 130%;">👉 </span> When a *dfn* created via
-**∆F** with the ***dfn*** mode set to `1`,
-any uses of `£` will require the associated ⍙Fapl namespace to be
-present. We discuss the ***dfn*** option in the *next* section!
+<span style="font-size: 130%;">👉</span> When a *dfn* created via **∆F** with the ***dfn*** mode set
+to `1`, any uses of `£` will require the
+associated ⍙Fapl namespace to be present. We discuss the ***dfn***
+option in the *next* section!
 
 </div>
 
@@ -1048,7 +1047,7 @@ character expression.
 | *(i)*  | ***default*** |     `0 ∆F 'mycode'`      | `(dfn: 0) ∆F 'mycode'` |
 | *(ii)* |   ***dfn***   |     `1 ∆F 'mycode'`      | `(dfn: 1) ∆F 'mycode'` |
 
-Table 5a. <strong>Using the <em>dfn Option</em></strong>
+5a. <strong>Using the <em>dfn Option</em></strong>
 
  The *dfn* option is most useful when you are making
 repeated use of an *f‑string*, since the overhead for analyzing the
@@ -1161,10 +1160,10 @@ examples.
 | **∆F** ***f‑string*** | Display an *f‑string*; use the *default* options. The string may reference objects in the environment or in the string itself. Returns a character matrix. |
 | **∆F** ***f‑string*** ***args*** | Display an *f‑string*; use the *default* options. Arguments presented *may* be referred to in the f‑string. Returns a character matrix. |
 | ***options*** **∆F** ***f‑string*** \[***args***\] | Display an *f‑string*; control the result with *options* specified (see below).<br>If ***dfn*** (see below) is `0` or omitted, returns a character matrix.<br>If ***dfn*** is `1`, returns a dfn that will display such a matrix (given an identical system state). |
-| ‘help’ **∆F** ‘ ’ *or* **∆F**⍨‘help’ | Display help info and examples for **∆F**. The *f‑string* is not examined. **NB.** See below for details and related examples. |
+| ‘help’ **∆F** ‘ ’ *or* **∆F**⍨‘help’ | Display help info and examples for **∆F**. The *f‑string* is not examined. <span style="font-size: 130%;">👉</span> See below for details and related examples. |
 | ***return value*** | *See below.* |
 
-Table 6a. <strong>∆F Call Syntax Overview</strong>
+6a. <strong>∆F Call Syntax Overview</strong>
 
 <br>
 
@@ -1173,33 +1172,33 @@ Table 6a. <strong>∆F Call Syntax Overview</strong>
 | <br><br>Mode | Positional<br>Option<br><small>\[*index*\]</small> | Keyword<br>Option<br><small>(*keyword: default*) | <br><br>Description |
 |:--:|:--:|:--:|:---|
 | **Dfn** |  ***\[0\]*** | ***dfn: 0*** | If ***dfn: 1***, **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If ***dfn: 0*** (default): **∆F** returns a char. matrix. |
-| **Debug** |  ***\[1\]*** | ***debug: 0*** | If ***debug: 1***, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; if ***dfn*** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br>If ***debug: 0*** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
-| **Box** |  ***\[2\]*** | ***box: 0*** | If ***box: 1***, each field (except a null **Text** field) is boxed separately.<br>If ***box: 0*** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br>**NB.** ***box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
-| **Auto** |  ***\[3\]*** | ***auto: 1*** | If ***auto: 0***, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If ***auto: 1*** (default), honors the default and user-defined settings for `auto`. **NB.** Depends on namespace **⍙Fapl** created during the `]load` process. |
-| **Inline** |  ***\[4\]*** | ***inline: 0*** | If ***inline: 1*** and ***dfn: 1***, the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br>If ***inline: 0*** (default), whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br>**NB.** This option is experimental and may simply disappear one day. |
+| **Verbose** |  ***\[1\]*** | ***verbose: 0*** | If ***verbose: 1***, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; if ***dfn*** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br>If ***verbose: 0*** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
+| **Box** |  ***\[2\]*** | ***box: 0*** | If ***box: 1***, each field (except a null **Text** field) is boxed separately.<br>If ***box: 0*** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><span style="font-size: 130%;">👉</span> ***box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
+| **Auto** |  ***\[3\]*** | ***auto: 1*** | If ***auto: 0***, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If ***auto: 1*** (default), honors the default and user-defined settings for `auto`. <span style="font-size: 130%;">👉</span> Depends on namespace **⍙Fapl** created during the `]load` process. |
+| **Inline** |  ***\[4\]*** | ***inline: 0*** | If ***inline: 1*** and ***dfn: 1***, the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br>If ***inline: 0*** (default), whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br><span style="font-size: 130%;">👉</span> This option is experimental and may simply disappear one day. |
 | **Special** | ***‘help’*** | — | If `'help'` is specified, this amazing doc­ument­ation is displayed. |
-| **Special** | ***‘parms’*** | — | Updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. **NB.** This option is ex­peri­ment­al. |
+| **Special** | ***‘parms’*** | — | Updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. <span style="font-size: 130%;">👉</span> This option is ex­peri­ment­al. |
 
-Table 6b. <strong>∆F Option Details</strong>
+6b. <strong>∆F Option Details</strong>
 
 - **Default options:** If the left argument `⍺` is omitted, the options
   default as shown here.
 
-  |  Option Style  |                       Defaults                       |
-  |:--------------:|:----------------------------------------------------:|
-  | **Positional** |                     `0 0 0 1 0`                      |
-  |  **Keyword**   | `(dfn: 0 ◇ debug: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)` |
+  |  Option Style  |                        Defaults                        |
+  |:--------------:|:------------------------------------------------------:|
+  | **Positional** |                      `0 0 0 1 0`                       |
+  |  **Keyword**   | `(dfn: 0 ◇ verbose: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)` |
 
-  Table 6c. <strong>∆F Default Options</strong>
+  6c. <strong>∆F Default Options</strong>
 
 - **Positional style options:** If **∆F**’s left argument `⍺` is a
   simple integer vector (or a scalar), omitted (trailing) elements are
   replaced by the corresponding elements of the default, `0 0 0 1 0`.
-  *NB. Extra elements are ignored.*
+  *<span style="font-size: 130%;">👉</span> Extra elements are ignored.*
 
 - **Keyword style options:** If the left argument is a namespace, it is
   assumed to contain option names (in any order) with their non-default
-  values,<br>  e.g. `(debug: 1 ◇ auto: 0)`;  
+  values,<br>  e.g. `(verbose: 1 ◇ auto: 0)`;  
   Keyword options are new for Dyalog 20. They are sometimes clearer and
   more convenient than positional keywords.
 
@@ -1281,9 +1280,9 @@ in **Code** fields only *outside* **Quoted strings**.
 | **\`W** | Wrap <span class="red"><small>**EXPERIMENTAL!**</small></span> | `` [⍺]`W ⍵ ``. Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>*See details below.*</small> |
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut<br>(<small>EXPLICIT</small>) | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. <small>*See details below.*</small> |
 | **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the ***next*** element of `⍵`. <small>*See details below.* <small> |
-| **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small> | `→`/`↓` (synonym: `%`) signal that the source code for the **Code** field appears before/above its value. Surrounding blanks are significant. <small>*See [SDCFs](#self-documenting-code-fields-sdcfs) in **Examples** for details.*</small> |
+| **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small> | `→` at end of **Code** field signals that the source code for the field appears *to the left of* its value. Surrounding blanks are significant.<br>`↓` (*or,* `%`) at end of **Code** field signals that the source code for the field appears *above* its value. Surrounding blanks are significant.<br><small>*See [SDCFs](#self-documenting-code-fields-sdcfs) in **Examples** for details.*</small> |
 
-Table 6d. <strong>Code Field Shortcuts</strong>
+6d. <strong>Code Field Shortcuts</strong>
 
 <br>
 
@@ -1303,7 +1302,7 @@ are valid in **Text** fields *only*, but not in Quoted strings:
 |     **\`{**     |          {          |    left brace    |   Text fields only   |
 |     **\`}**     |          }          |   right brace    |   Text fields only   |
 
-Table 6e. <strong>Escape Sequences</strong>
+6e. <strong>Escape Sequences</strong>
 
 Other instances of the backtick character in **Text** fields or **Quoted
 strings** in **Code** fields will be treated literally, *i.e.* sometimes
@@ -1333,7 +1332,7 @@ string**, you must double it. You may *not* use an escape sequence
 |      `»`      |    `∆F '{«or «this»» one»}'`     |    `or «this» one`    |
 |      `'`      | `∆F '{''or ''''this'''' one''}'` |    `or 'this' one`    |
 
-Table 6f. <strong>Closing Quotes</strong>
+6f. <strong>Closing Quotes</strong>
 
 Note that the opening quote `«` is treated as an ordinary character
 within the string. The clumsiness of the standard single quote `'`
@@ -1393,8 +1392,7 @@ delimiter for the outermost (APL-level) string.
 
 1.  If  an object `£.name` is referenced, but not yet defined
     in `£`, an attempt is made to copy it to `£` from workspace `dfns`
-    and/or
-    from files **name.aplf** (for functions), **name.aplo** (for
+    and/or from files **name.aplf** (for functions), **name.aplo** (for
     operators), *etc.* in files in the (user-settable) search path,
     *unless* it is being assigned (via `←`). It will be available for
     the duration of the session.
@@ -1420,7 +1418,7 @@ delimiter for the outermost (APL-level) string.
 | txt | Assigns char. vectors | 2 | *assignment* | ✔ | ✔ |
 | dyalog, *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">✘</span> | <span class="red">✘<small> NEVER</small></span> |
 
-Table 6g. <strong>Library Filetypes: Meaning</strong>
+6g. <strong>Library Filetypes: Meaning</strong>
 
 ### Session Library Shortcut: Parameters
 
@@ -1542,10 +1540,10 @@ The built-in *(default)* parameter file  is documented *below*.
 
 If the [***dfn*** option](#f-option-details) is `¯1`, *equivalently*
 `(dfn: ¯1)`,then **∆F** returns a character vector that contains the source
-code for the *dfn* returned via `(dfn: 1)`. If ***debug*** is also set,
-newlines from `` `◇ `` are shown as visible `␤`. However, since this
-option *returns* the code string, the ***debug*** option won’t also
-*display* the code string.
+code for the *dfn* returned via `(dfn: 1)`. If ***verbose*** is also
+set, newlines from `` `◇ `` are shown as visible `␤`. However, since
+this option *returns* the code string, the ***verbose*** option won’t
+also *display* the code string.
 
 ### ∆F Help’s Secret Variant
 

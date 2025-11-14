@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-12T19:58:09" 
+⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-13T19:14:18" 
 :Namespace libUtil 
 
 ⍝ libUtil (namespace): Handles £ and `L shortcuts.
@@ -15,12 +15,12 @@
 ⍝ Auto: Runtime routine:   
 ⍝ ∘ Our task is to find nm in £.nm...[←] and ⎕CY or ⎕FIX src code for it.
 ⍝ ∘ Does NOT affect the string being scanned. Only used for its ⎕CY or ⎕FIX side effect.
-⍝ Auto: u@nsNm←  dbg@B ∇ s@CV, 
+⍝ Auto: u@nsNm←  verbose@B ∇ s@CV, 
 ⍝    s starts 1 char after £ or `L. 
 ⍝    extern: ulNm, ulNs  
 ⍝  See steps below. 
 ⍝ Returns: ulNm (the stringified library namespace), no matter what.  
-  ∇ u← Auto (s dbg auto) ;t 
+  ∇ u← Auto (s verbose auto) ;t 
     u← ulNm                                            ⍝ Return ulNm no matter what!
     :If   ~auto                                        ⍝ Disable auto mode if auto=0.
     :OrIf 0=≢ s                                        ⍝ Empty str? Done
@@ -29,16 +29,28 @@
     :OrIf 0≠ulNs.⎕NC nm← s↑⍨ t← +/∧\s∊ ⍙AD             ⍝ Word isn't an APL name? Done
     :OrIf '←'= ⊃NoLB t↓s                               ⍝ It's a simple assignment? Done
     :Else 
-        ulNs dbg parms ⍙LoadObj nm                     ⍝ Else, try to find and load the obj. named.
+        ulNs verbose parms ⍙LoadObj nm                     ⍝ Else, try to find and load the obj. named.
     :EndIf 
   ∇ 
 
+⍝ ShowPath:  See 'path' special call in ##.Special
+  ∇ _← ShowPath ; ShowE  
+    :With parms 
+      :If 0=⎕NC '_fullPath' 
+      :OrIf 0=≢_fullPath
+          _← 'No search path defined.' 
+      :Else  
+          ShowE← {1<|≡⍵: '(','⋄)',⍨ '"',¨⍵,¨⊂'" ' ⋄ '"','"',⍨ ⍵ }¨
+          _← '(', ')',⍨ ¯1↓∊(⊂' ⋄ '),⍨¨ ShowE _fullPath
+      :EndIf 
+    :EndWith
+  ∇ 
   ⍝ ======================================================================================
   ⍝ ⍙LoadObj: Find nm in £.nm or `L.nm and try to load its definition into ulNs from path.
-  ⍝     (1|0)@B← ulNs@ulNs dbg@B parms@ns ∇ nm@CVS 
+  ⍝     (1|0)@B← ulNs@ulNs verbose@B parms@ns ∇ nm@CVS 
   ⍝ Find <nm> in search directories (parms.path) and dfns workspace, according to parameters <parms>.
   ⍝ Called by ⍙Auto (above).
-  ⍝    (1|0)← ulNs dbg parms ∇ nm 
+  ⍝    (1|0)← ulNs verbose parms ∇ nm 
   ⍝ Returns SHY 1 (succ) or SHY 0 (fail), having established <nm> in ulNs (ulNs) on success.
   ⍙LoadObj← { 
     ⍝ ⍙LoadObj utilities...
@@ -99,17 +111,17 @@
           nm ∇ 1↓path                       
       }
     ⍝ ActReturn: Show optional action, then return.
-    ⍝ If (~ parms.verbose∨ dbg), exit quietly, unless ⍺ is an error.
+    ⍝ If (~ parms.verbose∨ verbose), exit quietly, unless ⍺ is an error.
     ⍝ Otherwise, exit with a msg based on ⍺.
       ActReturn← ulNs { 
         (~⍵⍵)∧ ⍺≠rcER: ⍺ ⋄ (nm where)← ⍵ ⋄ dest← ⍕⍺⍺ 
-        ⍺=rcOK: ⍺ ⊣ ⎕← 'DEBUG: Copied "', nm, '" into ',dest, (0≠≢ where)/ ' from ','"',where,'"'
-        ⍺=rcNF: ⍺ ⊣ ⎕← 'DEBUG: Object "',nm,'" not found in search path'    
-          11 ⎕SIGNAL⍨ 'DEBUG: Error occurred when copying object "',nm,'" into ',dest  
-      } (parms.verbose∨ dbg)
+        ⍺=rcOK: ⍺ ⊣ ⎕← '∆F: Copied "', nm, '" into ',dest, (0≠≢ where)/ ' from ','"',where,'"'
+        ⍺=rcNF: ⍺ ⊣ ⎕← '∆F: Object "',nm,'" not found on search path.'    
+          11 ⎕SIGNAL⍨ 'Error occurred when copying object "',nm,'" into ',dest  
+      } (parms.verbose∨ verbose)
       
     ⍝ Executive for ⍙LoadObj 
-      ulNs dbg parms←⍺ ⋄ nm← ⍵ 
+      ulNs verbose parms←⍺ ⋄ nm← ⍵ 
       rcOK rcNF rcER← 1 0 ¯1       ⍝ Return codes: OK, Not Found, Error
       rc where← nm ScanPath parms._fullPath 
     1: _← rc ActReturn nm where  
@@ -211,8 +223,8 @@
           0⊣ parms._readParmFi← 1 
       } 
       ParseÊ← {  
-         e1← '>>> ∆F Load Error: Unable to parse parameter file "',⍵,'".'
-         e2← '>>> ∆F Load Error: Array Notation or parameters may be invalid.'
+         e1← '∆F: ∆F Load Error: Unable to parse parameter file "',⍵,'".'
+         e2← '∆F: ∆F Load Error: Array Notation or parameters may be invalid.'
          e1, (⎕UCS 13),e2     
       }  
     ⍝ GenFullPath:   _parms._fullPath← ∇ parms.path 
@@ -242,11 +254,12 @@
   ⍝     all APLAN parameters in 'parms' in alph order EXCEPT internal ones starting with '_'
   ⍝ If ⍺=1, force a display, even if parms.verbose=0.
   ⍝ Returns: a matrix of parms or (1 0⍴'')
-  CShow← { ⍺←0 ⋄ 0:: 0⊣⎕←'>>> ∆F Load: Error displaying runtime parameters'
+  CShow← { ⍺←0 ⋄ 0:: 0⊣⎕←'∆F: ∆F Load: Error displaying runtime parameters'
     (~⍺)∧~⍵.verbose: _← 1 0⍴''  
       _← ⊂'Library Runtime Parameters (default + user-set):'⊣ ⎕PW← 100
     1: _← ↑##.Apl2AN ⍵.(⎕NS {⍵/⍨ '_'≠⊃¨⍵} ⎕NL -2) 
   } 
+
 ⍝ Load user parms
 ⍝     load builtin parms? If defaults or 'parms' doesn't yet exist.
 ⍝     load user parms?    If user=1.

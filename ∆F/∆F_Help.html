@@ -349,7 +349,7 @@
 
   // Listener for narrow/wide text
   // (triggered when text crosses width boundary specified) 
-    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    const mediaQuery = window.matchMedia("screen and (max-width: 1000px)");
     mediaQuery.addEventListener('change', (event) => {
         if (event.matches) {
             showAlert("Omitting Margin Notes...", 2000, 1);
@@ -447,7 +447,8 @@ Library Shortcut (Experimental)</a>
 Library Objects</a></li>
 <li><a href="#automatically-copied-library-objects">Automatically Copied
 Library Objects</a></li>
-<li><a href="#session-variables">Session Variables</a></li>
+<li><a href="#session-library-variables">Session Library
+Variables</a></li>
 </ul></li>
 <li><a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
 f‑strings with the <strong><em>dfn</em></strong> Option</a></li>
@@ -523,7 +524,7 @@ working directory, ensuring they are peers.<span
 class="margin-note"><strong>peers:</strong> <em>i.e.</em> at the same
 level.</span></li>
 </ol>
-<p> <span style="font-size: 130%;">👉 </span>Now, <strong>∆F</strong> is
+<p><span style="font-size: 130%;">👉</span> Now, <strong>∆F</strong> is
 available to load and use. Continue in the <a
 href="#loading-and-running-f">next section</a>.</p>
 <h2 data-number="2.2" id="loading-and-running-f"><span
@@ -548,11 +549,11 @@ added to the end of <code>⎕PATH</code>, if not already defined in ⎕PATH.
 You may always choose to relocate or assign <strong>∆F</strong> anywhere
 you want so that it is available.</li>
 </ol>
-<p> <span style="font-size: 130%;">👉 </span>You may now call
+<p><span style="font-size: 130%;">👉</span> You may now call
 <code>∆F</code> with the desired <a
 href="#f-call-syntax-overview">arguments</a> and <a
-href="#f-option-details">options</a>.<br>  <span
-style="font-size: 130%;">👉 </span> <strong>∆F</strong> is
+href="#f-option-details">options</a>.<br> <span
+style="font-size: 130%;">👉</span> <strong>∆F</strong> is
 <code>⎕IO</code>- and <code>⎕ML</code>-independent.</p>
 <hr />
 </details>
@@ -655,7 +656,7 @@ even, zero spaces: <code>{}</code>;</li>
 <code>{1000⍴""}</code>.</li>
 </ul></li>
 <li><p>Use of <span class="margin-note">These expressions are
-equi­valent:<br> <code>0 1 1 ∆F ...</code><br> <code>(debug: 1 ◇ box: 1) ∆F ...</code></span>
+equi­valent:<br> <code>0 1 1 ∆F ...</code><br> <code>(verbose: 1 ◇ box: 1) ∆F ...</code></span>
 <em>either</em> positional options or namespace-style options, based on
 Array Notation in­tro­duced in Dyalog 20;</p></li>
 <li><p>Multiline (matrix) output built up field-by-field, left-to-right,
@@ -682,7 +683,7 @@ using Dyalog functions and operators.</p>
  Recap: <em>The Three Field Types</em>
 </summary>
 <table>
-<caption>Table 3a. <strong>The Three Field Types</strong></caption>
+<caption>3a. <strong>The Three Field Types</strong></caption>
 <colgroup>
 <col style="width: 13%" />
 <col style="width: 23%" />
@@ -730,9 +731,9 @@ dfns</td>
 class="header-section-number">4</span> Displaying ∆F
 <strong>Help</strong> in APL</h1>
 <p><span class="margin-note">If <code>∆F⍨'help'</code> seems exotic,
-try: <code>'help' ∆F ⍬</code>. </span> <span style="font-size: 130%;">👉
-</span>To display this <strong>HELP</strong> information, type:
-<code>∆F⍨ 'help'</code>.</p>
+try: <code>'help' ∆F ⍬</code>. </span> <span
+style="font-size: 130%;">👉</span> To display this <strong>HELP</strong>
+information, type: <code>∆F⍨ 'help'</code>.</p>
 <h1 data-number="5" id="f-examples-a-primer"><span
 class="header-section-number">5</span> ∆F Examples: A Primer</h1>
 <details>
@@ -1448,7 +1449,7 @@ that name into the library either from the
 name appears to the left-side of a <strong>simple</strong> assigment
 <code>←</code>, it is assumed to exist (as always), <em>i.e.</em> is not
 copied in.</p>
-<p><span style="font-size: 130%;">👉 </span> If <strong>∆F</strong> is
+<p><span style="font-size: 130%;">👉</span> If <strong>∆F</strong> is
 unable to find the item during its search, a standard <em>APL</em> error
 will be signaled.</p>
 <p>In this next example, we use <em>for the first time</em> the function
@@ -1457,31 +1458,31 @@ will be signaled.</p>
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
 <details id="pPeek">
 <summary class="summary">
- Peek: Using the <em><strong>debug</strong></em> option
+ Peek: Using the <em><strong>verbose</strong></em> option
 </summary>
-<p><span style="font-size: 130%;">👉 </span> To understand when an
-object is automatically copied into a £ibrary, or to see where it’s
-copied from, use <strong>∆F</strong>’s <strong><em>debug</em></strong>
+<p><span style="font-size: 130%;">👉</span> To understand when an object
+is automatically copied into a £ibrary, or to see where it’s copied
+from, use <strong>∆F</strong>’s <strong><em>verbose</em></strong>
 option:</p>
 <p><span class="margin-note"><br>First use of £.pco this
 <em>session.</em></span></p>
-<pre><code>   0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39;    ⍝ 0 1 &lt;==&gt; (debug: 1)
-DEBUG: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.ûLib] from &quot;ws:dfns&quot;
+<pre><code>   0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39;    ⍝ 0 1 &lt;==&gt; (verbose: 1)
+NOTE: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.ûLib] from &quot;ws:dfns&quot;
 { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
 </details>
-<p>By default, with <em>(debug: 0)</em>, the function is quietly copied
-in just once this <em>APL</em> session, and is available <em>without the
-overhead of additional copying</em>.</p>
+<p>By default, with <code>(verbose: 0)</code>, the function is quietly
+copied in just once this <em>APL</em> session, and is available
+<em>without the overhead of additional copying</em>.</p>
 <h3 data-number="5.20.3" id="session-library-variables"><span
 class="header-section-number">5.20.3</span> Session Library
 Variables</h3>
 <blockquote>
 <p>But we can use the Session Library shortcut for arrays as well.</p>
 </blockquote>
-<p><span class="margin-note">NB. If <code>£.ctr</code> already exists,
-it must be in the same class as its new value, consistent with
-<em>APL</em> rules.</span></p>
+<p><span class="margin-note"><span style="font-size: 130%;">👉</span> If
+<code>£.ctr</code> already exists, it must be in the same class as its
+new value, consistent with <em>APL</em> rules.</span></p>
 <p>Here is an example where we define a local session variable
 <code>ctr</code>, a counter of the number of times a particular
 statement is executed. Since we define the counter,
@@ -1497,9 +1498,9 @@ We&#39;ve been called 1 times.
 We&#39;ve been called 2 times.</code></pre>
 <p>This may be sensible when ∆F is called from a variety of namespaces
 and/or if the user doesn’t wish to clutter the active namespace.</p>
-<p><span style="font-size: 130%;">👉 </span> When a <em>dfn</em> created
+<p><span style="font-size: 130%;">👉</span> When a <em>dfn</em> created
 via <strong>∆F</strong> with the <strong><em>dfn</em></strong> mode set
-<span class="margin-note">*<code>1 ∆F '...'</code>.</span>to
+<span class="margin-note"><code>1 ∆F '...'</code>.</span>to
 <code>1</code>, any uses of <code>£</code> will require the associated
 ⍙Fapl namespace to be present. We discuss the
 <strong><em>dfn</em></strong> option in the <em>next</em> section!</p>
@@ -1517,8 +1518,7 @@ href="#f-option-details"><em>dfn</em></a> is set to <code>1</code>, then
 <strong>∆F</strong> returns a <strong>dfn</strong> that— when called
 later— will return the identical character expression.</p>
 <table>
-<caption>Table 5a. <strong>Using the <em>dfn
-Option</em></strong></caption>
+<caption>5a. <strong>Using the <em>dfn Option</em></strong></caption>
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 20%" />
@@ -1648,7 +1648,7 @@ may be either <em>positional</em> or— starting in Dyalog v. 20—
 <em>keyword</em>-based. We show the posi­tion­al forms through­out the
 ex­amples, but doc­ument the key­words as well below.</span></p>
 <table>
-<caption>Table 6a. <strong>∆F Call Syntax Overview</strong></caption>
+<caption>6a. <strong>∆F Call Syntax Overview</strong></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 66%" />
@@ -1688,8 +1688,9 @@ identical system state).</td>
 <td
 style="text-align: left;">‘help’ <strong>∆F</strong> ‘ ’ <em>or</em> <strong>∆F</strong>⍨‘help’</td>
 <td style="text-align: justify;">Display help info and examples for
-<strong>∆F</strong>. The <em>f‑string</em> is not examined.
-<strong>NB.</strong> See below for details and related examples.</td>
+<strong>∆F</strong>. The <em>f‑string</em> is not examined. <span
+style="font-size: 130%;">👉</span> See below for details and related
+examples.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong><em>return
@@ -1702,7 +1703,7 @@ value</em></strong></td>
 <h2 data-number="6.2" id="f-option-details"><span
 class="header-section-number">6.2</span> ∆F Option Details</h2>
 <table>
-<caption>Table 6b. <strong>∆F Option Details</strong></caption>
+<caption>6b. <strong>∆F Option Details</strong></caption>
 <colgroup>
 <col style="width: 7%" />
 <col style="width: 14%" />
@@ -1731,10 +1732,11 @@ same output as the default mode.<br>If <strong><em>dfn: 0</em></strong>
 (default): <strong>∆F</strong> returns a char. matrix.</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong>Debug</strong></td>
+<td style="text-align: center;"><strong>Verbose</strong></td>
 <td style="text-align: center;"> <strong><em>[1]</em></strong></td>
-<td style="text-align: center;"><strong><em>debug: 0</em></strong></td>
-<td style="text-align: justify;">If <strong><em>debug: 1</em></strong>,
+<td
+style="text-align: center;"><strong><em>verbose: 0</em></strong></td>
+<td style="text-align: justify;">If <strong><em>verbose: 1</em></strong>,
 Renders newline characters from <code>`◇</code> as the visible
 <code>␤</code> character. Displays the source code that the
 <em>f‑string</em> <strong><em>actually</em></strong> generates; if
@@ -1742,7 +1744,7 @@ Renders newline characters from <code>`◇</code> as the visible
 the embedded <em>f‑string</em> source (accessed as <code>`⍵0</code>).
 After the source code is displayed, it will be executed or converted to
 a <em>dfn</em> and returned (see the <strong><em>dfn</em></strong>
-option above).<br>If <strong><em>debug: 0</em></strong> (default):
+option above).<br>If <strong><em>verbose: 0</em></strong> (default):
 Newline characters from <code>`◇</code> are rendered normally as
 carriage returns, <code>⎕UCS 13</code>; the
 <strong><em>dfn</em></strong> source code is not displayed.</td>
@@ -1756,9 +1758,10 @@ field (except a null <strong>Text</strong> field) is boxed
 separately.<br>If <strong><em>box: 0</em></strong> (default), nothing is
 boxed automatically. Any <strong>Code</strong> field expression may be
 explicitly boxed using the <strong>Box</strong> shortcut,
-<code>`B</code>.<br><strong>NB.</strong> <strong><em>box</em></strong>
-mode can be used with settings <strong><code>dfn: 1</code></strong>
-<em>and</em> <strong><code>dfn: 0</code>.</strong></td>
+<code>`B</code>.<br><span style="font-size: 130%;">👉</span>
+<strong><em>box</em></strong> mode can be used with settings
+<strong><code>dfn: 1</code></strong> <em>and</em>
+<strong><code>dfn: 0</code>.</strong></td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Auto</strong></td>
@@ -1768,8 +1771,8 @@ mode can be used with settings <strong><code>dfn: 1</code></strong>
 must manually load/create any Session Library objects for use with the £
 or <code>`L</code> shortcuts.<br>If <strong><em>auto: 1</em></strong>
 (default), honors the default and user-defined settings for
-<code>auto</code>. <strong>NB.</strong> Depends on namespace
-<strong>⍙Fapl</strong> created during the <code>]load</code>
+<code>auto</code>. <span style="font-size: 130%;">👉</span> Depends on
+namespace <strong>⍙Fapl</strong> created during the <code>]load</code>
 process.</td>
 </tr>
 <tr>
@@ -1786,8 +1789,8 @@ Library Shortcuts</em> below.)<br>If <strong><em>inline: 0</em></strong>
 (default), whenever <strong>∆F</strong> or a <em>dfn</em> generated by
 it is executed, it makes calls to library routines in the namespace
 <strong>⍙Fapl</strong>, created during the <code>]load</code> process
-for <strong>∆F</strong>.<br><strong>NB.</strong> This option is
-experimental and may simply disappear one day.</td>
+for <strong>∆F</strong>.<br><span style="font-size: 130%;">👉</span>
+This option is experimental and may simply disappear one day.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Special</strong></td>
@@ -1801,8 +1804,8 @@ amazing doc­ument­ation is displayed.</td>
 <td style="text-align: center;"><strong><em>‘parms’</em></strong></td>
 <td style="text-align: center;">—</td>
 <td style="text-align: justify;">Updates and displays Session Library
-(<code>£</code> or <code>`L</code>) pa­ram­eters. <strong>NB.</strong>
-This option is ex­peri­ment­al.</td>
+(<code>£</code> or <code>`L</code>) pa­ram­eters. <span
+style="font-size: 130%;">👉</span> This option is ex­peri­ment­al.</td>
 </tr>
 </tbody>
 </table>
@@ -1810,7 +1813,7 @@ This option is ex­peri­ment­al.</td>
 <li><p><strong>Default options:</strong> If the left argument
 <code>⍺</code> is omitted, the options default as shown here.</p>
 <table style="width:97%;">
-<caption>Table 6c. <strong>∆F Default Options</strong></caption>
+<caption>6c. <strong>∆F Default Options</strong></caption>
 <colgroup>
 <col style="width: 23%" />
 <col style="width: 73%" />
@@ -1829,20 +1832,21 @@ This option is ex­peri­ment­al.</td>
 <tr>
 <td style="text-align: center;"><strong>Keyword</strong></td>
 <td
-style="text-align: center;"><code>(dfn: 0 ◇ debug: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)</code></td>
+style="text-align: center;"><code>(dfn: 0 ◇ verbose: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)</code></td>
 </tr>
 </tbody>
 </table></li>
 <li><p><strong>Positional style options:</strong> If
 <strong>∆F</strong>’s left argument <code>⍺</code> is a simple integer
 vector (or a scalar), omitted (trailing) elements are replaced by the
-corresponding elements of the default, <code>0 0 0 1 0</code>. <em>NB.
-Extra elements are ignored.</em></p></li>
+corresponding elements of the default, <code>0 0 0 1 0</code>. <em><span
+style="font-size: 130%;">👉</span> Extra elements are
+ignored.</em></p></li>
 <li><p><strong>Keyword style options:</strong> If the left argument is a
 <span class="margin-note">See Dyalog 20 documentation on <em>APL</em>
 Array Notation.</span>namespace, it is assumed to contain option names
 (in any order) with their non-default
-values,<br>  e.g. <code>(debug: 1 ◇ auto: 0)</code>;<br />
+values,<br>  e.g. <code>(verbose: 1 ◇ auto: 0)</code>;<br />
 Keyword options are new for Dyalog 20. They are sometimes clearer and
 more convenient than positional keywords.</p></li>
 <li><p><strong>Help option:</strong> If the left argument <code>⍺</code>
@@ -1928,7 +1932,7 @@ shortcuts, intended to be concise and expressive tools for common tasks.
 only <em>outside</em> <strong>Quoted strings</strong>.</p>
 <p><strong>Shortcuts</strong> include:</p>
 <table>
-<caption>Table 6d. <strong>Code Field Shortcuts</strong></caption>
+<caption>6d. <strong>Code Field Shortcuts</strong></caption>
 <colgroup>
 <col style="width: 5%" />
 <col style="width: 8%" />
@@ -2060,10 +2064,13 @@ Shortcut<br>(<small>IMPLICIT</small>)</td>
 <em>or</em> <strong>%</strong></td>
 <td style="text-align: center;">Self-documenting <strong>Code</strong>
 Fields <small>(SDCFs)</small></td>
-<td style="text-align: justify;"><code>→</code>/<code>↓</code> (synonym:
-<code>%</code>) signal that the source code for the
-<strong>Code</strong> field appears before/above its value. Surrounding
-blanks are significant. <small><em>See <a
+<td style="text-align: justify;"><code>→</code> at end of
+<strong>Code</strong> field signals that the source code for the field
+appears <em>to the left of</em> its value. Surrounding blanks are
+significant.<br><code>↓</code> (<em>or,</em> <code>%</code>) at end of
+<strong>Code</strong> field signals that the source code for the field
+appears <em>above</em> its value. Surrounding blanks are
+significant.<br><small><em>See <a
 href="#self-documenting-code-fields-sdcfs">SDCFs</a> in
 <strong>Examples</strong> for details.</em></small></td>
 </tr>
@@ -2086,7 +2093,7 @@ include a small number of escape sequences, beginning with the backtick
 <em>i.e.</em> <strong>Text</strong> fields and <em>Quoted Strings</em>
 in <strong>Code</strong> fields. </span></p>
 <table style="width:96%;">
-<caption>Table 6e. <strong>Escape Sequences</strong></caption>
+<caption>6e. <strong>Escape Sequences</strong></caption>
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 23%" />
@@ -2156,7 +2163,7 @@ class="red">∆F ‘{“abc`”def”}’</span><br> <strong>Valid:</strong>
 string</strong>, you must double it. You may <em>not</em> use an escape
 sequence (e.g. <code>`"</code>) for this purpose.</p>
 <table style="width:100%;">
-<caption>Table 6f. <strong>Closing Quotes</strong></caption>
+<caption>6f. <strong>Closing Quotes</strong></caption>
 <colgroup>
 <col style="width: 15%" />
 <col style="width: 49%" />
@@ -2257,17 +2264,18 @@ class="red"><br>Experimental</span></span></p>
 class="header-section-number">6.10</span> Session Library Shortcut:
 Details</h2>
 <ol type="1">
-<li><p>If <span class="margin-note">See <a
-href="#session-library-shortcut-filetypes-of-source-files">Filetypes of
-Source Files</a>, below.</span> an object <code>£.name</code> is
-referenced, but not yet defined in <code>£</code>, an attempt is made to
-copy it to <code>£</code> from workspace <code>dfns</code> <span
-class="margin-note">Depending on the <code>auto</code> param­eter.
-<em>See below.</em></span>and/or from files <strong>name.aplf</strong>
-(for functions), <strong>name.aplo</strong> (for operators),
-<em>etc.</em> in files in the (user-settable) search path,
-<em>unless</em> it is being assigned (via <code>←</code>). It will be
-available for the duration of the session.</p></li>
+<li><p>If <span class="margin-note">With the default <code>auto</code>
+option and <code>]load</code>-time par­a­meters. See <a
+href="#session-library-shortcut-parameters">Lib­rary Parameters</a> and
+<a href="#session-library-shortcut-filetypes-of-source-files">File­types
+of Lib­rary Source Files</a> below.</span> an object <code>£.name</code>
+is referenced, but not yet defined in <code>£</code>, an attempt is made
+to copy it to <code>£</code> from workspace <code>dfns</code> and/or
+from files <strong>name.aplf</strong> (for functions),
+<strong>name.aplo</strong> (for operators), <em>etc.</em> in files in
+the (user-settable) search path, <em>unless</em> it is being assigned
+(via <code>←</code>). It will be available for the duration of the
+session.</p></li>
 <li><p>In the case of a simple assignment (<code>£.name←val</code>), the
 object assigned must be new or of a compatible <em>APL</em> class with
 its existing value, else a domain error will be signaled.</p></li>
@@ -2279,12 +2287,12 @@ id="session-library-shortcut-filetypes-of-source-files"><span
 class="header-section-number">6.10.1</span> Session Library Shortcut:
 Filetypes of Source Files</h3>
 <p><span
-class="margin-note"><br><br><br><br><br><br><br><br><br><strong>apla:</strong>
+class="margin-note"><br><br><br><br><br><br><br><br><br><br><br><strong>apla:</strong>
 Encoded using <em>APL</em> Array Notation (Dyalog
 20).<br><br><br><strong>txt:</strong> Each line of file is converted to
 a Unicode char. vector.</span></p>
 <table>
-<caption>Table 6g. <strong>Library Filetypes: Meaning</strong></caption>
+<caption>6g. <strong>Library Filetypes: Meaning</strong></caption>
 <colgroup>
 <col style="width: 11%" />
 <col style="width: 27%" />
@@ -2492,10 +2500,10 @@ option returns the character representation of the <em>dfn</em> returned
 via the <strong><em>dfn</em></strong> option. </span>,then
 <strong>∆F</strong> returns a character vector that contains the source
 code for the <em>dfn</em> returned via <code>(dfn: 1)</code>. If
-<strong><em>debug</em></strong> is also set, newlines from
+<strong><em>verbose</em></strong> is also set, newlines from
 <code>`◇</code> are shown as visible <code>␤</code>. However, since this
 option <em>returns</em> the code string, the
-<strong><em>debug</em></strong> option won’t also <em>display</em> the
+<strong><em>verbose</em></strong> option won’t also <em>display</em> the
 code string.</p>
 <h3 data-number="7.1.2" id="f-helps-secret-variant"><span
 class="header-section-number">7.1.2</span> ∆F Help’s Secret Variant</h3>
@@ -2563,7 +2571,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [2025-11-12T20:15:54] </span>
+<big>©</big> 2025 Sam the Cat Foundation. [2025-11-13T19:57:09] </span>
 <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>

@@ -1,14 +1,14 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-12T19:58:09" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-13T19:14:18" 
 ⍝:Section CORE 
 
 :Namespace ⍙Fapl   
   ⎕IO ⎕ML ⎕PP←0 1 34            ⍝ Namespace scope. User code is executed in caller space (⊃⎕RSI) 
 
 ⍝ GENERAL GLOBAL VARIABLES 
-  DEBUG← 1                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
+  DEBUG← 0                      ⍝ DEBUG: If 1, turns off error trapping in ∆F
   VERBOSE← 0                    ⍝ VERBOSE: Compile-time and run-time verbosity flag
 ⍝ VARIABLES FOR ∆F OPTIONS: Positional and keyword 
-  OPTS_KW←   'dfn' 'debug' 'box' 'auto' 'inline'        ⍝ In order 
+  OPTS_KW←   'dfn' 'verbose' 'box' 'auto' 'inline'        ⍝ In order 
   OPTS_DEF←  0 0 0 1 0     
   OPTS_N←    ≢OPTS_DEF 
 ⍝ SESSION LIBRARY (£ or `L) VARIABLES
@@ -44,21 +44,20 @@
 ⍝ BEGIN ====================   ∆F (User Function)   ==============================
   ∇ result← {opts} ∆F args                             ⍝ For doc, see ∆F in ∆Fapl.dyalog.
     :Trap 0/⍨ ~⎕THIS.DEBUG  
-    ⍝ Get options-- pos'l (fast) or keyword (legacy is slow)              
+    ⍝ Get options-- pos'l (fast), keyword (legacy is slow), help (who cares)              
       :If 900⌶0                                        ⍝ default options   
-          opts← ⍬   
+          opts← ⎕THIS.OPTS_DEF 
       :ElseIf 11 83∊⍨ ⎕DR opts                         ⍝ positional (bool or small int)
-          ⋄
+          opts,←  ⎕THIS.OPTS_DEF↑⍨ 0⌊⎕THIS.OPTS_N-⍨ ≢opts  ⍝ Append any omitted opts.
       :ElseIf 9=⎕NC 'opts'                             ⍝ Keywords via APL Array Notation
           opts← ⎕THIS.GetKWOpts opts                   ⍝    Cvt keyword opts => pos'l opts
       :ElseIf 0= 80|⎕DR opts ⋄ :AndIf '('=⊃opts        ⍝ Legacy (<Dyal 20) keywords via APLAN string
           opts← ⎕THIS.GetKWOptsLegacy opts             ⍝    Cvt keyword opts => pos'l opts
       :Else                                          
-          result← ⎕THIS.Help opts ⋄ :Return            ⍝ 'help' or error! 
+          result← ⎕THIS.Special opts ⋄ :Return            ⍝ 'help' or error! 
       :EndIf                                           ⍝ default: positional parameters
       args← ,⊆args
-      opts,←  ⎕THIS.OPTS_DEF↑⍨ 0⌊⎕THIS.OPTS_N-⍨ ≢opts 
-    ⍝ Analyse modes
+    ⍝ Determine output mode and execute
       :Select ⊃opts    
       :Case  0       ⍝ Execute fstring
           result← opts ((⊃⎕RSI){ ⍺⍺⍎ ⍺ ⎕THIS.FmtScan ,⊃⍵⊣ ⎕EX 'opts' 'args'}) args    
@@ -67,11 +66,11 @@
           result← ∆Fdfn← (⊃⎕RSI)⍎ opts ⎕THIS.FmtScan ,⊃args
       :Case ¯1       ⍝ Return dfn source code incorporating fstring                               
           result← opts ⎕THIS.FmtScan ,⊃args            
-      :Else          ⍝ Help or an error         
-          result← ⎕THIS.Help opts  
+      :Else          ⍝ Special or an error         
+          result← ⎕THIS.Special opts  
       :EndSelect   
     :Else 
-        ⎕SIGNAL ⊂⎕DMX.('EM' 'EN' 'Message' ,⍥⊂¨('∆F ',EM) EN Message)
+      ⎕SIGNAL ⊂⎕DMX.('EM' 'EN' 'Message' ,⍥⊂¨('∆F ',EM) EN Message) 
     :EndTrap 
    ⍝ (C) 2025 Sam the Cat Foundation
   ∇
@@ -83,7 +82,7 @@
 ⍝    ∇ ns
 ⍝    ns: A ns, typically generated from APL Array Notation using (kw: val ...) 
   GetKWOpts← {   
-      kw← () ⎕NS ⍵ ⋄ _← kw KWSynonym ⊂('debug' 'verbose') 
+      kw← () ⎕NS ⍵ 
       kw ⎕VGET (↑OPTS_KW) OPTS_DEF 
   }
 
@@ -94,12 +93,12 @@
       0::   'Invalid user option format' ⎕SIGNAL ⎕EN 
         ∆NS← { ⍺⊣ ⍵ ⍺.{ ⍎⍵,'←⍺⍺.',⍵ ⋄ ⍺⍺ }¨⍵.⎕NL¯2 }
         ∆VG← { (↓⊃⍵)⍺.{ 0=⎕NC ⍺: ⍎ ⍺,'←⍵' ⋄ ⎕OR ⍺ }¨⊃⌽⍵ }
-      kw← (⎕NS⍬) ∆NS AN2Apl ⍵ ⋄ _← kw KWSynonym ⊂('debug' 'verbose') 
+      kw← (⎕NS⍬) ∆NS AN2Apl ⍵ 
       kw ∆VG (↑OPTS_KW) OPTS_DEF    
   }
-⍝ KWSynonym:    ns@Ns ∇ (sink1@CV src1@CV)(sink2@CV src2@CV)...
+⍝ KWAlias:    ns@Ns ∇ (sink1@CV src1@CV)(sink2@CV src2@CV)...
 ⍝     If src exists, but sink doesn't, replace sink's value with src's value.
-  KWSynonym← { ⍺.{ >/⍵ ⍺∊ ⎕NL¯2: ⊢⍎⍺,'←',⍵ ⋄ ⍬}/¨⍵ }
+  KWAlias← { ⍺.{ >/⍵ ⍺∊ ⎕NL¯2: ⊢⍎⍺,'←',⍵ ⋄ ⍬}/¨⍵ }
  
 
 ⍝ ============================   FmtScan ( top-level routine )   ============================= ⍝
@@ -149,7 +148,7 @@
           c= dol:    (pfx, scF) ∇ w                    ⍝ $ => ⎕FMT (scF shortcut)
           c= esc:    (pfx, a)  ∇ w⊣ a w← CFEsc w       ⍝ `⍵, `⋄, `A, `B, etc.
           c= omUs:   (pfx, a)  ∇ w⊣ a w← CFOm w        ⍝ ⍹, alias to `⍵ (see CFEsc).
-          c= pnd:    (pfx, libUtil.Auto w dbgG autoG) ∇ w             ⍝ £ => our private library
+          c= pnd:    (pfx, libUtil.Auto w vG aG) ∇ w             ⍝ £ => our private library
          ~c∊ sdcfCh: ⎕SIGNAL cfLogicÊ 
           p← +/∧\' '=w  
         ⍝ SDCF Detection...       
@@ -212,7 +211,7 @@
       0= ≢⍵: esc 
         c w← (0⌷⍵) (1↓⍵) ⋄ cfLenG+← 1   
       c∊ om_omUs: CFOm w                               ⍝ Permissively allow `⍹ as equiv to  `⍵ OR ⍹ 
-      c='L': (libUtil.Auto w dbgG autoG) w    
+      c='L': (libUtil.Auto w vG aG) w    
       nSC> p← MapSC c: (p⊃ userSCs) w                  ⍝ userSCs: user shortcuts `[ABFJLTDW]. 
       c∊⍥⎕C ⎕A: ⎕SIGNAL ShortcutÊ c                    ⍝ Unknown shortcut!
         ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
@@ -234,11 +233,11 @@
 ⍝ ===========================================================================
 ⍝ FmtScan Executive begins here
 ⍝ ===========================================================================  
-    (dfn dbgG box autoG inline) fStr← ⍺ ⍵    
-  ⍝ Validate options  
-    0∊ 0 1∊⍨ (|dfn),dbgG box autoG inline: ⎕SIGNAL optÊ                   
-    DMsg← (⎕∘←)⍣(dbgG∧¯1≠dfn)                           ⍝ Debug message
-    nlG← dbgG⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
+    (dfn vG box aG inline) fStr← ⍺ ⍵    
+  ⍝ Validate options  (vG and aG are "globals") 
+    0∊ 0 1∊⍨ (|dfn),vG box aG inline: ⎕SIGNAL optÊ                   
+    DMsg← (⎕∘←)⍣(vG∧¯1≠dfn)                           ⍝ Debug message
+    nlG← vG⊃ nl nlVis                                 ⍝ A newline escape (`⋄) maps onto nlVis if debug mode.
   ⍝ User Shortcuts: A, B, C, F, T~D, Q, W.  
   ⍝ Non-user Internal Shortcut Code and dfns: scÐ, Ð;  scM, M.
   ⍝ See ⍙LoadShortcuts for shortcut details and associated variables scA, scB, etc.     
@@ -249,8 +248,8 @@
     userSCs← scA scB scC scF scJ scT scT scQ scW            
  
   ⍝ Pseudo-globals  camelCaseG 
-  ⍝    dbgG-      runtime debug flag. Set above.
-  ⍝    autoG-     runtime: 
+  ⍝    vG-  runtime debug flag. Set above.
+  ⍝    aG-     runtime: 
   ⍝                 If 0, disables library autoload mode, overriding the default and .∆F setting.
   ⍝                 If 1, honors default/.∆F setting of parms.auto∊ 0 1.
   ⍝    fldsG-     global field list
@@ -358,16 +357,21 @@
 ⍝:EndSection CORE
 
 ⍝:Section HELP 
-⍝ Help: Provides help info. Called only one of the following is called: 
-⍝       'help' ∆F anything  OR  ∆F⍨'help'
+⍝ Special: Provides help info and other special info. 
+⍝ Called with this syntax, where ⍺ stands for the options listed below.
+⍝       '⍺' ∆F anything  OR  ∆F⍨'⍺
+⍝ Special options (⍺):
+⍝       'help'  or variants 'help-n[arrow]', 'help-w[ide]'
+⍝       'parms'
 ⍝ (1 0⍴⍬)← ∇ ⍵
-⍝ 1. If ⍵ is not 'help' (any case), an error is signaled.
+⍝ 1. If ⍵ is not special (any case, truncating after key letters), an error is signaled.
 ⍝ 2. If helpHtml is not defined or if DEBUG=1, HELP_HTML will be read and copied into helpHtml. 
 ⍝ 3. Displays helpHtml.
-  Help← { h← ⎕C⍵
+  Special← { h← ⎕C⍵
   ⍝ parms: Load any new parms without a ]load. 
   ⍝        Returns display of default and user parms (as mx) in alph order.
-    'parms'≡ 5↑h: _← libUtil.LoadParms 1 1 1     
+    'parms'≡ 5↑h: _← libUtil.LoadParms 1 1 1 
+    'path' ≡ 4↑h: _← libUtil.ShowPath 
     'help' ≢ 4↑h: ⎕SIGNAL optÊ 
   ⍝ help, help-wide, or help-narrow?
     h← {  
@@ -396,7 +400,10 @@
 :Namespace libUtil
 ⍝⍝⍝⍝⍝ This is a stub. 
   ∇ {ns}← BareBones
-    ns← uLibNm← ⍕##.ûserLib ⋄ Auto← uLibNm⍨             
+    ns← uLibNm← ⍕##.ûserLib ⋄ Auto← uLibNm⍨  
+    parms← ⎕NS ⍬ 
+    ⎕FX '_←ShowPath' '_←''No search path defined.''' 
+    LoadParms← ⍬⍨           
   ∇
   BareBones 
 :EndNamespace 
