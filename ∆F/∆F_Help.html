@@ -524,9 +524,8 @@ working directory, ensuring they are peers.<span
 class="margin-note"><strong>peers:</strong> <em>i.e.</em> at the same
 level.</span></li>
 </ol>
-<p><span style="font-size: 130%;">👉</span> Now, <strong>∆F</strong> is
-available to load and use. Continue in the <a
-href="#loading-and-running-f">next section</a>.</p>
+<p><big>👉</big> Now, <strong>∆F</strong> is available to load and use.
+Continue in the <a href="#loading-and-running-f">next section</a>.</p>
 <h2 data-number="2.2" id="loading-and-running-f"><span
 class="header-section-number">2.2</span> Loading and Running
 <strong>∆F</strong></h2>
@@ -549,12 +548,11 @@ added to the end of <code>⎕PATH</code>, if not already defined in ⎕PATH.
 You may always choose to relocate or assign <strong>∆F</strong> anywhere
 you want so that it is available.</li>
 </ol>
-<p><span style="font-size: 130%;">👉</span> You may now call
-<code>∆F</code> with the desired <a
+<p><big>👉</big> You may now call <code>∆F</code> with the desired <a
 href="#f-call-syntax-overview">arguments</a> and <a
-href="#f-option-details">options</a>.<br> <span
-style="font-size: 130%;">👉</span> <strong>∆F</strong> is
-<code>⎕IO</code>- and <code>⎕ML</code>-independent.</p>
+href="#f-option-details">options</a>.<br> <big>👉</big>
+<strong>∆F</strong> is <code>⎕IO</code>- and
+<code>⎕ML</code>-independent.</p>
 <hr />
 </details>
 <h1 data-number="3" id="overview"><span
@@ -731,9 +729,8 @@ dfns</td>
 class="header-section-number">4</span> Displaying ∆F
 <strong>Help</strong> in APL</h1>
 <p><span class="margin-note">If <code>∆F⍨'help'</code> seems exotic,
-try: <code>'help' ∆F ⍬</code>. </span> <span
-style="font-size: 130%;">👉</span> To display this <strong>HELP</strong>
-information, type: <code>∆F⍨ 'help'</code>.</p>
+try: <code>'help' ∆F ⍬</code>. </span> <big>👉</big> To display this
+<strong>HELP</strong> information, type: <code>∆F⍨ 'help'</code>.</p>
 <h1 data-number="5" id="f-examples-a-primer"><span
 class="header-section-number">5</span> ∆F Examples: A Primer</h1>
 <details>
@@ -1449,9 +1446,8 @@ that name into the library either from the
 name appears to the left-side of a <strong>simple</strong> assigment
 <code>←</code>, it is assumed to exist (as always), <em>i.e.</em> is not
 copied in.</p>
-<p><span style="font-size: 130%;">👉</span> If <strong>∆F</strong> is
-unable to find the item during its search, a standard <em>APL</em> error
-will be signaled.</p>
+<p><big>👉</big> If <strong>∆F</strong> is unable to find the item
+during its search, a standard <em>APL</em> error will be signaled.</p>
 <p>In this next example, we use <em>for the first time</em> the function
 <code>pco</code> from the <code>dfns</code> workspace.</p>
 <pre><code>    ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39;
@@ -1460,10 +1456,9 @@ will be signaled.</p>
 <summary class="summary">
  Peek: Using the <em><strong>verbose</strong></em> option
 </summary>
-<p><span style="font-size: 130%;">👉</span> To understand when an object
-is automatically copied into a £ibrary, or to see where it’s copied
-from, use <strong>∆F</strong>’s <strong><em>verbose</em></strong>
-option:</p>
+<p><big>👉</big> To understand when an object is automatically copied
+into a £ibrary, or to see where it’s copied from, use
+<strong>∆F</strong>’s <strong><em>verbose</em></strong> option:</p>
 <p><span class="margin-note"><br>First use of £.pco this
 <em>session.</em></span></p>
 <pre><code>   0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39;    ⍝ 0 1 &lt;==&gt; (verbose: 1)
@@ -1480,9 +1475,9 @@ Variables</h3>
 <blockquote>
 <p>But we can use the Session Library shortcut for arrays as well.</p>
 </blockquote>
-<p><span class="margin-note"><span style="font-size: 130%;">👉</span> If
-<code>£.ctr</code> already exists, it must be in the same class as its
-new value, consistent with <em>APL</em> rules.</span></p>
+<p><span class="margin-note"><big>👉</big> If <code>£.ctr</code> already
+exists, it must be in the same class as its new value, consistent with
+<em>APL</em> rules.</span></p>
 <p>Here is an example where we define a local session variable
 <code>ctr</code>, a counter of the number of times a particular
 statement is executed. Since we define the counter,
@@ -1498,12 +1493,12 @@ We&#39;ve been called 1 times.
 We&#39;ve been called 2 times.</code></pre>
 <p>This may be sensible when ∆F is called from a variety of namespaces
 and/or if the user doesn’t wish to clutter the active namespace.</p>
-<p><span style="font-size: 130%;">👉</span> When a <em>dfn</em> created
-via <strong>∆F</strong> with the <strong><em>dfn</em></strong> mode set
-<span class="margin-note"><code>1 ∆F '...'</code>.</span>to
-<code>1</code>, any uses of <code>£</code> will require the associated
-⍙Fapl namespace to be present. We discuss the
-<strong><em>dfn</em></strong> option in the <em>next</em> section!</p>
+<p><big>👉</big> When a <em>dfn</em> created via <strong>∆F</strong>
+with the <strong><em>dfn</em></strong> mode set <span
+class="margin-note"><code>1 ∆F '...'</code>.</span>to <code>1</code>,
+any uses of <code>£</code> will require the associated ⍙Fapl namespace
+to be present. We discuss the <strong><em>dfn</em></strong> option in
+the <em>next</em> section!</p>
 </div>
 <h2 data-number="5.21"
 id="precomputed-fstrings-with-the-dfn-option"><span
@@ -1688,9 +1683,8 @@ identical system state).</td>
 <td
 style="text-align: left;">‘help’ <strong>∆F</strong> ‘ ’ <em>or</em> <strong>∆F</strong>⍨‘help’</td>
 <td style="text-align: justify;">Display help info and examples for
-<strong>∆F</strong>. The <em>f‑string</em> is not examined. <span
-style="font-size: 130%;">👉</span> See below for details and related
-examples.</td>
+<strong>∆F</strong>. The <em>f‑string</em> is not examined.
+<big>👉</big> See below for details and related examples.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong><em>return
@@ -1758,9 +1752,8 @@ field (except a null <strong>Text</strong> field) is boxed
 separately.<br>If <strong><em>box: 0</em></strong> (default), nothing is
 boxed automatically. Any <strong>Code</strong> field expression may be
 explicitly boxed using the <strong>Box</strong> shortcut,
-<code>`B</code>.<br><span style="font-size: 130%;">👉</span>
-<strong><em>box</em></strong> mode can be used with settings
-<strong><code>dfn: 1</code></strong> <em>and</em>
+<code>`B</code>.<br><big>👉</big> <strong><em>box</em></strong> mode can
+be used with settings <strong><code>dfn: 1</code></strong> <em>and</em>
 <strong><code>dfn: 0</code>.</strong></td>
 </tr>
 <tr>
@@ -1771,8 +1764,8 @@ explicitly boxed using the <strong>Box</strong> shortcut,
 must manually load/create any Session Library objects for use with the £
 or <code>`L</code> shortcuts.<br>If <strong><em>auto: 1</em></strong>
 (default), honors the default and user-defined settings for
-<code>auto</code>. <span style="font-size: 130%;">👉</span> Depends on
-namespace <strong>⍙Fapl</strong> created during the <code>]load</code>
+<code>auto</code>. <big>👉</big> Depends on namespace
+<strong>⍙Fapl</strong> created during the <code>]load</code>
 process.</td>
 </tr>
 <tr>
@@ -1789,8 +1782,8 @@ Library Shortcuts</em> below.)<br>If <strong><em>inline: 0</em></strong>
 (default), whenever <strong>∆F</strong> or a <em>dfn</em> generated by
 it is executed, it makes calls to library routines in the namespace
 <strong>⍙Fapl</strong>, created during the <code>]load</code> process
-for <strong>∆F</strong>.<br><span style="font-size: 130%;">👉</span>
-This option is experimental and may simply disappear one day.</td>
+for <strong>∆F</strong>.<br><big>👉</big> This option is experimental
+and may simply disappear one day.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Special</strong></td>
@@ -1804,8 +1797,8 @@ amazing doc­ument­ation is displayed.</td>
 <td style="text-align: center;"><strong><em>‘parms’</em></strong></td>
 <td style="text-align: center;">—</td>
 <td style="text-align: justify;">Updates and displays Session Library
-(<code>£</code> or <code>`L</code>) pa­ram­eters. <span
-style="font-size: 130%;">👉</span> This option is ex­peri­ment­al.</td>
+(<code>£</code> or <code>`L</code>) pa­ram­eters. <big>👉</big> This
+option is ex­peri­ment­al.</td>
 </tr>
 </tbody>
 </table>
@@ -1839,9 +1832,8 @@ style="text-align: center;"><code>(dfn: 0 ◇ verbose: 0 ◇ box: 0 ◇ auto: 1 
 <li><p><strong>Positional style options:</strong> If
 <strong>∆F</strong>’s left argument <code>⍺</code> is a simple integer
 vector (or a scalar), omitted (trailing) elements are replaced by the
-corresponding elements of the default, <code>0 0 0 1 0</code>. <em><span
-style="font-size: 130%;">👉</span> Extra elements are
-ignored.</em></p></li>
+corresponding elements of the default, <code>0 0 0 1 0</code>.
+<em><big>👉</big> Extra elements are ignored.</em></p></li>
 <li><p><strong>Keyword style options:</strong> If the left argument is a
 <span class="margin-note">See Dyalog 20 documentation on <em>APL</em>
 Array Notation.</span>namespace, it is assumed to contain option names
@@ -2571,7 +2563,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [2025-11-13T19:57:09] </span>
+<big>©</big> 2025 Sam the Cat Foundation. [2025-11-13T20:25:25] </span>
 <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>

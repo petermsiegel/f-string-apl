@@ -109,7 +109,7 @@ other familiar tools.
     several files) into the current working directory, ensuring they are
     peers.
 
-<span style="font-size: 130%;">👉</span> Now, **∆F** is available to load and use. Continue in the [next
+<big>👉</big> Now, **∆F** is available to load and use. Continue in the [next
 section](#loading-and-running-f).
 
 ## Loading and Running **∆F**
@@ -127,9 +127,9 @@ section](#loading-and-running-f).
     always choose to relocate or assign **∆F** anywhere you want so that
     it is available.
 
-<span style="font-size: 130%;">👉</span> You may now call `∆F` with the desired
+<big>👉</big> You may now call `∆F` with the desired
 [arguments](#f-call-syntax-overview) and
-[options](#f-option-details).<br> <span style="font-size: 130%;">👉</span> **∆F** is `⎕IO`- and
+[options](#f-option-details).<br> <big>👉</big> **∆F** is `⎕IO`- and
 `⎕ML`-independent.
 
 ------------------------------------------------------------------------
@@ -247,7 +247,7 @@ and operators.
 
 # Displaying ∆F **Help** in APL
 
- <span style="font-size: 130%;">👉</span>
+ <big>👉</big>
 To display this **HELP** information, type: `∆F⍨ 'help'`.
 
 # ∆F Examples: A Primer
@@ -975,7 +975,7 @@ library either from the ***dfns*** workspace or from a text file; if the
 name appears to the left-side of a **simple** assigment `←`, it is
 assumed to exist (as always), *i.e.* is not copied in.
 
-<span style="font-size: 130%;">👉</span> If **∆F** is unable to find the item during its search, a
+<big>👉</big> If **∆F** is unable to find the item during its search, a
 standard *APL* error will be signaled.
 
 In this next example, we use *for the first time* the function `pco`
@@ -988,7 +988,7 @@ from the `dfns` workspace.
 
 <summary class="summary"> Peek: Using the <em><strong>verbose</strong></em> option</summary>
 
-<span style="font-size: 130%;">👉</span> To understand when an object is automatically copied into a
+<big>👉</big> To understand when an object is automatically copied into a
 £ibrary, or to see where it’s copied from, use **∆F**’s ***verbose***
 option:
 
@@ -1027,7 +1027,7 @@ it from the `dfns` workspace or a file.
 This may be sensible when ∆F is called from a variety of namespaces
 and/or if the user doesn’t wish to clutter the active namespace.
 
-<span style="font-size: 130%;">👉</span> When a *dfn* created via **∆F** with the ***dfn*** mode set
+<big>👉</big> When a *dfn* created via **∆F** with the ***dfn*** mode set
 to `1`, any uses of `£` will require the
 associated ⍙Fapl namespace to be present. We discuss the ***dfn***
 option in the *next* section!
@@ -1160,7 +1160,7 @@ examples.
 | **∆F** ***f‑string*** | Display an *f‑string*; use the *default* options. The string may reference objects in the environment or in the string itself. Returns a character matrix. |
 | **∆F** ***f‑string*** ***args*** | Display an *f‑string*; use the *default* options. Arguments presented *may* be referred to in the f‑string. Returns a character matrix. |
 | ***options*** **∆F** ***f‑string*** \[***args***\] | Display an *f‑string*; control the result with *options* specified (see below).<br>If ***dfn*** (see below) is `0` or omitted, returns a character matrix.<br>If ***dfn*** is `1`, returns a dfn that will display such a matrix (given an identical system state). |
-| ‘help’ **∆F** ‘ ’ *or* **∆F**⍨‘help’ | Display help info and examples for **∆F**. The *f‑string* is not examined. <span style="font-size: 130%;">👉</span> See below for details and related examples. |
+| ‘help’ **∆F** ‘ ’ *or* **∆F**⍨‘help’ | Display help info and examples for **∆F**. The *f‑string* is not examined. <big>👉</big> See below for details and related examples. |
 | ***return value*** | *See below.* |
 
 6a. <strong>∆F Call Syntax Overview</strong>
@@ -1173,11 +1173,11 @@ examples.
 |:--:|:--:|:--:|:---|
 | **Dfn** |  ***\[0\]*** | ***dfn: 0*** | If ***dfn: 1***, **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br>If ***dfn: 0*** (default): **∆F** returns a char. matrix. |
 | **Verbose** |  ***\[1\]*** | ***verbose: 0*** | If ***verbose: 1***, Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; if ***dfn*** is also `1`, this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br>If ***verbose: 0*** (default): Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
-| **Box** |  ***\[2\]*** | ***box: 0*** | If ***box: 1***, each field (except a null **Text** field) is boxed separately.<br>If ***box: 0*** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><span style="font-size: 130%;">👉</span> ***box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
-| **Auto** |  ***\[3\]*** | ***auto: 1*** | If ***auto: 0***, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If ***auto: 1*** (default), honors the default and user-defined settings for `auto`. <span style="font-size: 130%;">👉</span> Depends on namespace **⍙Fapl** created during the `]load` process. |
-| **Inline** |  ***\[4\]*** | ***inline: 0*** | If ***inline: 1*** and ***dfn: 1***, the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br>If ***inline: 0*** (default), whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br><span style="font-size: 130%;">👉</span> This option is experimental and may simply disappear one day. |
+| **Box** |  ***\[2\]*** | ***box: 0*** | If ***box: 1***, each field (except a null **Text** field) is boxed separately.<br>If ***box: 0*** (default), nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><big>👉</big> ***box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
+| **Auto** |  ***\[3\]*** | ***auto: 1*** | If ***auto: 0***, user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br>If ***auto: 1*** (default), honors the default and user-defined settings for `auto`. <big>👉</big> Depends on namespace **⍙Fapl** created during the `]load` process. |
+| **Inline** |  ***\[4\]*** | ***inline: 0*** | If ***inline: 1*** and ***dfn: 1***, the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br>If ***inline: 0*** (default), whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br><big>👉</big> This option is experimental and may simply disappear one day. |
 | **Special** | ***‘help’*** | — | If `'help'` is specified, this amazing doc­ument­ation is displayed. |
-| **Special** | ***‘parms’*** | — | Updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. <span style="font-size: 130%;">👉</span> This option is ex­peri­ment­al. |
+| **Special** | ***‘parms’*** | — | Updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. <big>👉</big> This option is ex­peri­ment­al. |
 
 6b. <strong>∆F Option Details</strong>
 
@@ -1194,7 +1194,7 @@ examples.
 - **Positional style options:** If **∆F**’s left argument `⍺` is a
   simple integer vector (or a scalar), omitted (trailing) elements are
   replaced by the corresponding elements of the default, `0 0 0 1 0`.
-  *<span style="font-size: 130%;">👉</span> Extra elements are ignored.*
+  *<big>👉</big> Extra elements are ignored.*
 
 - **Keyword style options:** If the left argument is a namespace, it is
   assumed to contain option names (in any order) with their non-default
