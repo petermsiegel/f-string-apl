@@ -206,7 +206,7 @@
   /* links-- make them less obtrusive */
     a:link {         /* link not visited */
       color: black;   
-      font-size: 1.1em;
+      font-size: 100%;
       text-decoration-style: dotted; 
      }
     a:visited {      /* visited link */
@@ -380,6 +380,7 @@
 <header id="title-block-header">
 <h1 class="title">∆F Formatted String Literals</h1>
 </header>
+<br>
 <div class="right-margin-bar">
 <div class="pMarquee">
 <p><strong><em>∆F</em></strong> is a function for <em>Dyalog</em> APL
@@ -532,12 +533,13 @@ class="header-section-number">2.2</span> Loading and Running
 <ol type="1">
 <li>Confirm that your current directory remains as before.</li>
 <li>From your Dyalog session<span
-class="margin-note"><strong><em>⎕SE:</em></strong> Or any
+class="margin-note"><br><strong><em>⎕SE:</em></strong> Or any
 <em>target</em> namespace you desire.</span>, enter:
 <br> <code>]load ∆F [-target=⎕SE]</code></li>
 <li>If <strong>∆F/∆F_Help.html</strong> is available at
-<code>]load</code> time, it will be copied into <strong>⍙Fapl</strong>
-(or a message will note the absence of <em>help</em> information).</li>
+<code>]load</code> time (the default), it will be copied into
+<strong>⍙Fapl</strong> (or a message will note the absence of
+<em>help</em> information).</li>
 <li>Namespace <code><em>⎕SE</em>.<strong>⍙Fapl</strong></code> now
 contains utilities used by <strong>∆F</strong> and, once
 <code>]load</code>ed, <strong><em>should not</em></strong> be moved.
@@ -576,16 +578,13 @@ information.</p>
 specifications and data, then aligned and catenated into a single
 overall character matrix result;</li>
 </ul>
-<p><span class="margin-note">In this document, we use the symbol
-<code>◇</code> (<code>⎕UCS 9671</code>) to represent the APL
-<em>statement separator</em> (<code>⎕UCS 8900</code>), since the latter
-is displayed <em>in some browsers</em> as a hard-to-read glyph.
-</span></p>
+<p><span class="margin-note"><code>`◇</code>: back­tick + state­ment
+sep­ar­ator (<code>⎕UCS 96 8900</code>). </span></p>
 <ul>
-<li><p><strong>Text</strong> fields, supporting multiline Unicode text
-within each field, with the sequence <code>`◇</code>
-(<strong>backtick</strong> + <strong>statement separator</strong>)
-generating a newline, <small><code>⎕UCS 13</code></small>;</p></li>
+<li><p><strong>Text</strong> fields, each allowing <a
+href="#text-fields-and-space-fields">multiline Unicode text</a>, with
+the sequence <code>`◇</code> generating a new line,
+<small><code>⎕UCS 13</code></small>;</p></li>
 <li><p><strong>Code</strong> fields, <span class="margin-note">An
 <strong>∆F</strong> <em>f‑string</em>— including any
 <strong>Code</strong> fields— is limited to a single, possibly very
@@ -599,8 +598,10 @@ which will be catenated with other fields and returned from
 <p><strong>Code</strong> fields also provide a number of concise,
 convenient extensions, such as:</p>
 <ul>
-<li><p><strong>Quoted strings</strong> in <strong>Code</strong> fields,
-with several quote styles:</p>
+<li><p><strong>Quoted strings</strong> <span class="margin-note">Quoted
+strings, like <strong>Text</strong> fields, allow easy entry of newlines
+via the sequence <code>`◇</code>.</span> in <strong>Code</strong>
+fields, with several quote styles:</p>
 <ul>
 <li><strong>double-quotes</strong><br> <code>∆F '{"like this"}'</code>
 or <code>∆F '{"on`◇""three""`◇lines"}</code>,</li>
@@ -608,8 +609,8 @@ or <code>∆F '{"on`◇""three""`◇lines"}</code>,</li>
 class="margin-note">Also known as <em>guillemets</em>,
 <big><strong>«</strong></big> and <big><strong>»</strong></big> are
 Unicode chars <code>⎕UCS 171 187</code>.</span><br>
-<code>∆F '{«with internal quotes like "this" or ''this''»}'</code>, not
-to mention</li>
+<code>∆F '{«with internal quotes like "this" or ''this''»}'</code>,
+<em>not to mention</em></li>
 <li>APL’s tried-and-true embedded <strong>single-quotes</strong>,<br>
 <code>∆F '{''shown ''''right'''' here''}'</code>.</li>
 </ul></li>
@@ -633,13 +634,12 @@ expressions from APL timestamps (<strong>⎕TS</strong>) using
 <li><p>Simple mechanisms for concisely formatting and displaying data
 from</p>
 <ul>
-<li>user arrays or arbitrary
+<li>user <span class="margin-note"><br><br><br><code>`⍵1</code> is a
+shortcut for <code>(⍵⊃⍨ 1+⎕IO)</code>.</span>arrays or arbitrary
 code:<br><code>tempC←10 110 40</code><br><code>∆F'{tempC}'</code> or
-<code>∆F'{ {⍵&lt;100: 32+9×⍵÷5 ◇ "(too hot)"}¨tempC }'</code>, <br></li>
+<code>∆F '{`⍵1}? {`⍵1=?10: "Right!" ◇ "Wrong." }'</code>, <br></li>
 <li>arguments to <strong>∆F</strong> that follow the format
-string:<br><code>∆F'{32+`⍵1×9÷5}' (10 110 40)</code>,<br> where
-<code>`⍵1</code> is a shortcut for <code>(⍵⊃⍨1+⎕IO)</code> (here
-<code>10 110 40</code>),</li>
+string:<br><code>∆F'{32+`⍵1×9÷5}' (10 110 40)</code>,</li>
 <li><em>and more</em>;</li>
 </ul></li>
 </ul></li>
@@ -653,10 +653,11 @@ even, zero spaces: <code>{}</code>;</li>
 <li>1000 spaces? Use a <strong>Code</strong> field instead:
 <code>{1000⍴""}</code>.</li>
 </ul></li>
-<li><p>Use of <span class="margin-note">These expressions are
-equi­valent:<br> <code>0 1 1 ∆F ...</code><br> <code>(verbose: 1 ◇ box: 1) ∆F ...</code></span>
-<em>either</em> positional options or namespace-style options, based on
-Array Notation in­tro­duced in Dyalog 20;</p></li>
+<li><p>Use of <span class="margin-note">These options are
+equi­valent:<br>∘ <code>0 1 1</code> <br>∘
+<code>(verbose: 1 ◇ box: 1)</code></span> <em>either</em>
+<strong>positional</strong> options or <strong>namespace</strong>-style
+options, based on Array Notation in­tro­duced in Dyalog 20;</p></li>
 <li><p>Multiline (matrix) output built up field-by-field, left-to-right,
 from values and expressions in the calling environment or arguments to
 <strong>∆F</strong>;</p>
@@ -1177,12 +1178,14 @@ right, starting with <code>`⍵1</code>, the first, <em>i.e.</em>
 0 0 0 1 0 2
 1 0 1 1 1 2
 2 0 2 1 2 2</code></pre>
-<p>Let’s demonstrate here the equivalence of the <em>implicitly</em> and
-<em>explicitly</em> indexed <strong>Omega expressions</strong>!</p>
-<pre><code>   a← ∆F &#39;{(⍳2⍴`⍵) % (⍳2⍴`⍵) % (⍳2⍴`⍵)}&#39; 1 2 3     ⍝ Implicit Omega expressions
-   b← ∆F &#39;{(⍳2⍴`⍵1) % (⍳2⍴`⍵2) % (⍳2⍴`⍵3)}&#39; 1 2 3  ⍝ Explicit Omega expressions
-   a ≡ b                                           ⍝ Are they the same?
-1                                                  ⍝ Yes!</code></pre>
+<p>Here’s a useful example, where the formatting option (here, for text
+justification <code>`J</code>) is determined by an argument to
+<strong>∆F</strong>:</p>
+<pre><code>   a← ↑&#39;elephants&#39; &#39;cats&#39; &#39;rhinoceroses&#39;
+   ∆F &#39;{`⍵ `J a}  {`⍵ `J a}  {`⍵ `J a}&#39; ¯1 0 1
+elephants      elephants       elephants
+cats              cats              cats
+rhinoceroses  rhinoceroses  rhinoceroses</code></pre>
 <h2 data-number="5.15" id="shortcuts-with-individual-expressions"><span
 class="header-section-number">5.15</span> Shortcuts With Individual
 Expressions</h2>
@@ -1404,8 +1407,8 @@ example, the user may wish to: <span class="margin-note"><em>For
 details, see <a href="#code-field-shortcuts">Code Field Short­cuts</a>
 below.</em></span></p>
 <ul>
-<li>have regularly used functions or operators <em>automatically</em>
-available, <em>or</em></li>
+<li>have regularly used functions or operators automatically available
+when needed, <em>or</em></li>
 <li>create objects that might be referred to, monitored, or modified
 during the session.</li>
 </ul>
@@ -1562,7 +1565,7 @@ heavily used <strong>∆F</strong> string is important.</p>
    cv← 11 30 60</code></pre>
 <p>Now, let’s proceed. Here’s our <strong>∆F</strong> String
 <code>t</code>:</p>
-<pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ cv}°C or {&quot;F5.1&quot; $ F← 32+9×cv÷5}°F&#39;</code></pre>
+<pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ cv}°C or {&quot;F5.1&quot; $ 32+9×cv÷5}°F&#39;</code></pre>
 <details id="pPeek">
 <summary class="summary">
  Evaluate <code>∆F t</code>
@@ -1590,8 +1593,8 @@ The temperature is 11°C or  51.8°F
 class="margin-note"><br><br><br>Both <code>t</code> and <code>T</code>
 will reference <code>cv</code>.</span></p>
 <pre><code>   cmpx &#39;∆F t&#39; &#39;T ⍬&#39;
-∆F t → 1.7E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
- T ⍬ → 1.0E¯5 | -94% ⎕⎕</code></pre>
+∆F t → 1.5E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
+ T ⍬ → 1.1E¯5 | -93% ⎕⎕⎕</code></pre>
 <p>The precomputed version is at least an <mark>order of
 magnitude</mark> faster.</p>
 <p>Before we get to syntax and other information, we want to show you
@@ -1605,22 +1608,23 @@ above.</p>
 <p>Let’s share the Centigrade values <code>cv</code> from our current
 example, not as a <em>variable</em>, but as the <em>first argument</em>
 to <strong>∆F</strong>. We’ll access the value as <code>`⍵1</code>.</p>
-<pre><code>   t←&#39;The temperature is {&quot;I2&quot; $ `⍵1}°C or {&quot;F5.1&quot; $ F← 32+9×`⍵1÷5}°F&#39;
+<pre><code>  cv←11 30 60
+   t←&#39;The temperature is {&quot;I2&quot; $ `⍵1}°C or {&quot;F5.1&quot; $ 32+9×`⍵1÷5}°F&#39;
    T← 1 ∆F t
 
-   ∆F t (11 30 60)
+   ∆F t cv
 The temperature is 11°C or  51.8°F
                    30       86.0
                    60      140.0
 
-   T ⊂(11 30 60)
+   T cv
 The temperature is 11°C or  51.8°F
                    30       86.0
                    60      140.0
 
-   cmpx &#39;∆F t (11 30 60)&#39; &#39;T ⊂(11 30 60)&#39;
-∆F t (11 30 60) → 1.6E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
-T ⊂(11 30 60)   → 1.1E¯5 | -94% ⎕⎕⎕</code></pre>
+   cmpx &#39;∆F t cv&#39; &#39;T cv&#39;
+∆F t cv → 1.8E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
+   T cv → 1.1E¯5 | -95% ⎕⎕⎕</code></pre>
 <p>The precomputed version again shows a speedup of well over an
 <mark>order of magnitude</mark> compared to the default version.</p>
 <hr />
@@ -2535,9 +2539,7 @@ to strings and inserted at that position. <br>  For example, the Python
 expression <strong><code>f"The sum of {a} and {b} is {a + b}"</code></strong> would
 evaluate the addition and embed the result directly in the string. This
 combination of simplicity, power, and performance has made f-strings the
-preferred string formatting approach in modern Python code. <em>[Claude.
-AI-generated response to Python f-strings query [edited]. Claude.ai.
-Anthropic, October 19, 2025.]</em></p>
+preferred string formatting approach in modern Python code.</p>
 </div>
 <p><em>See</em> <a id="displayText" href="javascript:linkAlert();"><span
 class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.</p>
@@ -2563,7 +2565,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [2025-11-13T20:25:25] </span>
+<big>©</big> 2025 Sam the Cat Foundation. [2025-11-14T21:11:15] </span>
 <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>

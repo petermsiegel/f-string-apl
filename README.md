@@ -1,3 +1,5 @@
+<br>
+
 <div class="right-margin-bar">
 
 <div class="pMarquee">
@@ -116,9 +118,9 @@ section](#loading-and-running-f).
 
 1.  Confirm that your current directory remains as before.
 2.  From your Dyalog session, enter: <br> `]load ∆F [-target=⎕SE]`
-3.  If **∆F/∆F_Help.html** is available at `]load` time, it will be
-    copied into **⍙Fapl** (or a message will note the absence of *help*
-    information).
+3.  If **∆F/∆F_Help.html** is available at `]load` time (the default),
+    it will be copied into **⍙Fapl** (or a message will note the absence
+    of *help* information).
 4.  Namespace <code>*⎕SE*.**⍙Fapl**</code> now contains utilities used
     by **∆F** and, once `]load`ed, ***should not*** be moved. **∆F**
     always refers to **⍙Fapl** in its *original* location.
@@ -155,9 +157,9 @@ related multi­dimensional information.
 
 
 
-- **Text** fields, supporting multiline Unicode text within each field,
-  with the sequence `` `◇ `` (**backtick** + **statement separator**)
-  generating a newline, <small>`⎕UCS 13`</small>;
+- **Text** fields, each allowing [multiline Unicode
+  text](#text-fields-and-space-fields), with the sequence `` `◇ ``
+  generating a new line, <small>`⎕UCS 13`</small>;
 
 - **Code** fields, allowing users to evaluate and display APL arrays of any
   dimensionality, depth and type in the user environment, arrays passed
@@ -169,13 +171,14 @@ related multi­dimensional information.
   **Code** fields also provide a number of concise, convenient
   extensions, such as:
 
-  - **Quoted strings** in **Code** fields, with several quote styles:
+  - **Quoted strings**  in
+    **Code** fields, with several quote styles:
 
     - **double-quotes**<br> `∆F '{"like this"}'` or
       `` ∆F '{"on`◇""three""`◇lines"} ``,
     - **double angle quotation marks**,<br>
-      `∆F '{«with internal quotes like "this" or ''this''»}'`, not to
-      mention
+      `∆F '{«with internal quotes like "this" or ''this''»}'`, *not to
+      mention*
     - APL’s tried-and-true embedded **single-quotes**,<br>
       `∆F '{''shown ''''right'''' here''}'`.
 
@@ -196,10 +199,9 @@ related multi­dimensional information.
 
     - user arrays or arbitrary
       code:<br>`tempC←10 110 40`<br>`∆F'{tempC}'` or
-      `∆F'{ {⍵<100: 32+9×⍵÷5 ◇ "(too hot)"}¨tempC }'`, <br>
+      `` ∆F '{`⍵1}? {`⍵1=?10: "Right!" ◇ "Wrong." }' ``, <br>
     - arguments to **∆F** that follow the format
-      string:<br>`` ∆F'{32+`⍵1×9÷5}' (10 110 40) ``,<br> where `` `⍵1 ``
-      is a shortcut for `(⍵⊃⍨1+⎕IO)` (here `10 110 40`),
+      string:<br>`` ∆F'{32+`⍵1×9÷5}' (10 110 40) ``,
     - *and more*;
 
 - **Space** fields, providing a simple mechanism both for separating
@@ -210,9 +212,9 @@ related multi­dimensional information.
     `{}`;
   - 1000 spaces? Use a **Code** field instead: `{1000⍴""}`.
 
-- Use of 
-  *either* positional options or namespace-style options, based on Array
-  Notation in­tro­duced in Dyalog 20;
+- Use of  *either* **positional** options or
+  **namespace**-style options, based on Array Notation in­tro­duced in
+  Dyalog 20;
 
 - Multiline (matrix) output built up field-by-field, left-to-right, from
   values and expressions in the calling environment or arguments to
@@ -706,13 +708,14 @@ argument in sequence, left to right, starting with `` `⍵1 ``, the first,
     1 0 1 1 1 2
     2 0 2 1 2 2
 
-Let’s demonstrate here the equivalence of the *implicitly* and
-*explicitly* indexed **Omega expressions**!
+Here’s a useful example, where the formatting option (here, for text
+justification `` `J ``) is determined by an argument to **∆F**:
 
-       a← ∆F '{(⍳2⍴`⍵) % (⍳2⍴`⍵) % (⍳2⍴`⍵)}' 1 2 3     ⍝ Implicit Omega expressions
-       b← ∆F '{(⍳2⍴`⍵1) % (⍳2⍴`⍵2) % (⍳2⍴`⍵3)}' 1 2 3  ⍝ Explicit Omega expressions
-       a ≡ b                                           ⍝ Are they the same?
-    1                                                  ⍝ Yes!
+       a← ↑'elephants' 'cats' 'rhinoceroses'
+       ∆F '{`⍵ `J a}  {`⍵ `J a}  {`⍵ `J a}' ¯1 0 1
+    elephants      elephants       elephants
+    cats              cats              cats
+    rhinoceroses  rhinoceroses  rhinoceroses
 
 ## Shortcuts With Individual Expressions
 
@@ -936,8 +939,8 @@ The shortcut (Session) **Library** `£` is <span class="red">**experimental**</s
 useful objects for the duration of the ***current*** *APL* session. For
 example, the user may wish to: 
 
-- have regularly used functions or operators *automatically* available,
-  *or*
+- have regularly used functions or operators automatically available
+  when needed, *or*
 - create objects that might be referred to, monitored, or modified
   during the session.
 
@@ -1066,7 +1069,7 @@ the performance…
 
 Now, let’s proceed. Here’s our **∆F** String `t`:
 
-       t←'The temperature is {"I2" $ cv}°C or {"F5.1" $ F← 32+9×cv÷5}°F'
+       t←'The temperature is {"I2" $ cv}°C or {"F5.1" $ 32+9×cv÷5}°F'
 
 <details id="pPeek">
 
@@ -1100,8 +1103,8 @@ Now, let’s compare the performance of the two formats.
 
 
        cmpx '∆F t' 'T ⍬'
-    ∆F t → 1.7E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
-     T ⍬ → 1.0E¯5 | -94% ⎕⎕
+    ∆F t → 1.5E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
+     T ⍬ → 1.1E¯5 | -93% ⎕⎕⎕
 
 The precomputed version is at least an <mark>order of magnitude</mark>
 faster.
@@ -1116,22 +1119,23 @@ Let’s share the Centigrade values `cv` from our current example, not as
 a *variable*, but as the *first argument* to **∆F**. We’ll access the
 value as `` `⍵1 ``.
 
-       t←'The temperature is {"I2" $ `⍵1}°C or {"F5.1" $ F← 32+9×`⍵1÷5}°F'
+      cv←11 30 60
+       t←'The temperature is {"I2" $ `⍵1}°C or {"F5.1" $ 32+9×`⍵1÷5}°F'
        T← 1 ∆F t
 
-       ∆F t (11 30 60)
+       ∆F t cv
     The temperature is 11°C or  51.8°F
                        30       86.0
                        60      140.0
 
-       T ⊂(11 30 60)
+       T cv
     The temperature is 11°C or  51.8°F
                        30       86.0
                        60      140.0
 
-       cmpx '∆F t (11 30 60)' 'T ⊂(11 30 60)'
-    ∆F t (11 30 60) → 1.6E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
-    T ⊂(11 30 60)   → 1.1E¯5 | -94% ⎕⎕⎕
+       cmpx '∆F t cv' 'T cv'
+    ∆F t cv → 1.8E¯4 |   0% ⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕⎕
+       T cv → 1.1E¯5 | -95% ⎕⎕⎕
 
 The precomputed version again shows a speedup of well over an
 <mark>order of magnitude</mark> compared to the default version.
@@ -1580,9 +1584,7 @@ to strings and inserted at that position. <br>  For example, the Python
 expression <strong>`f"The sum of {a} and {b} is {a + b}"`</strong> would
 evaluate the addition and embed the result directly in the string. This
 combination of simplicity, power, and performance has made f-strings the
-preferred string formatting approach in modern Python code. *\[Claude.
-AI-generated response to Python f-strings query \[edited\]. Claude.ai.
-Anthropic, October 19, 2025.\]*
+preferred string formatting approach in modern Python code.
 
 </div>
 

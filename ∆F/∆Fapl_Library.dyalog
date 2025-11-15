@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-13T20:25:25" 
+⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-14T20:21:14" 
 :Namespace libUtil 
 
 ⍝ libUtil (namespace): Handles £ and `L shortcuts.
@@ -33,18 +33,9 @@
     :EndIf 
   ∇ 
 
-⍝ ShowPath:  See 'path' special call in ##.Special
-  ∇ _← ShowPath ; ShowE  
-    :With parms 
-      :If 0=⎕NC '_fullPath' 
-      :OrIf 0=≢_fullPath
-          _← 'No search path defined.' 
-      :Else  
-          ShowE← {1<|≡⍵: '(','⋄)',⍨ '"',¨⍵,¨⊂'" ' ⋄ '"','"',⍨ ⍵ }¨
-          _← '(', ')',⍨ ¯1↓∊(⊂' ⋄ '),⍨¨ ShowE _fullPath
-      :EndIf 
-    :EndWith
-  ∇ 
+  ⍝ ShowPath:  See 'path' special call in ##.Special. 
+  ShowPath← { ⊃1 ##.Apl2AN parms._fullPath } 
+
   ⍝ ======================================================================================
   ⍝ ⍙LoadObj: Find nm in £.nm or `L.nm and try to load its definition into ulNs from path.
   ⍝     (1|0)@B← ulNs@ulNs verbose@B parms@ns ∇ nm@CVS 
@@ -53,7 +44,7 @@
   ⍝    (1|0)← ulNs verbose parms ∇ nm 
   ⍝ Returns SHY 1 (succ) or SHY 0 (fail), having established <nm> in ulNs (ulNs) on success.
   ⍙LoadObj← { 
-    ⍝ ⍙LoadObj utilities...
+    ⍝ ⍙LoadObj utilities, followed by the executive...
 
     ⍝ FixFromWS: Search for name ⍺ in ws ⍵. On success, 1 'ws:⍵'; on failure, 0 ⍬
       FixFromWS← { 11:: rcNF ⍬ ⋄ rcOK ('ws:',⍵)⊣ ⍺ ulNs.⎕CY ⍵ }

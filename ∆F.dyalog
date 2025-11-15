@@ -3,8 +3,10 @@
 ⍝ Note: This is an UNNAMED namespace, so its name won't clutter the target namespace, 
 ⍝ while it loads (ns) ⍙Fapl and (file) ∆F via ]load ∆F. 
 
+  ADD_∆F_TO_PATH← 1                                        ⍝ If 1, adds ∆F to ⎕PATH.
+
   ∇ {rc}← Load (what where)  
-    ⎕DF ∊'.∆F + ' '.⍙Fapl',⍨¨ ⊂⍕where                     ⍝ The return value from ⎕FIX or ]LOAD
+    ⎕DF ∊'.∆F + ' '.⍙Fapl',⍨¨ ⊂⍕where                      ⍝ The return value from ⎕FIX or ]LOAD
     rc← 0 
     :Trap 0 
         :If ~⎕NEXISTS what
@@ -15,7 +17,9 @@
             ErrAll where ⋄ :Return   
         :EndIf 
         where.⍙Fapl.VERBOSE CGood where 
-        ⎕PATH,← ⎕PATH PathAdd ⍕where 
+        :If ADD_∆F_TO_PATH 
+            ⎕PATH,← ⎕PATH PathAdd ⍕where 
+        :EndIf 
         rc← 1  
     :Else
         ErrApl ⎕DMX ⋄ ErrAll where ⋄ :Return 

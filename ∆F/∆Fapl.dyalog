@@ -1,4 +1,4 @@
-⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-13T20:25:25" 
+⍝ ∆Fapl.dyalog $UPDATE_TIME = "2025-11-14T20:21:14" 
 ⍝:Section CORE 
 
 :Namespace ⍙Fapl   
@@ -324,6 +324,7 @@
   IntOpt← { wid← +/∧\ ⍵∊⎕D ⋄ wid (⊃⊃⌽⎕VFI wid↑ ⍵) (wid↓ ⍵) }  ⍝ Idiom +/∧\
 
 ⍝ Apl2AN, AN2Apl:  Deserialise/Serialise APL Array Notation. 
+⍝ Apl2AN: Returns CVV.  ⍺=0: each line a separate CV; ⍺=1: using stmt sep ⋄.
   AN2Apl←  ⎕SE.Dyalog.Array.Deserialise
   Apl2AN←  ⎕SE.Dyalog.Array.Serialise
 
@@ -370,8 +371,8 @@
   Special← { h← ⎕C⍵
   ⍝ parms: Load any new parms without a ]load. 
   ⍝        Returns display of default and user parms (as mx) in alph order.
-    'parms'≡ 5↑h: _← libUtil.LoadParms 1 1 1 
-    'path' ≡ 4↑h: _← libUtil.ShowPath 
+    'parms'≡   h: _← libUtil.LoadParms 1 1 1 
+    'path' ≡   h: _← libUtil.ShowPath ⍬ 
     'help' ≢ 4↑h: ⎕SIGNAL optÊ 
   ⍝ help, help-wide, or help-narrow?
     h← {  
@@ -398,11 +399,11 @@
 ⍝ Utilities for "library" shortcut (£, `L) 
 ⍝ See ⍙LoadLibAuto 
 :Namespace libUtil
-⍝⍝⍝⍝⍝ This is a stub. 
+⍝⍝⍝⍝⍝ This is a stub, pending (optional, but expected) load of ∆Fapl_Library below.
   ∇ {ns}← BareBones
     ns← uLibNm← ⍕##.ûserLib ⋄ Auto← uLibNm⍨  
     parms← ⎕NS ⍬ 
-    ⎕FX '_←ShowPath' '_←''No search path defined.''' 
+    ShowPath← '⍬'⍨        
     LoadParms← ⍬⍨           
   ∇
   BareBones 
@@ -531,12 +532,14 @@
   ∇ {ok}← ⍙LoadLibAuto fi 
     :TRAP 22 
         ⎕FIX 'file://',fi
-        :If VERBOSE ⋄ ⎕←'>>> Loaded services for Library shortcut "',fi,'" into "','"',⍨⍕⎕THIS  ⋄ :EndIf 
+        :If VERBOSE 
+            ⎕←'>>> Loaded services for Library shortcut from "',fi,'" into "','"',⍨⍕⎕THIS  
+        :EndIf 
         ok← 1 
     :Else
         ok←0 ⋄  LIB_LOAD← 0 
         ⎕← ⎕PW⍴'='
-        ⎕←'>>> WARNING: Unable to load services for Library shortcut "',fi,'" into "','"',⍨⍕⎕THIS 
+        ⎕←'>>> WARNING: Unable to load services for Library shortcut from "',fi,'" into "','"',⍨⍕⎕THIS 
         ⎕←'>>> NOTE:    £ and `L shortcuts are available without these services (auto: 0).'
         ⎕← ⎕PW⍴'='
     :EndTrap
