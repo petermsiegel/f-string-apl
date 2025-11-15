@@ -175,33 +175,32 @@ related multi­dimensional information.
     **Code** fields, with several quote styles:
 
     - **double-quotes**<br> `∆F '{"like this"}'` or
-      `` ∆F '{"on`◇""three""`◇lines"} ``,
+      `` ∆F '{"on`◇""three""`◇lines"} ``
     - **double angle quotation marks**,<br>
-      `∆F '{«with internal quotes like "this" or ''this''»}'`, *not to
-      mention*
+      `∆F '{«with internal quotes like "this" or ''this''»}'`,<br> *not
+      to mention:*
     - APL’s tried-and-true embedded **single-quotes**,<br>
-      `∆F '{''shown ''''right'''' here''}'`.
+      `∆F '{''shown ''''right'''' here''}'`
 
   - Simple shortcuts for
 
     - **format**ting numeric arrays, **\$** (short for
-      **⎕FMT**):<br>`∆F '{"F7.5" $ ?0 0}'`,
+      **⎕FMT**):<br>`∆F '{"F7.5" $ ?0 0}'`
     - putting a **box** around a specific expression,
-      **\`B**:<br>`` ∆F'{`B ⍳2 2}' ``,
+      **\`B**:<br>`` ∆F'{`B ⍳2 2}' ``
     - placing the output of one expression **above** another,
-      **%**:<br>`∆F'{"Pi"% ○1}'`,
+      **%**:<br>`∆F'{"Pi"% ○1}'`
     - formatting **date** and **time** expressions from APL timestamps
-      (**⎕TS**) using **\`T** (combining **1200⌶** and **⎕DT**):
-      <br>`` ∆F'{"hh:mm:ss" `T ⎕TS}' ``,
+      (**⎕TS**) using **\`T**:<br>`` ∆F'{"hh:mm:ss" `T ⎕TS}' ``
     - *and more*;
 
   - Simple mechanisms for concisely formatting and displaying data from
 
     - user arrays or arbitrary
-      code:<br>`tempC←10 110 40`<br>`∆F'{tempC}'` or
-      `` ∆F '{`⍵1}? {`⍵1=?10: "Right!" ◇ "Wrong." }' ``, <br>
+      code:<br>`tempC← 10 110 40 ◇ ∆F'{tempC}'`,
+      *or:*<br>`` ∆F '{`⍵1}? {`⍵1=?10: "Right!" ◇ "Wrong." }' 3 `` <br>
     - arguments to **∆F** that follow the format
-      string:<br>`` ∆F'{32+`⍵1×9÷5}' (10 110 40) ``,
+      string:<br>`` ∆F'{32+`⍵1×9÷5}' (10 110 40) ``
     - *and more*;
 
 - **Space** fields, providing a simple mechanism both for separating
@@ -212,9 +211,9 @@ related multi­dimensional information.
     `{}`;
   - 1000 spaces? Use a **Code** field instead: `{1000⍴""}`.
 
-- Use of  *either* **positional** options or
-  **namespace**-style options, based on Array Notation in­tro­duced in
-  Dyalog 20;
+- Use of  *either* [**positional** or
+  **namespace**-style options](#f-option-details), based on Array
+  Notation (in­tro­duced in Dyalog 20);
 
 - Multiline (matrix) output built up field-by-field, left-to-right, from
   values and expressions in the calling environment or arguments to
