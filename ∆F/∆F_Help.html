@@ -604,15 +604,15 @@ via the sequence <code>`◇</code>.</span> in <strong>Code</strong>
 fields, with several quote styles:</p>
 <ul>
 <li><strong>double-quotes</strong><br> <code>∆F '{"like this"}'</code>
-or <code>∆F '{"on`◇""three""`◇lines"}</code>,</li>
+or <code>∆F '{"on`◇""three""`◇lines"}</code></li>
 <li><strong>double angle quotation marks</strong>,<span
 class="margin-note">Also known as <em>guillemets</em>,
 <big><strong>«</strong></big> and <big><strong>»</strong></big> are
 Unicode chars <code>⎕UCS 171 187</code>.</span><br>
-<code>∆F '{«with internal quotes like "this" or ''this''»}'</code>,
-<em>not to mention</em></li>
+<code>∆F '{«with internal quotes like "this" or ''this''»}'</code>,<br>
+<em>not to mention:</em></li>
 <li>APL’s tried-and-true embedded <strong>single-quotes</strong>,<br>
-<code>∆F '{''shown ''''right'''' here''}'</code>.</li>
+<code>∆F '{''shown ''''right'''' here''}'</code></li>
 </ul></li>
 <li><p>Simple shortcuts<span class="margin-note">Details on all the <a
 href="#code-field-shortcuts">shortcuts</a> are provided later in this
@@ -620,15 +620,16 @@ document.</span> for</p>
 <ul>
 <li><strong>format</strong>ting numeric arrays, <strong>$</strong>
 (short for
-<strong>⎕FMT</strong>):<br><code>∆F '{"F7.5" $ ?0 0}'</code>,</li>
+<strong>⎕FMT</strong>):<br><code>∆F '{"F7.5" $ ?0 0}'</code></li>
 <li>putting a <strong>box</strong> around a specific expression,
-<strong>`B</strong>:<br><code>∆F'{`B ⍳2 2}'</code>,</li>
+<strong>`B</strong>:<br><code>∆F'{`B ⍳2 2}'</code></li>
 <li>placing the output of one expression <strong>above</strong> another,
-<strong>%</strong>:<br><code>∆F'{"Pi"% ○1}'</code>,</li>
+<strong>%</strong>:<br><code>∆F'{"Pi"% ○1}'</code></li>
 <li>formatting <strong>date</strong> and <strong>time</strong>
 expressions from APL timestamps (<strong>⎕TS</strong>) using
-<strong>`T</strong> (combining <strong>1200⌶</strong> and
-<strong>⎕DT</strong>): <br><code>∆F'{"hh:mm:ss" `T ⎕TS}'</code>,</li>
+<strong>`T</strong><span class="margin-note"><code>`T</code>
+combines <strong>1200⌶</strong> and
+<strong>⎕DT</strong></span>:<br><code>∆F'{"hh:mm:ss" `T ⎕TS}'</code></li>
 <li><em>and more</em>;</li>
 </ul></li>
 <li><p>Simple mechanisms for concisely formatting and displaying data
@@ -636,10 +637,11 @@ from</p>
 <ul>
 <li>user <span class="margin-note"><br><br><br><code>`⍵1</code> is a
 shortcut for <code>(⍵⊃⍨ 1+⎕IO)</code>.</span>arrays or arbitrary
-code:<br><code>tempC←10 110 40</code><br><code>∆F'{tempC}'</code> or
-<code>∆F '{`⍵1}? {`⍵1=?10: "Right!" ◇ "Wrong." }'</code>, <br></li>
+code:<br><code>tempC← 10 110 40 ◇ ∆F'{tempC}'</code>,
+<em>or:</em><br><code>∆F '{`⍵1}? {`⍵1=?10: "Right!" ◇ "Wrong." }' 3</code>
+<br></li>
 <li>arguments to <strong>∆F</strong> that follow the format
-string:<br><code>∆F'{32+`⍵1×9÷5}' (10 110 40)</code>,</li>
+string:<br><code>∆F'{32+`⍵1×9÷5}' (10 110 40)</code></li>
 <li><em>and more</em>;</li>
 </ul></li>
 </ul></li>
@@ -655,9 +657,10 @@ even, zero spaces: <code>{}</code>;</li>
 </ul></li>
 <li><p>Use of <span class="margin-note">These options are
 equi­valent:<br>∘ <code>0 1 1</code> <br>∘
-<code>(verbose: 1 ◇ box: 1)</code></span> <em>either</em>
-<strong>positional</strong> options or <strong>namespace</strong>-style
-options, based on Array Notation in­tro­duced in Dyalog 20;</p></li>
+<code>(verbose: 1 ◇ box: 1)</code></span> <em>either</em> <a
+href="#f-option-details"><strong>positional</strong> or
+<strong>namespace</strong>-style options</a>, based on Array Notation
+(in­tro­duced in Dyalog 20);</p></li>
 <li><p>Multiline (matrix) output built up field-by-field, left-to-right,
 from values and expressions in the calling environment or arguments to
 <strong>∆F</strong>;</p>
@@ -2565,7 +2568,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [2025-11-14T21:11:15] </span>
+<big>©</big> 2025 Sam the Cat Foundation. [2025-11-14T23:44:03] </span>
 <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>
