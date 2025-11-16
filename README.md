@@ -25,8 +25,8 @@ other familiar tools.
   **∆F**](#installing-loading-and-running-f)
   - [Installing **∆F**](#installing-f)
   - [Loading and Running **∆F**](#loading-and-running-f)
+  - [Displaying ∆F **Help** in APL](#displaying-f-help-in-apl)
 - [Overview](#overview)
-- [Displaying ∆F **Help** in APL](#displaying-f-help-in-apl)
 - [∆F Examples: A Primer](#f-examples-a-primer)
   - [Code Fields](#code-fields)
   - [Text Fields and Space Fields](#text-fields-and-space-fields)
@@ -133,6 +133,11 @@ section](#loading-and-running-f).
 [arguments](#f-call-syntax-overview) and
 [options](#f-option-details).<br> <big>👉</big> **∆F** is `⎕IO`- and
 `⎕ML`-independent.
+
+## Displaying ∆F **Help** in APL
+
+ <big>👉</big>
+To display this **HELP** information, type: `∆F⍨ 'help'`.
 
 ------------------------------------------------------------------------
 
@@ -245,11 +250,6 @@ and operators.
 </details>
 
 </details>
-
-# Displaying ∆F **Help** in APL
-
- <big>👉</big>
-To display this **HELP** information, type: `∆F⍨ 'help'`.
 
 # ∆F Examples: A Primer
 
@@ -1166,7 +1166,7 @@ examples.
 | ‘help’ **∆F** ‘ ’ *or* **∆F**⍨‘help’ | Display help info and examples for **∆F**. The *f‑string* is not examined. <big>👉</big> See below for details and related examples. |
 | ***return value*** | *See below.* |
 
-6a. <strong>∆F Call Syntax Overview</strong>
+5a. <strong>∆F Call Syntax Overview</strong>
 
 <br>
 
@@ -1182,7 +1182,7 @@ examples.
 | **Special** | ***‘help’*** | — | If `'help'` is specified, this amazing doc­ument­ation is displayed. |
 | **Special** | ***‘parms’*** | — | Updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. <big>👉</big> This option is ex­peri­ment­al. |
 
-6b. <strong>∆F Option Details</strong>
+5b. <strong>∆F Option Details</strong>
 
 - **Default options:** If the left argument `⍺` is omitted, the options
   default as shown here.
@@ -1192,7 +1192,7 @@ examples.
   | **Positional** |                      `0 0 0 1 0`                       |
   |  **Keyword**   | `(dfn: 0 ◇ verbose: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)` |
 
-  6c. <strong>∆F Default Options</strong>
+  5c. <strong>∆F Default Options</strong>
 
 - **Positional style options:** If **∆F**’s left argument `⍺` is a
   simple integer vector (or a scalar), omitted (trailing) elements are
@@ -1285,7 +1285,7 @@ in **Code** fields only *outside* **Quoted strings**.
 | **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | A shortcut of the form `` `⍵ `` (or `⍹`), to access the ***next*** element of `⍵`. <small>*See details below.* <small> |
 | **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small> | `→` at end of **Code** field signals that the source code for the field appears *to the left of* its value. Surrounding blanks are significant.<br>`↓` (*or,* `%`) at end of **Code** field signals that the source code for the field appears *above* its value. Surrounding blanks are significant.<br><small>*See [SDCFs](#self-documenting-code-fields-sdcfs) in **Examples** for details.*</small> |
 
-6d. <strong>Code Field Shortcuts</strong>
+5d. <strong>Code Field Shortcuts</strong>
 
 <br>
 
@@ -1305,7 +1305,7 @@ are valid in **Text** fields *only*, but not in Quoted strings:
 |     **\`{**     |          {          |    left brace    |   Text fields only   |
 |     **\`}**     |          }          |   right brace    |   Text fields only   |
 
-6e. <strong>Escape Sequences</strong>
+5e. <strong>Escape Sequences</strong>
 
 Other instances of the backtick character in **Text** fields or **Quoted
 strings** in **Code** fields will be treated literally, *i.e.* sometimes
@@ -1335,7 +1335,7 @@ string**, you must double it. You may *not* use an escape sequence
 |      `»`      |    `∆F '{«or «this»» one»}'`     |    `or «this» one`    |
 |      `'`      | `∆F '{''or ''''this'''' one''}'` |    `or 'this' one`    |
 
-6f. <strong>Closing Quotes</strong>
+5f. <strong>Closing Quotes</strong>
 
 Note that the opening quote `«` is treated as an ordinary character
 within the string. The clumsiness of the standard single quote `'`
@@ -1421,7 +1421,7 @@ delimiter for the outermost (APL-level) string.
 | txt | Assigns char. vectors | 2 | *assignment* | ✔ | ✔ |
 | dyalog, *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">✘</span> | <span class="red">✘<small> NEVER</small></span> |
 
-6g. <strong>Library Filetypes: Meaning</strong>
+5g. <strong>Library Filetypes: Meaning</strong>
 
 ### Session Library Shortcut: Parameters
 
@@ -1599,7 +1599,7 @@ preferred string formatting approach in modern Python code.
 <!-- Put a set of navigation tools at a fixed position at the bottom of the Help screen
 -->
 
-<div class="doc-footer" style="text-align: left;padding-left:50px;">
+<div class="doc-footer" style="text-align: left;padding-left:60px;">
 
 <div class="button-container">
 
@@ -1611,6 +1611,7 @@ preferred string formatting approach in modern Python code.
 <input type="button" class="button normal-button" value="Syntax" onclick="window.location='#f-syntax-and-other-information'"/>
 <input type="button" class="button normal-button" value="Appendices" onclick="window.location='#appendices'"/>
 <input type="button" class="button normal-button" value="Bottom" onclick="window.location='#copyright'"/>    
+<input type="button" class="button happy-button" value="Print" onclick="myPrint()">
 ⍠⍠⍠
 
 </div>
@@ -1631,7 +1632,7 @@ preferred string formatting approach in modern Python code.
 
 <div id="pAlertMsg" class="pAlertMsg">
 
-<span id="pAlertPfx" style="font-size: 50px;"> </span>
+<span id="pAlertPfx" style="font-size: 40px;"> </span>
 <span id="pAlertText"
 style="font-weight: bold; font-size: 20px;font-family: Tahoma,  sans-serif;">
 </span>

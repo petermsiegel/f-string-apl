@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-14T20:21:14" 
+⍝ ∆Fapl_LibSC.dyalog $UPDATE_TIME = "2025-11-15T18:34:46" 
 :Namespace libUtil 
 
 ⍝ libUtil (namespace): Handles £ and `L shortcuts.
