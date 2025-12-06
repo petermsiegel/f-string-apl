@@ -756,21 +756,48 @@ using Dyalog functions and operators.</p>
 <summary class="summary">
  Recap: <em>The Three Field Types</em>
 </summary>
-<hr />
-<p>Field <br> <br> <br> Type Syntax Examples Displaying</p>
-<hr />
-<p><strong>Text</strong> <em>Unicode text</em>
-<code>Cats`◇and`◇dogs!</code> 2-D Text</p>
-<p><strong>Code</strong> <code>{</code><em>dfn code
-plus</em><code>}</code> <code>{↑"one" "two"}</code><br> Arbitrary
-<em>APL</em> Expressions<br />
-<code>{</code><em>shortcuts</em><code>}</code>
-<code>{"F5.1" $ (32+9×÷∘5)degC}</code> <br>via dfns</p>
-<h2 data-number="2.1" id="space-spacing-field-separation"><span
-class="header-section-number">2.1</span> <strong>Space</strong>
-<code>{</code><big>␠ ␠ ␠</big><code>}</code> <code>{  }</code>  
-<code>{}</code> Spacing &amp; Field Separation</h2>
-<p>Table: 2a. <strong>The Three Field Types</strong></p>
+<table>
+<caption>2a. <strong>The Three Field Types</strong></caption>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 24%" />
+<col style="width: 31%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Field Type</th>
+<th style="text-align: center;"><br> Syntax</th>
+<th style="text-align: center;"><br> Examples</th>
+<th style="text-align: center;"><br> Displaying</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Text</strong></td>
+<td style="text-align: center;"><em>Unicode text</em></td>
+<td style="text-align: center;"><code>Cats`◇and`◇dogs!</code></td>
+<td style="text-align: center;">2-D Text</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Code</strong></td>
+<td style="text-align: center;"><code>{</code><em>dfn code
+plus</em><code>}</code>
+<code>{</code><em>shortcuts</em><code>}</code></td>
+<td style="text-align: center;"><code>{↑"one" "two"}</code><br>
+<code>{"F5.1" $ (32+9×÷∘5)degC}</code></td>
+<td style="text-align: center;">Arbitrary <em>APL</em> Expressions
+<br>via dfns</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Space</strong></td>
+<td style="text-align: center;"><code>{</code><big>␠ ␠
+␠</big><code>}</code></td>
+<td style="text-align: center;"><code>{  }</code>   <code>{}</code></td>
+<td style="text-align: center;">Spacing &amp; Field Separation</td>
+</tr>
+</tbody>
+</table>
 <br>
 </details>
 </details>
@@ -1624,17 +1651,35 @@ conditions, of course.</span> if <a
 href="#f-option-details"><em>dfn</em></a> is set to <code>1</code>, then
 <strong>∆F</strong> returns a <strong>dfn</strong> that— when called
 later— will return the identical character expression.</p>
-<hr />
-<pre><code>                         Positional                        Keyword
-       &lt;br&gt;Mode          &lt;br&gt;Parameter                    &lt;br&gt;Parameter</code></pre>
-<hr />
-<p><em>(i)</em> <strong><em>default</em></strong>
-<code>0 ∆F 'mycode'</code> <code>(dfn: 0) ∆F 'mycode'</code></p>
-<h2 data-number="3.23" id="ii-dfn-1-f-mycode-dfn-1-f-mycode"><span
-class="header-section-number">3.23</span> <em>(ii)</em>
-<strong><em>dfn</em></strong> <code>1 ∆F 'mycode'</code>
-<code>(dfn: 1) ∆F 'mycode'</code></h2>
-<p>Table: 3a. <strong>Using the <em>dfn Option</em></strong></p>
+<table>
+<caption>3a. <strong>Using the <em>dfn Option</em></strong></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 39%" />
+<col style="width: 34%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><br>Mode</th>
+<th style="text-align: center;">Positional <br>Parameter</th>
+<th style="text-align: center;">Keyword <br>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>(i)</em>
+<strong><em>default</em></strong></td>
+<td style="text-align: center;"><code>0 ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>(dfn: 0) ∆F 'mycode'</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>(ii)</em>
+<strong><em>dfn</em></strong></td>
+<td style="text-align: center;"><code>1 ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>(dfn: 1) ∆F 'mycode'</code></td>
+</tr>
+</tbody>
+</table>
 <p><span class="margin-note"><br><strong>standalone:</strong>
 <em>i.e.</em> via the <em>inline</em> option. See <a
 href="#f-option-details">option details</a> (be­low) re­gard­ing the
@@ -1716,8 +1761,8 @@ The temperature is 11°C or  51.8°F
   T ⊂cv   → 1.1E¯5 | -95% ⎕⎕⎕</code></pre>
 <p>The precomputed version again shows a speedup of an <mark>order of
 magnitude</mark> or so compared to the default version.</p>
-<h2 data-number="3.24" id="multiline-f-strings-in-dyalog-20"><span
-class="header-section-number">3.24</span> Multiline <em>F-strings</em>
+<h2 data-number="3.23" id="multiline-f-strings-in-dyalog-20"><span
+class="header-section-number">3.23</span> Multiline <em>F-strings</em>
 in Dyalog 20</h2>
 <p>Sometimes it’s <span class="margin-note">Excuse the ob­fusc­atory
 sesqui­pedal­ianism!</span>programmatically pro­pitious or pedagog­ically
@@ -1773,41 +1818,67 @@ class="margin-note"><br><br><br><br><br><strong><em>Options</em></strong>
 may be either <em>positional</em> or— starting in Dyalog v. 20—
 <em>keyword</em>-based. We show the posi­tion­al forms through­out the
 ex­amples, but doc­ument the key­words as well below.</span></p>
-<hr />
-<p>Call Syntax Description</p>
-<hr />
-<p><strong>∆F</strong> <strong><em>f‑string</em></strong> Display an
-<em>f‑string</em>; use the <em>default</em> options. The string may
-reference objects in the environment or in the string itself. Returns a
-character matrix. <br><strong>Single or <a
+<table>
+<caption>4a. <strong>∆F Call Syntax Overview</strong></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Call Syntax</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td
+style="text-align: left;"><strong>∆F</strong> <strong><em>f‑string</em></strong></td>
+<td style="text-align: justify;">Display an <em>f‑string</em>; use the
+<em>default</em> options. The string may reference objects in the
+environment or in the string itself. Returns a character matrix.
+<br><strong>Single or <a
 href="#multiline-f-strings-in-dyalog-20">multi­line
 f-string:</a></strong> An <strong><em>f-string</em></strong> must be a
 character vector of any length or a <a
 href="#multiline-f-strings-in-dyalog-20">vector of character
 vectors</a>. If the latter, it will be converted (via <em>enlist,</em>
 <code>∊</code>) to one, longer character vector, without any added
-spaces, newlines, etc.</p>
-<p><strong>∆F</strong> <strong><em>f‑string</em></strong> <strong><em>args</em></strong>
-Display an <em>f‑string</em> (see above); use the <em>default</em>
-options. Arguments presented <em>may</em> be referred to in the
-f‑string. Returns a character matrix.</p>
-<p><strong><em>options</em></strong> <strong>∆F</strong> <strong><em>f‑string</em></strong> [<strong><em>args</em></strong>]
-Display an <em>f‑string</em> (see above); control the result with
-<em>options</em> specified (see below).<br>If
+spaces, newlines, etc.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><strong>∆F</strong> <strong><em>f‑string</em></strong> <strong><em>args</em></strong></td>
+<td style="text-align: justify;">Display an <em>f‑string</em> (see above);
+use the <em>default</em> options. Arguments presented <em>may</em> be
+referred to in the f‑string. Returns a character matrix.</td>
+</tr>
+<tr>
+<td
+style="text-align: left;"><strong><em>options</em></strong> <strong>∆F</strong> <strong><em>f‑string</em></strong> [<strong><em>args</em></strong>]</td>
+<td style="text-align: justify;">Display an <em>f‑string</em> (see above);
+control the result with <em>options</em> specified (see below).<br>If
 <strong><em>dfn</em></strong> (see below) is <code>0</code> or omitted,
 returns a character matrix.<br>If <strong><em>dfn</em></strong> is
 <code>1</code>, returns a dfn that will display such a matrix (given an
-identical system state).</p>
-<p>‘help’ <strong>∆F</strong> ‘ ’ <em>or</em> <strong>∆F</strong>⍨‘help’
-Display help info and examples for <strong>∆F</strong>. The
-<em>f‑string</em> is not examined. <big>👉</big> See below for details
-and related examples.</p>
-<h2 data-number="4.2" id="return-value-see-below."><span
-class="header-section-number">4.2</span> <strong><em>return
-value</em></strong> See below.</h2>
-<p>Table: 4a. <strong>∆F Call Syntax Overview</strong></p>
-<h2 data-number="4.3" id="f-option-details"><span
-class="header-section-number">4.3</span> ∆F Option Details</h2>
+identical system state).</td>
+</tr>
+<tr>
+<td
+style="text-align: left;">‘help’ <strong>∆F</strong> ‘ ’ <em>or</em> <strong>∆F</strong>⍨‘help’</td>
+<td style="text-align: justify;">Display help info and examples for
+<strong>∆F</strong>. The <em>f‑string</em> is not examined.
+<big>👉</big> See below for details and related examples.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong><em>Return
+value</em></strong></td>
+<td style="text-align: justify;">See below.</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="4.2" id="f-option-details"><span
+class="header-section-number">4.2</span> ∆F Option Details</h2>
 <table>
 <caption>4b. <strong>∆F Option Details</strong></caption>
 <colgroup>
@@ -1818,114 +1889,138 @@ class="header-section-number">4.3</span> ∆F Option Details</h2>
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: center;"><br><br>Mode</th>
+<th style="text-align: center;"><br>Mode</th>
 <th
 style="text-align: center;">Positional<br>Option<br><small>[<em>index</em>]</small></th>
-<th
-style="text-align: center;">Keyword<br>Option<br><small>(<em>keyword:
-default</em>)</th>
-<th style="text-align: left;"><br><br>Description</th>
+<th style="text-align: center;">Keyword<br>Option<br><small>(<em>kw:
+def</em>)</th>
+<th style="text-align: left;"><br>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: center;"><strong>Dfn</strong></td>
-<td style="text-align: center;"> <strong><em>[0]</em></strong></td>
+<td style="text-align: center;"><strong><em>[0]</em></strong></td>
 <td style="text-align: center;"><strong><em>dfn: 0</em></strong></td>
-<td style="text-align: justify;">If <strong><em>dfn: 1</em></strong>,
-<strong>∆F</strong> returns a dfn, which (upon execution) produces the
-same output as the default mode.<br>If <strong><em>dfn: 0</em></strong>
-(default): <strong>∆F</strong> returns a char. matrix.</td>
+<td style="text-align: justify;"><span class="red">If
+<strong><em>dfn: 1</em></strong>,</span> <strong>∆F</strong> returns a
+dfn, which (upon execution) produces the same output as the default
+mode.<br><span class="red">If <strong><em>dfn: 0</em></strong>
+(default),</span> <strong>∆F</strong> returns a char. matrix.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Verbose</strong></td>
-<td style="text-align: center;"> <strong><em>[1]</em></strong></td>
+<td style="text-align: center;"><strong><em>[1]</em></strong></td>
 <td
 style="text-align: center;"><strong><em>verbose: 0</em></strong></td>
-<td style="text-align: justify;">If <strong><em>verbose: 1</em></strong>,
-Renders newline characters from <code>`◇</code> as the visible
-<code>␤</code> character. Displays the source code that the
-<em>f‑string</em> <strong><em>actually</em></strong> generates; if
-<strong><em>dfn</em></strong> is also <code>1</code>, this will include
-the embedded <em>f‑string</em> source (accessed as <code>`⍵0</code>).
-After the source code is displayed, it will be executed or converted to
-a <em>dfn</em> and returned (see the <strong><em>dfn</em></strong>
-option above).<br>If <strong><em>verbose: 0</em></strong> (default):
-Newline characters from <code>`◇</code> are rendered normally as
-carriage returns, <code>⎕UCS 13</code>; the
-<strong><em>dfn</em></strong> source code is not displayed.</td>
+<td style="text-align: justify;"><span class="red">If
+<strong><em>verbose: 1</em></strong>,</span> Renders newline characters
+from <code>`◇</code> as the visible <code>␤</code> character. Displays
+the source code that the <em>f‑string</em>
+<strong><em>actually</em></strong> generates; <span class="red">if
+<strong><em>dfn</em></strong> is also <code>1</code>,</span> this will
+include the embedded <em>f‑string</em> source (accessed as
+<code>`⍵0</code>). After the source code is displayed, it will be
+executed or converted to a <em>dfn</em> and returned (see the
+<strong><em>dfn</em></strong> option above).<br><span class="red">If
+<strong><em>verbose: 0</em></strong> (default),</span> Newline
+characters from <code>`◇</code> are rendered normally as carriage
+returns, <code>⎕UCS 13</code>; the <strong><em>dfn</em></strong> source
+code is not displayed.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Box</strong></td>
-<td style="text-align: center;"> <strong><em>[2]</em></strong></td>
+<td style="text-align: center;"><strong><em>[2]</em></strong></td>
 <td style="text-align: center;"><strong><em>box: 0</em></strong></td>
-<td style="text-align: justify;">If <strong><em>box: 1</em></strong>, each
-field (except a null <strong>Text</strong> field) is boxed
-separately.<br>If <strong><em>box: 0</em></strong> (default), nothing is
-boxed automatically. Any <strong>Code</strong> field expression may be
-explicitly boxed using the <strong>Box</strong> shortcut,
+<td style="text-align: justify;"><span class="red">If
+<strong><em>box: 1</em></strong>,</span> each field (except a null
+<strong>Text</strong> field) is boxed separately.<br><span
+class="red">If <strong><em>box: 0</em></strong> (default),</span>
+nothing is boxed automatically. Any <strong>Code</strong> field
+expression may be explicitly boxed using the <strong>Box</strong>
+shortcut,
 <code>`B</code>.<br><big>👉</big> <strong><em>Box</em></strong> mode can
 be used with settings <strong><code>dfn: 1</code></strong> <em>and</em>
 <strong><code>dfn: 0</code>.</strong></td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Auto</strong></td>
-<td style="text-align: center;"> <strong><em>[3]</em></strong></td>
+<td style="text-align: center;"><strong><em>[3]</em></strong></td>
 <td style="text-align: center;"><strong><em>auto: 1</em></strong></td>
-<td style="text-align: justify;">If <strong><em>auto: 0</em></strong>, user
-must manually load/create any Session Library objects for use with the £
-or <code>`L</code> shortcuts.<br>If <strong><em>auto: 1</em></strong>
-(default), honors the default and user-defined settings for
+<td style="text-align: justify;"><span class="red">If
+<strong><em>auto: 0</em></strong>,</span> user must manually load/create
+any Session Library objects for use with the £ or <code>`L</code>
+shortcuts.<br><span class="red">If <strong><em>auto: 1</em></strong>
+(default),</span> honors the default and user-defined settings for
 <code>auto</code>.<br><big>👉</big> Depends on (i) user parameter file
 <strong>./.∆F</strong> and (ii) the namespace <strong>⍙Fapl</strong>
 created during the <code>]load</code> process.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Inline</strong></td>
-<td style="text-align: center;"> <strong><em>[4]</em></strong></td>
+<td style="text-align: center;"><strong><em>[4]</em></strong></td>
 <td style="text-align: center;"><strong><em>inline: 0</em></strong></td>
-<td style="text-align: justify;">If <strong><em>inline: 1</em></strong> and
-<strong><em>dfn: 1</em></strong>, the code for each internal support
-function used is included in the <em>dfn</em> result;
+<td style="text-align: justify;"><span class="red">If
+<strong><em>inline: 1</em></strong> and
+<strong><em>dfn: 1</em></strong>,</span> the code for each internal
+support function used is included in the <em>dfn</em> result;
 <strong><em>no</em></strong> reference to namespace
 <strong>⍙Fapl</strong> will be made during the execution of that
 <em>dfn</em>. (<strong><em>Exception:</em></strong> see <em>Session
-Library Shortcuts</em> below.)<br>If <strong><em>inline: 0</em></strong>
-(default), whenever <strong>∆F</strong> or a <em>dfn</em> generated by
-it is executed, it makes calls to library routines in the namespace
-<strong>⍙Fapl</strong>, created during the <code>]load</code> process
-for <strong>∆F</strong>.<br><big>👉</big> This option is experimental
-and may simply disappear one day.</td>
+Library Shortcuts</em> below.)<br><span class="red">If
+<strong><em>inline: 0</em></strong> (default),</span> whenever
+<strong>∆F</strong> or a <em>dfn</em> generated by it is executed, it
+makes calls to library routines in the namespace <strong>⍙Fapl</strong>,
+created during the <code>]load</code> process for
+<strong>∆F</strong>.<br><big>👉</big> This option is experimental and
+may simply disappear one day.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Special</strong></td>
 <td style="text-align: center;"><strong><em>‘help’</em></strong></td>
 <td style="text-align: center;">—</td>
-<td style="text-align: justify;">If <code>'help'</code> is specified, this
-amazing doc­ument­ation is displayed.</td>
+<td style="text-align: justify;"><span class="red">If
+<strong><em>‘help’</em></strong> is specified,</span> this amazing
+doc­ument­ation is displayed.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Special</strong></td>
 <td style="text-align: center;"><strong><em>‘parms’</em></strong></td>
 <td style="text-align: center;">—</td>
-<td style="text-align: justify;">Updates and displays Session Library
-(<code>£</code> or <code>`L</code>) pa­ram­eters. <big>👉</big> This
-option is ex­peri­ment­al.</td>
+<td style="text-align: justify;"><span class="red">If
+<strong><em>‘parms’</em></strong> is specified,</span> updates and
+displays Session Library (<code>£</code> or <code>`L</code>) pa­ram­eters.
+<big>👉</big> This option is ex­peri­ment­al.</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><p><strong>Default options:</strong> If the left argument
 <code>⍺</code> is omitted, the options default as shown here.</p>
-<hr />
-<pre><code>    Option
-    Style              Defaults</code></pre>
-<hr />
-<p><strong>Positional</strong> <code>0 0 0 1 0</code></p>
-<p><strong>Keyword</strong>
-<code>(dfn: 0 ◇ verbose: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)</code></p>
-<hr />
-<p>Table: 4c. <strong>∆F Default Options</strong></p></li>
+<table>
+<caption>4c. <strong>∆F Default Options</strong></caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Option Style</th>
+<th style="text-align: center;">Defaults</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Positional</strong></td>
+<td style="text-align: center;"><code>0 0 0 1 0</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Keyword</strong></td>
+<td
+style="text-align: center;"><code>(dfn: 0 ◇ verbose: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)</code></td>
+</tr>
+</tbody>
+</table></li>
 <li><p><strong>Positional-style options:</strong> If
 <strong>∆F</strong>’s left argument <code>⍺</code> is a simple integer
 vector (or a scalar), omitted (trailing) elements are replaced by the
@@ -1949,8 +2044,8 @@ Library parameters are (re-)loaded and displayed. In this case, the
 right argument to <strong>∆F</strong> is ignored.</p></li>
 <li><p>Otherwise, an error is signaled.</p></li>
 </ul>
-<h2 data-number="4.4" id="f-return-value"><span
-class="header-section-number">4.4</span> ∆F Return Value</h2>
+<h2 data-number="4.3" id="f-return-value"><span
+class="header-section-number">4.3</span> ∆F Return Value</h2>
 <ul>
 <li>Unless the <strong><em>dfn</em></strong> option is selected,
 <strong>∆F</strong> always returns a character matrix of at least one
@@ -1965,8 +2060,8 @@ success.</li>
 <li>On failure of any sort, an informative <em>APL</em> error is
 signaled.</li>
 </ul>
-<h2 data-number="4.5" id="f-fstring-building-blocks"><span
-class="header-section-number">4.5</span> ∆F F‑string Building
+<h2 data-number="4.4" id="f-fstring-building-blocks"><span
+class="header-section-number">4.4</span> ∆F F‑string Building
 Blocks</h2>
 <p>The first element in the right arg to ∆F is a character vector, an
 <em>f‑string</em>, which contains one or more <strong>Text</strong>
@@ -2015,8 +2110,8 @@ adjacent <strong>Text</strong> fields.</li>
 spacing is under user control.</li>
 </ul></li>
 </ul>
-<h2 data-number="4.6" id="code-field-shortcuts"><span
-class="header-section-number">4.6</span> Code Field Shortcuts</h2>
+<h2 data-number="4.5" id="code-field-shortcuts"><span
+class="header-section-number">4.5</span> Code Field Shortcuts</h2>
 <p><strong>∆F</strong> <strong>Code</strong> fields may contain various
 shortcuts, intended to be concise and expressive tools for common tasks.
 <strong>Shortcuts</strong> are valid in <strong>Code</strong> fields
@@ -2184,9 +2279,9 @@ href="#self-documenting-code-fields-sdcfs">SDCFs</a> in
 </tbody>
 </table>
 <p><br></p>
-<h2 data-number="4.7"
+<h2 data-number="4.6"
 id="escape-sequences-text-fields-quoted-strings"><span
-class="header-section-number">4.7</span> Escape Sequences: Text Fields
+class="header-section-number">4.6</span> Escape Sequences: Text Fields
 &amp; Quoted Strings</h2>
 <p><span class="margin-note">See <a
 href="#quoted-strings-in-code-fields">Quoted Strings in Code Fields</a>
@@ -2199,22 +2294,55 @@ include a small number of escape sequences, beginning with the backtick
 <p><span class="margin-note"><br><br><strong>Both</strong>:
 <em>i.e.</em> <strong>Text</strong> fields and <em>Quoted Strings</em>
 in <strong>Code</strong> fields. </span></p>
-<hr />
-<p>Escape What<br> <br> <br> Sequence It Inserts Description Where</p>
-<hr />
-<p><strong>`◇</strong> <em>newline</em> ⎕UCS 13 Text and Code fields</p>
-<p><strong>``</strong> ` backtick Text and Code fields</p>
-<p><strong>`{</strong> { left brace Text fields only</p>
-<h2 data-number="4.8" id="right-brace-text-fields-only"><span
-class="header-section-number">4.8</span> <strong>`}</strong> } right
-brace Text fields only</h2>
-<p>Table: 4e. <strong>Escape Sequences</strong></p>
+<table style="width:96%;">
+<caption>4e. <strong>Escape Sequences</strong></caption>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 27%" />
+<col style="width: 26%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Escape Sequence</th>
+<th style="text-align: center;">What It Inserts</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: center;">Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>`◇</strong></td>
+<td style="text-align: center;"><em>newline</em></td>
+<td style="text-align: center;">⎕UCS 13</td>
+<td style="text-align: center;">Text and Code fields</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>``</strong></td>
+<td style="text-align: center;">`</td>
+<td style="text-align: center;">backtick</td>
+<td style="text-align: center;">Text and Code fields</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>`{</strong></td>
+<td style="text-align: center;">{</td>
+<td style="text-align: center;">left brace</td>
+<td style="text-align: center;">Text fields only</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>`}</strong></td>
+<td style="text-align: center;">}</td>
+<td style="text-align: center;">right brace</td>
+<td style="text-align: center;">Text fields only</td>
+</tr>
+</tbody>
+</table>
 <p>Other instances of the backtick character in <strong>Text</strong>
 fields or <strong>Quoted strings</strong> in <strong>Code</strong>
 fields will be treated literally, <em>i.e.</em> sometimes a backtick is
 just a backtick.</p>
-<h2 data-number="4.9" id="quoted-strings-in-code-fields"><span
-class="header-section-number">4.9</span> Quoted Strings in Code
+<h2 data-number="4.7" id="quoted-strings-in-code-fields"><span
+class="header-section-number">4.7</span> Quoted Strings in Code
 Fields</h2>
 <p>As mentioned in the introduction, <strong>Quoted strings</strong> in
 <strong>Code</strong> fields allow several delimiting quote styles:</p>
@@ -2237,24 +2365,47 @@ class="red">∆F ‘{“abc`”def”}’</span><br> <strong>Valid:</strong>
 (<code>«</code> <code>»</code>) within the <strong>Quoted
 string</strong>, you must double it. You may <em>not</em> use an escape
 sequence (e.g. <code>`"</code>) for this purpose.</p>
-<hr />
-<p>Closing <br> <br> Quote Example Result</p>
-<hr />
-<p><code>"</code> <code>∆F '{"like ""this"" example"}'</code>
-<code>like "this" example</code></p>
-<p><code>»</code> <code>∆F '{«or «this»» one»}'</code>
-<code>or «this» one</code></p>
-<h2 data-number="4.10" id="f-or-this-one-or-this-one"><span
-class="header-section-number">4.10</span> <code>'</code>
-<code>∆F '{''or ''''this'''' one''}'</code>
-<code>or 'this' one</code></h2>
-<p>Table: 4f. <strong>Closing Quotes</strong></p>
+<table>
+<caption>4f. <strong>Closing Quotes</strong></caption>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 49%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;">Closing Quote</th>
+<th style="text-align: center;"><br> Example</th>
+<th style="text-align: center;"><br> Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code>"</code></td>
+<td
+style="text-align: center;"><code>∆F '{"like ""this"" example"}'</code></td>
+<td style="text-align: center;"><code>like "this" example</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>»</code></td>
+<td
+style="text-align: center;"><code>∆F '{«or «this»» one»}'</code></td>
+<td style="text-align: center;"><code>or «this» one</code></td>
+</tr>
+<tr>
+<td style="text-align: center;"><code>'</code></td>
+<td
+style="text-align: center;"><code>∆F '{''or ''''this'''' one''}'</code></td>
+<td style="text-align: center;"><code>or 'this' one</code></td>
+</tr>
+</tbody>
+</table>
 <p>Note that the opening quote <code>«</code> is treated as an ordinary
 character within the string. The clumsiness of the standard single quote
 <code>'</code> examples is due to the fact that the single quote is the
 required delimiter for the outermost (<em>APL</em>-level) string.</p>
-<h2 data-number="4.11" id="omega-shortcut-expressions-details"><span
-class="header-section-number">4.11</span> Omega Shortcut Expressions:
+<h2 data-number="4.8" id="omega-shortcut-expressions-details"><span
+class="header-section-number">4.8</span> Omega Shortcut Expressions:
 Details</h2>
 <ol type="1">
 <li><strong>⍹</strong> is a synonym for <strong>`⍵</strong>. It is
@@ -2286,8 +2437,8 @@ default with <code>`⍵1</code> or <code>⍹1</code>.</li>
 accessed at runtime via any means, shortcut or traditional, that element
 <strong><em>must</em></strong> exist.</li>
 </ol>
-<h2 data-number="4.12" id="serialise-shortcut-expressions-details"><span
-class="header-section-number">4.12</span> <strong>Serialise</strong>
+<h2 data-number="4.9" id="serialise-shortcut-expressions-details"><span
+class="header-section-number">4.9</span> <strong>Serialise</strong>
 Shortcut Expressions: Details</h2>
 <p>Serialise ( <code>`S</code> or <code>$$</code>) uses Dyalog
 <em>APL</em>’s Array Notation (APLAN)<span
@@ -2315,8 +2466,8 @@ or <code>`S `F</code>, for the sake of clarity.</li>
 <div class="test-feature">
 <p><span class="margin-note"><span
 class="red">Experimental</span></span></p>
-<h2 data-number="4.13" id="wrap-shortcut-details"><span
-class="header-section-number">4.13</span> Wrap Shortcut: Details</h2>
+<h2 data-number="4.10" id="wrap-shortcut-details"><span
+class="header-section-number">4.10</span> Wrap Shortcut: Details</h2>
 <ol type="1">
 <li>Syntax: <code>[⍺←''''] `W ⍵</code>.</li>
 <li>Let <code>L←0⊃2⍴⍺</code> and <code>R←1⊃2⍴⍺</code>.</li>
@@ -2335,8 +2486,8 @@ otherwise.</li>
 </ol>
 <p><span class="margin-note"><span
 class="red"><br>Experimental</span></span></p>
-<h2 data-number="4.14" id="session-library-shortcut-details"><span
-class="header-section-number">4.14</span> Session Library Shortcut:
+<h2 data-number="4.11" id="session-library-shortcut-details"><span
+class="header-section-number">4.11</span> Session Library Shortcut:
 Details</h2>
 <ol type="1">
 <li><p>If <span class="margin-note">With the default <code>auto</code>
@@ -2366,9 +2517,9 @@ its existing value, else a domain error will be signaled. Autoload does
 are allowed: <code>name</code> will be retrieved (if not present) before
 modification.</p></li>
 </ol>
-<h3 data-number="4.14.1"
+<h3 data-number="4.11.1"
 id="session-library-shortcut-filetypes-of-source-files"><span
-class="header-section-number">4.14.1</span> Session Library Shortcut:
+class="header-section-number">4.11.1</span> Session Library Shortcut:
 Filetypes of Source Files</h3>
 <p><span
 class="margin-note"><br><br><br><br><br><br><br><br><br><br><br><strong>apla:</strong>
@@ -2456,8 +2607,8 @@ NEVER</small></span></td>
 </tr>
 </tbody>
 </table>
-<h3 data-number="4.14.2" id="session-library-shortcut-parameters"><span
-class="header-section-number">4.14.2</span> Session Library Shortcut:
+<h3 data-number="4.11.2" id="session-library-shortcut-parameters"><span
+class="header-section-number">4.11.2</span> Session Library Shortcut:
 Parameters</h3>
 <p>The <span class="margin-note">If the automatic search feature is
 enabled— the default—, the <em>first</em> time each name is used there
