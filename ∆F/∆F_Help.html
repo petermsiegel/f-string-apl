@@ -767,9 +767,9 @@ using Dyalog functions and operators.</p>
 <thead>
 <tr>
 <th style="text-align: center;">Field Type</th>
-<th style="text-align: center;"><br> Syntax</th>
-<th style="text-align: center;"><br> Examples</th>
-<th style="text-align: center;"><br> Displaying</th>
+<th style="text-align: center;">Syntax</th>
+<th style="text-align: center;">Examples</th>
+<th style="text-align: center;">Displaying</th>
 </tr>
 </thead>
 <tbody>
@@ -1651,32 +1651,32 @@ conditions, of course.</span> if <a
 href="#f-option-details"><em>dfn</em></a> is set to <code>1</code>, then
 <strong>∆F</strong> returns a <strong>dfn</strong> that— when called
 later— will return the identical character expression.</p>
-<table>
+<table style="width:72%;">
 <caption>3a. <strong>Using the <em>dfn Option</em></strong></caption>
 <colgroup>
-<col style="width: 26%" />
-<col style="width: 39%" />
-<col style="width: 34%" />
+<col style="width: 20%" />
+<col style="width: 22%" />
+<col style="width: 29%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: center;"><br>Mode</th>
-<th style="text-align: center;">Positional <br>Parameter</th>
-<th style="text-align: center;">Keyword <br>Parameter</th>
+<th style="text-align: left;"><br>Mode</th>
+<th style="text-align: left;">Positional <br>Parameter</th>
+<th style="text-align: left;">Keyword <br>Parameter</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><em>(i)</em>
+<td style="text-align: justify;"><em>(i)</em>
 <strong><em>default</em></strong></td>
-<td style="text-align: center;"><code>0 ∆F 'mycode'</code></td>
-<td style="text-align: center;"><code>(dfn: 0) ∆F 'mycode'</code></td>
+<td style="text-align: justify;"><code>0 ∆F 'mycode'</code></td>
+<td style="text-align: justify;"><code>(dfn: 0) ∆F 'mycode'</code></td>
 </tr>
 <tr>
-<td style="text-align: center;"><em>(ii)</em>
+<td style="text-align: justify;"><em>(ii)</em>
 <strong><em>dfn</em></strong></td>
-<td style="text-align: center;"><code>1 ∆F 'mycode'</code></td>
-<td style="text-align: center;"><code>(dfn: 1) ∆F 'mycode'</code></td>
+<td style="text-align: justify;"><code>1 ∆F 'mycode'</code></td>
+<td style="text-align: justify;"><code>(dfn: 1) ∆F 'mycode'</code></td>
 </tr>
 </tbody>
 </table>
@@ -1857,11 +1857,12 @@ referred to in the f‑string. Returns a character matrix.</td>
 <td
 style="text-align: left;"><strong><em>options</em></strong> <strong>∆F</strong> <strong><em>f‑string</em></strong> [<strong><em>args</em></strong>]</td>
 <td style="text-align: justify;">Display an <em>f‑string</em> (see above);
-control the result with <em>options</em> specified (see below).<br>If
-<strong><em>dfn</em></strong> (see below) is <code>0</code> or omitted,
-returns a character matrix.<br>If <strong><em>dfn</em></strong> is
-<code>1</code>, returns a dfn that will display such a matrix (given an
-identical system state).</td>
+control the result with <em>options</em> specified (see below).<br><span
+class="red">If <strong><em>dfn</em></strong> (see below) is
+<strong><em>0</em></strong> or omitted,</span> returns a character
+matrix.<br><span class="red">If <strong><em>dfn</em></strong> is
+<strong><em>1</em></strong>,</span> returns a dfn that will display such
+a matrix (given an identical system state).</td>
 </tr>
 <tr>
 <td
@@ -1917,16 +1918,16 @@ style="text-align: center;"><strong><em>verbose: 0</em></strong></td>
 <strong><em>verbose: 1</em></strong>,</span> Renders newline characters
 from <code>`◇</code> as the visible <code>␤</code> character. Displays
 the source code that the <em>f‑string</em>
-<strong><em>actually</em></strong> generates; <span class="red">if
-<strong><em>dfn</em></strong> is also <code>1</code>,</span> this will
-include the embedded <em>f‑string</em> source (accessed as
-<code>`⍵0</code>). After the source code is displayed, it will be
-executed or converted to a <em>dfn</em> and returned (see the
-<strong><em>dfn</em></strong> option above).<br><span class="red">If
-<strong><em>verbose: 0</em></strong> (default),</span> Newline
-characters from <code>`◇</code> are rendered normally as carriage
-returns, <code>⎕UCS 13</code>; the <strong><em>dfn</em></strong> source
-code is not displayed.</td>
+<strong><em>actually</em></strong> generates; <span
+class="red">if <strong><em>dfn</em></strong> is also
+<strong><em>1</em></strong>,</span> this will include the embedded
+<em>f‑string</em> source (accessed as <code>`⍵0</code>). After the
+source code is displayed, it will be executed or converted to a
+<em>dfn</em> and returned (see the <strong><em>dfn</em></strong> option
+above).<br><span class="red">If <strong><em>verbose: 0</em></strong>
+(default),</span> newline characters from <code>`◇</code> are rendered
+normally as carriage returns, <code>⎕UCS 13</code>; the
+<strong><em>dfn</em></strong> source code is not displayed.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>Box</strong></td>
@@ -1997,11 +1998,11 @@ displays Session Library (<code>£</code> or <code>`L</code>) pa­ram­eters.
 <ul>
 <li><p><strong>Default options:</strong> If the left argument
 <code>⍺</code> is omitted, the options default as shown here.</p>
-<table>
+<table style="width:92%;">
 <caption>4c. <strong>∆F Default Options</strong></caption>
 <colgroup>
-<col style="width: 25%" />
-<col style="width: 74%" />
+<col style="width: 26%" />
+<col style="width: 65%" />
 </colgroup>
 <thead>
 <tr>
@@ -2291,37 +2292,37 @@ below on displaying quote characters like <code>"</code> in a string.
 include a small number of escape sequences, beginning with the backtick
 <code>`</code>. Some sequences are valid in <strong>Text</strong> fields
 <em>only</em>, but not in Quoted strings:</p>
-<p><span class="margin-note"><br><br><strong>Both</strong>:
-<em>i.e.</em> <strong>Text</strong> fields and <em>Quoted Strings</em>
-in <strong>Code</strong> fields. </span></p>
-<table style="width:96%;">
+<p><span class="margin-note"><br><br><br><br><br><strong>Quoted
+Strings</strong> appear <strong><em>only</em></strong> in
+<strong>Code</strong> fields. </span></p>
+<table>
 <caption>4e. <strong>Escape Sequences</strong></caption>
 <colgroup>
-<col style="width: 19%" />
-<col style="width: 27%" />
-<col style="width: 26%" />
-<col style="width: 22%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 18%" />
+<col style="width: 48%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: center;">Escape Sequence</th>
 <th style="text-align: center;">What It Inserts</th>
-<th style="text-align: center;">Description</th>
-<th style="text-align: center;">Where</th>
+<th style="text-align: center;"><br> Description</th>
+<th style="text-align: center;"><br> Where</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: center;"><strong>`◇</strong></td>
-<td style="text-align: center;"><em>newline</em></td>
+<td style="text-align: center;"><em>new line</em></td>
 <td style="text-align: center;">⎕UCS 13</td>
-<td style="text-align: center;">Text and Code fields</td>
+<td style="text-align: center;">Text fields and Quoted Strings</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>``</strong></td>
 <td style="text-align: center;">`</td>
 <td style="text-align: center;">backtick</td>
-<td style="text-align: center;">Text and Code fields</td>
+<td style="text-align: center;">Text fields and Quoted Strings</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>`{</strong></td>
@@ -2365,12 +2366,12 @@ class="red">∆F ‘{“abc`”def”}’</span><br> <strong>Valid:</strong>
 (<code>«</code> <code>»</code>) within the <strong>Quoted
 string</strong>, you must double it. You may <em>not</em> use an escape
 sequence (e.g. <code>`"</code>) for this purpose.</p>
-<table>
+<table style="width:100%;">
 <caption>4f. <strong>Closing Quotes</strong></caption>
 <colgroup>
-<col style="width: 12%" />
-<col style="width: 49%" />
-<col style="width: 37%" />
+<col style="width: 13%" />
+<col style="width: 52%" />
+<col style="width: 33%" />
 </colgroup>
 <thead>
 <tr>
@@ -2391,12 +2392,6 @@ style="text-align: center;"><code>∆F '{"like ""this"" example"}'</code></td>
 <td
 style="text-align: center;"><code>∆F '{«or «this»» one»}'</code></td>
 <td style="text-align: center;"><code>or «this» one</code></td>
-</tr>
-<tr>
-<td style="text-align: center;"><code>'</code></td>
-<td
-style="text-align: center;"><code>∆F '{''or ''''this'''' one''}'</code></td>
-<td style="text-align: center;"><code>or 'this' one</code></td>
 </tr>
 </tbody>
 </table>

@@ -274,7 +274,7 @@ and operators.
  Recap: <em>The Three Field Types</em>
 </summary>
 
-| Field Type | <br> Syntax | <br> Examples | <br> Displaying |
+| Field Type | Syntax | Examples | Displaying |
 |:--:|:--:|:--:|:--:|
 | **Text** | *Unicode text* | `` Cats`◇and`◇dogs! `` | 2-D Text |
 | **Code** | `{`*dfn code plus*`}` `{`*shortcuts*`}` | `{↑"one" "two"}`<br> `{"F5.1" $ (32+9×÷∘5)degC}` | Arbitrary *APL* Expressions <br>via dfns |
@@ -1148,10 +1148,10 @@ character matrix. However, *(ii)* if [*dfn*](#f-option-details) is set
 to `1`, then **∆F** returns a **dfn** that— when called later— will
 return the identical character expression.
 
-|      <br>Mode       | Positional <br>Parameter | Keyword <br>Parameter  |
-|:-------------------:|:------------------------:|:----------------------:|
-| *(i)* ***default*** |     `0 ∆F 'mycode'`      | `(dfn: 0) ∆F 'mycode'` |
-|  *(ii)* ***dfn***   |     `1 ∆F 'mycode'`      | `(dfn: 1) ∆F 'mycode'` |
+| <br>Mode            | Positional <br>Parameter | Keyword <br>Parameter  |
+|:--------------------|:-------------------------|:-----------------------|
+| *(i)* ***default*** | `0 ∆F 'mycode'`          | `(dfn: 0) ∆F 'mycode'` |
+| *(ii)* ***dfn***    | `1 ∆F 'mycode'`          | `(dfn: 1) ∆F 'mycode'` |
 
 3a. <strong>Using the <em>dfn Option</em></strong>
 
@@ -1309,7 +1309,7 @@ examples.
 |:---|:---|
 | **∆F** ***f‑string*** | Display an *f‑string*; use the *default* options. The string may reference objects in the environment or in the string itself. Returns a character matrix. <br><strong>Single or [multi­line f-string:](#multiline-f-strings-in-dyalog-20)</strong> An ***f-string*** must be a character vector of any length or a [vector of character vectors](#multiline-f-strings-in-dyalog-20). If the latter, it will be converted (via *enlist,* `∊`) to one, longer character vector, without any added spaces, newlines, etc. |
 | **∆F** ***f‑string*** ***args*** | Display an *f‑string* (see above); use the *default* options. Arguments presented *may* be referred to in the f‑string. Returns a character matrix. |
-| ***options*** **∆F** ***f‑string*** \[***args***\] | Display an *f‑string* (see above); control the result with *options* specified (see below).<br>If ***dfn*** (see below) is `0` or omitted, returns a character matrix.<br>If ***dfn*** is `1`, returns a dfn that will display such a matrix (given an identical system state). |
+| ***options*** **∆F** ***f‑string*** \[***args***\] | Display an *f‑string* (see above); control the result with *options* specified (see below).<br><span class="red">If ***dfn*** (see below) is ***0*** or omitted,</span> returns a character matrix.<br><span class="red">If ***dfn*** is ***1***,</span> returns a dfn that will display such a matrix (given an identical system state). |
 | ‘help’ **∆F** ‘ ’ *or* **∆F**⍨‘help’ | Display help info and examples for **∆F**. The *f‑string* is not examined. <big>👉</big> See below for details and related examples. |
 | ***Return value*** | See below. |
 
@@ -1320,7 +1320,7 @@ examples.
 | <br>Mode | Positional<br>Option<br><small>\[*index*\]</small> | Keyword<br>Option<br><small>(*kw: def*) | <br>Description |
 |:--:|:--:|:--:|:---|
 | **Dfn** | ***\[0\]*** | ***dfn: 0*** | <span class="red">If ***dfn: 1***,</span> **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br><span class="red">If ***dfn: 0*** (default),</span> **∆F** returns a char. matrix. |
-| **Verbose** | ***\[1\]*** | ***verbose: 0*** | <span class="red">If ***verbose: 1***,</span> Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; <span class="red">if ***dfn*** is also `1`,</span> this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br><span class="red">If ***verbose: 0*** (default),</span> Newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
+| **Verbose** | ***\[1\]*** | ***verbose: 0*** | <span class="red">If ***verbose: 1***,</span> Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; <span class="red">if ***dfn*** is also ***1***,</span> this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br><span class="red">If ***verbose: 0*** (default),</span> newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
 | **Box** | ***\[2\]*** | ***box: 0*** | <span class="red">If ***box: 1***,</span> each field (except a null **Text** field) is boxed separately.<br><span class="red">If ***box: 0*** (default),</span> nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><big>👉</big> ***Box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
 | **Auto** | ***\[3\]*** | ***auto: 1*** | <span class="red">If ***auto: 0***,</span> user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br><span class="red">If ***auto: 1*** (default),</span> honors the default and user-defined settings for `auto`.<br><big>👉</big> Depends on (i) user parameter file **./.∆F** and (ii) the namespace **⍙Fapl** created during the `]load` process. |
 | **Inline** | ***\[4\]*** | ***inline: 0*** | <span class="red">If ***inline: 1*** and ***dfn: 1***,</span> the code for each internal support function used is included in the *dfn* result; ***no*** reference to namespace **⍙Fapl** will be made during the execution of that *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br><span class="red">If ***inline: 0*** (default),</span> whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br><big>👉</big> This option is experimental and may simply disappear one day. |
@@ -1442,12 +1442,12 @@ include a small number of escape sequences, beginning with the backtick
 `` ` ``. Some sequences are valid in **Text** fields *only*, but not in
 Quoted strings:
 
-| Escape Sequence | What It Inserts | Description |        Where         |
-|:---------------:|:---------------:|:-----------:|:--------------------:|
-|     **\`◇**     |    *newline*    |   ⎕UCS 13   | Text and Code fields |
-|    **\`\`**     |       \`        |  backtick   | Text and Code fields |
-|     **\`{**     |        {        | left brace  |   Text fields only   |
-|     **\`}**     |        }        | right brace |   Text fields only   |
+| Escape Sequence | What It Inserts | <br> Description | <br> Where |
+|:--:|:--:|:--:|:--:|
+| **\`◇** | *new line* | ⎕UCS 13 | Text fields and Quoted Strings |
+| **\`\`** | \` | backtick | Text fields and Quoted Strings |
+| **\`{** | { | left brace | Text fields only |
+| **\`}** | } | right brace | Text fields only |
 
 4e. <strong>Escape Sequences</strong>
 
@@ -1477,7 +1477,6 @@ string**, you must double it. You may *not* use an escape sequence
 |:-------------:|:--------------------------------:|:---------------------:|
 |      `"`      | `∆F '{"like ""this"" example"}'` | `like "this" example` |
 |      `»`      |    `∆F '{«or «this»» one»}'`     |    `or «this» one`    |
-|      `'`      | `∆F '{''or ''''this'''' one''}'` |    `or 'this' one`    |
 
 4f. <strong>Closing Quotes</strong>
 
