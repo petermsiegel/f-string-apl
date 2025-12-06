@@ -562,21 +562,18 @@ class="header-section-number">1</span> Installing, Loading, and Running
 class="header-section-number">1.1</span> Installing
 <strong>∆F</strong></h2>
 <ol type="1">
-<li>On Github, search for the two keywords, <mark>f‑string</mark> and
-<mark>“apl”</mark>.
-<ul>
-<li>During the test phase, go to
+<li>Via your browser, go to Github URL
 <mark><a id="displayText" href="javascript:linkAlert();"><span
 class="linkNote">https://github.com/thecatsam/f-string-apl.git</span></a></mark>.</li>
-</ul></li>
-<li>Make a note of <span class="margin-note">User command
+<li>Make a note of <span class="margin-note">Dyalog user command
 <code>]cd</code> will show you your current working
-directory.</span>your current directory.</li>
-<li>Copy the file <strong>∆F.dyalog</strong> and directory
-<strong>∆F</strong> (which contains several files) into the current
-working directory, ensuring they are peers.<span
-class="margin-note"><strong>peers:</strong> <em>i.e.</em> at the same
-level.</span></li>
+directory.</span>your current (or desired) working directory.</li>
+<li><span class="margin-note"><strong>Download:</strong> E.g. via the
+Github <strong>Code</strong> button, use download ZIP to place in the
+desired directory .</span>Download and copy the file
+<strong>∆F.dyalog</strong> and directory <strong>∆F</strong> (which
+contains several files) into the current working directory, ensuring
+they are peers, <em>i.e.</em> at the same directory level.</li>
 </ol>
 <p><big>👉</big> Now, <strong>∆F</strong> is available to load and use.
 Continue in the <a href="#loading-and-running-f">next section</a>.</p>
@@ -1593,8 +1590,8 @@ copied into a £ibrary, or to see <em>where</em> it’s copied from, use
 <em>session.</em> Subsequent uses will use the <code>£.pco</code>
 already copied in.</span></p>
 <pre><code>   0 1 ∆F &#39;{ ⍸ 1 £.pco ⍳100 }&#39;    ⍝ 0 1 &lt;==&gt; (verbose: 1)
-NOTE: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.ûLib] from &quot;ws:dfns&quot;
-{ ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
+∆F: Copied &quot;pco&quot; into £=[⎕SE.⍙Fapl.library] from &quot;ws:dfns&quot;
+{ ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 (⎕SE.⍙Fapl.library).pco ⍳100}⍵)}⍵
 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
 </details>
 <blockquote>
@@ -2804,7 +2801,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-05]
+<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-06]
 </span> <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>

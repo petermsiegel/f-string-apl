@@ -405,8 +405,8 @@
 
 ⍝=== Begin LIBRARY Shortcut stubs =======================================================
 ⍝ See libUtil.LinkUserLib
-⍝ ûserLib is the user library.
-:Namespace ûserLib
+⍝ library is the user library.
+:Namespace library
     ⍝⍝⍝⍝⍝ Minimal contents, pending ⍙LoadLibAuto.
   ⍝ Inherit key sys vars from the # namespace.
     ⎕IO ⎕ML ⎕PW ⎕PP ⎕CT ⎕DCT ⎕FR← #.(⎕IO ⎕ML ⎕PW ⎕PP ⎕CT ⎕DCT ⎕FR)     
@@ -429,8 +429,8 @@
       ShowPath← '⍬'⍨        
       LoadParms← ⍬⍨       
   ∇
-⍝ Set name and ref for ûserLib here
-  UserLibMin ##.ûserLib
+⍝ Set name and ref for library here
+  UserLibMin ##.library
 :EndNamespace
 
 ⍝=== End LIBRARY Shortcut stubs =======================================================

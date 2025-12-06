@@ -134,14 +134,12 @@ f‑strings</a>
 
 ## Installing **∆F**
 
-1.  On Github, search for the two keywords, <mark>f‑string</mark> and
-    <mark>“apl”</mark>.
-    - During the test phase, go to
-      <mark><a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://github.com/thecatsam/f-string-apl.git</span></a></mark>.
-2.  Make a note of your current directory.
-3.  Copy the file **∆F.dyalog** and directory **∆F** (which contains
-    several files) into the current working directory, ensuring they are
-    peers.
+1.  Via your browser, go to Github URL
+    <mark><a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://github.com/thecatsam/f-string-apl.git</span></a></mark>.
+2.  Make a note of your current (or desired) working directory.
+3.  Download and copy the file **∆F.dyalog** and directory **∆F** (which
+    contains several files) into the current working directory, ensuring
+    they are peers, *i.e.* at the same directory level.
 
 <big>👉</big> Now, **∆F** is available to load and use. Continue in the
 [next section](#loading-and-running-f).
@@ -1097,8 +1095,8 @@ into a £ibrary, or to see *where* it’s copied from, use **∆F**’s
 ***verbose*** option:
 
        0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }'    ⍝ 0 1 <==> (verbose: 1)
-    NOTE: Copied "pco" into £=[⎕SE.⍙Fapl.ûLib] from "ws:dfns"
-    { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 ⎕SE.⍙Fapl.ûLib.pco ⍳100}⍵)}⍵
+    ∆F: Copied "pco" into £=[⎕SE.⍙Fapl.library] from "ws:dfns"
+    { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 (⎕SE.⍙Fapl.library).pco ⍳100}⍵)}⍵
     2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
 
 </details>
@@ -1795,7 +1793,7 @@ preferred string formatting approach in modern Python code.
 ------------------------------------------------------------------------
 
 <br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-05\]
+<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-06\]
 </span> <br>
 
 </div>

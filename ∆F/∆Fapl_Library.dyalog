@@ -1,12 +1,12 @@
-⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-05') 
+⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-06') 
 :Namespace libUtil 
 ⍝ libUtil (namespace): Handles Library (£ ~ `L) shortcut automatic loading...
 ⍝ See EXECUTIVE at bottom...
 ⍝   UserLibWithAuto: Allows libUtil to access the user Library shortcut namespace
 ⍝   LoadParms:   Loads default (internal) and user parameters, optionally displaying them.
 ⍝
-⍝ Local and External copies to ##.ûserLib:
-⍝    userLibNm userLib,  normally name of ##.ûserLib and ref to it.
+⍝ Local and External copies to ##.library:
+⍝    userLibNm userLib,  normally name of ##.library and ref to it.
 
 ⍝ Utility used by ∆F when it sees £ or `L. 
 ⍝   Auto:
@@ -264,7 +264,7 @@
     rc← force CShow parms 
   ∇
 ⍝   UserLibMax: Point to (empty, but named) user library at load-time.
-⍝      actual ref: ##.ûserLib, local ref (alias): userLib, local name: userLibNm.
+⍝      actual ref: ##.library, local ref (alias): userLib, local name: userLibNm.
 ⍝ external: 
 ⍝      userLib, userLibNm, Auto, parms, ShowPath, LoadParms   ⍝ loaded here...
   ∇ {libNs}← UserLibMax libNs
@@ -276,6 +276,6 @@
 
 ⍝ =========================================================================
 ⍝ EXECUTIVE
-  UserLibMax ##.ûserLib
+  UserLibMax ##.library
   LoadParms 1 1 0
 :EndNamespace   ⍝ libUtil
