@@ -9,7 +9,7 @@
 
 ⍝ VARIABLES FOR ∆F OPTIONS: Positional and keyword 
   OPTS_KW←    'dfn' 'verbose' 'box' 'auto' 'inline'        ⍝ In order 
-  OPTS_DEF←   0 0 0 1 0     
+  OPTS_DEF←   0     0         0     1      0     
   OPTS_N←     ≢OPTS_DEF 
 
 ⍝ SESSION LIBRARY (£ or `L) VARIABLES
@@ -21,9 +21,9 @@
   HELP_HTML←   '∆F/∆F_Help.html'          ⍝ Called from 'help' option. Globally set here
 
 ⍝ ESCAPE_CHAR: Allows an installation to use a different single-char "escape"
-⍝ character in place of "`". 
-⍝ If ESCAPE_CHAR is omitted or ⍬ (length 0), the default "`" is used.
-  ESCAPE_CHAR← ⍬ 
+⍝ character in place of "`".  See var. ¨esc¨.
+⍝ If ESCAPE_CHAR is omitted or ⍬ (length 0), the default ¨esc¯ "`" is used.
+  ESCAPE_CHAR← '`'
 
 ⍝ Quote pairs, i.e. beyond double quotes and single quotes.
 ⍝ QUOTES_SUPPLEMENTAL must consist of 0 or more PAIRS of left AND right quotes.
@@ -31,11 +31,11 @@
 
 ⍝ ==================================================================================
 
-⍝ Set char. rendering of ⎕THIS. User may set ⎕THIS.⎕DF later...
+⍝ Set char. rendering of ⎕THIS. We may set ⎕THIS.⎕DF later, but ∆THIS will remain as is.
   ∆THIS← ⍕⎕THIS                
 
 ⍝ ============================   ∆F (User Function)   ==============================
-⍝ === Copied into ## as ∆F ===
+⍝ ∆F_Src is modified to become ##.∆F, editing __THIS__, __OUTER__.
 ⍝ ∆F: 
 ⍝    result← {opts←⍬} ∇ f-string [args]
 ⍝ ¨⎕THIS¨ will be hardwired as ∆F is promoted out of ⍙Fapl.
@@ -138,12 +138,12 @@
           c= dol:    (pfx, d2⊃ scF scS) ∇ w↓⍨ d2←dol=⊃w  ⍝ $ => ⎕FMT,$$ => Serialise 
           c= esc:    (pfx, a)  ∇ w⊣ a w← CFEsc w       ⍝ `⍵, `⋄, `A, `B, etc.
           c= omUs:   (pfx, a)  ∇ w⊣ a w← CFOm w        ⍝ ⍹, alias to `⍵ (see CFEsc).
-        ⍝ £: Library... SetAC: Create the autocache namespace unless defined.
-          c= libCh:  (pfx, ⎕THIS libUtil.Auto w ) ∇ w  
+        ⍝ c= '£':    Auto returns the Library namespace as text after any required loads.
+          c= libCh:  (pfx, ⎕THIS libUtil.LibAuto w ) ∇ w  
          ~c∊sdcfCh:  ⎕SIGNAL cfLogicÊ                  ⍝ CFBrk leaked unknown char.
         ⍝ '→', '↓' or '%'. See if a "regular" char/shortcut or self-defining code field        
           brG>1:     (pfx, c scA⊃⍨ c= pct) ∇ w         ⍝ internal dfn => not SDCF
-             p← +/∧\' '=w
+            p← +/∧\' '=w
           rb≠ ⊃p↓w:  (pfx, c scA⊃⍨ c= pct) ∇ w         ⍝ not CF-final '}' => not SDCF
             codeStr← AplQt cfBeg↑⍨ cfG+ p              ⍝ SDCF! Put CF-literal in quotes
            (codeStr, (scA scM⊃⍨ c='→'), pfx) (w↓⍨ p+1) ⍝ Assemble SDCF and return from ⍙Scan.
@@ -192,7 +192,7 @@
       0= ≢⍵: esc 
         c w← (0⌷⍵) (1↓⍵) ⋄ cfG+← 1   
       c∊ om_omUs: CFOm w                               ⍝ Permissively allow `⍹ as equiv to `⍵ OR ⍹ 
-      c='L': (⎕THIS libUtil.Auto w) w 
+      c='L': (⎕THIS libUtil.LibAuto w) w 
       nSC> p← MapSC c: (p⊃ userSCs) w                  ⍝ userSCs: user shortcuts `[ABFJLTDW]. 
       c∊⍥⎕C ⎕A: ⎕SIGNAL ShortcutÊ c                    ⍝ Unknown shortcut!
         ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
@@ -322,7 +322,8 @@
 ⍝ If [0] is 0, then there was no prefix of digits. If there was, then it will be >0.
   IntOpt← { wid← +/∧\ ⍵∊⎕D ⋄ wid (⊃⊃⌽⎕VFI wid↑ ⍵) (wid↓ ⍵) }  ⍝ Idiom +/∧\
 
-⍝⍝⍝ Code for Dyalog 20 services in Dyalog 19...
+⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
+⍝⍝⍝ Code for Dyalog 20 services compatible with Dyalog 19...
   IS_LEGACY← { 2:: 1 ⋄  ⎕VSET⍣0⊢ 0 }⍬            ⍝ If ⎕VSET doesn't exist, it's legacy!
   ⍙Legacy← { VERBOSE: ⍵⊣ ⎕← 'NB. Legacy Fallback [',']',⍨1↓∊'.',¨⌽2↑1↓⎕SI  ⋄ ⍵ }
 ⍝ AN2Apl:   Use Array.Deserialise if prior to Dyalog 20.
@@ -337,6 +338,7 @@
   ∆VSET← { IS_LEGACY: ⍺.{ ⍎(⊃⍵),'←⊃⌽⍵'}¨⍵ ⍙Legacy ⍵ ⋄ ⍺ ⎕VSET ⍵ } 
   ⍝ ∆IfNull: Replace ⎕NULL or ⍬, where required. Calls ∆VSET for pre-Dyalog 20.
   ∆IfNull←{ ⍺ ∆VSET ⍵/⍨ (⍬∘≡∨⎕NULL∘≡)∘⍺.⎕OR∘⊃¨⍵ }
+⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
 
 ⍝ AplQt:  Created an APL-style single-quoted string.
   AplQt←  sq∘(⊣,⊣,⍨⊢⊢⍤/⍨1+=)                           ⍝ { sq, sq,⍨ ⍵/⍨ 1+ sq= ⍵ }
@@ -384,7 +386,7 @@
   ⍝ parms: Load any new parms without a ]load. 
   ⍝        Returns display of default and user parms (as mx) in alph order.
     2≠ ⎕NC 'val': ⎕SIGNAL optÊ
-    'parms'≡   val: _← libUtil.LoadParms 1 1 1 
+    'parms'≡   val: _← libUtil.LoadParms 'defaults userFi verbose'
     'path' ≡   val: _← libUtil.ShowPath ⍬ 
     'help' ≢ 4↑val: ⎕SIGNAL optÊ 
   ⍝ help, help-wide, or help-narrow?
@@ -416,12 +418,12 @@
 ⍝ See ⍙LoadLibAuto 
 :Namespace libUtil
 ⍝⍝⍝⍝⍝ This is a local stub, pending (optional, but expected) load of ∆Fapl_Library below.
-  ∇ {libNs}←  UserLibMin libNs 
+  ∇ {libNs}←  LibUserSimple libNs 
     ⍝ external in the stub... 
-    ⍝   userLib, Auto, ShowPath, LoadParms
+    ⍝   libUser, Auto, ShowPath, LoadParms
     ⍝ external loaded from ∆Fapl_Library.dyalog:
-    ⍝   userLib, Auto, parms, ShowPath, LoadParms 
-      ⎕THIS.userLib← libNs
+    ⍝   libUser, Auto, parms, ShowPath, LoadParms 
+      ⎕THIS.libUser← libNs
       libNs.⎕DF ⎕NULL 
       libNs.⎕DF '£=[',(⍕libNs),' ⋄ auto:0]'
       Auto← (⍕libNs)⍨  
@@ -430,7 +432,7 @@
       LoadParms← ⍬⍨       
   ∇
 ⍝ Set name and ref for library here
-  UserLibMin ##.library
+  LibUserSimple ##.library
 :EndNamespace
 
 ⍝=== End LIBRARY Shortcut stubs =======================================================
@@ -555,7 +557,7 @@
     ⍝ NB: Array.Serialise returns an enclosed char vec. if ⍺=1; we disclose it.
     ⎕SHADOW 'sCod'
     sCod←  '{'
-    sCod,←   '⎕ML←1⋄11 16::⍵⋄⍺←0⋄'
+    sCod,←   '⎕ML←1⋄11 16 6::⍵⋄⍺←0⋄'     ⍝ 6 is a bug in Array.Serialise (∆XR).
     sCod,←   '1=≢s←⍺⎕SE.Dyalog.Array.Serialise⍵:⊃s⋄'
     sCod,←   '⍪s'
     sCod,← '}'

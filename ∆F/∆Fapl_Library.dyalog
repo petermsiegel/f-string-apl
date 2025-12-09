@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-06') 
+⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-07') 
 :Namespace libUtil 
 ⍝ libUtil (namespace): Handles Library (£ ~ `L) shortcut automatic loading...
 ⍝ See EXECUTIVE at bottom...
@@ -6,7 +6,7 @@
 ⍝   LoadParms:   Loads default (internal) and user parameters, optionally displaying them.
 ⍝
 ⍝ Local and External copies to ##.library:
-⍝    userLibNm userLib,  normally name of ##.library and ref to it.
+⍝    libUserNm libUser,  normally name of ##.library and ref to it.
 
 ⍝ Utility used by ∆F when it sees £ or `L. 
 ⍝   Auto:
@@ -22,38 +22,40 @@
 ⍝    extern: contains aG, acG; vG (read in ⍙LoadObj)
 ⍝  See steps below. 
 ⍝ Requires ¨autoPat¨ defined below function.
-⍝ Returns: ' ',userLibNm,' ' (userlibNm is the stringified library namespace). 
+⍝ Returns: ' ',libUserNm,' ' (libUserNm is the stringified library namespace). 
 ⍝ For debugging, place after nm set←...
 ⍝    :If extern.vG ⋄ ⎕←'>>> Auto: (nm:"',nm,'",set:',(⍕×≢set),')' ⋄ :EndIf  
-  ∇ u← extern Auto str ;nm ;set 
-    u← '(',userLibNm,')'                            ⍝ Return userLibNm no matter what!
+  ∇ u← extern LibAuto str ;nm ;set 
+    u← '(',libUserNm,')'                            ⍝ Return libUserNm no matter what!
     :If extern.aG                                   ⍝ If auto is set 
         nm set← autoPat ⎕R '\1\n\2\n' ⍠('UCP' 1)⊂str  
     :AndIf 0< ≢nm                                   ⍝ ...and we have an APL name 
     :AndIf ~extern.acG∊⍨ ⊂nm                        ⍝ ...which we haven't seen
         extern.acG,← ⊂nm                            ⍝    Then mark as seen.
         :If 0=≢set                                  ⍝    If not an assignment
-        :AndIf 0= userLib.⎕NC nm                    ⍝    ...and not already in userLib
-            userLib extern parms ⍙LoadObj nm        ⍝       try to load in userLib from fi/ws.                                       
+        :AndIf 0= libUser.⎕NC nm                    ⍝    ...and not already in libUser
+            libUser extern parms ⍙LoadObj nm        ⍝       try to load in libUser from fi/ws.                                       
         :EndIf
     :EndIf 
   ∇ 
-  autoPat← '^ (?| \s* \. \s* ( [\pL∆⍙] [\w∆⍙]* ) \s* ((?:(?:∘\s*)?←)?) | ()() ) .*$'~ ' '
+  lP rP←    '(?:\(\s*)?' '(?:\)\s*)?'
+  autoPat←  '^(?|\s*\.\s*',lP,'\s*','([\pL∆⍙][\w∆⍙]*)\s*',rP 
+  autoPat,← '((?:(?:∘\s*)?←)?)','|()()).*$'
   
   ⍝ ShowPath:  See 'path' special call in ##.Special. 
   ShowPath← { ⊃1 ##.Apl2AN parms._fullPath } 
 
   ⍝ ======================================================================================
-  ⍝ ⍙LoadObj: Find nm in £.nm or `L.nm and try to load its definition into userLib from path.
-  ⍝     (1|0)@B← userLib@ns verbose@B parms@ns ∇ nm@CVS 
+  ⍝ ⍙LoadObj: Find nm in £.nm or `L.nm and try to load its definition into libUser from path.
+  ⍝     (1|0)@B← libUser@ns verbose@B parms@ns ∇ nm@CVS 
   ⍝ Find <nm> in search directories (parms.path) and dfns workspace, according to parameters <parms>.
   ⍝ Called by ⍙Auto (above).
-  ⍝    (1|0)← userLib verbose parms ∇ nm 
-  ⍝ Returns SHY 1 (succ) or SHY 0 (fail), having established <nm> in userLib (ns) on success.
+  ⍝    (1|0)← libUser verbose parms ∇ nm 
+  ⍝ Returns SHY 1 (succ) or SHY 0 (fail), having established <nm> in libUser (ns) on success.
   ⍙LoadObj← { 
     ⍝ ⍙LoadObj utilities, followed by the executive...
     ⍝ FixFromWS: Search for name ⍺ in ws ⍵. On success, 1 'ws:⍵'; on failure, 0 ⍬
-      FixFromWS← { 11:: rcNF ⍬ ⋄ rcOK ('ws:',⍵)⊣ ⍺ userLib.⎕CY ⍵ }
+      FixFromWS← { 11:: rcNF ⍬ ⋄ rcOK ('ws:',⍵)⊣ ⍺ libUser.⎕CY ⍵ }
     ⍝ SubScanFiles: 
     ⍝  Search a list of full filenames ⍵ ending in simple name ⍺ (before suffixes).
     ⍝      If a) it finds a file with name ⍵, 
@@ -72,21 +74,21 @@
     ⍝   the first three suffixes, but it's trivial to do.
     ⍝ ∘ When ⎕FIX is applied to ¨fi¨, ¨nm¨ must be among the names listed as ⎕FIXed. 
       SCF_FixByType← { nm fi←⍺ ⍵ ⋄ sfx← ⊃⌽⎕NPARTS fi   
-        '.aplf' '.aplo' '.apln'∊⍨ ⊂sfx: rcER rcOK⊃⍨ (⊂nm)∊ 2 userLib.⎕FIX fi 
-        '.apla'≡ sfx: rcOK⊣ userLib ##.∆VSET ⊂nm (##.AN2Apl ⊃⎕NGET  fi 1) 
-        '.txt' ≡ sfx: rcOK⊣ userLib ##.∆VSET ⊂nm (⊃⎕NGET fi 1)  
+        '.aplf' '.aplo' '.apln'∊⍨ ⊂sfx: rcER rcOK⊃⍨ (⊂nm)∊ 2 libUser.⎕FIX fi 
+        '.apla'≡ sfx: rcOK⊣ libUser ##.∆VSET ⊂nm (##.AN2Apl ⊃⎕NGET  fi 1) 
+        '.txt' ≡ sfx: rcOK⊣ libUser ##.∆VSET ⊂nm (⊃⎕NGET fi 1)  
             jOpts← ('Dialect' 'JSON5')('Compact' 0)('Null' ⎕NULL)                                     
-        '.json'≡ sfx: rcOK⊣ userLib ##.∆VSET ⊂nm (⎕JSON⍠jOpts ⊃⎕NGET fi 0)  
+        '.json'≡ sfx: rcOK⊣ libUser ##.∆VSET ⊂nm (⎕JSON⍠jOpts ⊃⎕NGET fi 0)  
       ⍝ All other suffixes, including .dyalog or a user-defined suffix.
       ⍝ When ⎕FIX is applied to ¨fi¨, ¨nm¨ must be among the names listed as ⎕FIXed. 
-          rcER rcOK⊃⍨ (⊂nm)∊ 2 userLib.⎕FIX fi            
+          rcER rcOK⊃⍨ (⊂nm)∊ 2 libUser.⎕FIX fi            
       }
     ⍝ SubScanWS:   nm path _SubScanWS subpath
     ⍝    nm: name to find      path: ScanPath's current (outer) path 
     ⍝    ScanPath: see below   subp: the list of workspaces
     ⍝    Returns rcOK, rcNF, rcER or result from recursive call to ScanPath
       SubScanWS← { (nm path) subp← ⍺ ⍵
-        0=≢ subp: nm ScanPath 1↓path ⋄ ret← nm FixFromWS ⊃subp
+        0=≢subp: nm ScanPath 1↓path ⋄ ret← nm FixFromWS ⊃subp
         rcNF≠⊃ret: ret ⋄ nm path ∇ 1↓subp 
       }
     ⍝ ScanPath: Recursively scan the path for name ⍵ in each file or wsid 
@@ -97,7 +99,7 @@
     ⍝   Otherwise, 
     ⍝     call and return result from ∆FI nm spec sfx.
       ScanPath← {  
-        0= ≢ ⍵: rcNF ⍬ ⋄ nm path← ⍺ ⍵ ⋄ cur← ⊃path
+        0= ≢⍵: rcNF ⍬ ⋄ nm path← ⍺ ⍵ ⋄ cur← ⊃path
         ⍝ If cur is a vector of (0 or more) char vectors, each is assumed to be a workspace id.
         ⍝ When done, having returned rcNF, recursively continue ScanPath.
         ⍝ Otherwise (rcOK or rcER), return from ScanPath.
@@ -112,15 +114,15 @@
     ⍝ Otherwise, exit with a msg based on rc.
       MsgAndReturn← { rc v← ⍺ 
         (rc≠rcER)∧ ~v: rc ⋄ (nm srcFi dest)← ⍵  
-        rc=rcOK: rc ⊣ ⎕← '∆F: Copied "', nm, '" into ',(⍕dest), (0≠≢ srcFi)/ ' from ','"',srcFi,'"'
+        rc=rcOK: rc ⊣ ⎕← '∆F: Copied "', nm, '" into ',(⍕dest), (0≠ ≢srcFi)/ ' from ','"',srcFi,'"'
         rc=rcNF: rc ⊣ ⎕← '∆F: Object "',nm,'" not found on search path.'    
           11 ⎕SIGNAL⍨ 'Object "',nm,'" found, but error occurred copying it into ',⍕dest  
       }  
     ⍝ Executive for ⍙LoadObj 
-      userLib extern parms←⍺ ⋄ nm← ⍵ 
+      libUser extern parms←⍺ ⋄ nm← ⍵ 
       rcOK rcNF rcER← 1 0 ¯1       ⍝ Return codes: OK, Not Found, Error
       rc where← nm ScanPath parms._fullPath 
-    1: _← rc (extern.vG ∨ parms.verbose) MsgAndReturn nm where userLib  
+    1: _← rc (extern.vG ∨ parms.verbose) MsgAndReturn nm where libUser  
   } ⍝ ⍙LoadObj 
   
 ⍝ ============================================================================
@@ -130,7 +132,7 @@
 ⍝   ⍵.load defaults to ##.AUTOLOAD (which must be 1 or 0).
 ⍝   If ⍵.load is set to 1 in the .∆F file, then the .∆F file is loaded.
 ⍝   If not,
-⍝       then no more processing is done and Auto does nothing except return userLibNm (lib ns name).
+⍝       then no more processing is done and Auto does nothing except return libUserNm (lib ns name).
 ⍝   If ⍵.path←⍬, no files or workspaces are checked. If ⍵.suffix←⍬, only w/ss might be checked.  
   SetParmDefaults← { 
     ⍝ These are the default APL Array Notation settings: format ok whether Dyalog 20 or earlier.
@@ -230,13 +232,13 @@
       _←  ('verbose' ##.VERBOSE) ('load' ##.LIB_AUTO) ('prefix'(,⊂'')) 
       _,← ('auto' 0)             ('path' ⍬)           ('suffix' ⍬)
       _← parms ##.∆IfNull _ 
-    ~parms.load: _← 0⊣ ⎕FX ,⊂'Auto←{userLibNm}'⊣ parms.auto←0  ⍝ auto=0: Auto => nop.
+    ~parms.load: _← 0⊣ ⎕FX ,⊂'Auto←{libUserNm}'⊣ parms.auto←0  ⍝ auto=0: Auto => nop.
       parms._fullPath← GenFullPath parms.path 
     ⍝ If parms._fullPath is not empty, we're done!
     0< ≢parms._fullPath: _← 1 
     ⍝ If parms._fullPath is empty, then turn auto off, since there's nothing to load.
       nolibW← '!!! Warning:  (load: 1) but the search path is empty!'
-      _← 0⊣ ⎕FX ,⊂'Auto←{userLibNm}'⊣ parms.auto← 0⊣ (⎕∘←)⍣parms.verbose⊣nolibW       
+      _← 0⊣ ⎕FX ,⊂'Auto←{libUserNm}'⊣ parms.auto← 0⊣ (⎕∘←)⍣parms.verbose⊣nolibW       
   } 
   ⍝ CShow: 
   ⍝ ∘ Cond'lly show all APLAN parameters in 'parms' in alph order 
@@ -254,28 +256,29 @@
 ⍝     load user parms?    If user=1.
 ⍝     show parms?         If parms.verbose is now or if force.
 ⍝ Used at EXECUTIVE below and in ∆F with the 'parms' option.
-  ∇ {rc}← LoadParms (defaults user force)
-    :If defaults  ⋄ :OrIf 0=⎕NC 'parms' 
+  ∇ {rc}← LoadParms select ; Choose 
+    Choose← (⎕C select)∘{ ~1∊ ⍺⍷⍨ 'no',⎕C ⊃⍵ } 
+    :If (Choose 'defaults') ⋄ :OrIf 0=⎕NC 'parms' 
         'parms' ⎕NS SetParmDefaults ⍬  
     :EndIf 
-    :If user 
+    :If Choose 'userFi' 
         LoadParmFi './.∆F'  
     :EndIf 
-    rc← force CShow parms 
+    rc← (Choose 'verbose') CShow parms 
   ∇
-⍝   UserLibMax: Point to (empty, but named) user library at load-time.
-⍝      actual ref: ##.library, local ref (alias): userLib, local name: userLibNm.
+⍝   LibUserFull: Point to (empty, but named) user library at load-time.
+⍝      actual ref: ##.library, local ref (alias): libUser, local name: libUserNm.
 ⍝ external: 
-⍝      userLib, userLibNm, Auto, parms, ShowPath, LoadParms   ⍝ loaded here...
-  ∇ {libNs}← UserLibMax libNs
-    ⍝ external: userLibNm userLib 
-      libNs.⎕DF ⎕NULL                      ⍝ In case set...
-      userLibNm← ⍕userLib← libNs 
-      userLib.⎕DF '£=[',userLibNm,']'
+⍝      libUser, libUserNm, Auto, parms, ShowPath, LoadParms   ⍝ loaded here...
+  ∇ {libNs}← LibUserFull libNs
+    ⍝ external: libUserNm libUser 
+    libNs.⎕DF ⎕NULL                      ⍝ In case set...
+    libUserNm← ⍕libUser← libNs 
+    libUser.⎕DF '£=[',libUserNm,']'
   ∇
 
 ⍝ =========================================================================
 ⍝ EXECUTIVE
-  UserLibMax ##.library
-  LoadParms 1 1 0
+  LibUserFull ##.library
+  LoadParms 'defaults userfi noVerbose'
 :EndNamespace   ⍝ libUtil

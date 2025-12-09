@@ -147,7 +147,7 @@ f‑strings</a>
 ## Loading and Running **∆F**
 
 1.  Confirm that your current directory remains as before.
-2.  From your Dyalog session, enter: <br> `]load ∆F [-target=⎕SE]`
+2.  From your Dyalog session, enter: <br> `]load ∆F -target=⎕SE`
 3.  **∆F/∆F_Help.html** is, by default, available at `]load` time and
     will be copied into **⍙Fapl**. If missing, a message will note the
     absence of *help* information.
@@ -651,12 +651,14 @@ To make it easier to see, here’s the same result, but with a box around
 each field—using the **Box** [option](#f-option-details), *namespace*
 style.
 
-    ⍝  Box all fields
-       (box: 1) ∆F 'Current employee: {name↓} {age↓}.'
-    ┌──────────────────┬──────────┬─┬────┬─┐
-    │Current employee: │ name↓    │ │age↓│.│
-    │                  │John Smith│ │ 34 │ │
-    └──────────────────┴──────────┴─┴────┴─┘
+``` dyalog20
+⍝  Box all fields
+   (box: 1) ∆F 'Current employee: {name↓} {age↓}.'
+┌──────────────────┬──────────┬─┬────┬─┐
+│Current employee: │ name↓    │ │age↓│.│
+│                  │John Smith│ │ 34 │ │
+└──────────────────┴──────────┴─┴────┴─┘
+```
 
 ## The Above Shortcut
 
@@ -925,22 +927,24 @@ unformatted, *i.e.* as is.
 Here’s a brief example showing a scalar, vector, matrix, and vector of
 (character) vectors:
 
-       ∆F '{ `S (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: "cats" "dogs" )}'
-    (
-      mx:[
-       'ABC'
-       'DEF'
-       'GHI'
-      ]
-      scal:3
-      vec:0 1 2
-      vv:(
-       'cats'
-       'dogs'
-      )
-    )
-       ∆F '{ 1 $$ (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: "cats" "dogs" )}'
-    (mx:[◇'ABC'◇'DEF'◇'GHI'◇]◇scal:3◇vec:0 1 2◇vv:('cats'◇'dogs'◇)◇)
+``` dyalog20
+   ∆F '{ `S (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: "cats" "dogs" )}'
+(
+  mx:[
+   'ABC'
+   'DEF'
+   'GHI'
+  ]
+  scal:3
+  vec:0 1 2
+  vv:(
+   'cats'
+   'dogs'
+  )
+)
+   ∆F '{ 1 $$ (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: "cats" "dogs" )}'
+(mx:[◇'ABC'◇'DEF'◇'GHI'◇]◇scal:3◇vec:0 1 2◇vv:('cats'◇'dogs'◇)◇)
+```
 
 Here’s another example, highlighting the similarity between *JSON5*
 format and *APL* Array Notation. In each case, the object displayed is
@@ -1146,12 +1150,12 @@ character matrix. However, *(ii)* if [*dfn*](#f-option-details) is set
 to `1`, then **∆F** returns a **dfn** that— when called later— will
 return the identical character expression.
 
-| <br> Mode             | Positional <br>Parameter | Keyword <br>Parameter  |
-|:----------------------|:------------------------:|:----------------------:|
-| *(i)* ***default***   |     `0 ∆F 'mycode'`      | `(dfn: 0) ∆F 'mycode'` |
-| *(ii)* ***dfn***      |     `1 ∆F 'mycode'`      | `(dfn: 1) ∆F 'mycode'` |
+| Mode                  | Positional Parameter |    Keyword Parameter    |
+|:----------------------|:--------------------:|:-----------------------:|
+| *(i)* ***default***   |   `0 ∆F 'mycode'`    | `(dfn: 0)  ∆F 'mycode'` |
+| *(ii)* ***dfn***      |   `1 ∆F 'mycode'`    | `(dfn: 1)  ∆F 'mycode'` |
 
-3a. <strong>Using the <em>dfn Option</em></strong>
+3a. <strong>Using the <em>dfn Option</em></strong> <br>
 
 The *dfn* option is most useful when you are making repeated use of an
 *f‑string*, since the overhead for analyzing the *f‑string* contents
@@ -1471,13 +1475,13 @@ the closing quote of a quote pair (`«` `»`) within the **Quoted
 string**, you must double it. You may *not* use an escape sequence
 (e.g. `` `" ``) for this purpose.
 
-| (Closing) Quote | <br> Example | <br> Result |
-|:--:|:--:|:--:|
-| `"` | `∆F '{"like ""this"" example"}'` | `like "this" example` |
-| `'` | `∆F '{''like ''''this'''' example''}'` | `like 'this' example` |
-| `»` | `∆F '{«or «this»» one»}'` | `or «this» one` |
+| Quote(s) |                Example                 |        Result         |
+|:--------:|:--------------------------------------:|:---------------------:|
+|   `"`    |    `∆F '{"like ""this"" example"}'`    | `like "this" example` |
+|   `'`    | `∆F '{''like ''''this'''' example''}'` | `like 'this' example` |
+|  `« »`   |       `∆F '{«or «this»» one»}'`        |    `or «this» one`    |
 
-4f. <strong>Closing Quotes</strong>
+4f. <strong>Doubling Quote Character in Quoted String</strong>
 
 Note that the opening quote `«` is treated as an ordinary character
 within the string. The clumsiness of the standard single quote `'`
@@ -1531,7 +1535,7 @@ Dyalog documentation for details).
 
 <summary class="summary">
 
- View Details on Experimental Features
+ View Details on Experimental Features: Wrap and Library
 </summary>
 
 <div class="test-feature">
@@ -1553,25 +1557,27 @@ Dyalog documentation for details).
 ## Session Library Shortcut: Details
 
 1.  If an object `£.name` is referenced, but not yet defined in `£`, an
-    attempt is made— during **∆F**’s *scanning* phase— to copy it to `£`
-    from workspace `dfns` and/or from files **name.aplf** (for
-    functions), **name.aplo** (for operators), *etc.* in the
-    (user-settable) search path, *unless* it is being assigned (via
-    `←`). It will be available for the duration of the session.
+    attempt is made— during **∆F**’s left-to-right *scanning* phase— to
+    copy it to `£` from (in order) directory **./MyDyalogLib**,
+    workspace **dfns**, and the current directory **./**, *unless* it is
+    being assigned (via a simple `←`) or has already been seen in this
+    **∆F** call. It will be available for the duration of the *APL*
+    session.
 
 2.  While objects of the form `£.name` will be automatically retrieved
-    (if not defined), names in other `£` expressions like
-    `£.(name1 name2)` or `£.(name3←name4)` will ***not***; they are
-    valid, but only if the requisite names (*name1*, *name2*, and
-    *name4*) already exist (whether retrieved or set internally);
+    (if not defined), names in other `£` expressions, like
+    `£.(name1 name2)` or `£.⎕NC "name3"`, will be ignored during the
+    scanning phase;
 
 3.  In the case of a simple assignment (`£.name←val`), the object
     assigned must be new or of an *APL* class compatible with its
-    existing value, else a domain error will be signaled. Autoload does
-    *not* apply.
+    existing value, else a domain error will be signaled. Even if seen
+    later in the scan, the object will be assumed to have been set by
+    the user.
 
 4.  Simple modified assignments of the form `£.name+←val` are allowed:
-    `name` will be retrieved (if not present) before modification.
+    the object `name` will be retrieved (if not present) before
+    modification.
 
 ### Session Library Shortcut: Filetypes of Source Files
 
@@ -1794,7 +1800,7 @@ preferred string formatting approach in modern Python code.
 ------------------------------------------------------------------------
 
 <br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-06\]
+<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-07\]
 </span> <br>
 
 </div>

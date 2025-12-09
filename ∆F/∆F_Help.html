@@ -585,7 +585,7 @@ class="header-section-number">1.2</span> Loading and Running
 <li>From your Dyalog session<span
 class="margin-note"><br><strong><em>⎕SE:</em></strong> Or any
 <em>target</em> namespace you desire.</span>, enter:
-<br> <code>]load ∆F [-target=⎕SE]</code></li>
+<br> <code>]load ∆F -target=⎕SE</code></li>
 <li><strong>∆F/∆F_Help.html</strong> is, by default, available at
 <code>]load</code> time and will be copied into <strong>⍙Fapl</strong>.
 If missing, a message will note the absence of <em>help</em>
@@ -1158,7 +1158,7 @@ Current employee:  name↓     age↓.
 <p>To make it easier to see, here’s the same result, but with a box
 around each field—using the <strong>Box</strong> <a
 href="#f-option-details">option</a>, <em>namespace</em> style.</p>
-<pre><code>⍝  Box all fields
+<pre class="dyalog20"><code>⍝  Box all fields
    (box: 1) ∆F &#39;Current employee: {name↓} {age↓}.&#39;
 ┌──────────────────┬──────────┬─┬────┬─┐
 │Current employee: │ name↓    │ │age↓│.│
@@ -1414,7 +1414,7 @@ only data arrays (nameclass: <code>2</code>) and namespaces (nameclass:
 it is typically displayed unformatted, <em>i.e.</em> as is.</p>
 <p>Here’s a brief example showing a scalar, vector, matrix, and vector
 of (character) vectors:</p>
-<pre><code>   ∆F &#39;{ `S (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: &quot;cats&quot; &quot;dogs&quot; )}&#39;
+<pre class="dyalog20"><code>   ∆F &#39;{ `S (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: &quot;cats&quot; &quot;dogs&quot; )}&#39;
 (
   mx:[
    &#39;ABC&#39;
@@ -1648,18 +1648,19 @@ conditions, of course.</span> if <a
 href="#f-option-details"><em>dfn</em></a> is set to <code>1</code>, then
 <strong>∆F</strong> returns a <strong>dfn</strong> that— when called
 later— will return the identical character expression.</p>
-<table style="width:79%;">
-<caption>3a. <strong>Using the <em>dfn Option</em></strong></caption>
+<table style="width:69%;">
+<caption>3a. <strong>Using the <em>dfn Option</em></strong>
+<br></caption>
 <colgroup>
-<col style="width: 13%" />
+<col style="width: 12%" />
+<col style="width: 27%" />
 <col style="width: 29%" />
-<col style="width: 36%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: left;"><br> Mode</th>
-<th style="text-align: center;">Positional <br>Parameter</th>
-<th style="text-align: center;">Keyword <br>Parameter</th>
+<th style="text-align: left;">Mode</th>
+<th style="text-align: center;">Positional Parameter</th>
+<th style="text-align: center;">Keyword Parameter</th>
 </tr>
 </thead>
 <tbody>
@@ -1667,13 +1668,13 @@ later— will return the identical character expression.</p>
 <td style="text-align: justify;"><em>(i)</em> <strong><em> default
 </em></strong></td>
 <td style="text-align: center;"><code>0 ∆F 'mycode'</code></td>
-<td style="text-align: center;"><code>(dfn: 0) ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>(dfn: 0)  ∆F 'mycode'</code></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><em>(ii)</em> <strong><em> dfn
 </em></strong></td>
 <td style="text-align: center;"><code>1 ∆F 'mycode'</code></td>
-<td style="text-align: center;"><code>(dfn: 1) ∆F 'mycode'</code></td>
+<td style="text-align: center;"><code>(dfn: 1)  ∆F 'mycode'</code></td>
 </tr>
 </tbody>
 </table>
@@ -2364,17 +2365,18 @@ class="red">∆F ‘{“abc`”def”}’</span><br> <strong>Valid:</strong>
 string</strong>, you must double it. You may <em>not</em> use an escape
 sequence (e.g. <code>`"</code>) for this purpose.</p>
 <table>
-<caption>4f. <strong>Closing Quotes</strong></caption>
+<caption>4f. <strong>Doubling Quote Character in Quoted
+String</strong></caption>
 <colgroup>
-<col style="width: 15%" />
+<col style="width: 14%" />
 <col style="width: 51%" />
-<col style="width: 32%" />
+<col style="width: 34%" />
 </colgroup>
 <thead>
 <tr>
-<th style="text-align: center;">(Closing) Quote</th>
-<th style="text-align: center;"><br> Example</th>
-<th style="text-align: center;"><br> Result</th>
+<th style="text-align: center;">Quote(s)</th>
+<th style="text-align: center;">Example</th>
+<th style="text-align: center;">Result</th>
 </tr>
 </thead>
 <tbody>
@@ -2391,7 +2393,7 @@ style="text-align: center;"><code>∆F '{''like ''''this'''' example''}'</code><
 <td style="text-align: center;"><code>like 'this' example</code></td>
 </tr>
 <tr>
-<td style="text-align: center;"><code>»</code></td>
+<td style="text-align: center;"><code>« »</code></td>
 <td
 style="text-align: center;"><code>∆F '{«or «this»» one»}'</code></td>
 <td style="text-align: center;"><code>or «this» one</code></td>
@@ -2459,7 +2461,7 @@ or <code>`S `F</code>, for the sake of clarity.</li>
 </ol>
 <details id="pPeek">
 <summary class="summary">
- View Details on Experimental Features
+ View Details on Experimental Features: Wrap and Library
 </summary>
 <div class="test-feature">
 <p><span class="margin-note"><span
@@ -2488,32 +2490,34 @@ class="red"><br>Experimental</span></span></p>
 class="header-section-number">4.11</span> Session Library Shortcut:
 Details</h2>
 <ol type="1">
-<li><p>If <span class="margin-note">With the default <code>auto</code>
+<li><p>If <span class="margin-note">The search <strong>path</strong>
+depends on settings. Here, we assume the default <code>auto</code>
 option and <code>]load</code>-time par­a­meters. See <a
 href="#session-library-shortcut-parameters">Lib­rary Parameters</a> and
 <a href="#session-library-shortcut-filetypes-of-source-files">File­types
 of Lib­rary Source Files</a> below.</span> an object <code>£.name</code>
 is referenced, but not yet defined in <code>£</code>, an attempt is
-made— during <strong>∆F</strong>’s <em>scanning</em> phase— to copy it
-to <code>£</code> from workspace <code>dfns</code> and/or from files
-<strong>name.aplf</strong> (for functions), <strong>name.aplo</strong>
-(for operators), <em>etc.</em> in the (user-settable) search path,
-<em>unless</em> it is being assigned (via <code>←</code>). It will be
-available for the duration of the session.</p></li>
+made— during <strong>∆F</strong>’s left-to-right <em>scanning</em>
+phase— to copy it to <code>£</code> from (in order) directory
+<strong>./MyDyalogLib</strong>, workspace <strong>dfns</strong>, and the
+current directory <strong>./</strong>, <em>unless</em> it is being
+assigned (via a simple <code>←</code>) or has <span
+class="margin-note">Once a name is seen, no attempt will be made to load
+it.</span>already been seen in this <strong>∆F</strong> call. It will be
+available for the duration of the <em>APL</em> session.</p></li>
 <li><p>While objects of the form <code>£.name</code> will be
 automatically retrieved (if not defined), names in other <code>£</code>
-expressions like <code>£.(name1 name2)</code> or
-<code>£.(name3←name4)</code> will <strong><em>not</em></strong>; they
-are valid, but only if the requisite names (<em>name1</em>,
-<em>name2</em>, and <em>name4</em>) already exist (whether retrieved or
-set internally);</p></li>
+expressions, like <code>£.(name1 name2)</code> or
+<code>£.⎕NC "name3"</code>, will be ignored during the scanning
+phase;</p></li>
 <li><p>In the case of a simple assignment (<code>£.name←val</code>), the
 object assigned must be new or of an <em>APL</em> class compatible with
-its existing value, else a domain error will be signaled. Autoload does
-<em>not</em> apply.</p></li>
+its existing value, else a domain error will be signaled. Even if seen
+later in the scan, the object will be assumed to have been set by the
+user.</p></li>
 <li><p>Simple modified assignments of the form <code>£.name+←val</code>
-are allowed: <code>name</code> will be retrieved (if not present) before
-modification.</p></li>
+are allowed: the object <code>name</code> will be retrieved (if not
+present) before modification.</p></li>
 </ol>
 <h3 data-number="4.11.1"
 id="session-library-shortcut-filetypes-of-source-files"><span
@@ -2807,7 +2811,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-06]
+<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-07]
 </span> <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>
