@@ -27,89 +27,15 @@ concise, yet powerful way to display multiline *APL* text, arbitrary
 <div class="multi-column-text" style="font-size:80%;">
 
 <big>1. <a href="#installing-loading-and-running-f"        >Installing,
-Loading, and Running **∆F**</a></big> <br> 1.1
-<a href="#installing-f"                            >Installing
-**∆F**</a> <br> 1.2
-<a href="#loading-and-running-f"                   >Loading and Running
-**∆F**</a> <br> 1.3
-<a href="#displaying-f-help-in-apl"                >Displaying **∆F**
-**Help** in *APL*</a> <br><big>2.
+Loading, and Running **∆F**</a></big> <br><big>2.
 <a href="#overview"                                >Overview</a></big>
 <br><big>3. <a href="#f-examples-a-primer"                     >**∆F**
-Examples: A Primer</a></big> <br> 3.1
-<a href="#code-fields"                             >**Code** Fields</a>
-<br> 3.2 <a href="#text-fields-and-space-fields"            >**Text**
-Fields and **Space** Fields</a> <br> 3.3
-<a href="#null-space-fields"                       >Null **Space**
-Fields</a> <br> 3.4
-<a href="#code-fields-continued"                   >**Code** Fields
-(Continued)</a> <br> 3.5
-<a href="#the-box-shortcut"                        >The **Box**
-Short­cut</a> <br> 3.6
-<a href="#box-mode"                                >**Box** Mode</a>
-<br> 3.7 <a href="#omega-shortcuts-explicit"                >**Omega**
-Short­cuts (Explicit)</a> <br> 3.8
-<a href="#referencing-the-fstring-itself"          >Referencing the
-F‑string Itself</a> <br> 3.9
-<a href="#the-format-shortcut"                     >The **Format**
-Short­cut</a> <br> 3.10
-<a href="#the-shortcut-for-numeric-commas"        >The Short­cut for
-Numeric **Commas**</a> <br> 3.11
-<a href="#self-documenting-code-fields-sdcfs"     >Self-documenting
-**Code** fields (SDCFs)</a> <br> 3.12
-<a href="#the-above-shortcut"                     >The **Above**
-Short­cut</a> <br> 3.13
-<a href="#text-justification-shortcut"            >Text
-**Justification** Short­cut</a> <br> 3.14
-<a href="#omega-shortcuts-implicit"               >**Omega** Short­cuts
-(Implicit)</a> <br> 3.15
-<a href="#shortcuts-with-apl-expressions"         >Short­cuts With *APL*
-Expressions</a> <!-- pTbr --> <br> 3.16
-<a href="#a-shortcut-for-dates-and-times-part-i"  >A Short­cut for Dates
-and **Times** (Part I)</a> <br> 3.17
-<a href="#a-shortcut-for-dates-and-times-part-ii" >A Short­cut for
-**Dates** and Times (Part II)</a> <br> 3.18
-<a href="#the-quote-shortcut"                     >The **Quote**
-Short­cut</a> <br> 3.19
-<a href="#the-serialise-shortcut"                 >The **Serialise**
-Shortcut</a> <br> 3.20
-<a href="#the-wrap-shortcut-experimental"         >The **Wrap** Short­cut
-(Experimental)</a> <br> 3.21
-<a href="#the-session-library-shortcut-experimental">The Session
-**Library** Short­cut (Experimental)</a> <br> 3.22
-<a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
-F‑strings with the ***dfn*** Option</a> <br> 3.23
-<a href="#multiline-f-strings-in-dyalog-20">Multiline *F-strings* in
-Dyalog 20</a> <br><big>4.
+Examples: A Primer</a></big><br><big>4.
 <a href="#f-syntax-and-other-information"          >**∆F** Syntax and
-Other Infor­mation</a></big> <br> 4.1
-<a href="#f-call-syntax-overview"                  >**∆F** Call Syntax
-Overview</a> <br> 4.2
-<a href="#f-option-details"                        >**∆F** Option
-Details</a> <br> 4.3
-<a href="#f-return-value"                          >**∆F** Return
-Value</a> <br> 4.4
-<a href="#f-fstring-building-blocks"               >**∆F** F‑string
-Build­ing Blocks</a> <br> 4.5
-<a href="#code-field-shortcuts"                    >**Code** Field
-Short­cuts</a> <br> 4.6
-<a href="#escape-sequences-text-fields-quoted-strings">Escape Sequences:
-**Text** Fields & Quoted Strings</a> <br> 4.7
-<a href="#quoted-strings-in-code-fields"           >Quoted Strings in
-**Code** Fields</a> <br> 4.8
-<a href="#omega-shortcut-expressions-details"      >**Omega** Short­cut
-Expressions: Details</a> <br> 4.9
-<a href="#serialise-shortcut-expressions-details"  >**Serialise**
-Shortcut Expressions: Details</a> <br> 4.10
-<a href="#wrap-shortcut-details"                  >**Wrap** Short­cut:
-Details</a> <br> 4.11
-<a href="#session-library-shortcut-details"       >Session **Library**
-Short­cut: Details</a> <br><big>5.
+Other Infor­mation</a></big> <br><big>5.
 <a href="#appendices"                              >Appendices</a></big>
-<br> 5.1 <a href="#appendix-i-underdocumented-features"    >Appendix I:
-Un(der)doc­ument­ed Features</a> <br> 5.2
-<a href="#appendix-ii-python-fstrings"            >Appendix II: Python
-f‑strings</a>
+<br><big>6. <a href="#detailed-table-of-contents"              >Detailed
+TOC</a></big>
 
 </div>
 
@@ -1775,6 +1701,108 @@ preferred string formatting approach in modern Python code.
 
 </details>
 
+# Detailed Table of Contents
+
+<details id="TOC">
+
+<!-- option: open  Set id="TOC" here only. -->
+
+<summary class="summary">
+
+ Show/Hide <em>Detailed Table of Contents</em>
+</summary>
+
+<div class="multi-column-text" style="font-size:80%;">
+
+<big>1. <a href="#installing-loading-and-running-f"        >Installing,
+Loading, and Running **∆F**</a></big> <br> 1.1
+<a href="#installing-f"                            >Installing
+**∆F**</a> <br> 1.2
+<a href="#loading-and-running-f"                   >Loading and Running
+**∆F**</a> <br> 1.3
+<a href="#displaying-f-help-in-apl"                >Displaying **∆F**
+**Help** in *APL*</a> <br><big>2.
+<a href="#overview"                                >Overview</a></big>
+<br><big>3. <a href="#f-examples-a-primer"                     >**∆F**
+Examples: A Primer</a></big> <br> 3.1
+<a href="#code-fields"                             >**Code** Fields</a>
+<br> 3.2 <a href="#text-fields-and-space-fields"            >**Text**
+Fields and **Space** Fields</a> <br> 3.3
+<a href="#null-space-fields"                       >Null **Space**
+Fields</a> <br> 3.4
+<a href="#code-fields-continued"                   >**Code** Fields
+(Continued)</a> <br> 3.5
+<a href="#the-box-shortcut"                        >The **Box**
+Short­cut</a> <br> 3.6
+<a href="#box-mode"                                >**Box** Mode</a>
+<br> 3.7 <a href="#omega-shortcuts-explicit"                >**Omega**
+Short­cuts (Explicit)</a> <br> 3.8
+<a href="#referencing-the-fstring-itself"          >Referencing the
+F‑string Itself</a> <br> 3.9
+<a href="#the-format-shortcut"                     >The **Format**
+Short­cut</a> <br> 3.10
+<a href="#the-shortcut-for-numeric-commas"        >The Short­cut for
+Numeric **Commas**</a> <br> 3.11
+<a href="#self-documenting-code-fields-sdcfs"     >Self-documenting
+**Code** fields (SDCFs)</a> <br> 3.12
+<a href="#the-above-shortcut"                     >The **Above**
+Short­cut</a> <br> 3.13
+<a href="#text-justification-shortcut"            >Text
+**Justification** Short­cut</a> <br> 3.14
+<a href="#omega-shortcuts-implicit"               >**Omega** Short­cuts
+(Implicit)</a> <br> 3.15
+<a href="#shortcuts-with-apl-expressions"         >Short­cuts With *APL*
+Expressions</a> <br> 3.16
+<a href="#a-shortcut-for-dates-and-times-part-i"  >A Short­cut for Dates
+and **Times** (Part I)</a> <!-- pTbr --> <br> 3.17
+<a href="#a-shortcut-for-dates-and-times-part-ii" >A Short­cut for
+**Dates** and Times (Part II)</a> <br> 3.18
+<a href="#the-quote-shortcut"                     >The **Quote**
+Short­cut</a> <br> 3.19
+<a href="#the-serialise-shortcut"                 >The **Serialise**
+Shortcut</a> <br> 3.20
+<a href="#the-wrap-shortcut-experimental"         >The **Wrap** Short­cut
+(Experimental)</a> <br> 3.21
+<a href="#the-session-library-shortcut-experimental">The Session
+**Library** Short­cut (Experimental)</a> <br> 3.22
+<a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
+F‑strings with the ***dfn*** Option</a> <br> 3.23
+<a href="#multiline-f-strings-in-dyalog-20">Multiline *F-strings* in
+Dyalog 20</a> <br><big>4.
+<a href="#f-syntax-and-other-information"          >**∆F** Syntax and
+Other Infor­mation</a></big> <br> 4.1
+<a href="#f-call-syntax-overview"                  >**∆F** Call Syntax
+Overview</a> <br> 4.2
+<a href="#f-option-details"                        >**∆F** Option
+Details</a> <br> 4.3
+<a href="#f-return-value"                          >**∆F** Return
+Value</a> <br> 4.4
+<a href="#f-fstring-building-blocks"               >**∆F** F‑string
+Build­ing Blocks</a> <br> 4.5
+<a href="#code-field-shortcuts"                    >**Code** Field
+Short­cuts</a> <br> 4.6
+<a href="#escape-sequences-text-fields-quoted-strings">Escape Sequences:
+**Text** Fields & Quoted Strings</a> <br> 4.7
+<a href="#quoted-strings-in-code-fields"           >Quoted Strings in
+**Code** Fields</a> <br> 4.8
+<a href="#omega-shortcut-expressions-details"      >**Omega** Short­cut
+Expressions: Details</a> <br> 4.9
+<a href="#serialise-shortcut-expressions-details"  >**Serialise**
+Shortcut Expressions: Details</a> <br> 4.10
+<a href="#wrap-shortcut-details"                  >**Wrap** Short­cut:
+Details</a> <br> 4.11
+<a href="#session-library-shortcut-details"       >Session **Library**
+Short­cut: Details</a> <br><big>5.
+<a href="#appendices"                              >Appendices</a></big>
+<br> 5.1 <a href="#appendix-i-underdocumented-features"    >Appendix I:
+Un(der)doc­ument­ed Features</a> <br> 5.2
+<a href="#appendix-ii-python-fstrings"            >Appendix II: Python
+f‑strings</a>
+
+</div>
+
+</details>
+
 <!-- Put a set of navigation tools at a fixed position at the bottom of the Help screen
 -->
 
@@ -1789,7 +1817,7 @@ preferred string formatting approach in modern Python code.
 <input type="button" class="button normal-button" value="Examples" onclick="window.location='#f-examples-a-primer'"/>
 <input type="button" class="button normal-button" value="Syntax" onclick="window.location='#f-syntax-and-other-information'"/>
 <input type="button" class="button normal-button" value="Appendices" onclick="window.location='#appendices'"/>
-<input type="button" class="button normal-button" value="Bottom" onclick="window.location='#copyright'"/>    
+<input type="button" class="button normal-button" value="Bottom" onclick="window.location='#detailed-table-of-contents'"/>    
 <input type="button" class="button happy-button" value="Print" onclick="myPrint()">
 ⍠⍠⍠
 
@@ -1800,7 +1828,7 @@ preferred string formatting approach in modern Python code.
 ------------------------------------------------------------------------
 
 <br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-07\]
+<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-10\]
 </span> <br>
 
 </div>
