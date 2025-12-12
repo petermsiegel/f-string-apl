@@ -462,10 +462,10 @@ and Running <strong>∆F</strong></a></big> <br><big>2.
 <br><big>3.
 <a href="#f-examples-a-primer"                     ><strong>∆F</strong>
 Examples: A Primer</a></big> <br> <br><big>4.
-<a href="#f-syntax-and-other-information"          ><strong>∆F</strong>
-Syntax and Other Infor­mation</a></big> <br><big>5.
+<a href="#f-reference"          ><strong>∆F</strong> Reference</a></big>
+<br><big>5.
 <a href="#appendices"                              >Appendices</a></big>
-<br><big>   <a href="#detailed-table-of-contents"              >Detailed
+<br><big>6. <a href="#detailed-table-of-contents"              >Detailed
 TOC</a></big></p>
 </div>
 <hr />
@@ -812,7 +812,7 @@ class="header-section-number">3.3</span> Null Space Fields</h2>
 <p>Two adjacent <strong>Text</strong> fields can be separated by a null
 <strong>Space</strong> field <code>{}</code>, for example when at least
 one field contains multiline input that you want formatted separately
-from others, keeping each field in is own rectangular space:</p>
+from others, keeping each field in its own rectangular space:</p>
 <pre><code>⍝  Extra space here ↓
    ∆F &#39;Cat`◇Elephant `◇Mouse{}Felix`◇Dumbo`◇Mickey&#39;
 Cat      Felix
@@ -878,9 +878,14 @@ The temperature is 11°C or  52.3°F
                    60      140.0</code></pre>
 <h2 data-number="3.5" id="the-box-shortcut"><span
 class="header-section-number">3.5</span> The Box Shortcut</h2>
-<p>We now introduce the <strong>Box</strong> shortcut <code>`B</code>.
-Here we place boxes around key <strong>Code</strong> fields in this same
-example.</p>
+<p><strong>∆F</strong> shortcuts are abbreviated <em>names</em> of
+useful <em>f-string</em> routines. For information on each of the
+shortcuts, see <a href="#code-field-shortcuts"><strong>Section
+4.5</strong></a> in the <a href="#f-reference"><strong>∆F</strong>
+<em>Reference</em></a> below.</p>
+<p>We first introduce the <strong>Box</strong> shortcut <code>`B</code>.
+Here we place boxes around key <strong>Code</strong> field objects in
+this same example.</p>
 <pre><code>   cv← 11.3 29.55 59.99
    ∆F &#39;`◇The temperature is {`B &quot;I2&quot; $ cv}`◇°C or {`B &quot;F5.1&quot; $ 32+9×cv÷5}`◇°F&#39;
                    ┌──┐      ┌─────┐
@@ -894,7 +899,7 @@ class="header-section-number">3.6</span> Box Mode</h2>
 <strong>Code</strong>, <strong>Text</strong>,
 <strong><em>and</em></strong> <strong>Space</strong> field? We just use
 the <strong>box</strong> mode option!</p>
-<p>While we can’t place boxes around text (or space) fields using
+<p>While we can’t place boxes inside text (or space) fields using
 <code>`B</code>, we can place a box around
 <strong><em>each</em></strong> field (<em>regardless</em> of type) by
 setting <strong>∆F</strong>’s <a
@@ -912,8 +917,9 @@ class="margin-note"><strong>box mode:</strong> <code>0 0 1</code>
 <p>We said you could place a box around every field, but there’s an
 exception. Null <strong>Space</strong> fields <code>{}</code>,
 <em>i.e.</em> 0-width <strong>Space</strong> fields, are discarded once
-they’ve done their work of separating adjacent fields (typically
-<strong>Text</strong> fields), so they won’t be placed in boxes.</p>
+they’ve done their work of ensuring adjacent fields (typically,
+<strong>Text</strong> fields) are displayed in their own rectangular
+space.</p>
 <p>Try this expression on your own:</p>
 <pre><code>⍝ (box: 1) ∆F &#39;abc...mno&#39; in Dyalog 20.
    0 0 1   ∆F &#39;abc{}def{}{}ghi{&quot;&quot;}jkl{ }mno&#39;</code></pre>
@@ -1723,9 +1729,8 @@ examples.</p>
 <div class="page-break">
 
 </div>
-<h1 data-number="4" id="f-syntax-and-other-information"><span
-class="header-section-number">4</span> ∆F Syntax and Other
-Information</h1>
+<h1 data-number="4" id="f-reference"><span
+class="header-section-number">4</span> ∆F Reference</h1>
 <details>
 <!-- option: open -->
 <summary class="summary">
@@ -2710,8 +2715,8 @@ class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-s
 </div>
 </div>
 </details>
-<h1 class="unnumbered" id="detailed-table-of-contents">Detailed Table of
-Contents</h1>
+<h1 data-number="6" id="detailed-table-of-contents"><span
+class="header-section-number">6</span> Detailed Table of Contents</h1>
 <details id="TOC">
 <!-- option: open  Set id="TOC" here only. -->
 <summary class="summary">
@@ -2778,8 +2783,8 @@ and <strong>Times</strong> (Part I)</a> <!-- pTbr --> <br> 3.17
 F‑strings with the <strong><em>dfn</em></strong> Option</a> <br> 3.23
 <a href="#multiline-f-strings-in-dyalog-20">Multiline <em>F-strings</em>
 in Dyalog 20</a> <br><big>4.
-<a href="#f-syntax-and-other-information"          ><strong>∆F</strong>
-Syntax and Other Infor­mation</a></big> <br> 4.1
+<a href="#f-reference"          ><strong>∆F</strong> Reference</a></big>
+<br> 4.1
 <a href="#f-call-syntax-overview"                  ><strong>∆F</strong>
 Call Syntax Overview</a> <br> 4.2
 <a href="#f-option-details"                        ><strong>∆F</strong>
@@ -2818,7 +2823,7 @@ f‑strings</a></p>
 All</button>    
 <input type="button" class="button normal-button" value="Top" onclick="window.location='#top'"/>
 <input type="button" class="button normal-button" value="Examples" onclick="window.location='#f-examples-a-primer'"/>
-<input type="button" class="button normal-button" value="Syntax" onclick="window.location='#f-syntax-and-other-information'"/>
+<input type="button" class="button normal-button" value="Reference" onclick="window.location='#f-reference'"/>
 <input type="button" class="button normal-button" value="Appendices" onclick="window.location='#appendices'"/>
 <input type="button" class="button normal-button" value="Contents" onclick="window.location='#detailed-table-of-contents'"/>
 <input type="button" class="button normal-button" value="Bottom" onclick="window.location='#detailed-table-of-contents'"/>    
