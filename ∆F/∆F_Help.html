@@ -449,10 +449,10 @@ expressions, and multi­dimensional objects using extensions to
 <em>dfns</em> and other familiar tools.</p>
 </div>
 <h1 class="unnumbered" id="table-of-contents">Table of Contents</h1>
-<details id="TOC">
+<details id="TOC" open>
 <!-- option: open  Set id="TOC" here only. -->
 <summary class="summary">
- Show/Hide <em>Table of Contents</em>
+ Show/Hide <em>Brief TOC</em>
 </summary>
 <div class="multi-column-text" style="font-size:80%;">
 <p><big>1.
@@ -465,7 +465,7 @@ Examples: A Primer</a></big> <br> <br><big>4.
 <a href="#f-syntax-and-other-information"          ><strong>∆F</strong>
 Syntax and Other Infor­mation</a></big> <br><big>5.
 <a href="#appendices"                              >Appendices</a></big>
-<br><big>6. <a href="#detailed-table-of-contents"              >Detailed
+<br><big>   <a href="#detailed-table-of-contents"              >Detailed
 TOC</a></big></p>
 </div>
 <hr />
@@ -838,9 +838,6 @@ field <code>{ }</code> here as well.</span> And this is the same example
 with <em>identical</em> output, but built using two
 <strong>Code</strong> fields separated by a <strong>Text</strong> field
 with a single space.</p>
-<p><span class="margin-note"><em>APL</em> mix <code>↑</code> is used to
-convert the names (a vector of character vectors) to a character matrix.
-</span></p>
 <pre><code>   ∆F &#39;{↑&quot;Cat&quot; &quot;Elephant&quot; &quot;Mouse&quot;} {↑&quot;Felix&quot; &quot;Dumbo&quot; &quot;Mickey&quot;}&#39;
 Cat      Felix
 Elephant Dumbo
@@ -1325,16 +1322,20 @@ mix of character and numeric scalars only). We’ll call the object
 APL numbers!</p>
 <h2 data-number="3.19" id="the-serialise-shortcut"><span
 class="header-section-number">3.19</span> The Serialise Shortcut</h2>
-<p>The Serialise shortcut, <code>`S</code> or <code>$$</code>, displays
-objects formatted in <em>APL</em> Array Notation. These include arrays
-<span class="margin-note">NB. See Dyalog documentation for what is in
-the domain of Array Notation.</span>of any depth and shape that contain
-only data arrays (nameclass: <code>2</code>) and namespaces (nameclass:
-<code>9</code>). The shortcut allows both a
-<strong><em>tabular</em></strong> (multiline) form (default or
-<code>0 `S</code>) and a <strong><em>compact</em></strong> format
-(<code>1 `S</code>). If an object cannot be displayed in Array Notation,
-it is typically displayed unformatted, <em>i.e.</em> as is.</p>
+<p>The Serialise <span class="margin-note">NB. <code>$</code> is a
+shortcut for <code>⎕FMT</code> and <code>$$</code> for (Array Notation)
+“serialise”. Three or more $ symbols parse as <code>$$ $</code>
+(“serialise a formatted result”).”</span> shortcut, <code>`S</code> or
+<code>$$</code>, displays objects formatted in <em>APL</em> Array
+Notation. These include arrays <span class="margin-note">NB. See Dyalog
+documentation for what is in the domain of Array Notation.</span>of any
+depth and shape that contain only data arrays (nameclass:
+<code>2</code>) and namespaces (nameclass: <code>9</code>). The shortcut
+allows both a <strong><em>tabular</em></strong> (multiline) form
+(default or <code>0 `S</code>) and a <strong><em>compact</em></strong>
+format (<code>1 `S</code>). If an object cannot be displayed in Array
+Notation, it is typically displayed unformatted, <em>i.e.</em> as
+is.</p>
 <p>Here’s a brief example showing a scalar, vector, matrix, and vector
 of (character) vectors:</p>
 <pre class="dyalog20"><code>   ∆F &#39;{ `S (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: &quot;cats&quot; &quot;dogs&quot; )}&#39;
@@ -2330,32 +2331,26 @@ required delimiter for the outermost (<em>APL</em>-level) string.</p>
 <h2 data-number="4.8" id="omega-shortcut-expressions-details"><span
 class="header-section-number">4.8</span> Omega Shortcut Expressions:
 Details</h2>
-<ol type="1">
+<ol start="3" type="1">
+<li>All <strong>Omega</strong> shortcut expressions in the
+<em>f‑string</em> are evaluated left to right and are
+⎕IO-independent.</li>
 <li><strong>⍹</strong> is a synonym for <strong>`⍵</strong>. It is
 Unicode character <code>⎕UCS 9081</code>. Either glyph is valid only in
 <strong>Code</strong> fields and outside <strong>Quoted
 strings</strong>.</li>
-<li><strong>`⍵</strong> or <strong>⍹</strong> uses an “<em>omega index
-counter</em>” (<strong>OIC</strong>) which we’ll represent as
-<strong>Ω</strong>, common across all <strong>Code</strong> fields,
-which is initially set to zero, <code>Ω←0</code>. (<strong>Ω</strong> is
-just used for explication; don’t actually use this symbol)</li>
-<li>All <strong>Omega</strong> shortcut expressions in the
-<em>f‑string</em> are evaluated left to right and are
-⎕IO-independent.</li>
-<li><strong>`⍵𝑑𝑑</strong> or <strong>⍹𝑑𝑑</strong> sets the <em>OIC</em>
-to 𝑑𝑑, <code>Ω←𝑑𝑑</code>, and returns the expression
-<code>(⍵⊃⍨Ω+⎕IO)</code>. Here <strong>𝑑𝑑</strong> must be a
+<li><strong>`⍵𝑑𝑑</strong> or <strong>⍹𝑑𝑑</strong> is equivalent to the
+expression <code>(⍵⊃⍨dd+⎕IO)</code>. Here <strong>𝑑𝑑</strong> must be a
 <em>non-negative integer</em> with at least 1 digit.</li>
-<li>Bare <strong>`⍵</strong> or <strong>⍹</strong> (<em>i.e.</em> with
-no digits appended) increments the <em>OIC</em>, <code>Ω+←1</code>,
-<em>before</em> using it as the index in the expression
-<code>(⍵⊃⍨Ω+⎕IO)</code>.</li>
+<li><strong>`⍵</strong> or <strong>⍹</strong> (with
+<strong><em>no</em></strong> digits appended) is equivalent to
+<code>(⍵⊃⍨1+ii+⎕IO)</code>, where <em>ii</em> is the index of the most
+recent <strong>Omega</strong> expression (of either type) to its left in
+the <em>f-string</em>;if there is no such expression, <em>ii</em> is
+<code>1</code>.</li>
 <li>The <em>f‑string</em> itself (the 0-th element of
 <strong>⍵</strong>) is always accessed as <code>`⍵0</code> or
-<code>⍹0</code>. The omega with <em>implicit index</em> always
-increments its index <em>before</em> use, <em>i.e.</em> starting by
-default with <code>`⍵1</code> or <code>⍹1</code>.</li>
+<code>⍹0</code>. It may only be accessed <em>explicitly.</em></li>
 <li>If an element of the dfn’s right argument <strong>⍵</strong> is
 accessed at runtime via any means, shortcut or traditional, that element
 <strong><em>must</em></strong> exist.</li>
@@ -2377,10 +2372,11 @@ namespaces— in Array Notation, as long as they contain
 <em>includes</em> a function or operator, <code>$$</code> or
 <code>`S</code> will display <code>⍵</code> <em>unformatted</em>, rather
 than in APLAN format.</li>
-<li>The expression <code>$$$</code> is parsed as <code>$$ $</code>,
-i.e. serialising a <code>⎕FMT</code>-formatted object, <em>i.e.</em> a
-character matrix. We recommend using <em>either</em> <code>$$ $</code>
-or <code>`S `F</code>, for the sake of clarity.</li>
+<li>The sequence <code>$$$</code> may be useful; it is parsed as
+<code>$$ $</code>, i.e. as a serialisation (<code>`S</code>) of a
+formatted (<code>`F</code>) object. Longer sequences are valid, parsed
+as 0 or more <code>$$</code>, followed by a single <code>$</code>.
+consuming</li>
 </ol>
 <details id="pPeek">
 <summary class="summary">
@@ -2821,10 +2817,10 @@ f‑strings</a></p>
 <button id="toggleDetails" class="button happy-button" style="width: 115px;">Expand
 All</button>    
 <input type="button" class="button normal-button" value="Top" onclick="window.location='#top'"/>
-<input type="button" class="button normal-button" value="Contents" onclick="window.location='#table-of-contents'"/>
 <input type="button" class="button normal-button" value="Examples" onclick="window.location='#f-examples-a-primer'"/>
 <input type="button" class="button normal-button" value="Syntax" onclick="window.location='#f-syntax-and-other-information'"/>
 <input type="button" class="button normal-button" value="Appendices" onclick="window.location='#appendices'"/>
+<input type="button" class="button normal-button" value="Contents" onclick="window.location='#detailed-table-of-contents'"/>
 <input type="button" class="button normal-button" value="Bottom" onclick="window.location='#detailed-table-of-contents'"/>    
 <input type="button" class="button happy-button" value="Print" onclick="myPrint()">
 <button onclick="closeWindowNow()" class="button warn-button">Close
@@ -2833,7 +2829,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-10]
+<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-11]
 </span> <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>
