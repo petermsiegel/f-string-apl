@@ -15,13 +15,13 @@ concise, yet powerful way to display multiline *APL* text, arbitrary
 
 # Table of Contents
 
-<details id="TOC">
+<details id="TOC" open>
 
 <!-- option: open  Set id="TOC" here only. -->
 
 <summary class="summary">
 
- Show/Hide <em>Table of Contents</em>
+ Show/Hide <em>Brief TOC</em>
 </summary>
 
 <div class="multi-column-text" style="font-size:80%;">
@@ -34,7 +34,7 @@ Examples: A Primer</a></big><br><big>4.
 <a href="#f-syntax-and-other-information"          >**∆F** Syntax and
 Other Infor­mation</a></big> <br><big>5.
 <a href="#appendices"                              >Appendices</a></big>
-<br><big>6. <a href="#detailed-table-of-contents"              >Detailed
+<br><big>   <a href="#detailed-table-of-contents"              >Detailed
 TOC</a></big>
 
 </div>
@@ -1416,26 +1416,20 @@ delimiter for the outermost (*APL*-level) string.
 
 ## Omega Shortcut Expressions: Details
 
-1.  **⍹** is a synonym for **\`⍵**. It is Unicode character `⎕UCS 9081`.
-    Either glyph is valid only in **Code** fields and outside **Quoted
-    strings**.
-2.  **\`⍵** or **⍹** uses an “*omega index counter*” (**OIC**) which
-    we’ll represent as **Ω**, common across all **Code** fields, which
-    is initially set to zero, `Ω←0`. (**Ω** is just used for
-    explication; don’t actually use this symbol)
 3.  All **Omega** shortcut expressions in the *f‑string* are evaluated
     left to right and are ⎕IO-independent.
-4.  **\`⍵𝑑𝑑** or **⍹𝑑𝑑** sets the *OIC* to 𝑑𝑑, `Ω←𝑑𝑑`, and returns the
-    expression `(⍵⊃⍨Ω+⎕IO)`. Here **𝑑𝑑** must be a *non-negative
-    integer* with at least 1 digit.
-5.  Bare **\`⍵** or **⍹** (*i.e.* with no digits appended) increments
-    the *OIC*, `Ω+←1`, *before* using it as the index in the expression
-    `(⍵⊃⍨Ω+⎕IO)`.
-6.  The *f‑string* itself (the 0-th element of **⍵**) is always accessed
-    as `` `⍵0 `` or `⍹0`. The omega with *implicit index* always
-    increments its index *before* use, *i.e.* starting by default with
-    `` `⍵1 `` or `⍹1`.
-7.  If an element of the dfn’s right argument **⍵** is accessed at
+4.  **⍹** is a synonym for **\`⍵**. It is Unicode character `⎕UCS 9081`.
+    Either glyph is valid only in **Code** fields and outside **Quoted
+    strings**.
+5.  **\`⍵𝑑𝑑** or **⍹𝑑𝑑** is equivalent to the expression `(⍵⊃⍨dd+⎕IO)`.
+    Here **𝑑𝑑** must be a *non-negative integer* with at least 1 digit.
+6.  **\`⍵** or **⍹** (with ***no*** digits appended) is equivalent to
+    `(⍵⊃⍨1+ii+⎕IO)`, where *ii* is the index of the most recent
+    **Omega** expression (of either type) to its left in the
+    *f-string*;if there is no such expression, *ii* is `1`.
+7.  The *f‑string* itself (the 0-th element of **⍵**) is always accessed
+    as `` `⍵0 `` or `⍹0`. It may only be accessed *explicitly.*
+8.  If an element of the dfn’s right argument **⍵** is accessed at
     runtime via any means, shortcut or traditional, that element
     ***must*** exist.
 
@@ -1451,11 +1445,10 @@ Dyalog documentation for details).
     functions or operators. If `⍵` *includes* a function or operator,
     `$$` or `` `S `` will display `⍵` *unformatted*, rather than in
     APLAN format.
-2.  The expression <code>\$\$\$</code> is parsed as
-    <code>\$\$ \$</code>, i.e. serialising a `⎕FMT`-formatted object,
-    *i.e.* a character matrix. We recommend using *either*
-    <code>\$\$ \$</code> or <code>\`S \`F</code>, for the sake of
-    clarity.
+2.  The sequence `$$$` may be useful; it is parsed as `$$ $`, i.e. as a
+    serialisation (`` `S ``) of a formatted (`` `F ``) object. Longer
+    sequences are valid, parsed as 0 or more `$$`, followed by a single
+    `$`. consuming
 
 <details id="pPeek">
 
@@ -1813,10 +1806,10 @@ f‑strings</a>
 <input type="button" value="Back" class="button happy-button" onclick="history.back()"/>
 ⍠⍠⍠    
 <input type="button" class="button normal-button" value="Top" onclick="window.location='#top'"/>
-<input type="button" class="button normal-button" value="Contents" onclick="window.location='#table-of-contents'"/>
 <input type="button" class="button normal-button" value="Examples" onclick="window.location='#f-examples-a-primer'"/>
 <input type="button" class="button normal-button" value="Syntax" onclick="window.location='#f-syntax-and-other-information'"/>
 <input type="button" class="button normal-button" value="Appendices" onclick="window.location='#appendices'"/>
+<input type="button" class="button normal-button" value="Contents" onclick="window.location='#detailed-table-of-contents'"/>
 <input type="button" class="button normal-button" value="Bottom" onclick="window.location='#detailed-table-of-contents'"/>    
 <input type="button" class="button happy-button" value="Print" onclick="myPrint()">
 ⍠⍠⍠
@@ -1828,7 +1821,7 @@ f‑strings</a>
 ------------------------------------------------------------------------
 
 <br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-10\]
+<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-11\]
 </span> <br>
 
 </div>
