@@ -31,10 +31,9 @@ Loading, and Running **∆F**</a></big> <br><big>2.
 <a href="#overview"                                >Overview</a></big>
 <br><big>3. <a href="#f-examples-a-primer"                     >**∆F**
 Examples: A Primer</a></big><br><big>4.
-<a href="#f-syntax-and-other-information"          >**∆F** Syntax and
-Other Infor­mation</a></big> <br><big>5.
+<a href="#f-reference"          >**∆F** Reference</a></big> <br><big>5.
 <a href="#appendices"                              >Appendices</a></big>
-<br><big>   <a href="#detailed-table-of-contents"              >Detailed
+<br><big>6. <a href="#detailed-table-of-contents"              >Detailed
 TOC</a></big>
 
 </div>
@@ -311,7 +310,7 @@ in its own rectangular space.
 
 Two adjacent **Text** fields can be separated by a null **Space** field
 `{}`, for example when at least one field contains multiline input that
-you want formatted separately from others, keeping each field in is own
+you want formatted separately from others, keeping each field in its own
 rectangular space:
 
     ⍝  Extra space here ↓
@@ -377,8 +376,13 @@ degree and Fahrenheit numbers to the nearest tenth of a degree.
 
 ## The Box Shortcut
 
-We now introduce the **Box** shortcut `` `B ``. Here we place boxes
-around key **Code** fields in this same example.
+**∆F** shortcuts are abbreviated *names* of useful *f-string* routines.
+For information on each of the shortcuts, see [**Section
+4.5**](#code-field-shortcuts) in the [**∆F** *Reference*](#f-reference)
+below.
+
+We first introduce the **Box** shortcut `` `B ``. Here we place boxes
+around key **Code** field objects in this same example.
 
        cv← 11.3 29.55 59.99
        ∆F '`◇The temperature is {`B "I2" $ cv}`◇°C or {`B "F5.1" $ 32+9×cv÷5}`◇°F'
@@ -393,7 +397,7 @@ around key **Code** fields in this same example.
 But what if you want to place a box around every **Code**, **Text**,
 ***and*** **Space** field? We just use the **box** mode option!
 
-While we can’t place boxes around text (or space) fields using `` `B ``,
+While we can’t place boxes inside text (or space) fields using `` `B ``,
 we can place a box around ***each*** field (*regardless* of type) by
 setting **∆F**’s [**box** mode](#f-option-details) option, to `1`:
 
@@ -408,8 +412,9 @@ setting **∆F**’s [**box** mode](#f-option-details) option, to `1`:
 
 We said you could place a box around every field, but there’s an
 exception. Null **Space** fields `{}`, *i.e.* 0-width **Space** fields,
-are discarded once they’ve done their work of separating adjacent fields
-(typically **Text** fields), so they won’t be placed in boxes.
+are discarded once they’ve done their work of ensuring adjacent fields
+(typically, **Text** fields) are displayed in their own rectangular
+space.
 
 Try this expression on your own:
 
@@ -1220,7 +1225,7 @@ examples.
 
 </div>
 
-# ∆F Syntax and Other Information
+# ∆F Reference
 
 <details open>
 
@@ -1761,9 +1766,8 @@ Shortcut</a> <br> 3.20
 <a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
 F‑strings with the ***dfn*** Option</a> <br> 3.23
 <a href="#multiline-f-strings-in-dyalog-20">Multiline *F-strings* in
-Dyalog 20</a> <br><big>4.
-<a href="#f-syntax-and-other-information"          >**∆F** Syntax and
-Other Infor­mation</a></big> <br> 4.1
+Dyalog 20</a> <br><big>4. <a href="#f-reference"          >**∆F**
+Reference</a></big> <br> 4.1
 <a href="#f-call-syntax-overview"                  >**∆F** Call Syntax
 Overview</a> <br> 4.2
 <a href="#f-option-details"                        >**∆F** Option
@@ -1807,7 +1811,7 @@ f‑strings</a>
 ⍠⍠⍠    
 <input type="button" class="button normal-button" value="Top" onclick="window.location='#top'"/>
 <input type="button" class="button normal-button" value="Examples" onclick="window.location='#f-examples-a-primer'"/>
-<input type="button" class="button normal-button" value="Syntax" onclick="window.location='#f-syntax-and-other-information'"/>
+<input type="button" class="button normal-button" value="Reference" onclick="window.location='#f-reference'"/>
 <input type="button" class="button normal-button" value="Appendices" onclick="window.location='#appendices'"/>
 <input type="button" class="button normal-button" value="Contents" onclick="window.location='#detailed-table-of-contents'"/>
 <input type="button" class="button normal-button" value="Bottom" onclick="window.location='#detailed-table-of-contents'"/>    
