@@ -125,7 +125,7 @@ objects in the environment, additional function arguments, or both.
 
 - **Text** fields, each allowing [multiline Unicode
   text](#text-fields-and-space-fields), with the sequence `` `◇ ``
-  generating a new line;
+  generating a **new line**;
 
 - **Code** fields, allowing users to evaluate and display *APL* arrays
   of any dimensionality, depth, and type in the user environment, arrays
@@ -195,11 +195,11 @@ and operators.
  Recap: <em>The Three Field Types</em>
 </summary>
 
-| Field Type | <br> Syntax | <br> Examples | <br> Displaying |
+| Field Type | Syntax | Examples | Displaying |
 |:--:|:--:|:--:|:--:|
-| **Text** | *Unicode text* | `` Cats`◇and`◇dogs! `` | 2-D Text |
-| **Code** | `{`*dfn code plus*`}` `{`*shortcuts*`}` | `` {"1`◇one"} {"2`◇two"}` `` `{"F5.1" $ (32+9×÷∘5)degC}` | Arbitrary *APL* Express­ions via dfns, including **Quoted Strings** |
-| **Space** | `{`<big>␠ ␠ ␠</big>`}` | `{  }`   `{}` | Spacing & Field Separation |
+| *Text* F. | *Unicode text* | `` Cats`◇and`◇dogs! `` | 2-D Text |
+| *Code* F. | `{`*dfn code plus*`}` `{`*shortcuts*`}` | `` {"1`◇one"} {"2`◇two"}` `` `{"F5.1" $ (32+9×÷∘5)degC}` | Arbitrary *APL* Express­ions via dfns, including **Quoted Strings** |
+| *Space* F. <br>(*Null Space* F.) | `{`<big>␠ ␠ ␠</big>`}` <br> `{}` | `{  }` <br> `{}` | Spacing & <br> Field Separation |
 
 2a. <strong>The Three Field Types</strong>
 
@@ -538,8 +538,8 @@ to add appropriate commas to the temperatures!
 ## The Shortcut for Numeric Commas
 
 The shortcut for *Numeric* **Commas** `` `C `` adds commas every 3
-digits (from the right) to one or more numbers or numeric strings.It has
-an advantage over the `$` (Dyalog’s `⎕FMT`) specifier: it doesn’t
+digits (from the right) to one or more numbers or numeric strings. It
+has an advantage over the `$` (Dyalog’s `⎕FMT`) specifier: it doesn’t
 require you to guesstimate field widths.
 
 Let’s use the `` `C `` shortcut to add the commas to the temperatures!
@@ -1839,7 +1839,7 @@ f‑strings</a>
 ------------------------------------------------------------------------
 
 <br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-12\]
+<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-13\]
 </span> <br>
 
 </div>
