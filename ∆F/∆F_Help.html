@@ -588,9 +588,9 @@ fields, with several quote styles:</p>
 <li><strong>double-quotes</strong><br> <code>∆F '{"like this"}'</code>
 or <code>∆F '{"on`◇""three""`◇lines"}'</code></li>
 <li><strong>double angle quotation marks</strong>,<span
-class="margin-note">Also known as <em>guillemets</em>,
-<big><strong>«</strong></big> and <big><strong>»</strong></big> are
-Unicode chars <code>⎕UCS 171 187</code>.</span><br>
+class="margin-note"><big><strong>«</strong></big> and
+<big><strong>»</strong></big>: Also known as
+<em>guillemets</em>.</span><br>
 <code>∆F '{«with internal quotes like "this" or ''this''»}'</code>,<br>
 <em>not to mention:</em></li>
 <li><em>APL</em>’s tried-and-true embedded
@@ -878,14 +878,144 @@ The temperature is 11°C or  52.3°F
                    60      140.0</code></pre>
 <h2 data-number="3.5" id="the-box-shortcut"><span
 class="header-section-number">3.5</span> The Box Shortcut</h2>
-<p><strong>∆F</strong> shortcuts are abbreviated <em>names</em> of
-useful <em>f-string</em> routines. For information on each of the
+<p><strong>∆F</strong> shortcuts are concise <em>names</em> for useful
+<em>f-string</em> utilities. For full information on each of the
 shortcuts, see <a href="#code-field-shortcuts"><strong>Section
 4.5</strong></a> in the <a href="#f-reference"><strong>∆F</strong>
-<em>Reference</em></a> below.</p>
-<p>We first introduce the <strong>Box</strong> shortcut <code>`B</code>.
-Here we place boxes around key <strong>Code</strong> field objects in
-this same example.</p>
+<em>Reference</em></a> below. For an abridged preview, look no
+further.</p>
+<details>
+<!-- option: open -->
+<summary class="summary">
+ A Preview of <em>Code Field Shortcuts</em>
+</summary>
+<p><strong>Code</strong> field <strong><em>Shortcuts</em></strong>
+include:</p>
+<table>
+<caption>2a. <strong>Brief Summary of Code Field
+Shortcuts</strong></caption>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 19%" />
+<col style="width: 20%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Shortcut</th>
+<th style="text-align: center;">Name</th>
+<th style="text-align: center;">Syntax</th>
+<th style="text-align: left;">Default Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: justify;"><strong>`B</strong></td>
+<td style="text-align: center;">Box</td>
+<td style="text-align: center;"><code>`B ⍵</code></td>
+<td style="text-align: justify;">Place <code>⍵</code> in a box.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`C</strong></td>
+<td style="text-align: center;">Commas</td>
+<td style="text-align: center;"><code>[⍺]`C ⍵</code></td>
+<td style="text-align: justify;">Add commas to large numbers
+<code>⍵</code>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`D</strong></td>
+<td style="text-align: center;">Date-Time</td>
+<td style="text-align: center;"><code>[⍺]`D ⍵</code></td>
+<td style="text-align: justify;">Synonym for <strong>`T</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`F</strong>,
+<strong>$</strong></td>
+<td style="text-align: center;">⎕FMT</td>
+<td style="text-align: center;"><code>[⍺] $ ⍵</code></td>
+<td style="text-align: justify;"><code>⍺ ⎕FMT ⍵</code>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`J</strong></td>
+<td style="text-align: center;">Justify</td>
+<td style="text-align: center;"><code>[⍺]`J ⍵</code></td>
+<td style="text-align: justify;">Justify <em>rows of</em> <code>⍵</code>
+according to <code>⍺</code>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`L</strong>,
+<strong>£</strong></td>
+<td style="text-align: center;">Session Library</td>
+<td style="text-align: center;"><code>£, £.arr, £.dfn</code></td>
+<td style="text-align: justify;">Use arrays, dfns, and dops in a private,
+session library, automatically loading from files or workspaces.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`Q</strong></td>
+<td style="text-align: center;">Quote</td>
+<td style="text-align: center;"><code>[⍺]`Q ⍵</code></td>
+<td style="text-align: justify;">Place <em>rows of</em> <code>⍵</code> in
+APL quotes.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`S</strong>,
+<strong>$$</strong></td>
+<td style="text-align: center;">Serialise</td>
+<td style="text-align: center;"><code>[⍺]`S ⍵</code></td>
+<td style="text-align: justify;">Serialise an <em>APL</em> array
+<code>⍵</code>, i.e. display it in <em>APL</em> Array Notation
+(APLAN).</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`T</strong></td>
+<td style="text-align: center;">Date-Time</td>
+<td style="text-align: center;"><code>[⍺]`T ⍵</code></td>
+<td style="text-align: justify;">Displays ⎕TS-style timestamps
+<code>⍵</code> according to date-time template <code>⍺</code>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`W</strong></td>
+<td style="text-align: center;">Wrap</td>
+<td style="text-align: center;"><code>[⍺]`W ⍵</code></td>
+<td style="text-align: justify;">Wraps the <em>rows of</em> simple arrays
+in <code>⍵</code> in left and right decorators <code>⍺</code>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`⍵𝑑𝑑</strong>,
+<strong>⍹𝑑𝑑</strong></td>
+<td style="text-align: center;">Omega
+Shortcut<br>(<small>EXPLICIT</small>)</td>
+<td style="text-align: center;"><code>`⍵𝑑𝑑</code></td>
+<td style="text-align: justify;">Select <strong>∆F</strong> argument
+<code>𝑑𝑑</code>, i.e. <code>(⍵⊃⍨ 𝑑𝑑+⎕IO)</code>, given 𝑑𝑑 an
+<code>⎕IO</code>-independent integer <em>offset</em>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>`⍵</strong>,
+<strong>⍹</strong></td>
+<td style="text-align: center;">Omega
+Shortcut<br>(<small>IMPLICIT</small>)</td>
+<td style="text-align: center;"><code>`⍵</code></td>
+<td style="text-align: justify;">Selects the <strong><em>next</em></strong>
+argument to <strong>∆F</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: justify;"><strong>→</strong><br><strong>↓</strong>
+<em>or</em> <strong>%</strong></td>
+<td style="text-align: center;">Self-documenting <strong>Code</strong>
+Fields <small>(SDCFs)</small></td>
+<td
+style="text-align: center;"><code>{…→}</code><br><code>{…↓}</code></td>
+<td style="text-align: justify;">Displays code field source to left
+of/above its value.</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p>Let’s introduce shortcuts through <code>`B</code>, the
+<strong>Box</strong> shortcut. Here we use <code>`B</code> to place
+boxes around key objects in <strong>Code</strong> fields, building on
+the previous example.</p>
 <pre><code>   cv← 11.3 29.55 59.99
    ∆F &#39;`◇The temperature is {`B &quot;I2&quot; $ cv}`◇°C or {`B &quot;F5.1&quot; $ 32+9×cv÷5}`◇°F&#39;
                    ┌──┐      ┌─────┐
@@ -1369,23 +1499,20 @@ object displayed is an <em>APL</em> namespace:</p>
    ∆F &#39;JSON:`◇APL:  {j % 1$$ JSON j} &#39;
 JSON:  {fred:[1,2,3],jack:9,name:{a:1,b:2}}
 APL:   (fred:1 2 3◇jack:9◇name:(a:1◇b:2◇)◇)</code></pre>
-<h2 data-number="3.20" id="the-wrap-shortcut-experimental"><span
-class="header-section-number">3.20</span> The Wrap Shortcut <span
-class="red">(Experimental)</span></h2>
-<div class="test-feature">
+<h2 data-number="3.20" id="the-wrap-shortcut"><span
+class="header-section-number">3.20</span> The Wrap Shortcut</h2>
+<div>
+<p><!-- div class="test-feature" --></p>
 <blockquote>
 <p>Wrapping results in left and right decorators…</p>
 </blockquote>
 <p><span class="margin-note">For more, see <a
-href="#wrap-shortcut-details-experimental">Wrap Shortcut: Details</a>
-<em>below</em>. </span> The shortcut <strong>Wrap</strong>
-<code>`W</code> is <span
-class="red"><strong><em>experimental</em></strong></span>.
-<code>`W</code> is used when you want to place a
-<strong><em>decorator</em></strong> string immediately to the left or
-right of <strong><em>each</em></strong> row of simple objects in the
-right argument, <code>⍵</code>. It differs from the
-<strong>Quote</strong> shortcut <code>`Q</code>, which puts quotes
+href="#wrap-shortcut-details">Wrap Shortcut: Details</a> <em>below</em>.
+</span> The shortcut <strong>Wrap</strong> <code>`W</code> is used when
+you want to place a <strong><em>decorator</em></strong> string
+immediately to the left or right of <strong><em>each</em></strong> row
+of simple objects in the right argument, <code>⍵</code>. It differs from
+the <strong>Quote</strong> shortcut <code>`Q</code>, which puts quotes
 <strong><em>only</em></strong> around the character arrays in
 <code>⍵</code>.</p>
 <ul>
@@ -1440,13 +1567,12 @@ Jack wins £ 73
 Tony wins £349</code></pre>
 </details>
 </div>
-<h2 data-number="3.21"
-id="the-session-library-shortcut-experimental"><span
-class="header-section-number">3.21</span> The Session Library Shortcut
-<span class="red">(Experimental)</span></h2>
-<div class="test-feature">
-<p>The shortcut (Session) <strong>Library</strong> <code>£</code> is
-<span class="red"><strong>experimental</strong></span>. <code>£</code>
+<h2 data-number="3.21" id="the-session-library-shortcut"><span
+class="header-section-number">3.21</span> The Session Library
+Shortcut</h2>
+<div>
+<p><!-- div class="test-feature" --></p>
+<p>The shortcut (Session) <strong>Library</strong> <code>£</code>
 denotes <span class="margin-note"><strong>£ alias:</strong>
 <code>`L</code>. £ is from the first letter of the Latin <em>lībra</em>,
 “pound”, very apt for a
@@ -2048,14 +2174,16 @@ only <em>outside</em> <strong>Quoted strings</strong>.</p>
 <table>
 <caption>4d. <strong>Code Field Shortcuts</strong></caption>
 <colgroup>
-<col style="width: 4%" />
-<col style="width: 7%" />
-<col style="width: 88%" />
+<col style="width: 12%" />
+<col style="width: 18%" />
+<col style="width: 11%" />
+<col style="width: 57%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: left;">Shortcut</th>
 <th style="text-align: center;">Name</th>
+<th style="text-align: center;">Syntax</th>
 <th style="text-align: left;">Meaning</th>
 </tr>
 </thead>
@@ -2064,48 +2192,54 @@ only <em>outside</em> <strong>Quoted strings</strong>.</p>
 <td style="text-align: justify;"><strong>`A</strong>,
 <strong>%</strong></td>
 <td style="text-align: center;">Above</td>
-<td style="text-align: justify;"><code>[⍺] % ⍵</code>. Centers array
-<code>⍺</code> above array <code>⍵</code>.<br>If omitted,
-<code>⍺←''</code>, <em>i.e.</em> a blank line.</td>
+<td style="text-align: center;"><code>[⍺] % ⍵</code></td>
+<td style="text-align: justify;">Centers array <code>⍺</code> above array
+<code>⍵</code>.<br>If omitted, <code>⍺←''</code>, <em>i.e.</em> a blank
+line.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`B</strong></td>
 <td style="text-align: center;">Box</td>
-<td style="text-align: justify;"><code>`B ⍵</code>. Places <code>⍵</code>
-in a box. <code>⍵</code> is any array.</td>
+<td style="text-align: center;"><code>`B ⍵</code></td>
+<td style="text-align: justify;">Places <code>⍵</code> in a box.
+<code>⍵</code> is any array.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`C</strong></td>
 <td style="text-align: center;">Commas</td>
-<td style="text-align: justify;"><code>[⍺]`C ⍵</code>. By default, adds
-commas after every 3rd digit (from the right) of the <em>integer</em>
-part of each number in <code>⍵</code> (leaving the fractional part as
-is). <code>⍵</code> is zero or more num strings and/or numbers. If
-specified, ⍺[0] is the stride, <em>if not 3,</em> as an integer or as a
-single quoted digit; if specified, ⍺[1] is the character (even “`◇”) to
-insert <em>in place of</em> a comma. <br><small>Examples: “5_” adds an
-underscore every 5 digits from the right. “3`◇” puts each set of 3
-digits on its own line.</small></td>
+<td style="text-align: center;"><code>[⍺]`C ⍵</code></td>
+<td style="text-align: justify;">By default, adds commas after every 3rd
+digit (from the right) of the <em>integer</em> part of each number in
+<code>⍵</code> (leaving the fractional part as is). <code>⍵</code> is
+zero or more num strings and/or numbers. If specified, ⍺[0] is the
+stride, <em>if not 3,</em> as an integer or as a single quoted digit; if
+specified, ⍺[1] is the character (even “`◇”) to insert <em>in place
+of</em> a comma. <br><small>Examples: “5_” adds an underscore every 5
+digits from the right. “3`◇” puts each set of 3 digits on its own
+line.</small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`D</strong></td>
 <td style="text-align: center;">Date-Time</td>
+<td style="text-align: center;"><code>[⍺]`D ⍵</code></td>
 <td style="text-align: justify;">Synonym for <strong>`T</strong>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`F</strong>,
 <strong>$</strong></td>
 <td style="text-align: center;">⎕FMT</td>
-<td style="text-align: justify;"><code>[⍺] $ ⍵</code>. Short for
-<code>[⍺] ⎕FMT ⍵</code>. (See <em>APL</em> doc­ument­ation).<br>NB. See
-<code>`S</code> for meaning of <code>$$</code>.</td>
+<td style="text-align: center;"><code>[⍺] $ ⍵</code></td>
+<td style="text-align: justify;">Short for <code>[⍺] ⎕FMT ⍵</code>. (See
+<em>APL</em> doc­ument­ation).<br>NB. See <code>`S</code> for meaning of
+<code>$$</code>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`J</strong></td>
 <td style="text-align: center;">Justify</td>
-<td style="text-align: justify;"><code>[⍺]`J ⍵</code>. Justify each row of
-object <code>⍵</code> as text:<br>  <em>left</em>: ⍺=“L”;
-<em>center</em>: ⍺=“C”; <em>right</em> ⍺=“R”.<br>You may use
+<td style="text-align: center;"><code>[⍺]`J ⍵</code></td>
+<td style="text-align: justify;">Justify each row of object <code>⍵</code>
+as text:<br>  <em>left</em>: ⍺=“L”; <em>center</em>: ⍺=“C”;
+<em>right</em> ⍺=“R”.<br>You may use
 <code>¯1</code>|<code>0</code>|<code>1</code> in place of
 <code>"L"</code>|<code>"C"</code>|<code>"R"</code>. If omitted,
 <code>⍺←'L'</code>. <small><em>Displays numbers with the maximum
@@ -2114,16 +2248,15 @@ precision available.</em></small></td>
 <tr>
 <td style="text-align: justify;"><strong>`L</strong>,
 <strong>£</strong></td>
-<td style="text-align: center;">Session Library<br><span
-class="red"><small><strong>EXPERIMENTAL!</strong></small></span></td>
-<td style="text-align: justify;"><code>£</code>. <code>£</code> denotes a
-private library (namespace) local to the <strong>∆F</strong> runtime
-environ­ment into which functions or objects (including name­spaces) may
-be placed (e.g. via <code>⎕CY</code>) for the duration of the
-<em>APL</em> session.<br><strong>Autoload:</strong> Outside of simple
-assignments, <strong>∆F</strong> will attempt to copy an undefined
-object <code>obj</code> in the expression <code>£.obj</code> from,
-<em>in
+<td style="text-align: center;">Session Library</td>
+<td style="text-align: center;"><code>£.nm</code></td>
+<td style="text-align: justify;"><code>£</code> denotes a private library
+(namespace) local to the <strong>∆F</strong> runtime environ­ment into
+which functions or objects (including name­spaces) may be placed
+(e.g. via <code>⎕CY</code>) for the duration of the <em>APL</em>
+session.<br><strong>Autoload:</strong> Outside of simple assignments,
+<strong>∆F</strong> will attempt to copy an undefined object
+<code>obj</code> in the expression <code>£.obj</code> from, <em>in
 order:</em><br> <small><sup>directory</sup></small> <strong>./MyDyalogLib/</strong>
  &gt;  <small><sup><em>APL</em> ws</sup></small> <strong>dfns</strong>
  &gt; <small><sup>directory</sup></small> <strong>./</strong><br><small>Other
@@ -2135,46 +2268,49 @@ Details</a> below.</em></small></td>
 <tr>
 <td style="text-align: justify;"><strong>`Q</strong></td>
 <td style="text-align: center;">Quote</td>
-<td style="text-align: justify;"><code>[⍺]`Q ⍵</code>. Recursively scans
-<code>⍵</code>, putting char. vectors, scalars, and rows of
-higher-dimensional strings in APL quotes, leaving other elements as is.
-If omitted, <code>⍺←''''</code>.</td>
+<td style="text-align: center;"><code>[⍺]`Q ⍵</code></td>
+<td style="text-align: justify;">Recursively scans <code>⍵</code>, putting
+char. vectors, scalars, and rows of higher-dimensional strings in APL
+quotes, leaving other elements as is. If omitted,
+<code>⍺←''''</code>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`S</strong>,
 <strong>$$</strong></td>
 <td style="text-align: center;">Serialise</td>
-<td style="text-align: justify;"><code>[⍺]`S ⍵</code>. Serialise an
-<em>APL</em> array (via ⎕SE.Dyalog.Array.Serialise), i.e. show in
-<em>APL</em> Array Notation (APLAN), either (<code>⍺=0</code>, the
-default) in <em>tabular</em> (multiline) form or (<code>⍺=1</code>)
-compactly with statement separators <code>◇</code> in place of newlines.
-If omitted, <code>⍺←0</code>. <small><em>See details
-below.</em></small></td>
+<td style="text-align: center;"><code>[⍺]`S ⍵</code></td>
+<td style="text-align: justify;">Serialise an <em>APL</em> array (via
+⎕SE.Dyalog.Array.Serialise), i.e. show in <em>APL</em> Array Notation
+(APLAN), either (<code>⍺=0</code>, the default) in <em>tabular</em>
+(multiline) form or (<code>⍺=1</code>) compactly with statement
+separators <code>◇</code> in place of newlines. If omitted,
+<code>⍺←0</code>. <small><em>See details below.</em></small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`T</strong></td>
 <td style="text-align: center;">Date-Time</td>
-<td style="text-align: justify;"><code>[⍺]`T ⍵</code>. Displays
-timestamp(s) <code>⍵</code> according to date-time template
-<code>⍺</code>. <code>⍵</code> is one or more APL timestamps
-<code>⎕TS</code>. <code>⍺</code> is a date-time template in
-<code>1200⌶</code> format. If omitted, <code>⍺← '%ISO%'</code>.</td>
+<td style="text-align: center;"><code>[⍺]`T ⍵</code></td>
+<td style="text-align: justify;">Displays timestamp(s) <code>⍵</code>
+according to date-time template <code>⍺</code>. <code>⍵</code> is one or
+more APL timestamps <code>⎕TS</code>. <code>⍺</code> is a date-time
+template in <code>1200⌶</code> format. If omitted,
+<code>⍺← '%ISO%'</code>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`W</strong></td>
-<td style="text-align: center;">Wrap <span
-class="red"><small><strong>EXPERIMENTAL!</strong></small></span></td>
-<td style="text-align: justify;"><code>[⍺]`W ⍵</code>. Wraps the rows of
-simple arrays in ⍵ in decorators <code>0⊃2⍴⍺</code> (on the left) and
-<code>1⊃2⍴⍺</code> (on the right). If omitted, <code>⍺←''''</code>.
-<small><em>See details below.</em></small></td>
+<td style="text-align: center;">Wrap</td>
+<td style="text-align: center;"><code>[⍺]`W ⍵</code></td>
+<td style="text-align: justify;">Wraps the rows of simple arrays in ⍵ in
+decorators <code>0⊃2⍴⍺</code> (on the left) and <code>1⊃2⍴⍺</code> (on
+the right). If omitted, <code>⍺←''''</code>. <small><em>See details
+below.</em></small></td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`⍵𝑑𝑑</strong>,
 <strong>⍹𝑑𝑑</strong></td>
 <td style="text-align: center;">Omega
 Shortcut<br>(<small>EXPLICIT</small>)</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: justify;">A shortcut of the form <code>`⍵𝑑𝑑</code>
 (or <code>⍹𝑑𝑑</code>), to access the <code>𝑑𝑑</code><strong>th</strong>
 element of <code>⍵</code>, <em>i.e.</em> <code>(⍵⊃⍨ 𝑑𝑑+⎕IO)</code>.
@@ -2185,6 +2321,7 @@ element of <code>⍵</code>, <em>i.e.</em> <code>(⍵⊃⍨ 𝑑𝑑+⎕IO)</cod
 <strong>⍹</strong></td>
 <td style="text-align: center;">Omega
 Shortcut<br>(<small>IMPLICIT</small>)</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: justify;">A shortcut of the form <code>`⍵</code> (or
 <code>⍹</code>), to access the <strong><em>next</em></strong> element of
 <code>⍵</code>. <small><em>See details below.</em> <small></td>
@@ -2194,6 +2331,7 @@ Shortcut<br>(<small>IMPLICIT</small>)</td>
 <em>or</em> <strong>%</strong></td>
 <td style="text-align: center;">Self-documenting <strong>Code</strong>
 Fields <small>(SDCFs)</small></td>
+<td style="text-align: center;">—</td>
 <td style="text-align: justify;"><code>→</code> at end of
 <strong>Code</strong> field signals that the source code for the field
 appears <em>to the left of</em> its value. Surrounding blanks are
@@ -2383,13 +2521,8 @@ formatted (<code>`F</code>) object. Longer sequences are valid, parsed
 as 0 or more <code>$$</code>, followed by a single <code>$</code>.
 consuming</li>
 </ol>
-<details id="pPeek">
-<summary class="summary">
- View Details on Experimental Features: Wrap and Library
-</summary>
-<div class="test-feature">
-<p><span class="margin-note"><span
-class="red">Experimental</span></span></p>
+<div>
+<!-- div class="test-feature" -->
 <h2 data-number="4.10" id="wrap-shortcut-details"><span
 class="header-section-number">4.10</span> Wrap Shortcut: Details</h2>
 <ol type="1">
@@ -2408,8 +2541,6 @@ replicated <em>per (2) above</em>.</li>
 will wrap the array ⍵, row by row, whether character, numeric or
 otherwise.</li>
 </ol>
-<p><span class="margin-note"><span
-class="red"><br>Experimental</span></span></p>
 <h2 data-number="4.11" id="session-library-shortcut-details"><span
 class="header-section-number">4.11</span> Session Library Shortcut:
 Details</h2>
@@ -2642,7 +2773,6 @@ forward.</span> is documented <em>below</em>.</p>
 <hr />
 </div>
 </details>
-</details>
 <div class="page-break">
 
 </div>
@@ -2697,20 +2827,8 @@ character matrix. No current session objects are affected.</p>
 <h2 data-number="5.2" id="appendix-ii-python-fstrings"><span
 class="header-section-number">5.2</span> Appendix II: Python
 f‑strings</h2>
-<div style="line-height: 1.3;">
-<p>  Python f-strings, introduced in Python 3.6, are a modern and
-elegant way to format strings by embedding expressions directly inside
-string literals. You create an f-string by prefixing a string with the
-letter ‘f’ or ‘F’, and then you can include any Python expression inside
-curly braces within the string. When the string is evaluated, these
-expressions are executed and their results are automatically converted
-to strings and inserted at that position. <br>  For example, the Python
-expression <strong><code>f"The sum of {a} and {b} is {a + b}"</code></strong> would
-evaluate the addition and embed the result directly in the string. This
-combination of simplicity, power, and performance has made f-strings the
-preferred string formatting approach in modern Python code.</p>
-</div>
-<p><em>See</em> <a id="displayText" href="javascript:linkAlert();"><span
+<p>For more information on Python f-strings, <em>see</em>:</p>
+<p> <a id="displayText" href="javascript:linkAlert();"><span
 class="linkNote">https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals</span></a>.</p>
 </div>
 </div>
@@ -2722,10 +2840,10 @@ class="header-section-number">6</span> Detailed Table of Contents</h1>
 <summary class="summary">
  Show/Hide <em>Detailed Table of Contents</em>
 </summary>
-<div class="multi-column-text" style="font-size:80%;">
+<div class="multi-column-text" style="font-size:100%;">
 <p><big>1.
-<a href="#installing-loading-and-running-f"        >Installing, Loading,
-and Running <strong>∆F</strong></a></big> <br> 1.1
+<a href="#installing-loading-and-running-f"        ><big>Installing,
+Loading, and Running <strong>∆F</strong></big></a></big> <br> 1.1
 <a href="#installing-f"                            >Installing
 <strong>∆F</strong></a> <br> 1.2
 <a href="#loading-and-running-f"                   >Loading and Running
@@ -2733,58 +2851,63 @@ and Running <strong>∆F</strong></a></big> <br> 1.1
 <a href="#displaying-f-help-in-apl"                >Displaying
 <strong>∆F</strong> <strong>Help</strong> in <em>APL</em></a>
 <br><big>2.
-<a href="#overview"                                >Overview</a></big>
+<a href="#overview"                                ><big>Overview</big></a></big>
 <br><big>3.
-<a href="#f-examples-a-primer"                     ><strong>∆F</strong>
-Examples: A Primer</a></big> <br> 3.1
-<a href="#code-fields"                             ><strong>Code</strong>
-Fields</a> <br> 3.2
-<a href="#text-fields-and-space-fields"            ><strong>Text</strong>
-Fields and <strong>Space</strong> Fields</a> <br> 3.3
-<a href="#null-space-fields"                       >Null
-<strong>Space</strong> Fields</a> <br> 3.4
-<a href="#code-fields-continued"                   ><strong>Code</strong>
-Fields (Continued)</a> <br> 3.5
+<a href="#f-examples-a-primer"                     ><big><strong>∆F</strong>
+Examples: A Primer</big></a></big> <br> 3.1
+<a href="#code-fields"                             ><span
+class="red"><strong>Code</strong></span> Fields</a> <br> 3.2
+<a href="#text-fields-and-space-fields"            ><span
+class="red"><strong>Text</strong></span> Fields and <span
+class="red"><strong>Space</strong></span> Fields</a> <br> 3.3
+<a href="#null-space-fields"                       ><span
+class="red"><strong>Null Space</strong></span> Fields</a> <br> 3.4
+<a href="#code-fields-continued"                   ><span
+class="red"><strong>Code</strong></span> Fields (Continued)</a> <br> 3.5
 <a href="#the-box-shortcut"                        >The
-<strong>Box</strong> Short­cut</a> <br> 3.6
-<a href="#box-mode"                                ><strong>Box</strong>
-Mode</a> <br> 3.7
+<span class="red"><strong>Box</strong><span class="red"> Short­cut</a>
+<br> 3.6 <a href="#box-mode"                                ><span
+class="red"><strong>Box</strong> Mode</span></a> <br> 3.7
 <a href="#omega-shortcuts-explicit"                ><strong>Omega</strong>
 Short­cuts (Explicit)</a> <br> 3.8
 <a href="#referencing-the-fstring-itself"          >Referencing the
-F‑string Itself</a> <br> 3.9
-<a href="#the-format-shortcut"                     >The
-<strong>Format</strong> Short­cut</a> <br> 3.10
+<span class="red"><strong>F‑string Itself</strong></span></a> <br> 3.9
+<a href="#the-format-shortcut"                     >The <span
+class="red"><strong>Format</strong></span> Short­cut</a> <br> 3.10
 <a href="#the-shortcut-for-numeric-commas"        >The Short­cut for
-Numeric <strong>Commas</strong></a> <br> 3.11
+Numeric <span class="red"><strong>Commas</strong></span></a> <br> 3.11
 <a href="#self-documenting-code-fields-sdcfs"     >Self-documenting
-<strong>Code</strong> fields (SDCFs)</a> <br> 3.12
-<a href="#the-above-shortcut"                     >The
-<strong>Above</strong> Short­cut</a> <br> 3.13
-<a href="#text-justification-shortcut"            >Text
-<strong>Justification</strong> Short­cut</a> <br> 3.14
-<a href="#omega-shortcuts-implicit"               ><strong>Omega</strong>
-Short­cuts (Implicit)</a> <br> 3.15
-<a href="#shortcuts-with-apl-expressions"         >Short­cuts With
-<em>APL</em> Expressions</a> <br> 3.16
+<strong>Code</strong> fields (<span
+class="red"><strong>SDCFs</strong></span>)</a> <br> 3.12
+<a href="#the-above-shortcut"                     >The <span
+class="red"><strong>Above</strong></span> Short­cut</a> <br> 3.13
+<a href="#text-justification-shortcut"            >Text <span
+class="red"><strong>Justification</strong></span> Short­cut</a> <br> 3.14
+<a href="#omega-shortcuts-implicit"               ><span
+class="red"><strong>Omega</strong></span> Short­cuts (Implicit)</a>
+<br> 3.15 <a href="#shortcuts-with-apl-expressions"         >Short­cuts
+With <em>APL</em> Expressions</a> <br> 3.16
 <a href="#a-shortcut-for-dates-and-times-part-i"  >A Short­cut for Dates
-and <strong>Times</strong> (Part I)</a> <!-- pTbr --> <br> 3.17
-<a href="#a-shortcut-for-dates-and-times-part-ii" >A Short­cut for
-<strong>Dates</strong> and Times (Part II)</a> <br> 3.18
-<a href="#the-quote-shortcut"                     >The
-<strong>Quote</strong> Short­cut</a> <br> 3.19
-<a href="#the-serialise-shortcut"                 >The
-<strong>Serialise</strong> Shortcut</a> <br> 3.20
-<a href="#the-wrap-shortcut-experimental"         >The
-<strong>Wrap</strong> Short­cut (Experimental)</a> <br> 3.21
-<a href="#the-session-library-shortcut-experimental">The Session
-<strong>Library</strong> Short­cut (Experimental)</a> <br> 3.22
-<a href="#precomputed-fstrings-with-the-dfn-option">Precomputed
-F‑strings with the <strong><em>dfn</em></strong> Option</a> <br> 3.23
-<a href="#multiline-f-strings-in-dyalog-20">Multiline <em>F-strings</em>
-in Dyalog 20</a> <br><big>4.
-<a href="#f-reference"          ><strong>∆F</strong> Reference</a></big>
-<br> 4.1
+and <span class="red"><strong>Times</strong></span> (Part I)</a>
+<!-- pTbr --> <br> 3.17
+<a href="#a-shortcut-for-dates-and-times-part-ii" >A Short­cut for <span
+class="red"><strong>Dates</strong></span> and Times (Part II)</a>
+<br> 3.18 <a href="#the-quote-shortcut"                     >The <span
+class="red"><strong>Quote</strong></span> Short­cut</a> <br> 3.19
+<a href="#the-serialise-shortcut"                 >The <span
+class="red"><strong>Serialise</strong></span> Shortcut</a> <br> 3.20
+<a href="#the-wrap-shortcut"         >The <span
+class="red"><strong>Wrap</strong></span> Short­cut </a> <br> 3.21
+<a href="#the-session-library-shortcut">The Session <span
+class="red"><strong>Library</strong></span> Short­cut </a> <br> 3.22
+<a href="#precomputed-fstrings-with-the-dfn-option"><span
+class="red"><strong>Precomputed F‑strings</strong></span> with the
+<strong><em>dfn</em></strong> Option</a> <br> 3.23
+<a href="#multiline-f-strings-in-dyalog-20"><span
+class="red"><strong>Multiline</strong>
+<strong><em>F-strings</em></strong></span> in Dyalog 20</a> <br><big>4.
+<a href="#f-reference"          ><big><strong>∆F</strong>
+Reference</big></a></big> <br> 4.1
 <a href="#f-call-syntax-overview"                  ><strong>∆F</strong>
 Call Syntax Overview</a> <br> 4.2
 <a href="#f-option-details"                        ><strong>∆F</strong>
@@ -2807,7 +2930,7 @@ Shortcut Expressions: Details</a> <br> 4.10
 Short­cut: Details</a> <br> 4.11
 <a href="#session-library-shortcut-details"       >Session
 <strong>Library</strong> Short­cut: Details</a> <br><big>5.
-<a href="#appendices"                              >Appendices</a></big>
+<a href="#appendices"                              ><big>Appendices</big></a></big>
 <br> 5.1 <a href="#appendix-i-underdocumented-features"    >Appendix I:
 Un(der)doc­ument­ed Features</a> <br> 5.2
 <a href="#appendix-ii-python-fstrings"            >Appendix II: Python
@@ -2834,7 +2957,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-11]
+<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-12]
 </span> <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>
