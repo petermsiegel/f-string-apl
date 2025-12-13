@@ -567,7 +567,8 @@ sep­ar­ator (<code>⎕UCS 96 8900</code>). </span></p>
 <ul>
 <li><p><strong>Text</strong> fields, each allowing <a
 href="#text-fields-and-space-fields">multiline Unicode text</a>, with
-the sequence <code>`◇</code> generating a new line;</p></li>
+the sequence <code>`◇</code> generating a <strong>new
+line</strong>;</p></li>
 <li><p><strong>Code</strong> fields, allowing users to evaluate and
 display <em>APL</em> arrays of any dimensionality, depth, and type in
 the user environment, arrays passed as <strong>∆F</strong> arguments, as
@@ -677,28 +678,28 @@ using Dyalog functions and operators.</p>
 <table>
 <caption>2a. <strong>The Three Field Types</strong></caption>
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 19%" />
-<col style="width: 30%" />
-<col style="width: 38%" />
+<col style="width: 16%" />
+<col style="width: 17%" />
+<col style="width: 31%" />
+<col style="width: 34%" />
 </colgroup>
 <thead>
 <tr>
 <th style="text-align: center;">Field Type</th>
-<th style="text-align: center;"><br> Syntax</th>
-<th style="text-align: center;"><br> Examples</th>
-<th style="text-align: center;"><br> Displaying</th>
+<th style="text-align: center;">Syntax</th>
+<th style="text-align: center;">Examples</th>
+<th style="text-align: center;">Displaying</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: center;"><strong>Text</strong></td>
+<td style="text-align: center;"><em>Text</em> F.</td>
 <td style="text-align: center;"><em>Unicode text</em></td>
 <td style="text-align: center;"><code>Cats`◇and`◇dogs!</code></td>
 <td style="text-align: center;">2-D Text</td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong>Code</strong></td>
+<td style="text-align: center;"><em>Code</em> F.</td>
 <td style="text-align: center;"><code>{</code><em>dfn code
 plus</em><code>}</code>
 <code>{</code><em>shortcuts</em><code>}</code></td>
@@ -708,11 +709,13 @@ plus</em><code>}</code>
 dfns, including <strong>Quoted Strings</strong></td>
 </tr>
 <tr>
-<td style="text-align: center;"><strong>Space</strong></td>
+<td style="text-align: center;"><em>Space</em> F. <br>(<em>Null
+Space</em> F.)</td>
 <td style="text-align: center;"><code>{</code><big>␠ ␠
-␠</big><code>}</code></td>
-<td style="text-align: center;"><code>{  }</code>   <code>{}</code></td>
-<td style="text-align: center;">Spacing &amp; Field Separation</td>
+␠</big><code>}</code> <br> <code>{}</code></td>
+<td style="text-align: center;"><code>{  }</code> <br>
+<code>{}</code></td>
+<td style="text-align: center;">Spacing &amp; <br> Field Separation</td>
 </tr>
 </tbody>
 </table>
@@ -861,10 +864,11 @@ fields.</p>
 John Smith     24 Mulberry Ln
 Mary Jones     22 Smith St
 Ted  Templeton 12 High St</code></pre>
-<p><span class="margin-note">We could have used <code>0⍕⍪</code> and
-<code>1⍕⍪</code> here, of course. But we wanted to remind you what
-Dyalog’s <code>⎕FMT</code> can do. For more, see <a
-href="#the-format-shortcut">below</a>. </span></p>
+<p><span class="margin-note">We formally discuss the <code>⎕FMT</code>
+short­cut <code>$</code> <a href="#the-format-shortcut">below</a>.</span>
+<span class="margin-note"><br><br>In this example, we could have used
+<code>0⍕⍪</code> and <code>1⍕⍪</code> here, of course. But we wanted to
+remind you what Dyalog’s <code>⎕FMT</code> can do! </span></p>
 <p>Here’s a slightly more interesting code expression, using
 <code>$</code> (a shortcut for <code>⎕FMT</code>) to round Centigrade
 numbers to the nearest whole degree and Fahrenheit numbers to the
@@ -1136,7 +1140,7 @@ presented to <code>`C</code> will represent an integer, but if a real
 number is presented, only the integer part will have commas added.
 </span> The shortcut for <em>Numeric</em> <strong>Commas</strong>
 <code>`C</code> adds commas every 3 digits (from the right) to one or
-more numbers or numeric strings.It has an advantage over the
+more numbers or numeric strings. It has an advantage over the
 <code>$</code> (Dyalog’s <code>⎕FMT</code>) specifier: it doesn’t
 require you to guesstimate field widths.</p>
 <p>Let’s use the <code>`C</code> shortcut to add the commas to the
@@ -2955,7 +2959,7 @@ Window</button></p>
 </div>
 <hr />
 <p><br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-12]
+<big>©</big> 2025 Sam the Cat Foundation. [Version 0.1.1: 2025-12-13]
 </span> <br></p>
 </div>
 <p><!-- End div for right-margin-bar --></p>
