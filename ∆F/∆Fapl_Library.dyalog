@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-07') 
+⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-12') 
 :Namespace libUtil 
 ⍝ libUtil (namespace): Handles Library (£ ~ `L) shortcut automatic loading...
 ⍝ See EXECUTIVE at bottom...
@@ -38,9 +38,9 @@
         :EndIf
     :EndIf 
   ∇ 
-  lP rP←    '(?:\(\s*)?' '(?:\)\s*)?'
-  autoPat←  '^(?|\s*\.\s*',lP,'\s*','([\pL∆⍙][\w∆⍙]*)\s*',rP 
-  autoPat,← '((?:(?:∘\s*)?←)?)','|()()).*$'
+  autoPat←  '^ (?| \s* \. \s* ( [\pL∆⍙] [\w∆⍙]* ) \s*' 
+  autoPat,← '( (?: (?:∘ \s*)? ← )? ) | ()()) .* $'        ⍝ Treat ∘← same as ←.
+  autoPat~← ' '
   
   ⍝ ShowPath:  See 'path' special call in ##.Special. 
   ShowPath← { ⊃1 ##.Apl2AN parms._fullPath } 
