@@ -470,9 +470,7 @@ TOC</a></big></p>
 </div>
 <hr />
 </details>
-<div class="page-break">
-
-</div>
+<!-- <div class="page-break"></div>  -->
 <h1 data-number="1" id="installing-loading-and-running-f"><span
 class="header-section-number">1</span> Installing, Loading, and Running
 <strong>∆F</strong></h1>
@@ -892,7 +890,7 @@ further.</p>
 <p><strong>Code</strong> field <strong><em>Shortcuts</em></strong>
 include:</p>
 <table>
-<caption>2a. <strong>Brief Summary of Code Field
+<caption>3a. <strong>Brief Summary of Code Field
 Shortcuts</strong></caption>
 <colgroup>
 <col style="width: 5%" />
@@ -954,8 +952,8 @@ session library, automatically loading from files or workspaces.</td>
 <td style="text-align: justify;"><strong>`Q</strong></td>
 <td style="text-align: center;">Quote</td>
 <td style="text-align: center;"><code>[⍺]`Q ⍵</code></td>
-<td style="text-align: justify;">Place <em>rows of</em> <code>⍵</code> in
-APL quotes.</td>
+<td style="text-align: justify;">Place character objects in <code>⍵</code>
+in APL quotes, row by row.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`S</strong>,
@@ -963,15 +961,15 @@ APL quotes.</td>
 <td style="text-align: center;">Serialise</td>
 <td style="text-align: center;"><code>[⍺]`S ⍵</code></td>
 <td style="text-align: justify;">Serialise an <em>APL</em> array
-<code>⍵</code>, i.e. display it in <em>APL</em> Array Notation
-(APLAN).</td>
+<code>⍵</code>, i.e. display it in <em>APL</em> Array Notation.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`T</strong></td>
 <td style="text-align: center;">Date-Time</td>
 <td style="text-align: center;"><code>[⍺]`T ⍵</code></td>
 <td style="text-align: justify;">Displays ⎕TS-style timestamps
-<code>⍵</code> according to date-time template <code>⍺</code>.</td>
+<code>⍵</code> according to Dyalog date-time template
+<code>⍺</code>.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>`W</strong></td>
@@ -997,7 +995,7 @@ Shortcut<br>(<small>EXPLICIT</small>)</td>
 Shortcut<br>(<small>IMPLICIT</small>)</td>
 <td style="text-align: center;"><code>`⍵</code></td>
 <td style="text-align: justify;">Selects the <strong><em>next</em></strong>
-argument to <strong>∆F</strong>.</td>
+argument to <strong>∆F</strong>, scanning left to right.</td>
 </tr>
 <tr>
 <td style="text-align: justify;"><strong>→</strong><br><strong>↓</strong>
