@@ -390,19 +390,22 @@
     'path' ≡   val: _← libUtil.ShowPath ⍬ 
     'help' ≢ 4↑val: ⎕SIGNAL optÊ 
   ⍝ help, help-wide, or help-narrow?
-    h← {  
-      22:: ⎕SIGNAL helpFiÊ 
-      ⍵: ⊢⎕THIS.helpHtml← ⊃⎕NGET HELP_HTML 
-        ⎕THIS.helpHtml  
-    } 0= ⎕NC 'helpHtml' 
+      h← {  
+        22:: ⎕SIGNAL helpFiÊ 
+        ⍵: ⊢⎕THIS.helpHtml← ⊃⎕NGET HELP_HTML 
+          ⎕THIS.helpHtml  
+      } 0= ⎕NC 'helpHtml' 
   ⍝ Undocumented: [a] 'help' vs [b] ('help-n[arrow]' (vs 'help-w[ide]')
   ⍝ [a]: screen width 1250, including notes; [b] screen width 1000 w no notes 
-    SCREEN_SIZES← (900 1000) (900 1350)
-    s← SCREEN_SIZES⊃⍨ ~'-n'(1∘∊⍷)⍵
-    o← ('HTML'  h) (s,⍨ ⊂'Size') (15 35,⍨ ⊂'Posn') ('Coord' 'ScaledPixel')
-    _← 'htmlObj' ⎕THIS.⎕WC 'HTMLRenderer',⍥⊆ o          ⍝ Run HTMLRenderer
-    1 0⍴⍬
-  } 
+      SCREEN_SIZES← (900 1000) (900 1350)
+      s← SCREEN_SIZES⊃⍨ ~'-n'(1∘∊⍷)⍵
+      o← ('HTML'  h) (s,⍨ ⊂'Size') (15 35,⍨ ⊂'Posn') ('Coord' 'ScaledPixel')    
+      { 
+        0::  ⍵⊣ 3500⌶ h                                   ⍝ Ride, if HTMLRenderer fails...
+          ⍵⊣ 'htmlObj' ⎕THIS.⎕WC 'HTMLRenderer',⍥⊆ o      ⍝ HTMLRenderer
+      } 1 0⍴⍬   
+  }        
+  
 ⍝:EndSection HELP 
 
 ⍝=== Begin LIBRARY Shortcut stubs =======================================================
