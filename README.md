@@ -42,9 +42,7 @@ TOC</a></big>
 
 </details>
 
-<div class="page-break">
-
-</div>
+<!-- <div class="page-break"></div>  -->
 
 # Installing, Loading, and Running **∆F**
 
@@ -400,15 +398,15 @@ below. For an abridged preview, look no further.
 | **\`F**, **\$** | ⎕FMT | `[⍺] $ ⍵` | `⍺ ⎕FMT ⍵`. |
 | **\`J** | Justify | `` [⍺]`J ⍵ `` | Justify *rows of* `⍵` according to `⍺`. |
 | **\`L**, **£** | Session Library | `£, £.arr, £.dfn` | Use arrays, dfns, and dops in a private, session library, automatically loading from files or workspaces. |
-| **\`Q** | Quote | `` [⍺]`Q ⍵ `` | Place *rows of* `⍵` in APL quotes. |
-| **\`S**, **\$\$** | Serialise | `` [⍺]`S ⍵ `` | Serialise an *APL* array `⍵`, i.e. display it in *APL* Array Notation (APLAN). |
-| **\`T** | Date-Time | `` [⍺]`T ⍵ `` | Displays ⎕TS-style timestamps `⍵` according to date-time template `⍺`. |
+| **\`Q** | Quote | `` [⍺]`Q ⍵ `` | Place character objects in `⍵` in APL quotes, row by row. |
+| **\`S**, **\$\$** | Serialise | `` [⍺]`S ⍵ `` | Serialise an *APL* array `⍵`, i.e. display it in *APL* Array Notation. |
+| **\`T** | Date-Time | `` [⍺]`T ⍵ `` | Displays ⎕TS-style timestamps `⍵` according to Dyalog date-time template `⍺`. |
 | **\`W** | Wrap | `` [⍺]`W ⍵ `` | Wraps the *rows of* simple arrays in `⍵` in left and right decorators `⍺`. |
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut<br>(<small>EXPLICIT</small>) | `` `⍵𝑑𝑑 `` | Select **∆F** argument `𝑑𝑑`, i.e. `(⍵⊃⍨ 𝑑𝑑+⎕IO)`, given 𝑑𝑑 an `⎕IO`-independent integer *offset*. |
-| **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | `` `⍵ `` | Selects the ***next*** argument to **∆F**. |
+| **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | `` `⍵ `` | Selects the ***next*** argument to **∆F**, scanning left to right. |
 | **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small> | `{…→}`<br>`{…↓}` | Displays code field source to left of/above its value. |
 
-2a. <strong>Brief Summary of Code Field Shortcuts</strong>
+3a. <strong>Brief Summary of Code Field Shortcuts</strong>
 
 </details>
 
