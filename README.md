@@ -6,14 +6,17 @@
 
 <div class="marquee">
 
+<center>
+
 ***∆F*** is a function for *Dyalog* *APL* that interprets *f‑strings*, a
 concise, yet powerful way to display multiline *APL* text, arbitrary
 *APL* expressions, and multi­dimensional objects using extensions to
 *dfns* and other familiar tools.
+</center>
 
 </div>
 
-# Table of Contents
+# Summary of Contents
 
 <details id="TOC" open>
 
@@ -26,14 +29,16 @@ concise, yet powerful way to display multiline *APL* text, arbitrary
 
 <div class="multi-column-text" style="font-size:80%;">
 
-<big>1. <a href="#installing-loading-and-running-f"        >Installing,
-Loading, and Running **∆F**</a></big> <br><big>2.
+<big>1. <a href="#preparing-to-run-f"                     >Preparing to
+Run **∆F**</a></big> <br><big>2.
 <a href="#overview"                                >Overview</a></big>
-<br><big>3. <a href="#f-examples-a-primer"                     >**∆F**
-Examples: A Primer</a></big><br><big>4.
-<a href="#f-reference"          >**∆F** Reference</a></big> <br><big>5.
+<br><big>3. <a href="#quick-start"                             >**Quick
+Start**</a></big> <br><big>4.
+<a href="#f-examples-a-primer"                     >**∆F** Examples: A
+Primer</a></big><br><big>5. <a href="#f-reference"          >**∆F**
+Reference</a></big> <br><big>6.
 <a href="#appendices"                              >Appendices</a></big>
-<br><big>6. <a href="#detailed-table-of-contents"              >Detailed
+<br><big>7. <a href="#detailed-table-of-contents"              >Detailed
 TOC</a></big>
 
 </div>
@@ -44,7 +49,7 @@ TOC</a></big>
 
 <!-- <div class="page-break"></div>  -->
 
-# Installing, Loading, and Running **∆F**
+# Preparing to Run **∆F**
 
 <details open>
 
@@ -52,10 +57,10 @@ TOC</a></big>
 
 <summary class="summary">
 
- Show/Hide <em>Installing, Loading, and Running <bold>∆F</bold></em>
+ Show/Hide <em>Preparing to Run <bold>∆F</bold></em>
 </summary>
 
-## Installing **∆F**
+## **∆F** Installation
 
 1.  Via your browser, go to Github URL
     <mark><a id="displayText" href="javascript:linkAlert();"><span class="linkNote">https://github.com/thecatsam/f-string-apl.git</span></a></mark>.
@@ -207,6 +212,89 @@ and operators.
 </details>
 
 </details>
+
+# Quick Start
+
+<details open>
+
+<!-- option: open -->
+
+<summary class="summary">
+
+ Show/Hide <em>Quick Start</em>
+</summary>
+
+## Here’s a quick start for the ***too-long-don’t-read*** crowd.
+
+<small>Topic:</small> Embedding variables
+
+      n← ⍪1 2 3 ◇ nPi← ⍪○n  
+      ∆F 'For n={n}, n×Pi={nPi}'  
+    For n=1, n×Pi=3.141592653589793
+          2       6.283185307179586
+          3       9.42477796076938 
+
+<small>Topic:</small> Embedding expressions
+
+      ∆F 'Times Table: {1 2 3 4 ∘.×1 2 3 4 5}'
+    Times Table: 1 2  3  4  5
+                 2 4  6  8 10
+                 3 6  9 12 15
+                 4 8 12 16 20
+
+<small>Topic:</small> Multiple lines with \`◇ separated by space fields
+{ }
+
+      ∆F 'Cats`◇Elephants`◇Monkeys{ }like`◇enjoy`◇eat{ }toys.`◇tv.`◇fruit.'
+    Cats      like  toys. 
+    Elephants enjoy tv.   
+    Monkeys   eat   fruit.
+
+<small>Topic:</small> Format with \$ (⎕FMT)
+
+      ∆F 'For n={⍪ 1 2 3}, n×Pi={"F7.5"$ ○ 1 2 3}'  
+    For n=1, n×Pi=3.14159
+          2       6.28319
+          3       9.42478
+
+<small>Topic:</small> Adding omega shortcut expressions
+
+    ⍝ `⍵1 ==> (⍵⊃⍨ 1+⎕IO), i.e. ⎕IO-independently
+      ∆F 'For n={⍪`⍵1}, n×Pi={"F7.5"$ ○`⍵1}' (1 2 3)
+    For n=1, n×Pi=3.14159
+          2       6.28319
+          3       9.42478
+
+<small>Topic:</small> Adding the Box shortcut
+
+      ∆F 'For n={`B ⍪`⍵1}, n×Pi={`B "F7.5"$ ○`⍵1}' (1 2 3)
+    For n=┌─┐, n×Pi=┌───────┐
+          │1│       │3.14159│
+          │2│       │6.28319│
+          │3│       │9.42478│
+          └─┘       └───────┘
+
+<small>Topic:</small> Using a Self-Documenting Code Field
+
+``` dyalog20
+   sym← ' ⎕'
+   x← 1 2 3 4 3 2 1
+   (box: 1)  ∆F '{ sym[∘.=⍨ x] ↓}'     ⍝ ⎕IO=0 here 
+┌──────────────┐
+│ sym[∘.=⍨ x] ↓│
+│   ⎕     ⎕    │
+│    ⎕   ⎕     │
+│     ⎕ ⎕      │
+│      ⎕       │
+│     ⎕ ⎕      │
+│    ⎕   ⎕     │
+│   ⎕     ⎕    │
+└──────────────┘  
+```
+
+## That’s 80% of what you need. Read on for more…
+
+</div>
 
 <div class="page-break">
 
@@ -376,7 +464,7 @@ degree and Fahrenheit numbers to the nearest tenth of a degree.
 
 **∆F** shortcuts are concise *names* for useful *f-string* utilities.
 For full information on each of the shortcuts, see [**Section
-4.5**](#code-field-shortcuts) in the [**∆F** *Reference*](#f-reference)
+5.5**](#code-field-shortcuts) in the [**∆F** *Reference*](#f-reference)
 below. For an abridged preview, look no further.
 
 <details open>
@@ -399,7 +487,7 @@ below. For an abridged preview, look no further.
 | **\`J** | Justify | `` [⍺]`J ⍵ `` | Justify *rows of* `⍵` according to `⍺`. |
 | **\`L**, **£** | Session Library | `£, £.arr, £.dfn` | Use arrays, dfns, and dops in a private, session library, automatically loading from files or workspaces. |
 | **\`Q** | Quote | `` [⍺]`Q ⍵ `` | Place character objects in `⍵` in APL quotes, row by row. |
-| **\`S**, **\$\$** | Serialise | `` [⍺]`S ⍵ `` | Serialise an *APL* array `⍵`, i.e. display it in *APL* Array Notation. |
+| **\`S** | Serialise | `` [⍺]`S ⍵ `` | Serialise an *APL* array `⍵`, i.e. display it in *APL* Array Notation. |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ `` | Displays ⎕TS-style timestamps `⍵` according to Dyalog date-time template `⍺`. |
 | **\`W** | Wrap | `` [⍺]`W ⍵ `` | Wraps the *rows of* simple arrays in `⍵` in left and right decorators `⍺`. |
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut<br>(<small>EXPLICIT</small>) | `` `⍵𝑑𝑑 `` | Select **∆F** argument `𝑑𝑑`, i.e. `(⍵⊃⍨ 𝑑𝑑+⎕IO)`, given 𝑑𝑑 an `⎕IO`-independent integer *offset*. |
@@ -877,13 +965,13 @@ numbers!
 
 ## The Serialise Shortcut
 
-The Serialise shortcut, `` `S `` or `$$`, displays objects formatted in
-*APL* Array Notation. These include arrays of any depth and shape that
-contain only data arrays (nameclass: `2`) and namespaces (nameclass:
-`9`). The shortcut allows both a ***tabular*** (multiline) form (default
-or `` 0 `S ``) and a ***compact*** format (`` 1 `S ``). If an object
-cannot be displayed in Array Notation, it is typically displayed
-unformatted, *i.e.* as is.
+The Serialise shortcut, `` `S ``, displays objects formatted in *APL*
+Array Notation. These include arrays of any depth and shape that contain
+only data arrays (nameclass: `2`) and namespaces (nameclass: `9`). The
+shortcut allows both a ***tabular*** (multiline) form (default or
+`` 0 `S ``) and a ***compact*** format (`` 1 `S ``). If an object cannot
+be displayed in Array Notation, it is typically displayed unformatted,
+*i.e.* as is.
 
 Here’s a brief example showing a scalar, vector, matrix, and vector of
 (character) vectors:
@@ -903,7 +991,7 @@ Here’s a brief example showing a scalar, vector, matrix, and vector of
    'dogs'
   )
 )
-   ∆F '{ 1 $$ (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: "cats" "dogs" )}'
+   ∆F '{ 1 `S (scal: 3 ◇ vec: ⍳3 ◇ mx: 3 3⍴⎕A ◇ vv: "cats" "dogs" )}'
 (mx:[◇'ABC'◇'DEF'◇'GHI'◇]◇scal:3◇vec:0 1 2◇vv:('cats'◇'dogs'◇)◇)
 ```
 
@@ -914,7 +1002,7 @@ an *APL* namespace:
        j←'{fred:[1,2,3],jack:9,name:{a:1,b:2}}'
        JSON← ⎕JSON⍠('Dialect' 'JSON5')
 
-       ∆F 'JSON:`◇APL:  {j % 1$$ JSON j} '
+       ∆F 'JSON:`◇APL:  {j % 1`S JSON j} '
     JSON:  {fred:[1,2,3],jack:9,name:{a:1,b:2}}
     APL:   (fred:1 2 3◇jack:9◇name:(a:1◇b:2◇)◇)
 
@@ -1274,25 +1362,25 @@ examples.
 |:---|:---|
 | **∆F** ***f‑string*** | Display an *f‑string*; use the *default* options. The string may reference objects in the environment or in the string itself. Returns a character matrix. <br><strong>Single or [multi­line f-string:](#multiline-f-strings-in-dyalog-20)</strong> An ***f-string*** must be a character vector of any length or a [vector of character vectors](#multiline-f-strings-in-dyalog-20). If the latter, it will be converted (via *enlist,* `∊`) to one, longer character vector, without any added spaces, newlines, etc. |
 | **∆F** ***f‑string*** ***args*** | Display an *f‑string* (see above); use the *default* options. Arguments presented *may* be referred to in the f‑string. Returns a character matrix. |
-| ***options*** **∆F** ***f‑string*** \[***args***\] | Display an *f‑string* (see above); control the result with *options* specified (see below).<br><span class="red">If ***dfn*** (see below) is ***0*** or omitted,</span> returns a character matrix.<br><span class="red">If ***dfn*** is ***1***,</span> returns a dfn that will display such a matrix (given an identical system state). |
+| ***options*** **∆F** ***f‑string*** \[***args***\] | Display an *f‑string* (see above); control the result with *options* specified (see below).<br><span class="red"><strong>If ***dfn*** (see below) is ***0*** or omitted,</strong></span> returns a character matrix.<br><span class="red"><strong>If ***dfn*** is ***1***,</strong></span> returns a dfn that will display such a matrix (given an identical system state). |
 | ‘help’ **∆F** ‘ ’ *or* **∆F**⍨‘help’ | Display help info and examples for **∆F**. The *f‑string* is not examined. <big>👉</big> See below for details and related examples. |
 | ***Return value*** | See below. |
 
-4a. <strong>∆F Call Syntax Overview</strong>
+5a. <strong>∆F Call Syntax Overview</strong>
 
 ## ∆F Option Details
 
 | <br>Mode | Positional<br>Option<br><small>\[*index*\]</small> | Keyword<br>Option<br><small>(*kw: def*) | <br>Description |
 |:--:|:--:|:--:|:---|
-| **Dfn** | ***\[0\]*** | ***dfn: 0*** | <span class="red">If ***dfn: 1***,</span> **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br><span class="red">If ***dfn: 0*** (default),</span> **∆F** returns a char. matrix. |
-| **Verbose** | ***\[1\]*** | ***verbose: 0*** | <span class="red">If ***verbose: 1***,</span> Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; <span class="red">if ***dfn*** is also ***1***,</span> this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br><span class="red">If ***verbose: 0*** (default),</span> newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
-| **Box** | ***\[2\]*** | ***box: 0*** | <span class="red">If ***box: 1***,</span> each field (except a null **Text** field) is boxed separately.<br><span class="red">If ***box: 0*** (default),</span> nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><big>👉</big> ***Box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
-| **Auto** | ***\[3\]*** | ***auto: 1*** | <span class="red">If ***auto: 0***,</span> user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br><span class="red">If ***auto: 1*** (default),</span> honors the default and user-defined settings for `auto`.<br><big>👉</big> Depends on (i) user parameter file **./.∆F** and (ii) the namespace **⍙Fapl** created during the `]load` process. |
-| **Inline** | ***\[4\]*** | ***inline: 0*** | <span class="red">If ***inline: 1***,</span> the code for each internal support function used is included in the result. <span class="red">If ***dfn*** is also 1,</span> ***no*** reference to namespace **⍙Fapl** will be made during the execution of the generated *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br><span class="red">If ***inline: 0*** (default),</span> whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br><big>👉</big> This option is experimental and may simply disappear one day. |
-| **Special** | ***‘help’*** | — | <span class="red">If ***‘help’*** is specified,</span> this amazing doc­ument­ation is displayed. |
-| **Special** | ***‘parms’*** | — | <span class="red">If ***‘parms’*** is specified,</span> updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. <big>👉</big> This option is ex­peri­ment­al. |
+| **Dfn** | ***\[0\]*** | ***dfn: 0*** | <span class="red"><strong>If ***dfn: 1***,</strong></span> **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br><span class="red"><strong>If ***dfn: 0*** (default),</strong></span> **∆F** returns a char. matrix. |
+| **Verbose** | ***\[1\]*** | ***verbose: 0*** | <span class="red"><strong>If ***verbose: 1***,</strong></span> Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; <span class="red"><strong>if ***dfn*** is also ***1***,</strong></span> this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br><span class="red"><strong>If ***verbose: 0*** (default),</strong></span> newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
+| **Box** | ***\[2\]*** | ***box: 0*** | <span class="red"><strong>If ***box: 1***,</strong></span> each field (except a null **Text** field) is boxed separately.<br><span class="red"><strong>If ***box: 0*** (default),</strong></span> nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><big>👉</big> ***Box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
+| **Auto** | ***\[3\]*** | ***auto: 1*** | <span class="red"><strong>If ***auto: 0***,</strong></span> user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br><span class="red"><strong>If ***auto: 1*** (default),</strong></span> honors the default and user-defined settings for `auto`.<br><big>👉</big> Depends on (i) user parameter file **./.∆F** and (ii) the namespace **⍙Fapl** created during the `]load` process. |
+| **Inline** | ***\[4\]*** | ***inline: 0*** | <span class="red"><strong>If ***inline: 1***,</strong></span> the code for each internal support function used is included in the result. <span class="red"><strong>If ***dfn*** is also 1,</strong></span> ***no*** reference to namespace **⍙Fapl** will be made during the execution of the generated *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br><span class="red"><strong>If ***inline: 0*** (default),</strong></span> whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br><big>👉</big> This option is experimental and may simply disappear one day. |
+| **Special** | ***‘help’*** | — | <span class="red"><strong>If ***‘help’*** is specified,</strong></span> this amazing doc­ument­ation is displayed. |
+| **Special** | ***‘parms’*** | — | <span class="red"><strong>If ***‘parms’*** is specified,</strong></span> updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. <big>👉</big> This option is ex­peri­ment­al. |
 
-4b. <strong>∆F Option Details</strong>
+5b. <strong>∆F Option Details</strong>
 
 - **Default options:** If the left argument `⍺` is omitted, the options
   default as shown here.
@@ -1302,7 +1390,7 @@ examples.
   | **Positional** |                      `0 0 0 1 0`                       |
   |  **Keyword**   | `(dfn: 0 ◇ verbose: 0 ◇ box: 0 ◇ auto: 1 ◇ inline: 0)` |
 
-  4c. <strong>∆F Default Options</strong>
+  5c. <strong>∆F Default Options</strong>
 
 - **Positional-style options:** If **∆F**’s left argument `⍺` is a
   simple integer vector (or a scalar), omitted (trailing) elements are
@@ -1385,18 +1473,18 @@ in **Code** fields only *outside* **Quoted strings**.
 | **\`B** | Box | `` `B ⍵ `` | Places `⍵` in a box. `⍵` is any array. |
 | **\`C** | Commas | `` [⍺]`C ⍵ `` | By default, adds commas after every 3rd digit (from the right) of the *integer* part of each number in `⍵` (leaving the fractional part as is). `⍵` is zero or more num strings and/or numbers. If specified, ⍺\[0\] is the stride, *if not 3,* as an integer or as a single quoted digit; if specified, ⍺\[1\] is the character (even “\`◇”) to insert *in place of* a comma. <br><small>Examples: “5\_” adds an underscore every 5 digits from the right. “3\`◇” puts each set of 3 digits on its own line.</small> |
 | **\`D** | Date-Time | `` [⍺]`D ⍵ `` | Synonym for **\`T**. |
-| **\`F**, **\$** | ⎕FMT | `[⍺] $ ⍵` | Short for `[⍺] ⎕FMT ⍵`. (See *APL* doc­ument­ation).<br>NB. See `` `S `` for meaning of `$$`. |
+| **\`F**, **\$** | ⎕FMT | `[⍺] $ ⍵` | Short for `[⍺] ⎕FMT ⍵`. (See *APL* doc­ument­ation). |
 | **\`J** | Justify | `` [⍺]`J ⍵ `` | Justify each row of object `⍵` as text:<br>  *left*: ⍺=“L”; *center*: ⍺=“C”; *right* ⍺=“R”.<br>You may use `¯1`\|`0`\|`1` in place of `"L"`\|`"C"`\|`"R"`. If omitted, `⍺←'L'`. <small>*Displays numbers with the maximum precision available.*</small> |
 | **\`L**, **£** | Session Library | `£.nm` | `£` denotes a private library (namespace) local to the **∆F** runtime environ­ment into which functions or objects (including name­spaces) may be placed (e.g. via `⎕CY`) for the duration of the *APL* session.<br>**Autoload:** Outside of simple assignments, **∆F** will attempt to copy an undefined object `obj` in the expression `£.obj` from, *in order:*<br> <small><sup>directory</sup></small> **./MyDyalogLib/**  \>  <small><sup>*APL* ws</sup></small> **dfns**  \> <small><sup>directory</sup></small> **./**<br><small>Other `£` expressions like `£.(hex dec)` are valid, but no autoload takes place.<br>*For filetypes and customisation, see [Session Library Shortcut: Details](#session-library-shortcut-details) below.*</small> |
 | **\`Q** | Quote | `` [⍺]`Q ⍵ `` | Recursively scans `⍵`, putting char. vectors, scalars, and rows of higher-dimensional strings in APL quotes, leaving other elements as is. If omitted, `⍺←''''`. |
-| **\`S**, **\$\$** | Serialise | `` [⍺]`S ⍵ `` | Serialise an *APL* array (via ⎕SE.Dyalog.Array.Serialise), i.e. show in *APL* Array Notation (APLAN), either (`⍺=0`, the default) in *tabular* (multiline) form or (`⍺=1`) compactly with statement separators `◇` in place of newlines. If omitted, `⍺←0`. <small>*See details below.*</small> |
+| **\`S** | Serialise | `` [⍺]`S ⍵ `` | Serialise an *APL* array (via ⎕SE.Dyalog.Array.Serialise), i.e. show in *APL* Array Notation (APLAN), either (`⍺=0`, the default) in *tabular* (multiline) form or (`⍺=1`) compactly with statement separators `◇` in place of newlines. If omitted, `⍺←0`. <small>*See details below.*</small> |
 | **\`T** | Date-Time | `` [⍺]`T ⍵ `` | Displays timestamp(s) `⍵` according to date-time template `⍺`. `⍵` is one or more APL timestamps `⎕TS`. `⍺` is a date-time template in `1200⌶` format. If omitted, `⍺← '%ISO%'`. |
 | **\`W** | Wrap | `` [⍺]`W ⍵ `` | Wraps the rows of simple arrays in ⍵ in decorators `0⊃2⍴⍺` (on the left) and `1⊃2⍴⍺` (on the right). If omitted, `⍺←''''`. <small>*See details below.*</small> |
 | **\`⍵𝑑𝑑**, **⍹𝑑𝑑** | Omega Shortcut<br>(<small>EXPLICIT</small>) | — | A shortcut of the form `` `⍵𝑑𝑑 `` (or `⍹𝑑𝑑`), to access the `𝑑𝑑`**th** element of `⍵`, *i.e.* `(⍵⊃⍨ 𝑑𝑑+⎕IO)`. <small>*See details below.*</small> |
 | **\`⍵**, **⍹** | Omega Shortcut<br>(<small>IMPLICIT</small>) | — | A shortcut of the form `` `⍵ `` (or `⍹`), to access the ***next*** element of `⍵`. <small>*See details below.* <small> |
 | **→**<br>**↓** *or* **%** | Self-documenting **Code** Fields <small>(SDCFs)</small> | — | `→` at end of **Code** field signals that the source code for the field appears *to the left of* its value. Surrounding blanks are significant.<br>`↓` (*or,* `%`) at end of **Code** field signals that the source code for the field appears *above* its value. Surrounding blanks are significant.<br><small>*See [SDCFs](#self-documenting-code-fields-sdcfs) in **Examples** for details.*</small> |
 
-4d. <strong>Code Field Shortcuts</strong>
+5d. <strong>Code Field Shortcuts</strong>
 
 <br>
 
@@ -1414,7 +1502,7 @@ Quoted strings:
 | **\`{** | { | left brace | Text fields only |
 | **\`}** | } | right brace | Text fields only |
 
-4e. <strong>Escape Sequences</strong>
+5e. <strong>Escape Sequences</strong>
 
 Other instances of the backtick character in **Text** fields or **Quoted
 strings** in **Code** fields will be treated literally, *i.e.* sometimes
@@ -1444,7 +1532,7 @@ string**, you must double it. You may *not* use an escape sequence
 |   `'`    | `∆F '{''like ''''this'''' example''}'` | `like 'this' example` |
 |  `« »`   |       `∆F '{«or «this»» one»}'`        |    `or «this» one`    |
 
-4f. <strong>Doubling Quote Character in Quoted String</strong>
+5f. <strong>Doubling Quote Character in Quoted String</strong>
 
 Note that the opening quote `«` is treated as an ordinary character
 within the string. The clumsiness of the standard single quote `'`
@@ -1472,20 +1560,16 @@ delimiter for the outermost (*APL*-level) string.
 
 ## **Serialise** Shortcut Expressions: Details
 
-Serialise ( `` `S `` or `$$`) uses Dyalog *APL*’s Array Notation (APLAN)
-to display the object to its right. It is intended to have roughly the
-same behaviour as displaying an object with `]APLAN.output on`. (See
-Dyalog documentation for details).
+Serialise ( `` `S ``) uses Dyalog *APL*’s Array Notation (APLAN) to
+display the object to its right. It is intended to have roughly the same
+behaviour as displaying an object with `]APLAN.output on`. (See Dyalog
+documentation for details).
 
 1.  Serialise displays objects of classes 2 and 9— data arrays and
     namespaces— in Array Notation, as long as they contain ***no***
-    functions or operators. If `⍵` *includes* a function or operator,
-    `$$` or `` `S `` will display `⍵` *unformatted*, rather than in
+    functions or operators. If `⍵` *includes* a function or
+    operator,`` `S `` will display `⍵` *unformatted*, rather than in
     APLAN format.
-2.  The sequence `$$$` may be useful; it is parsed as `$$ $`, i.e. as a
-    serialisation (`` `S ``) of a formatted (`` `F ``) object. Longer
-    sequences are valid, parsed as 0 or more `$$`, followed by a single
-    `$`. consuming
 
 <div>
 
@@ -1540,7 +1624,7 @@ Dyalog documentation for details).
 | apla | Assigns array or ns<br>(array notation) | 2, 9 | *assignment* | ✔ | ✔ |
 | json | Fixes ns from JSON5 | 9 | ⎕JSON | ✔ | ✔ |
 | txt | Assigns char. vectors | 2 | *assignment* | ✔ | ✔ |
-| dyalog, *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red">✘</span> | <span class="red">✘<small> NEVER</small></span> |
+| dyalog, *other* | Fixes object | 3, 4, 9 | ⎕FIX | <span class="red"><strong>✘</strong></span> | <span class="red"><strong>✘<small> NEVER</small></strong></span> |
 
 4g. <strong>Library Filetypes: Meaning</strong>
 
@@ -1720,93 +1804,102 @@ For more information on Python f-strings, *see*:
  Show/Hide <em>Detailed Table of Contents</em>
 </summary>
 
-<div class="multi-column-text" style="font-size:100%;">
+<div class="multi-column-text" style="font-size:80%;">
 
 <big>1.
-<a href="#installing-loading-and-running-f"        ><big>Installing,
-Loading, and Running **∆F**</big></a></big> <br> 1.1
-<a href="#installing-f"                            >Installing
-**∆F**</a> <br> 1.2
-<a href="#loading-and-running-f"                   >Loading and Running
-**∆F**</a> <br> 1.3
-<a href="#displaying-f-help-in-apl"                >Displaying **∆F**
-**Help** in *APL*</a> <br><big>2.
-<a href="#overview"                                ><big>Overview</big></a></big>
+<a href="#preparing-to-run-f"                      ><big><span class="red"><strong>Preparing</strong></span>
+to Run ∆F</big></a></big> <br> 1.1
+<a href="#f-installation"                          >∆F
+<span class="red"><strong>Installation</strong></span></a> <br> 1.2
+<a href="#loading-and-running-f"                   ><span class="red"><strong>Loading</strong></span>
+and </strong></span>Running</strong></span> ∆F</a> <br> 1.3
+<a href="#displaying-f-help-in-apl"                >Displaying ∆F
+<span class="red"><strong>Help</strong></span> in APL</a> <br><big>2.
+<a href="#overview"                                ><big><span class="red"><strong>Overview</strong></span></big></a></big>
 <br><big>3.
-<a href="#f-examples-a-primer"                     ><big>**∆F**
-Examples: A Primer</big></a></big> <br> 3.1
-<a href="#code-fields"                             ><span class="red">**Code**</span>
-Fields</a> <br> 3.2
-<a href="#text-fields-and-space-fields"            ><span class="red">**Text**</span>
-Fields and <span class="red">**Space**</span> Fields</a> <br> 3.3
-<a href="#null-space-fields"                       ><span class="red">**Null
-Space**</span> Fields</a> <br> 3.4
-<a href="#code-fields-continued"                   ><span class="red">**Code**</span>
-Fields (Continued)</a> <br> 3.5
+<a href="#quick-start"                              ><big><span class="red"><strong>Quick
+Start</strong></span></big></a></pTo> <br><big>4.
+<a href="#f-examples-a-primer"                     ><big>∆F
+<span class="red"><strong>Examples</strong></span>: A
+Primer</big></a></big> <br> 4.1
+<a href="#code-fields"                             ><big><span class="red"><strong>Code</strong></span>
+Fields</big></a> <br> 4.2
+<a href="#text-fields-and-space-fields"            ><span class="red"><strong>Text</strong></span>
+Fields and <span class="red"><strong>Space</strong></span> Fields</a>
+<br> 4.3
+<a href="#null-space-fields"                       ><span class="red"><strong>Null
+Space</strong></span> Fields</a> <br> 4.4
+<a href="#code-fields-continued"                   ><span class="red"><strong>Code</strong></span>
+Fields (Continued)</a> <br> 4.5
 <a href="#the-box-shortcut"                        >The
-<span class="red">**Box**<span class="red"> Short­cut</a> <br> 3.6
-<a href="#box-mode"                                ><span class="red">**Box**
-Mode</span></a> <br> 3.7
-<a href="#omega-shortcuts-explicit"                >**Omega** Short­cuts
-(Explicit)</a> <br> 3.8
+<span class="red"><strong>Box</strong></span> Short­cut</a> <br> 4.6
+<a href="#box-mode"                                ><span class="red"><strong>Box</strong></span>
+Mode</a> <br> 4.7
+<a href="#omega-shortcuts-explicit"                ><span class="red"><strong>Omega</strong></span>
+Short­cuts (Explicit)</a> <br> 4.8
 <a href="#referencing-the-fstring-itself"          >Referencing the
-<span class="red">**F‑string Itself**</span></a> <br> 3.9
+<span class="red"><strong>F‑string</strong></span></a> <br> 4.9
 <a href="#the-format-shortcut"                     >The
-<span class="red">**Format**</span> Short­cut</a> <br> 3.10
+<span class="red"><strong>Format</strong></span> Short­cut</a> <br> 4.10
 <a href="#the-shortcut-for-numeric-commas"        >The Short­cut for
-Numeric <span class="red">**Commas**</span></a> <br> 3.11
-<a href="#self-documenting-code-fields-sdcfs"     >Self-documenting
-**Code** fields (<span class="red">**SDCFs**</span>)</a> <br> 3.12
+Numeric <span class="red"><strong>Commas</strong></span></a> <br> 4.11
+<a href="#self-documenting-code-fields-sdcfs"     ><span class="red"><strong>Self-documenting
+Code fields</strong></span> (SDCFs)</a> <br> 4.12
 <a href="#the-above-shortcut"                     >The
-<span class="red">**Above**</span> Short­cut</a> <br> 3.13
+<span class="red"><strong>Above</strong></span> Short­cut</a> <br> 4.13
 <a href="#text-justification-shortcut"            >Text
-<span class="red">**Justification**</span> Short­cut</a> <br> 3.14
-<a href="#omega-shortcuts-implicit"               ><span class="red">**Omega**</span>
-Short­cuts (Implicit)</a> <br> 3.15
-<a href="#shortcuts-with-apl-expressions"         >Short­cuts With *APL*
-Expressions</a> <br> 3.16
+<span class="red"><strong>Justification</strong></span> Short­cut</a>
+<br> 4.14
+<a href="#omega-shortcuts-implicit"               ><span class="red"><strong>Omega</strong></span>
+Short­cuts (Implicit)</a> <br> 4.15
+<a href="#shortcuts-with-apl-expressions"         >Using Short­cuts With
+<span class="red"><strong>APL Expressions</strong></span></a> <br> 4.16
 <a href="#a-shortcut-for-dates-and-times-part-i"  >A Short­cut for Dates
-and <span class="red">**Times**</span> (Part I)</a> <!-- pTbr -->
-<br> 3.17 <a href="#a-shortcut-for-dates-and-times-part-ii" >A Short­cut
-for <span class="red">**Dates**</span> and Times (Part II)</a> <br> 3.18
-<a href="#the-quote-shortcut"                     >The
-<span class="red">**Quote**</span> Short­cut</a> <br> 3.19
+and <span class="red"><strong>Times</strong></span> (Part I)</a>
+<!-- pTbr --> <br> 4.17
+<a href="#a-shortcut-for-dates-and-times-part-ii" >A Short­cut for
+<span class="red"><strong>Dates</strong></span> and Times (Part II)</a>
+<br> 4.18 <a href="#the-quote-shortcut"                     >The
+<span class="red"><strong>Quote</strong></span> Short­cut</a> <br> 4.19
 <a href="#the-serialise-shortcut"                 >The
-<span class="red">**Serialise**</span> Shortcut</a> <br> 3.20
-<a href="#the-wrap-shortcut"         >The
-<span class="red">**Wrap**</span> Short­cut </a> <br> 3.21
-<a href="#the-session-library-shortcut">The Session
-<span class="red">**Library**</span> Short­cut </a> <br> 3.22
-<a href="#precomputed-fstrings-with-the-dfn-option"><span class="red">**Precomputed
-F‑strings**</span> with the ***dfn*** Option</a> <br> 3.23
-<a href="#multiline-f-strings-in-dyalog-20"><span class="red">**Multiline**
-***F-strings***</span> in Dyalog 20</a> <br><big>4.
-<a href="#f-reference"          ><big>**∆F** Reference</big></a></big>
-<br> 4.1 <a href="#f-call-syntax-overview"                  >**∆F** Call
-Syntax Overview</a> <br> 4.2
-<a href="#f-option-details"                        >**∆F** Option
-Details</a> <br> 4.3
-<a href="#f-return-value"                          >**∆F** Return
-Value</a> <br> 4.4
-<a href="#f-fstring-building-blocks"               >**∆F** F‑string
-Build­ing Blocks</a> <br> 4.5
-<a href="#code-field-shortcuts"                    >**Code** Field
-Short­cuts</a> <br> 4.6
-<a href="#escape-sequences-text-fields-quoted-strings">Escape Sequences:
-**Text** Fields & Quoted Strings</a> <br> 4.7
-<a href="#quoted-strings-in-code-fields"           >Quoted Strings in
-**Code** Fields</a> <br> 4.8
-<a href="#omega-shortcut-expressions-details"      >**Omega** Short­cut
-Expressions: Details</a> <br> 4.9
-<a href="#serialise-shortcut-expressions-details"  >**Serialise**
-Shortcut Expressions: Details</a> <br> 4.10
-<a href="#wrap-shortcut-details"                  >**Wrap** Short­cut:
-Details</a> <br> 4.11
-<a href="#session-library-shortcut-details"       >Session **Library**
-Short­cut: Details</a> <br><big>5.
+<span class="red"><strong>Serialise</strong></span> Shortcut</a>
+<br> 4.20 <a href="#the-wrap-shortcut"                      >The
+<span class="red"><strong>Wrap</strong></span> Short­cut </a> <br> 4.21
+<a href="#the-session-library-shortcut"           >The Session
+<span class="red"><strong>Library</strong></span> Short­cut </a>
+<br> 4.22
+<a href="#precomputed-fstrings-with-the-dfn-option"><span class="red"><strong>Precomputed
+F‑strings</strong></span> with the *dfn* Option</a> <br> 4.23
+<a href="#multiline-f-strings-in-dyalog-20"       ><span class="red"><strong>Multiline
+F-strings</strong></span> in Dyalog 20</a> <br><big>5.
+<a href="#f-reference"                             ><big><span class="red"><strong>∆F
+Reference</strong></span></big></a></big> <br> 5.1
+<a href="#f-call-syntax-overview"                  >∆F
+<span class="red"><strong>Call Syntax</strong></span> Overview</a>
+<br> 5.2 <a href="#f-option-details"                        >∆F
+<span class="red"><strong>Option Details</strong></span></a> <br> 5.3
+<a href="#f-return-value"                          >∆F
+<span class="red"><strong>Return Values</strong></span></a> <br> 5.4
+<a href="#f-fstring-building-blocks"               >∆F F‑string
+<span class="red"><strong>Build­ing Blocks</strong></span></a> <br> 5.5
+<a href="#code-field-shortcuts"                    >Code Field
+<span class="red"><strong>Short­cuts</strong></span></a> <br> 5.6
+<a href="#escape-sequences-text-fields-quoted-strings"><span class="red"><strong>Escape
+Sequences</strong></span>: Text Fields & Quoted Strings</a> <br> 5.7
+<a href="#quoted-strings-in-code-fields"           ><span class="red"><strong>Quoted
+Strings</strong></span> in Code Fields</a> <br> 5.8
+<a href="#omega-shortcut-expressions-details"      ><span class="red"><strong>Omega</strong></span>
+Short­cut Expressions: Details</a> <br> 5.9
+<a href="#serialise-shortcut-expressions-details"  ><span class="red"><strong>Serialise</strong></span>
+Shortcut: Details</a> <br> 5.10
+<a href="#wrap-shortcut-details"                  ><span class="red"><strong>Wrap</strong></span>
+Short­cut: Details</a> <br> 5.11
+<a href="#session-library-shortcut-details"       >Session
+<span class="red"><strong>Library</strong></span> Short­cut: Details</a>
+<br><big>6.
 <a href="#appendices"                              ><big>Appendices</big></a></big>
-<br> 5.1 <a href="#appendix-i-underdocumented-features"    >Appendix I:
-Un(der)doc­ument­ed Features</a> <br> 5.2
+<br> 6.1 <a href="#appendix-i-underdocumented-features"    >Appendix I:
+Un(der)doc­ument­ed Features</a> <br> 6.2
 <a href="#appendix-ii-python-fstrings"            >Appendix II: Python
 f‑strings</a>
 
@@ -1841,7 +1934,6 @@ f‑strings</a>
 <br> <span id="copyright" style="font-family:cursive;"> Copyright
 <big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-13\]
 </span> <br>
-
 </div>
 
 <!-- End div for right-margin-bar -->
@@ -1858,3 +1950,5 @@ style="font-weight: bold; font-size: 20px;font-family: Tahoma,  sans-serif;">
 </div>
 
 <!-- (C) 2025 Sam the Cat Foundation -->
+
+</div>
