@@ -132,10 +132,11 @@
           p= ≢⍵:  ⎕SIGNAL brÊ                          ⍝ Missing "}" => Error. 
             pfx c w← (⍺, p↑⍵) (p⌷⍵) (⍵↓⍨ p+1)          ⍝ Some cases below (marked [１]) are ordered! 
           c= sp:     (pfx, sp) ∇ w↓⍨ cfG+← p← +/∧\' '=w ⍝ Handle runs of blanks
-         (c= rb)∧ brG≤ 1: (TrimR pfx) w                ⍝ [１] Closing "}" => Return... Scan complete! 
+                                                       ⍝ DONE: Return non-SDCF field
+         (c= rb)∧ brG≤ 1: (CFDfn TrimR pfx) w  
           c∊ lb_rb:  (pfx, c) ∇ w⊣ brG+← -/c= lb_rb    ⍝ [１] Inc/dec brG as appropriate
           c∊ qtsL:   (pfx, a) ∇ w⊣  cfG+← c⊣ a w c← CFStr c w  ⍝ Opening quote => CFStr  
-          c= dol:    (pfx, d2⊃ scF scS) ∇ w↓⍨ d2←dol=⊃w  ⍝ $ => ⎕FMT,$$ => Serialise 
+          c= dol:    (pfx, scF) ∇ w                    ⍝ $ => ⎕FMT 
           c= esc:    (pfx, a)  ∇ w⊣ a w← CFEsc w       ⍝ `⍵, `⋄, `A, `B, etc.
           c= omUs:   (pfx, a)  ∇ w⊣ a w← CFOm w        ⍝ ⍹, alias to `⍵ (see CFEsc).
         ⍝ c= '£':    Auto returns the Library namespace as text after any required loads.
@@ -146,10 +147,12 @@
             p← +/∧\' '=w
           rb≠ ⊃p↓w:  (pfx, c scA⊃⍨ c= pct) ∇ w         ⍝ not CF-final '}' => not SDCF
             codeStr← AplQt cfBeg↑⍨ cfG+ p              ⍝ SDCF! Put CF-literal in quotes
-           (codeStr, (scA scM⊃⍨ c='→'), pfx) (w↓⍨ p+1) ⍝ Assemble SDCF and return from ⍙Scan.
+          ⍝ Assemble code field literal + formatter + code field dfn call
+            pfx2← codeStr, (scA scM⊃⍨ c='→'), CFDfn pfx 
+            pfx2 (w↓⍨ p+1)
         }
-        a w← '' ⍙Scan w
-        '' TF w⊣ fG,← ⊂'(', lb, a, rb, '⍵)'            ⍝ Process field & then head to TF
+        a w← '' ⍙Scan w                                
+        '' TF w ⊣  fG,← ⊂lp, a, rp                     ⍝ Save CF, head to TF Scan.    
     } ⍝ End CF_SF (Code/Space Field Scan)
   
   ⍝ SFCode: Generate a SF code string; ⍵ is a pos. integer. (Used in CF_SF above)
@@ -279,7 +282,8 @@
 ⍝ Basic quote chars
   dq sq← '"'''
 ⍝ Other basic characters
-  sp lb rb dol omUs ra da pct libCh← ' {}$⍹→↓%£' 
+  sp lb rb lp rp dol omUs ra da pct libCh← ' {}()$⍹→↓%£' 
+  rbW← '}⍵'
 ⍝ Seq. `⋄ OR `◇ map onto ⎕UCS 13.
 ⍝ dia2[0]: Dyalog stmt separator 
 ⍝ dia2[1]: Alternative character that is easier to read in some web browsers. 
@@ -314,6 +318,7 @@
   CFBrk← ⌊/⍳∘cfBrkList
 
   TrimR←  ⊢↓⍨-∘(⊥⍨sp=⊢)                                ⍝ { ⍵↓⍨ -+/∧\⌽⍵= sp}
+  CFDfn← lb∘,,∘rbW                                     ⍝ Create literal code field dfn call
 ⍝ IntOpt: Does ⍵ start with a valid sequence of digits (a non-neg integer)? 
 ⍝ Returns 2 integers and a string: 
 ⍝   [0] len of sequence of digits (pos integer) or 0, 
