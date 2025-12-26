@@ -464,8 +464,7 @@
 ⍝⍝⍝ These do what we need internally, not the entire service.
 ⍝⍝⍝ If we are on version 20, we just use those, of course.
 ⍝ ∆VGET, ∆VSET, AN2Apl, (same for both so far:) Apl2AN
-  ∇ {version}← ⍙Gen_LegacyAplAN 
-    version← DYALOG_VERSION
+  ∇ {version}← ⍙Gen_LegacyAplAN version  
     :IF version< 20                         ⍝ Are we on version 20 or later?
       ∆VGET← { (↓⊃⍵) ⍺.{ 0≠⎕NC ⍺: ⎕OR ⍺ ⋄ ⍵ }¨ ⊃⌽⍵ }
       ∆VSET←{ 
@@ -659,7 +658,7 @@
 ⍝ ====================================================================================
 ⍝ Execute the FIX-TIME Routines
 ⍝ ====================================================================================
-    ⍙Gen_LegacyAplAN                              ⍝ ∆NS, ∆VGET, ∆VSET, AN2Apl, Apl2AN 
+    ⍙Gen_LegacyAplAN  DYALOG_VERSION                   ⍝ ∆NS, ∆VGET, ∆VSET, AN2Apl, Apl2AN 
     OPTS_DEFns← (⎕NS⍬)∆VSET OPTS_KW OPTS_DEFarr   ⍝ Generate default opts NS
     ⍙Export_∆F ##  0  
     ⍙Load_Shortcuts

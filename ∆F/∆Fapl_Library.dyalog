@@ -1,4 +1,4 @@
-⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-25') 
+⍝ ∆Fapl_LibSC.dyalog      (UPDATE_TIME: '2025-12-26') 
 :Namespace libUtil 
 ⍝ This namespace handles Library (£ or `L) shortcut automatic loading...
 ⍝ ∘ See ⍙Fapl for fn ⍙LoadLibAuto, which loads this library.
