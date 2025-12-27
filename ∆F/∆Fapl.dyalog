@@ -111,7 +111,7 @@
 ⍝ Calls Major Field Recursive Scanners: 
 ⍝ ∘ TF: text; 
 ⍝ ∘ CF_SF, CF: space fields and code fields; 
-⍝ ∘ CFStr: (code field) quoted strings
+⍝ ∘ CFQS: (code field) quoted strings
   FmtScan← {  
   ⍝ TF: Text Field Scan 
   ⍝    ''←  accum ∇ str
@@ -124,44 +124,42 @@
   ⍝ If it sees /^\s*\}/, it emits Space field code and returns.
   ⍝ Otherwise, it calls CF (Code Field).
     TF← {  
-        p← TFBrk ⍵                                     ⍝ esc, lb, or nl only. 
-      p= ≢⍵: ê TFDone ⍺, ⍵                             ⍝ No special chars in ⍵. Process => return.
-        pfx← p↑⍵ 
-        c←   p⌷⍵
-        w←   ⍵↓⍨ p+1
-      c= esc: (⍺, pfx, ê.nl TFEsc w) ∇ 1↓ w            ⍝ char is esc. Process => Recurse
-        _← ê TFDone ⍺, pfx                             ⍝ Process TF and continue.
-    ⍝ ======================================================================
-    ⍝ c= lb:  ⍝ Check for Space Field vs Code Field
+        p← TFBrk ⍵                                     ⍝ (esc or lb) only. 
+      p= ≢⍵: ê TFProc ⍺, ⍵                             ⍝ Nothing special. Process => return.
+        pfx← p↑⍵ ⋄ c←   p⌷⍵ ⋄ w←   ⍵↓⍨ p+1             ⍝ Found something!
+      c= esc: (⍺, pfx, ê.nl TFEsc w) ∇ 1↓ w            ⍝ char is esc. Process. => Continue
+  ⍝ ======================================================================
+    ⍝ c= lb:  Finish TF. Check for Space Field vs Code Field
     ⍝ ======================================================================   
-        ê.cfBeg← w                                     ⍝ Note start of field in case SDCF.              
-      rb= ⊃w: '' ∇ 1↓ w                                ⍝ Null SF? (Do nothing) => Recurse.
-        nSp← w↓⍨← +/∧\' '= w                           ⍝ See if non-null SF.                             
-      rb= ⊃w: '' ∇ 1↓ w⊣ ê.flds,← ⊂SFCode nSp          ⍝ Yes. Process. => Recurse.
+        _← ê TFProc ⍺, pfx                             ⍝ Process TF.
+         ê.cfBeg← w                                    ⍝ Mark start of field in case SDCF.              
+      rb= ⊃w: '' ∇ 1↓ w                                ⍝ Null SF? (Do nothing) => Continue
+        nSp← w↓⍨← +/∧\' '= w                           ⍝ Non-null SF?                         
+      rb= ⊃w: '' ∇ 1↓ w⊣ ê.flds,← ⊂SFCode nSp          ⍝ Yes. Proc SF. => Continue
         ê.(cfL brC)← nSp 1                             ⍝ It's a code field. 
-        a w← '' CF w                                   ⍝ Process CF. 
-        ê.flds,← ⊂lp, a, rp                            ⍝ Save code field string.
-        '' ∇ w                                         ⍝ => TF Scan.    
+        a w← '' CF w                                   ⍝ Go get CF. 
+        ê.flds,← ⊂lp, a, rp                            ⍝ Process CF.
+        '' ∇ w                                         ⍝ => Continue.
     } ⍝ End Text Field Scan 
   
   ⍝ CF - Handle Code Fields (inside CF_SF)
-  ⍝    outStr remStr ← accum ∇ str
-  ⍝ Modifies ê.cfL, ê.brC; callees CFStr and CFOm modify ê.omC and ê.cfL.  
+  ⍝      outStr remStr ← accum ∇ str
+  ⍝ Modifies ê.cfL, ê.brC; calls CFQS and CFOm; modifies ê.omC and ê.cfL.  
   ⍝ Returns the output from the code field plus more string to scan (if any)
     CF← {                                             
         ê.cfL+← 1+ p← CFBrk ⍵                          ⍝ ê.cfL is set in CF_SF 
       p= ≢⍵:  ⎕SIGNAL brÊ                              ⍝ Missing "}" => Error. 
-        pfx← ⍺, p↑⍵                                
+        pfx← ⍺, p↑⍵ 
         c←   p⌷⍵
         w←   ⍵↓⍨ p+1
-      c= sp:    (pfx, sp) ∇ w↓⍨ ê.cfL+← p← +/∧\' '=w   ⍝ Handle runs of blanks
-      (c= rb)∧ ê.brC≤ 1: a w⊣  a← CFDfn TrimR pfx      ⍝ Done? ==> RETURN!!!
+      c= sp:    (pfx, sp) ∇ w↓⍨ ê.cfL+← p← +/∧\' '=w   ⍝ Runs of blanks.
+     (c= rb)∧ ê.brC≤ 1: a w⊣  a← CFDfn TrimR pfx       ⍝ Closing brace? ==> RETURN!!!
       c∊ lb_rb: (pfx, c) ∇ w⊣ ê.brC+← -/c= lb_rb       ⍝ Inc/dec ê.brC as appropriate
-      c∊ qtsL:  (pfx, a) ∇ w⊣  ê.cfL+← c⊣ a w c← CFStr c w  ⍝ Opening quote => CFStr  
+      c∊ qtsL:  (pfx, a) ∇ w⊣  ê.cfL+← l⊣ a w l← CFQS c w  ⍝ Process quoted string.
       c= dol:   (pfx, scF) ∇ w                         ⍝ $ => ⎕FMT 
       c= esc:   (pfx, a) ∇ w⊣ a w← ê CFEsc w           ⍝ `⍵, `⋄, `A, `B, etc.
       c= omUs:  (pfx, a) ∇ w⊣ a w← ê CFOm w            ⍝ ⍹, alias to `⍵ (see CFEsc).
-      c= libra: (pfx, ê libUtil.LibAuto w) ∇ w  
+      c= libra: (pfx, ê libUtil.LibAuto w) ∇ w         ⍝ £ library.
       ~c∊sdcfCh: ⎕SIGNAL cfLogicÊ                      ⍝ CFBrk leaked unknown char.
     ⍝ '→', '↓' or '%'. See if a "regular" char/shortcut or self-defining code field        
       ê.brC>1:    (pfx, c scA⊃⍨ c= pct) ∇ w            ⍝ internal dfn => not SDCF
@@ -170,16 +168,17 @@
     ⍝ SDCF: SELF-DEFINING CODE FIELD
         cfLit← AplQt ê.cfBeg↑⍨ ê.cfL+ p                ⍝ Put CF-literal in quotes
         fmtr←  (scA scM⊃⍨ c='→')                       ⍝ vert or horiz. SDCF?
-        (cfLit, fmtr, CFDfn pfx) (w↓⍨ p+1)             ⍝ ==> Return!
+        (cfLit, fmtr, CFDfn pfx) (w↓⍨ p+1)             ⍝ ==> RETURN!
     }
-  ⍝ CFStr: CF Quoted String Scan
-  ⍝        val←  ∇ qtL fstr 
+  ⍝ CFQS: CF Quoted String scan
+  ⍝        qS w lM←  ∇ qtL fstr 
   ⍝ ∘ qtL is the specific left-hand quote we saw in the caller.
   ⍝ ∘ For quotes with different starting and ending chars, e.g. « » (⎕UCS 171 187).
   ⍝   If « is the left qt, then the right qt » can be doubled in the APL style, 
   ⍝   and a non-doubled » terminates as expected.
-  ⍝ Returns val← (the string at the start of ⍵) (the rest of ⍵) 
-    CFStr← { 
+  ⍝ Returns: qS w lM
+  ⍝    qS: the string at the start of ⍵; w: the rest of ⍵; lM: len matched.
+    CFQS← { 
         qtL w← ⍵ ⋄ qtR← (qtsL⍳ qtL)⌷ qtsR               
         CFSBrk← ⌊/⍳∘(esc qtR)    
         lenW← ¯1+ ≢w                                   ⍝ lenW: length of w outside quoted str.
@@ -188,16 +187,17 @@
             p← CFSBrk ⍵  
           p= ≢⍵: ⎕SIGNAL qtÊ 
             c c2← 2↑ p↓ ⍵ 
-        ⍝ See QSEsc for handling of esc+qtR as esc char plus closing quote (see below)
-          c= esc: (⍺, (p↑ ⍵), map) ∇ ⍵↓⍨ lenW-← p+ skip ⊣ map skip← ê QSEsc c2 qtR             
+        ⍝ See CFQSEsc, below, for handling of escapes in CF quoted strings.
+        ⍝ <skip> is how many characters were consumed...
+          c= esc: (⍺, (p↑ ⍵), map) ∇ ⍵↓⍨ lenW-← p+ skip ⊣ map skip← ê.nl CFQSEsc c2 qtR             
         ⍝ Closing Quote: 
         ⍝ We know if we got here that c= qtR:  
-        ⍝   Now see if c2, the next char, is a second qtR, 
+        ⍝   Now see if c2, the NEXT char, is a second qtR, 
         ⍝    i.e. a string-internal qtR. Only qtR can be doubled (e.g. », not «)
           c2= qtR:  (⍺, ⍵↑⍨ p+1) ∇ ⍵↓⍨ lenW-← p+2      ⍝ Use APL rules for doubled ', ", or »
             ⍺, ⍵↑⍨ lenW-← p                            ⍝ Done... Return
         }
-        qS← AplQt '' StrScan w                         ⍝ Update lenW via ⍙Scan, then update w. 
+        qS← AplQt '' StrScan w                         ⍝ Update lenW via StrScan, then update w. 
         qS (w↑⍨ -lenW) (lenW-⍨ ≢w)                     ⍝ w is returned sans CF quoted string 
     } ⍝ End CF Quoted-String Scan
 
@@ -251,7 +251,7 @@
     code← CFDfn (ê.box⊃ scM scÐ), OrderFlds ê.flds     ⍝ Order fields R-to-L so they will be evaluated L-to-R in ∆F.           
   0=ê.dfn: VMsg code                                   ⍝ Not ê.dfn. Emit code ready to execute
     fstrQ← ',⍨⊂', AplQt fstr                           ⍝ Is ê.dfn (1,¯1): add quoted fmt string (`⍵0)
-    VMsg lb, code, fstrQ, rb                           ⍝ Emit ê.dfn str ready to cvt to ê.dfn in caller
+    VMsg lb, code, fstrQ, rb                           ⍝ Emit ê.dfn-based str ready to cvt to ê.dfn in caller
   } ⍝ FmtScan 
 ⍝ === End of FmtScan ========================================================  
 
@@ -300,21 +300,12 @@
 ⍝ See also CFSBrk
   TFBrk← ⌊/⍳∘tfBrkList
   CFBrk← ⌊/⍳∘cfBrkList
-  TrimR← ⊢↓⍨-∘(⊥⍨sp=⊢)                                 
+⍝ 
+  TrimR← ⊢↓⍨-∘(⊥⍨sp=⊢)                              
 ⍝ SFCode: Generate a SF code string; ⍵ is a pos. integer. (Used in CF_SF above)
   SFCode← ('(',⊢ ⊢,∘'⍴'''')')⍕ 
 ⍝ (CFDfn 'xxx') => '{xxx}⍵'                          ⍝ Create literal code field dfn call
-  CFDfn← lb∘, ,∘(rb,om)                                    
-⍝ IntOpt: Does ⍵ start with a valid sequence of digits (a non-neg integer)? 
-⍝ Returns (a b c):
-⍝   a@int:  len of sequence of digits (pos integer) or 0, 
-⍝   b@int:  the integer value of the digits found or 0, 
-⍝   c@str:  ⍵ after skipping the prefix of digits, if any.
-⍝ If (a) is 0, then there were no adjacent digits, i.e. (b) is 0 and (c) is ⍵ unchanged.
-  IntOpt← { 
-    wid← +/∧\ ⍵∊⎕D 
-    wid (⊃⊃⌽⎕VFI wid↑ ⍵) (wid↓ ⍵) 
-  }   
+  CFDfn← lb∘, ,∘(rb,om)        
 
 ⍝ AplQt:  Created an APL-style single-quoted string.
   AplQt←  sq∘(⊣,⊣,⍨⊢⊢⍤/⍨1+=)   
@@ -324,22 +315,10 @@
 ⍝ Returns: the escape sequence.                        ⍝ *** No side effects ***
   TFEsc← { 0= ≢⍵: esc ⋄ c← 0⌷⍵ ⋄ c∊ dia2: ⍺ ⋄ c∊ esc_lb_rb: c ⋄ esc, c } 
 
-⍝ TFDone:  ⍬← ê ∇ str
+⍝ TFProc:  ⍬← ê ∇ str
 ⍝ If a text field is not 0-length, place in quotes and add it to ê.flds.
 ⍝ Ensure adjacent fields are sep by ≥1 blank.
-  TFDone← {0≠ ≢⍵: ⍬⊣ ⍺.flds,← ⊂sp_sq, sq,⍨ ⍵/⍨ 1+ sq= ⍵ ⋄ ⍬}  
-
-⍝ QSEsc:  (map len)← ê ∇ c2 qtR, where 
-⍝         ê.nl is the current newline char;
-⍝         c2 is the char AFTER the escape char,
-⍝         qtR  is the current right quote char.
-⍝ c2= qt: esc+qtR is treated as escape followed by end of quote str, i.e. APL rules.
-⍝         esc+qtR is NOT treated as qtR+qtR, as if C-language (etc.) rules.
-⍝ Returns (map len), where
-⍝         map is whatever the escape seq or char maps onto (possibly itself), and
-⍝        len is 1 if it used JUST the escape, and 2 if it used c2.
-⍝ No side effects.
-  QSEsc← { c2 qtR← ⍵ ⋄ c2∊ dia2: ⍺.nl 2 ⋄ c2= qtR: esc 1 ⋄ c2= esc: c2 2 ⋄ (esc, c2) 2 } 
+  TFProc← {0≠ ≢⍵: ⍬⊣ ⍺.flds,← ⊂sp_sq, sq,⍨ ⍵/⍨ 1+ sq= ⍵ ⋄ ⍬}  
 
 ⍝ CFEsc:  (code w)← ê ∇ fstr
 ⍝ Handle escapes  in Code Fields OUTSIDE of CF-Quotes.  
@@ -355,19 +334,45 @@
       ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
   } ⍝ End CFEsc 
 
+⍝ CFQSEsc:  (map len)← nl ∇ c2 qtR, where 
+⍝           nl is the current newline char;
+⍝           c2 is the char AFTER the escape char,
+⍝           qtR  is the current right quote char.
+⍝ c2= qt: esc+qtR is NOT treated as special-- this is APL, not C or HTML or ...
+⍝ Returns (map len), where
+⍝         map is whatever the escape seq or char maps onto (possibly itself), and
+⍝         len is 1 if it consumed just the escape, and 2 if it ALSO consumed c2.
+⍝ Side effect: none.       ⍝ pattern   =>  literal  consumes   notes
+  CFQSEsc← { c2 qtR← ⍵ 
+    c2∊ dia2: ⍺ 2          ⍝ esc-⋄          newline     2 
+    c2= qtR: esc 1         ⍝ escape-quote   escape      1   caller handles qtR next cycle.
+    c2= esc: c2 2          ⍝ esc-esc        escape      2   
+    (esc, c2) 2            ⍝ esc <any>      esc <any>   2    
+  } 
+
 ⍝ CFOm:   (omCode w)← ê ∇ ⍵ 
 ⍝ ⍵: /\d*/, i.e. optional digits starting right AFTER `⍵ or ⍹ symbols.
 ⍝ Updates ê.cfL, ê.omC to reflect the # of digits consumed and their value.  
 ⍝ Returns omCode w:
 ⍝    omCode: the emitted code for selecting from the ∆F right arg (⍵);
 ⍝    w:      ⍵, just past the matched omega expression digits.
-⍝ IntOpt matches valid digits adjacent to `⍵ or ⍹, if any; 
-⍝ otherwise indicates a "bare" `⍵ or ⍹
+⍝ IntOpt: See IntOpt, just below.
   CFOm← { 
            oLen oVal w← IntOpt ⍵
     ×oLen: ('(⍵⊃⍨',')',⍨ '⎕IO+', ⍕⍺.omC← oVal ) w⊣ ⍺.cfL+← oLen 
            ('(⍵⊃⍨',')',⍨ '⎕IO+', ⍕⍺.omC       ) w⊣ ⍺.omC+← 1
   }
+⍝ IntOpt: Does ⍵ start with a valid sequence of digits (a non-neg integer)? 
+⍝ Returns oLen oVal w:
+⍝   oLen:  len of sequence of digits (pos integer) or 0, 
+⍝   oVal:  the integer value of the digits found or 0, 
+⍝   w:     ⍵ after skipping the prefix of digits, if any.
+⍝ If oLen is 0, then there were no adjacent digits, i.e. (b) is 0 and (c) is ⍵ unchanged.
+  IntOpt← { 
+    wid← +/∧\ ⍵∊⎕D 
+    wid (⊃⊃⌽⎕VFI wid↑ ⍵) (wid↓ ⍵) 
+  }  
+
 ⍝ OrderFlds
 ⍝ ∘ User flds are effectively executed L-to-R AND displayed in L-to-R order.
 ⍝ The process:
@@ -503,7 +508,7 @@
   ∇ fixedOk← ⍙Export_∆F (destNs keepCm) ; src; snk; Apply2; Cm ; CpyR; NoBL 
     s←   ('∆F_Src' '∆F')   ('__THIS__' ∆THIS)  
     s,← ⊂'__OUTER__\.' ('##.' ''⊃⍨ destNs=⎕THIS) 
-    s,←  ('result' 'rësültF')('opts' 'öptsF') ('args' 'ärgsF')
+    s,←  ('result' 'rësûlt∆F')('opts' 'öôpts∆F') ('args' 'äârgs∆F')
   ⍝ 
     Apply2← { src snk← ↓⍉↑⍺ ⋄ src ⎕R snk⍠ 'UCP' 1 ⊢ ⍵} 
     Cm←     {⍺: ⍵ ⋄ '''[^'']*''' '(^\s*)?⍝.*$' ⎕R '\0' ''⊢ ⍵ }    
