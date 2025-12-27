@@ -113,38 +113,37 @@
 ⍝ ∘ CF_SF, CF: space fields and code fields; 
 ⍝ ∘ CFStr: (code field) quoted strings
   FmtScan← {  
-    ⍝ TF: Text Field Scan 
-    ⍝    res←  accum ∇ str
-    ⍝ Calls: TF (recursively) and CF_SF (which calls TF in return).
-    ⍝ Returns: null. Appends APL code strings to ê.flds
+  ⍝ TF: Text Field Scan 
+  ⍝    ''←  accum ∇ str
+  ⍝ Processes all text and calls itself/CF recursively.
+  ⍝ R/W externs:
+  ⍝   ê.cfBeg: start of field; 
+  ⍝   ê.brC:   bracket count; 
+  ⍝   ê.cfL:   length of code field string.
+  ⍝   ê.flds:  the data fields.
+  ⍝ If it sees /^\s*\}/, it emits Space field code and returns.
+  ⍝ Otherwise, it calls CF (Code Field).
     TF← {  
         p← TFBrk ⍵                                     ⍝ esc, lb, or nl only. 
-      p= ≢⍵: ê TFDone ⍺, ⍵                             ⍝ No special chars in ⍵. Process & return.
+      p= ≢⍵: ê TFDone ⍺, ⍵                             ⍝ No special chars in ⍵. Process => return.
         pfx← p↑⍵ 
         c←   p⌷⍵
         w←   ⍵↓⍨ p+1
-      c= esc: (⍺, pfx, ê.nl TFEsc w) ∇ 1↓ w            ⍝ char is esc. Process & continue.
-        CF_SF w⊣ ê TFDone ⍺, pfx                       ⍝ char is lb. End TF; go to CF_SF.  
+      c= esc: (⍺, pfx, ê.nl TFEsc w) ∇ 1↓ w            ⍝ char is esc. Process => Recurse
+        _← ê TFDone ⍺, pfx                             ⍝ Process TF and continue.
+    ⍝ ======================================================================
+    ⍝ c= lb:  ⍝ Check for Space Field vs Code Field
+    ⍝ ======================================================================   
+        ê.cfBeg← w                                     ⍝ Note start of field in case SDCF.              
+      rb= ⊃w: '' ∇ 1↓ w                                ⍝ Null SF? (Do nothing) => Recurse.
+        nSp← w↓⍨← +/∧\' '= w                           ⍝ See if non-null SF.                             
+      rb= ⊃w: '' ∇ 1↓ w⊣ ê.flds,← ⊂SFCode nSp          ⍝ Yes. Process. => Recurse.
+        ê.(cfL brC)← nSp 1                             ⍝ It's a code field. 
+        a w← '' CF w                                   ⍝ Process CF. 
+        ê.flds,← ⊂lp, a, rp                            ⍝ Save code field string.
+        '' ∇ w                                         ⍝ => TF Scan.    
     } ⍝ End Text Field Scan 
   
-  ⍝ CF_SF: Code and Space Field Scan (monadic only).
-  ⍝     res← accum ∇ str, where str starts just past the leading '{' of the CF.  
-  ⍝ Called by TF. 
-  ⍝ If it sees /^\s*\}/, it emits SF code (if no spaces) and recurses "back" to TF.
-  ⍝ Otherwise, it processes a code field. 
-  ⍝ ê.cfBeg: start of field; ê.brC: bracket count; ê.cfL: length of code field string.
-  ⍝ Returns: null. Appends APL code strings to ê.flds. Sets/modifies ê.brC, ê.cfL.
-    CF_SF← {                                              
-        ê.cfBeg← w← ⍵                                  ⍝ cfBeg: Save the CF verbatim for SDCFs.
-      rb= ⊃w: '' TF 1↓ w                               ⍝ Null SF? No code gen'd. => Done. [FAST]
-        nSp← w↓⍨← +/∧\' '= w                                                        
-      rb= ⊃w: '' TF 1↓ w⊣ ê.flds,← ⊂SFCode nSp         ⍝ SF? => Done.
-        ê.(cfL brC)← nSp 1                             ⍝ set cfL and brC before CF call.
-        a w← '' CF w                                   ⍝ => Scan the code field.
-        ê.flds,← ⊂lp, a, rp                            ⍝ Save code field string.
-        '' TF w                                        ⍝ => TF Scan.    
-    } ⍝ End CF_SF (Code/Space Field Scan)
-
   ⍝ CF - Handle Code Fields (inside CF_SF)
   ⍝    outStr remStr ← accum ∇ str
   ⍝ Modifies ê.cfL, ê.brC; callees CFStr and CFOm modify ê.omC and ê.cfL.  
@@ -230,7 +229,7 @@
 ⍝   omC       0   omega index counter: current index for omega shortcuts (`⍵, ⍹)  
 ⍝   brC       -   running count of braces '{' lb, '}' rb. Set in dfn CF_SF.
 ⍝   cfL       -   code field running length (for SDCFs). Set in dfn CF_SF.
-    ê← ⍺ ⋄ fstr← ⍵                                        
+    ê fstr← ⍺ ⍵                                        
   ⍝ Validate options passed in ê (⍺).
   0∊ 0 1∊⍨ ê.((|dfn),verbose box auto inline): ⎕SIGNAL optÊ   
     VMsg← (⎕∘←)⍣(ê.(verbose∧¯1≠dfn))                      ⍝ Verbose option message 
