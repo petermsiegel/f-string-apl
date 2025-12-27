@@ -109,13 +109,13 @@
 ⍝    result← [options|⍬] ∇ f_string
 ⍝ "Main" function called by ∆F above. See the Executive section below.
 ⍝ Calls Major Field Recursive Scanners: 
-⍝ ∘ TF: text; 
-⍝ ∘ CF_SF, CF: space fields and code fields; 
+⍝ ∘ TF: text fields and space fields; 
+⍝ ∘ CF:  code fields; 
 ⍝ ∘ CFQS: (code field) quoted strings
   FmtScan← {  
-  ⍝ TF: Text Field Scan 
+  ⍝ TF_SF: Text Field Scan 
   ⍝    ''←  accum ∇ str
-  ⍝ Processes all text and calls itself/CF recursively.
+  ⍝ Processes all text fields and Space fields; and calls itself/CF recursively.
   ⍝ R/W externs:
   ⍝   ê.cfBeg: start of field; 
   ⍝   ê.brC:   bracket count; 
@@ -123,22 +123,22 @@
   ⍝   ê.flds:  the data fields.
   ⍝ If it sees /^\s*\}/, it emits Space field code and returns.
   ⍝ Otherwise, it calls CF (Code Field).
-    TF← {  
+    TF_SF← {  
         p← TFBrk ⍵                                     ⍝ (esc or lb) only. 
       p= ≢⍵: ê TFProc ⍺, ⍵                             ⍝ Nothing special. Process => return.
-        pfx← p↑⍵ ⋄ c←   p⌷⍵ ⋄ w←   ⍵↓⍨ p+1             ⍝ Found something!
+        pfx← p↑⍵ ⋄ c← p⌷⍵ ⋄ w←   ⍵↓⍨ p+1               ⍝ Found something!
       c= esc: (⍺, pfx, ê.nl TFEsc w) ∇ 1↓ w            ⍝ char is esc. Process. => Continue
-  ⍝ ======================================================================
-    ⍝ c= lb:  Finish TF. Check for Space Field vs Code Field
-    ⍝ ======================================================================   
-        _← ê TFProc ⍺, pfx                             ⍝ Process TF.
-         ê.cfBeg← w                                    ⍝ Mark start of field in case SDCF.              
-      rb= ⊃w: '' ∇ 1↓ w                                ⍝ Null SF? (Do nothing) => Continue
+  ⍝ =======================================================================
+  ⍝   c= lb: 
+        _← ê TFProc ⍺, pfx                             ⍝ Update fields
+  ⍝  Choose between Space Field and Code Field
+  ⍝ =======================================================================   
+         ê.cfBeg← w                                    ⍝ Mark start of (code) field in case SDCF.              
+      rb= ⊃w: '' ∇ 1↓ w                                ⍝ Null SF? Do nothing => Continue
         nSp← w↓⍨← +/∧\' '= w                           ⍝ Non-null SF?                         
-      rb= ⊃w: '' ∇ 1↓ w⊣ ê.flds,← ⊂SFCode nSp          ⍝ Yes. Proc SF. => Continue
-        ê.(cfL brC)← nSp 1                             ⍝ It's a code field. 
-        a w← '' CF w                                   ⍝ Go get CF. 
-        ê.flds,← ⊂lp, a, rp                            ⍝ Process CF.
+      rb= ⊃w: '' ∇ 1↓ w ⊣ ê.flds,← ⊂SFCode nSp         ⍝ Yes. Proc SF => Continue
+        a w← '' CF w ⊣  ê.(cfL brC)← nSp 1             ⍝ Process CF.
+        ê.flds,← ⊂lp, a, rp                            ⍝ Update fields.
         '' ∇ w                                         ⍝ => Continue.
     } ⍝ End Text Field Scan 
   
@@ -244,8 +244,8 @@
                                 
   ⍝ ê.brC ê.cfL are initialised in CF_SF.    
   ⍝ Start the scan                                     ⍝ We start with a (possibly null) text field, 
-    _← '' TF fstr                                      ⍝ recursively calling CF_SF and (from CF_SF) SF & TF itself, &
-                                                       ⍝ ... setting fields ¨ê.flds¨ as we go.
+    _← '' TF_SF fstr                                   ⍝ recursively calling TF_SF and SF, 
+                                                       ⍝ setting fields ¨ê.flds¨ as we go.
 ⍝ DONE with Scan. Now build result based on ê.dfn...                                                   
   0= ≢ê.flds: VMsg '(1 0⍴⍬)', '⍨'/⍨ ê.dfn≠0            ⍝ If there are no flds, return 1 by 0 matrix
     code← CFDfn (ê.box⊃ scM scÐ), OrderFlds ê.flds     ⍝ Order fields R-to-L so they will be evaluated L-to-R in ∆F.           
