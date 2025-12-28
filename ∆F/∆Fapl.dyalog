@@ -66,7 +66,7 @@
     :If 9≠⎕NC '__THIS__' ⋄ '⍙Fapl library "__THIS__" does not exist' ⎕SIGNAL 6 ⋄ :EndIf                              
     :With __THIS__                                       
       :Trap 0/⍨ TRAP_ERRORS    
-    ⍝ Phase I: Set options!  Be sure to copy OPTS_DEFns and change only the copy.
+    ⍝ Phase I: Set options!  Be sure to copy OPTS_DEFns and change ONLY the copy.
       ⍝ Default options              
         :If  900⌶0                                          
           opts← ⎕NS OPTS_DEFns                     
@@ -157,7 +157,7 @@
       c= sp:    (pfx, sp) ∇ w↓⍨ ê.cfL+← p← +/∧\' '=w   ⍝ Runs of blanks.
      (c= rb)∧ ê.brC≤ 1: (CFDfn TrimR pfx) w            ⍝ Closing brace? ==> RETURN!!!
       c∊ lb_rb: (pfx, c) ∇ w⊣ ê.brC+← -/c= lb_rb       ⍝ Inc/dec ê.brC as appropriate
-      c∊ qtsL:  (pfx, a) ∇ w⊣ a w← CFQS c w            ⍝ Process quoted string.
+      c∊ qtsL:  (pfx, a) ∇ w⊣ a w← ê CFQS c w          ⍝ Process quoted string.
       c= dol:   (pfx, scF) ∇ w                         ⍝ $ => ⎕FMT 
       c= esc:   (pfx, a) ∇ w⊣ a w← ê CFEsc w           ⍝ `⍵, `⋄, `A, `B, etc.
       c= omUs:  (pfx, a) ∇ w⊣ a w← ê CFOm w            ⍝ ⍹, alias to `⍵ (see CFEsc).
@@ -172,38 +172,6 @@
         fmtr←  (scA scM⊃⍨ c='→')                       ⍝ vert or horiz. SDCF?
         (cfLit, fmtr, CFDfn pfx) (w↓⍨ p+1)             ⍝ ==> RETURN!
     }
-  ⍝ CFQS: CF Quoted String scan
-  ⍝        qS w←  ∇ qtL fstr 
-  ⍝ ∘ qtL is the specific left-hand quote we saw in the caller.
-  ⍝ ∘ For quotes with different starting and ending chars, e.g. « » (⎕UCS 171 187).
-  ⍝   If « is the left qt, then the right qt » can be doubled in the APL style, 
-  ⍝   and a non-doubled » terminates as expected.
-  ⍝ ∘ Updates ê.cfL with length of string.
-  ⍝ Returns: qS w
-  ⍝    qS: the string at the start of ⍵; w: the rest of ⍵ 
-    CFQS← {   
-        qtL w← ⍵ ⋄ qtR← (qtsL⍳ qtL)⌷ qtsR               
-        CFSBrk← ⌊/⍳∘(esc qtR)    
-        ∆len← 1+ -≢w                                   ⍝ ∆len: -(length of w outside quoted str).
-        StrScan← {   ⍝ Recursive CF Quoted-String Scan. ∆len converges on true length.
-          0= ≢⍵: ⍺ 
-            p← CFSBrk ⍵  
-          p= ≢⍵: ⎕SIGNAL qtÊ 
-            c c2← 2↑ p↓ ⍵ 
-        ⍝ See CFQSEsc, below, for handling of escapes in CF quoted strings.
-        ⍝ <skip> is how many characters were consumed...
-          c= esc: (⍺, (p↑ ⍵), map) ∇ ⍵↓⍨ ∆len+← p+ skip ⊣ map skip← ê.nl CFQSEsc c2 qtR             
-        ⍝ Closing Quote: 
-        ⍝ We know if we got here that c= qtR:  
-        ⍝   Now see if c2, the NEXT char, is a second qtR, 
-        ⍝    i.e. a string-internal qtR. Only qtR can be doubled (e.g. », not «)
-          c2= qtR:  (⍺, ⍵↑⍨ p+1) ∇ ⍵↓⍨ ∆len+← p+2      ⍝ Use APL rules for doubled ', ", or »
-            ⍺, ⍵↑⍨ ∆len+← p                            ⍝ Done... Return
-        }
-        qS← AplQt '' StrScan w                         ⍝ Update ∆len via StrScan, then update w.
-        ê.cfL+← ∆len+ ≢w
-        qS (∆len↑ w)                                   ⍝ w is returned sans CF quoted string 
-    } ⍝ End CF Quoted-String Scan
 
 ⍝ ===========================================================================
 ⍝ FmtScan main (executive) begins here
@@ -338,6 +306,43 @@
     c∊⍥⎕C ⎕A: ⎕SIGNAL scBadÊ c                       ⍝ Nope: Unknown shortcut!
       ⎕SIGNAL EscÊ c                                 ⍝ Esc-c has no mng in CF for non-Alph char c.
   } ⍝ End CFEsc 
+
+ ⍝ CFQS: CF Quoted String scan
+  ⍝        qS w←  ê ∇ qtL fstr 
+  ⍝ ∘ qtL is the specific left-hand quote we saw in the caller.
+  ⍝ ∘ fstr is the current format string, w/ the qtL removed, but end not determined..
+  ⍝ ∘ For quotes with different starting and ending chars, e.g. « » (⎕UCS 171 187).
+  ⍝   If « is the left qt, then the right qt » can be doubled in the APL style, 
+  ⍝   and a non-doubled » terminates as expected.
+  ⍝ ∘ Updates ê.cfL with length of actual quote string.
+  ⍝ Returns: qS w
+  ⍝    qS: the string at the start of ⍵; w: the rest of ⍵ 
+  CFQS← { ê← ⍺ ⋄ qtL w← ⍵ ⋄ qtR← (qtsL⍳ qtL)⌷ qtsR               
+      CFSBrk← ⌊/⍳∘(esc qtR)    
+    ⍝ Recursive CF Quoted-String Scan. 
+    ⍝    accum tL Scan ⍵
+    ⍝ accum: accumulates the quoted string
+    ⍝ lW:    the total length of w scanned SO FAR
+    ⍝ Returns (quoted string, lW: total length of w scanned)
+      Scan← {   
+          a lW ←⍺       
+        0= ≢⍵: ⍺  
+          p← CFSBrk ⍵  
+        p= ≢⍵: ⎕SIGNAL qtÊ 
+          c c2← 2↑ p↓ ⍵ 
+      ⍝ See CFQSEsc, below, for handling of escapes in CF quoted strings.
+      ⍝ <skip> is how many characters were consumed...
+        c= esc: (a, (p↑ ⍵), map) lW ∇ ⍵↓⍨ lW+← p+ skip⊣ map skip← ê.nl CFQSEsc c2 qtR             
+      ⍝ Closing Quote: 
+      ⍝ c= qtR:  
+      ⍝   ∘ Now see if the NEXT char, c2, such that c2= qtR.
+      ⍝     If so, it's a string-internal qtR. Only qtR need be doubled (i.e. '»»' => '»').
+        c2= qtR:  (a, ⍵↑⍨ p+1) lW ∇ ⍵↓⍨ lW+← p+2      ⍝ Use APL rules for doubled ', ", or »
+          (AplQt a, p↑⍵) (lW+p)                       ⍝ Done... Return
+      }
+      qS lW← '' 1 Scan w          
+      qS (w↓⍨ ê.cfL+← lW )                            ⍝ w is returned sans CF quoted string 
+  } ⍝ End CF Quoted-String Scan
 
 ⍝ CFQSEsc:  (map len)← nl ∇ c2 qtR, where 
 ⍝           nl is the current newline char;
