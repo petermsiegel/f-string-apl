@@ -79,12 +79,12 @@ Examples: A Primer</a>
 
 1.  Confirm that your current directory remains as before.
 2.  From your Dyalog session, enter: <br> `]load ∆F -target=⎕SE`
-3.  **∆F/∆F_Help.html** is, by default, available at `]load` time and
-    will be copied into **⍙Fapl**. If missing, a message will note the
+3.  **∆F/∆FHelp.html** is, by default, available at `]load` time and
+    will be copied into **⍙FUtils**. If missing, a message will note the
     absence of *help* information.
-4.  Namespace <code>*⎕SE*.**⍙Fapl**</code> now contains utilities used
+4.  Namespace <code>*⎕SE*.**⍙FUtils**</code> now contains utilities used
     by **∆F** and, once `]load`ed, ***should not*** be moved: **∆F**
-    always refers to **⍙Fapl** in its *original* location.
+    always refers to **⍙FUtils** in its *original* location.
 5.  By default, the target namespace (<code>*⎕SE*</code>) will be added
     to the end of `⎕PATH`, if not already defined in ⎕PATH. You may
     always choose to relocate or assign **∆F** anywhere you want so that
@@ -1115,9 +1115,9 @@ Now, let’s try recasting an *earlier* example—reshown here— to use
 
 The shortcut (Session) **Library** `£` denotes
 
-a “private” *user* namespace in **⍙Fapl**, where the user may place and
-manipulate useful objects for the duration of the ***current*** *APL*
-session. For example, the user may wish to:
+a “private” *user* namespace in **⍙FUtils**, where the user may place
+and manipulate useful objects for the duration of the ***current***
+*APL* session. For example, the user may wish to:
 
 - have regularly used functions or operators automatically available
   when needed, *or*
@@ -1178,8 +1178,8 @@ into a £ibrary, or to see *where* it’s copied from, use **∆F**’s
 ***verbose*** option:
 
        0 1 ∆F '{ ⍸ 1 £.pco ⍳100 }'    ⍝ 0 1 <==> (verbose: 1)
-    ∆F: Copied "pco" into £=[⎕SE.⍙Fapl.library] from "ws:dfns"
-    { ⎕SE.⍙Fapl.M ⌽⍬({⍸ 1 (⎕SE.⍙Fapl.library).pco ⍳100}⍵)}⍵
+    ∆F: Copied "pco" into £=[⎕SE.⍙FUtils.library] from "ws:dfns"
+    { ⎕SE.⍙FUtils.M ⌽⍬({⍸ 1 (⎕SE.⍙FUtils.library).pco ⍳100}⍵)}⍵
     2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
 
 </details>
@@ -1240,7 +1240,7 @@ The *dfn* option is most useful when you are making repeated use of an
 *f‑string*, since the overhead for analyzing the *f‑string* contents
 ***once*** will be amortized over ***all*** the subsequent calls. An
 **∆F**-derived *dfn* can also be made standalone, *i.e.* independent of
-the runtime library, **⍙Fapl**.
+the runtime library, **⍙FUtils**.
 
 Let’s explore an example where getting the best performance for a
 heavily used **∆F** string is important.
@@ -1409,8 +1409,8 @@ examples.
 | **Dfn** | ***\[0\]*** | ***dfn: 0*** | <span class="red"><strong>If ***dfn: 1***,</strong></span> **∆F** returns a dfn, which (upon execution) produces the same output as the default mode.<br><span class="red"><strong>If ***dfn: 0*** (default),</strong></span> **∆F** returns a char. matrix. |
 | **Verbose** | ***\[1\]*** | ***verbose: 0*** | <span class="red"><strong>If ***verbose: 1***,</strong></span> Renders newline characters from `` `◇ `` as the visible `␤` character. Displays the source code that the *f‑string* ***actually*** generates; <span class="red"><strong>if ***dfn*** is also ***1***,</strong></span> this will include the embedded *f‑string* source (accessed as `` `⍵0 ``). After the source code is displayed, it will be executed or converted to a *dfn* and returned (see the ***dfn*** option above).<br><span class="red"><strong>If ***verbose: 0*** (default),</strong></span> newline characters from `` `◇ `` are rendered normally as carriage returns, `⎕UCS 13`; the ***dfn*** source code is not displayed. |
 | **Box** | ***\[2\]*** | ***box: 0*** | <span class="red"><strong>If ***box: 1***,</strong></span> each field (except a null **Text** field) is boxed separately.<br><span class="red"><strong>If ***box: 0*** (default),</strong></span> nothing is boxed automatically. Any **Code** field expression may be explicitly boxed using the **Box** shortcut, `` `B ``.<br><big>👉</big> ***Box*** mode can be used with settings <strong>`dfn: 1`</strong> *and* <strong>`dfn: 0`.</strong> |
-| **Auto** | ***\[3\]*** | ***auto: 1*** | <span class="red"><strong>If ***auto: 0***,</strong></span> user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br><span class="red"><strong>If ***auto: 1*** (default),</strong></span> honors the default and user-defined settings for `auto`.<br><big>👉</big> Depends on (i) user parameter file **./.∆F** and (ii) the namespace **⍙Fapl** created during the `]load` process. |
-| **Inline** | ***\[4\]*** | ***inline: 0*** | <span class="red"><strong>If ***inline: 1***,</strong></span> the code for each internal support function used is included in the result. <span class="red"><strong>If ***dfn*** is also 1,</strong></span> ***no*** reference to namespace **⍙Fapl** will be made during the execution of the generated *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br><span class="red"><strong>If ***inline: 0*** (default),</strong></span> whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙Fapl**, created during the `]load` process for **∆F**.<br><big>👉</big> This option is experimental and may simply disappear one day. |
+| **Auto** | ***\[3\]*** | ***auto: 1*** | <span class="red"><strong>If ***auto: 0***,</strong></span> user must manually load/create any Session Library objects for use with the £ or `` `L `` shortcuts.<br><span class="red"><strong>If ***auto: 1*** (default),</strong></span> honors the default and user-defined settings for `auto`.<br><big>👉</big> Depends on (i) user parameter file **./.∆F** and (ii) the namespace **⍙FUtils** created during the `]load` process. |
+| **Inline** | ***\[4\]*** | ***inline: 0*** | <span class="red"><strong>If ***inline: 1***,</strong></span> the code for each internal support function used is included in the result. <span class="red"><strong>If ***dfn*** is also 1,</strong></span> ***no*** reference to namespace **⍙FUtils** will be made during the execution of the generated *dfn*. (***Exception:*** see *Session Library Shortcuts* below.)<br><span class="red"><strong>If ***inline: 0*** (default),</strong></span> whenever **∆F** or a *dfn* generated by it is executed, it makes calls to library routines in the namespace **⍙FUtils**, created during the `]load` process for **∆F**.<br><big>👉</big> This option is experimental and may simply disappear one day. |
 | **Special** | ***‘help’*** | — | <span class="red"><strong>If ***‘help’*** is specified,</strong></span> this amazing doc­ument­ation is displayed. |
 | **Special** | ***‘parms’*** | — | <span class="red"><strong>If ***‘parms’*** is specified,</strong></span> updates and displays Session Library (`£` or `` `L ``) pa­ram­eters. |
 
@@ -1714,7 +1714,7 @@ Parameter File</em> <big><strong>. ∆F</strong></big>
  ⍝ If (verbose: ⎕NULL), then VERBOSE [note 1] is used for verbose.
  ⍝ If (prefix: ⎕NULL) or (prefix: ⍬), then (prefix: '' ◇)
  ⍝ [note 1]
- ⍝   ∆F global variables LIB_AUTO and VERBOSE are set in ∆Fapl.dyalog.
+ ⍝   ∆F global variables LIB_AUTO and VERBOSE are set in ∆FUtils.dyalog.
  ⍝    Their usual values are LIB_AUTO← 1 ◇ VERBOSE← 0
  ⍝    See load: and verbose: below for significance.
 
@@ -2214,7 +2214,7 @@ explicit)</strong> <big><span class="blue">4.7</span></big></a><br>
 ------------------------------------------------------------------------
 
 <br> <span id="copyright" style="font-family:cursive;"> Copyright
-<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-28\]
+<big>©</big> 2025 Sam the Cat Foundation. \[Version 0.1.1: 2025-12-29\]
 </span> <br>
 
 </div>
