@@ -38,7 +38,7 @@
 ⍝ LIB_AUTO:  1     Yes.
 ⍝            0     No.
   LIB_AUTO←  1     
-  LIB_SRC_FI←   '∆F/∆FUtils_Library.dyalog'        ⍝ Library shortcuts (£,  `L) utilities.
+  LIB_SRC_FI←   '∆F/∆FLibUtils.dyalog'        ⍝ Library shortcuts (£,  `L) utilities.
 ⍝ HELP-related globals             
   HELP_HTML_FI← '∆F/∆FHelp.html'                ⍝ Called from 'help' option. Globally set here              
 ⍝ ==================================================================================
@@ -55,7 +55,7 @@
 ⍝ =======================================================================
 ⍝ ∆F USER FUNCTION Source - See ⍙Export_∆F
 ⍝ =======================================================================
-⍝ ∆F_Src:
+⍝ ∆FSrc:
 ⍝    modified to become ##.∆F at ⍙Export_∆F.
 ⍝ ∆F: 
 ⍝    result← {opts←⍬} ∇ f-string [args]
@@ -63,7 +63,7 @@
 ⍝ 
 ⍝ NB. Modify header names or constants __THIS__ or __OUTER__ at your peril.
 ⍝ 
-  ∇ result← {opts} ∆F_Src args 
+  ∇ result← {opts} ∆FSrc args 
     :Trap __TRAP_ERRORS__
       :With __THIS__                                          
       ⍝ Phase I: Set options!  Be sure to copy OPTS_DEFns and change ONLY the copy.
@@ -161,7 +161,7 @@
       c= dol:   (pfx, scF) ∇ w                         ⍝ $ => ⎕FMT 
       c= esc:   (pfx, a) ∇ w⊣ a w← ê CFEsc w           ⍝ `⍵, `⋄, `A, `B, etc.
       c= omUs:  (pfx, a) ∇ w⊣ a w← ê CFOm w            ⍝ ⍹, alias to `⍵ (see CFEsc).
-      c= libra: (pfx, ê libUtil.LibAuto w) ∇ w         ⍝ £ library.
+      c= libra: (pfx, ê libUtils.LibAuto w) ∇ w         ⍝ £ library.
       ~c∊sdcfCh: ⎕SIGNAL cfLogicÊ                      ⍝ CFBrk leaked unknown char.
     ⍝ '→', '↓' or '%'. See if a "regular" char/shortcut or self-defining code field        
       ê.brC>1:    (pfx, c scA⊃⍨ c= pct) ∇ w            ⍝ internal dfn => not SDCF
@@ -202,7 +202,7 @@
 ⍝                 Local to the current ∆F instance.
 ⍝   brC       -   running count of braces '{' lb, '}' rb. Set in dfn TF_SF.
 ⍝   cfL       -   code field running length (for SDCFs). Set in dfn TF_SF.
-    ê fstr← ⍺ ⍵                                        
+    ê fstr← ⍺ ⍵                                 
   ⍝ Validate options passed in ê (⍺).
   0∊ 0 1∊⍨ ê.((|dfn),verbose box auto inline): ⎕SIGNAL optÊ   
     VMsg← (⎕∘←)⍣(ê.(verbose∧¯1≠dfn))                      ⍝ Verbose option message 
@@ -300,7 +300,7 @@
     0= ≢⍵: esc 
       c w← (0⌷⍵) (1↓⍵) ⋄ ⍺.cfL+← 1   
     c∊ om_omUs: ⍺ CFOm w                             ⍝ Permissively allows `⍹ as equiv to `⍵ OR ⍹ 
-    c='L': (⍺ libUtil.LibAuto w) w                   ⍝ Library shortcut: special case
+    c='L': (⍺ libUtils.LibAuto w) w                   ⍝ Library shortcut: special case
       p← MapSC c                                     ⍝ Look for other shortcuts
     nSC> p: (⍺.inline p⊃ scCodeTbl) w                ⍝ Found? return code string.
     c∊⍥⎕C ⎕A: ⎕SIGNAL scBadÊ c                       ⍝ Nope: Unknown shortcut!
@@ -413,9 +413,9 @@
   ⍝        Returns display of default and user parms (as mx) in alph order.
     2≠ ⎕NC 'val': ⎕SIGNAL optÊ  
   ⍝ LoadParms (loadDefaults loadUserFi isVerbose isCompact)   
-    'parms-c'≡ 7↑val: _← libUtil.LoadParms 1 1 1 1 
-    'parms'  ≡   val: _← libUtil.LoadParms 1 1 1 0 
-    'path'   ≡   val: _← libUtil.ShowPath ⍬ 
+    'parms-c'≡ 7↑val: _← libUtils.LoadParms 1 1 1 1 
+    'parms'  ≡   val: _← libUtils.LoadParms 1 1 1 0 
+    'path'   ≡   val: _← libUtils.ShowPath ⍬ 
     'help'   ≢ 4↑val: ⎕SIGNAL optÊ 
   ⍝ help, help-wide, or help-narrow?
       LoadHtml← {  
@@ -440,22 +440,22 @@
 
 ⍝ ===================================================================================
 ⍝:Section MINIMAL LIBRARY SERVICES 
-⍝ See libUtil.LinkUserLib
-⍝ library is the user library.
-:Namespace library
+⍝ See libUtils.LinkUserLib
+⍝ userLibrary is the user library.
+:Namespace userLibrary
     ⍝⍝⍝⍝⍝ Minimal contents, pending ⍙Load_LibAuto.
   ⍝ Inherit key sys vars from the # namespace.
     ⎕IO ⎕ML ⎕PW ⎕PP ⎕CT ⎕DCT ⎕FR← #.(⎕IO ⎕ML ⎕PW ⎕PP ⎕CT ⎕DCT ⎕FR)     
 :EndNamespace
 
-⍝ Utilities for "library" shortcut (£, `L) 
+⍝ Utilities for "userLibrary" shortcut (£, `L) 
 ⍝ See ⍙Load_LibAuto 
-:Namespace libUtil
-⍝⍝⍝⍝⍝ This is a local stub, pending (optional, but expected) load of ∆FUtils_Library below.
-  ∇ {libNs}←  LibUserSimple libNs 
+:Namespace libUtils
+⍝⍝⍝⍝⍝ This is a local stub, pending (optional, but expected) load of ∆FLibUtils below.
+  ∇ {libNs}←  SetLibSimple libNs 
     ⍝ external in the stub... 
     ⍝   libUser, Auto, ShowPath, LoadParms
-    ⍝ external loaded from ∆FUtils_Library.dyalog:
+    ⍝ external loaded from ∆FLibUtils.dyalog:
     ⍝   libUser, Auto, parms, ShowPath, LoadParms 
       ⎕THIS.libUser← libNs
       libNs.⎕DF ⎕NULL 
@@ -465,8 +465,8 @@
       ShowPath← '⍬'⍨        
       LoadParms← ⍬⍨       
   ∇
-⍝ Set name and ref for library here
-  LibUserSimple ##.library
+⍝ Set name and ref for userLibrary here
+  SetLibSimple ##.userLibrary
 :EndNamespace
 ⍝:EndSection MINIMAL LIBRARY SERVICES 
 ⍝ ===================================================================================
@@ -518,7 +518,7 @@
 ⍝    ∘ we remove comments and comment lines.
   ∇ fixedOk← ⍙Export_∆F (destNs keepCm lockFn) 
     ; nm; s; src; snk; t; Apply2; Cm ; CpyR; NoBL  
-    s←  ⊂'∆F_Src'             '∆F'   
+    s←  ⊂'∆FSrc'             '∆F'   
     s,← ⊂'__THIS__'           ∆THIS  
     s,← ⊂'__OUTER__\.'        ('##.' ''⊃⍨ destNs=⎕THIS) 
       t← ¯40↑ '⍝ TRAP_ERRORS='
@@ -532,7 +532,7 @@
     CpyR←   ,∘(⊂'⍝ (C) 2025 Sam the Cat Foundation.  Version: ',VERSION)
     NoEL←   {⍵/⍨ 0≠≢¨⍵}    ⍝ Delete empty lines.
 
-    nm← destNs.⎕FX CpyR NoEL s∘Apply2 keepCm∘Cm ⎕NR '∆F_Src' 
+    nm← destNs.⎕FX CpyR NoEL s∘Apply2 keepCm∘Cm ⎕NR '∆FSrc' 
     :If fixedOk← 0≠1↑0⍴ nm 
       (⎕∘←)⍣VERBOSE⊢ '>>> Created function ',(⍕destNs),'.',nm 
     :Else 
@@ -541,9 +541,9 @@
   ∇
 
 ⍝ ⍙Load_Shortcuts:   ∇     (niladic) 
-⍝ At ⎕FIX time, load the run-time library names and code for user Shortcuts
+⍝ At ⎕FIX time, load the run-time userLibrary names and code for user Shortcuts
 ⍝ and similar code (Ð, display, is used internally, so not a true user shortcut).
-⍝ The library entries created in ∆Fapl are: 
+⍝ The userLibrary entries created in ∆Fapl are: 
 ⍝  ∘  for shortcuts:    A, B, C, F, Q, T, W     ⍝ T supports `T, `D
 ⍝  ∘  used internally:  M, Ð.
 ⍝ A (etc): a dfn
