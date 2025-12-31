@@ -18,6 +18,8 @@
 ⍝     (not set) for the first time.
 ⍝ Task:
 ⍝ ∘ find the name string nm in £.nm...[[∘]←] and, if valid and not seen before,
+⍝   ∘ If £. is followed by a dotted name nm1.nm2[...], then nm←nm1, the first one;
+⍝     That entire namespace is loaded, if found.
 ⍝   ∘ (via LoadObj) get source code for it from a file or workspace in our path.
 ⍝ ∘ Does NOT affect the string ⍵ being scanned. 
 ⍝ ∘ Is only used for its ⎕CY or ⎕FIX side effect via LoadObj. 
@@ -29,7 +31,7 @@
         w← (+/∧\' '= ⍵)↓ ⍵                            ⍝     Skip blanks
     '.'≠ ⊃w: userLibNmP                               ⍝ No initial '.':   return.
         w← (+/∧\' '=w)↓ w← 1↓w                        ⍝     Skip some more blanks,
-        nm← (p← ⌊/ w⍳ '←∘ ')↑ w                       ⍝     Get the name. 
+        nm← w↑⍨ p← ⌊/ w⍳ ' .←∘('                      ⍝     Get the name. 
     (⊂nm)∊ ⍺.acache: userLibNmP                       ⍝ Saw it before:    return.
     ¯1=nc← userLib.⎕NC nm: userLibNmP                 ⍝ Invalid name:     return.
         ⍺.acache,← ⊂nm                                ⍝     Mark as seen in autocache global.
